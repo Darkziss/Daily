@@ -11,8 +11,9 @@ namespace Daily
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Nunito-Bold.ttf", "Nunito");
+                    fonts.AddFont("Nunito-BoldItalic.ttf", "NunitoItalic");
+                    fonts.AddFont("Nunito-ExtraBold.ttf", "NunitoBold");
                 });
 
 #if DEBUG
