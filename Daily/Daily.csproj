@@ -23,7 +23,7 @@
 		<ApplicationTitle>Daily</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>xyz.darkziss.daily</ApplicationId>
+		<ApplicationId>org.darkziss.daily</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -34,25 +34,25 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
-	  <ApplicationId>xyz.darkziss.daily</ApplicationId>
+	  <ApplicationId>org.darkziss.daily</ApplicationId>
 	  <ApplicationDisplayVersion>0.1</ApplicationDisplayVersion>
 	  <ApplicationVersion>1</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationId>xyz.darkziss.daily</ApplicationId>
+	  <ApplicationId>org.darkziss.daily</ApplicationId>
 	  <ApplicationDisplayVersion>0.1</ApplicationDisplayVersion>
 	  <ApplicationVersion>1</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
-	  <ApplicationId>xyz.darkziss.daily</ApplicationId>
+	  <ApplicationId>org.darkziss.daily</ApplicationId>
 	  <ApplicationDisplayVersion>0.1</ApplicationDisplayVersion>
 	  <ApplicationVersion>1</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
-	  <ApplicationId>xyz.darkziss.daily</ApplicationId>
+	  <ApplicationId>org.darkziss.daily</ApplicationId>
 	  <ApplicationDisplayVersion>0.1</ApplicationDisplayVersion>
 	  <ApplicationVersion>1</ApplicationVersion>
 	</PropertyGroup>
@@ -66,7 +66,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -79,6 +78,17 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Images\" />
+	  <Folder Include="Resources\Pages\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="TaskPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

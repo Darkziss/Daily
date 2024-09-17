@@ -5,10 +5,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Daily"
     Shell.NavBarIsVisible="False"
-    Shell.FlyoutBehavior="Disabled"
-    Title="Daily">
+    Shell.TabBarIsVisible="False"
+    Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage"/>
+
 </Shell>

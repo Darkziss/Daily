@@ -1,30 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Daily.MainPage"
-             BackgroundColor="#f8f8f8">
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Daily.MainPage"
+    BackgroundColor="{StaticResource Background}">
+
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <Style TargetType="Frame" x:Key="Card">
+                <Setter Property="WidthRequest" Value="175"/>
+                <Setter Property="HeightRequest" Value="230"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="CardLabel">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+            
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
 
     <VerticalStackLayout
         Spacing="20">
 
         <Label 
-            FontSize="40"
-            FontFamily="Nunito"
-            FontAttributes="Bold"
-            Text="Daily"
-            TextColor="Black"
-            Margin="20, 40, 0, 0"
-            VerticalOptions="Start"
-            HorizontalOptions="Start"/>
+            Style="{StaticResource Headline}"
+            Text="Daily"/>
 
         <Frame
-            BackgroundColor="#ededed"
-            BorderColor="#00ffffff"
+            BackgroundColor="{StaticResource Hover}"
             WidthRequest="350"
             HeightRequest="100"
-            CornerRadius="10"
             VerticalOptions="Center"
-            HorizontalOptions="Center">
+            HorizontalOptions="Center"
+            Padding="0">
 
             <HorizontalStackLayout
                 Spacing="10">
@@ -38,9 +51,7 @@
 
                 <Label
                     FontSize="18"
-                    FontFamily="Nunito"
                     Text="Все задачи выполнены!"
-                    TextColor="Black"
                     LineBreakMode="TailTruncation"
                     MaxLines="2"
                     VerticalOptions="Center"
@@ -66,78 +77,61 @@
             </Grid.RowDefinitions>
 
             <Frame
+                Style="{StaticResource Card}"
                 BackgroundColor="#86f790"
-                BorderColor="#00ffffff"
-                WidthRequest="175"
-                HeightRequest="230"
                 Grid.Column="0"
                 Grid.Row="0">
 
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="RouteToTaskPage" NumberOfTapsRequired="1"/>
+                </Frame.GestureRecognizers>
+
                 <Label
-                    FontSize="18"
-                    FontFamily="Nunito"
-                    Text="Задачи"
-                    TextColor="Black"
-                    Margin="0, -15, 0, 0"
-                    VerticalOptions="Start"
-                    HorizontalOptions="Center"/>
+                    Style="{StaticResource CardLabel}"
+                    Text="Задачи"/>
             </Frame>
 
             <Frame
+                Style="{StaticResource Card}"
                 BackgroundColor="#f5d589"
-                BorderColor="#00ffffff"
-                WidthRequest="175"
-                HeightRequest="230"
                 Grid.Column="1"
                 Grid.Row="0">
 
                 <Label
-                    FontSize="18"
-                    FontFamily="Nunito"
-                    Text="Дневник"
-                    TextColor="Black"
-                    Margin="0, -15, 0, 0"
-                    VerticalOptions="Start"
-                    HorizontalOptions="Center"/>
+                    Style="{StaticResource CardLabel}"
+                    Text="Дневник"/>
             </Frame>
 
             <Frame
+                Style="{StaticResource Card}"
                 BackgroundColor="#86a4f7"
-                BorderColor="#00ffffff"
-                WidthRequest="175"
-                HeightRequest="230"
                 Grid.Column="0"
                 Grid.Row="1">
 
                 <Label
-                    FontSize="18"
-                    FontFamily="Nunito"
-                    Text="Мысли"
-                    TextColor="Black"
-                    Margin="0, -15, 0, 0"
-                    VerticalOptions="Start"
-                    HorizontalOptions="Center"/>
+                    Style="{StaticResource CardLabel}"
+                    Text="Мысли"/>
             </Frame>
 
             <Frame
+                Style="{StaticResource Card}"
                 BackgroundColor="#8e93a2"
-                BorderColor="#00ffffff"
-                WidthRequest="175"
-                HeightRequest="230"
                 Grid.Column="1"
                 Grid.Row="1">
 
                 <Label
-                    FontSize="18"
-                    FontFamily="Nunito"
-                    Text="Настройки"
-                    TextColor="Black"
-                    Margin="0, -15, 0, 0"
-                    VerticalOptions="Start"
-                    HorizontalOptions="Center"/>
+                    Style="{StaticResource CardLabel}"
+                    Text="Настройки"/>
             </Frame>
 
         </Grid>
+
+        <Label
+            FontSize="18"
+            Text="v0.1"
+            Margin="0, -10, 10, 0"
+            VerticalOptions="End"
+            HorizontalOptions="End"/>
 
     </VerticalStackLayout>
 
