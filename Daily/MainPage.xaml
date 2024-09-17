@@ -9,6 +9,9 @@
 
         <ResourceDictionary>
 
+            <Color x:Key="Good">#aaf786</Color>
+            <Color x:Key="Bad">#f78686</Color>
+            
             <Style TargetType="Frame" x:Key="Card">
                 <Setter Property="WidthRequest" Value="175"/>
                 <Setter Property="HeightRequest" Value="230"/>
@@ -36,14 +39,13 @@
             WidthRequest="350"
             HeightRequest="100"
             VerticalOptions="Center"
-            HorizontalOptions="Center"
-            Padding="0">
+            HorizontalOptions="Center">
 
             <HorizontalStackLayout
                 Spacing="10">
 
                 <BoxView
-                    BackgroundColor="#aaf786"
+                    BackgroundColor="{StaticResource Good}"
                     WidthRequest="50"
                     HeightRequest="50"
                     VerticalOptions="Center"
@@ -52,7 +54,7 @@
                 <Label
                     FontSize="18"
                     Text="Все задачи выполнены!"
-                    LineBreakMode="TailTruncation"
+                    LineBreakMode="WordWrap"
                     MaxLines="2"
                     VerticalOptions="Center"
                     HorizontalOptions="End"/>

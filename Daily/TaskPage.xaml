@@ -6,24 +6,48 @@
     BackgroundColor="{StaticResource Background}">
 
     <ContentPage.Resources>
+
         <ResourceDictionary>
+
+            <Color x:Key="Goal">#eda5a2</Color>
+            <Color x:Key="CondTask">#ed7f3d</Color>
+            <Color x:Key="Freq">#c8edc3</Color>
+            <Color x:Key="Time">#c3eced</Color>
 
             <Style TargetType="Frame" x:Key="CondTaskCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="WidthRequest" Value="350"/>
-                <Setter Property="HeightRequest" Value="80"/>
+                <Setter Property="HeightRequest" Value="70"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Frame" x:Key="ModificatorCard">
+                <Setter Property="WidthRequest" Value="85"/>
+                <Setter Property="HeightRequest" Value="25"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="ModificatorLabel">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
         </ResourceDictionary>
+
     </ContentPage.Resources>
 
     <VerticalStackLayout
         Spacing="20"
-        Margin="20, 0, 0, 0">
+        Margin="20, 40, 0, 0">
 
         <Label
             Style="{StaticResource Headline}"
-            Text="Задачи"/>
+            Text="Задачи"
+            Margin="0, 0, 0, 0"/>
 
         <VerticalStackLayout>
 
@@ -57,10 +81,63 @@
                 TextColor="{StaticResource CondTask}"
                 Text="Условные задачи"/>
 
-            <Frame/>
+            <Frame
+                Style="{StaticResource CondTaskCard}">
+
+                <HorizontalStackLayout
+                    Spacing="10"
+                    Margin="10, 0, 0, 0">
+
+                    <BoxView
+                        BackgroundColor="{StaticResource Gray}"
+                        WidthRequest="15"
+                        HeightRequest="15"
+                        CornerRadius="25"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"/>
+
+                    <VerticalStackLayout
+                        Margin="0, 10, 0, 0">
+
+                        <Label
+                            FontSize="16"
+                            Text="Читать &quot;Наказание наградой&quot;"
+                            LineBreakMode="TailTruncation"
+                            VerticalOptions="Start"
+                            HorizontalOptions="Start"/>
+
+                        <HorizontalStackLayout
+                            Spacing="5">
+
+                            <Frame
+                                Style="{StaticResource ModificatorCard}"
+                                BackgroundColor="{StaticResource Freq}">
+
+                                <Label
+                                    Style="{StaticResource ModificatorLabel}"
+                                    Text="3 р/неделя"/>
+
+                            </Frame>
+
+                            <Frame
+                                Style="{StaticResource ModificatorCard}"
+                                BackgroundColor="{StaticResource Time}">
+
+                                <Label
+                                    Style="{StaticResource ModificatorLabel}"
+                                    Text="30 мин"/>
+
+                            </Frame>
+
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </HorizontalStackLayout>
+                
+            </Frame>
 
         </VerticalStackLayout>
-
 
     </VerticalStackLayout>
 

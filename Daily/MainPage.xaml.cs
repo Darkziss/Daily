@@ -2,8 +2,6 @@
 
 public partial class MainPage : ContentPage
 {
-    private readonly TaskPage taskPage = new TaskPage();
-    
     public MainPage()
     {
         InitializeComponent();

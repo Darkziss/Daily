@@ -15,10 +15,9 @@
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
+    <Color x:Key="Gray">#b8b8b8</Color>
     <Color x:Key="Background">#f8f8f8</Color>
     <Color x:Key="Hover">#ededed</Color>
-    <Color x:Key="Goal">#eda5a2</Color>
-    <Color x:Key="CondTask">#ed7f3d</Color>
 
     <Color x:Key="Magenta">#D600AA</Color>
     <Color x:Key="MidnightBlue">#190649</Color>
