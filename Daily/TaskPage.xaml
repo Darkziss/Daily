@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Daily.TaskPage"
+    BackgroundColor="{StaticResource Background}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="Frame" x:Key="CondTaskCard">
+                <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+                <Setter Property="WidthRequest" Value="350"/>
+                <Setter Property="HeightRequest" Value="80"/>
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout
+        Spacing="20"
+        Margin="20, 0, 0, 0">
+
+        <Label
+            Style="{StaticResource Headline}"
+            Text="Задачи"/>
+
+        <VerticalStackLayout>
+
+            <Label
+                Style="{StaticResource SubHeadline}"
+                Text="Текущая цель"/>
+
+            <Frame
+                BackgroundColor="{StaticResource Goal}"
+                WidthRequest="350"
+                HeightRequest="50"
+                VerticalOptions="Start"
+                HorizontalOptions="Start">
+
+                <Label
+                    FontSize="16"
+                    Text="Пример цели в приложении Daily"
+                    Margin="10, 0, 0, 0"
+                    LineBreakMode="TailTruncation"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+
+            </Frame>
+
+        </VerticalStackLayout>
+
+        <VerticalStackLayout>
+            
+            <Label
+                Style="{StaticResource SubHeadline}"
+                TextColor="{StaticResource CondTask}"
+                Text="Условные задачи"/>
+
+            <Frame/>
+
+        </VerticalStackLayout>
+
+
+    </VerticalStackLayout>
+
+</ContentPage>
