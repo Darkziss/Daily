@@ -11,7 +11,7 @@
 
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
-            <Color x:Key="Freq">#c8edc3</Color>
+            <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
 
             <Style TargetType="Frame" x:Key="CondTaskCard">
@@ -74,8 +74,9 @@
 
         </VerticalStackLayout>
 
-        <VerticalStackLayout>
-            
+        <VerticalStackLayout
+            Spacing="5">
+
             <Label
                 Style="{StaticResource SubHeadline}"
                 TextColor="{StaticResource CondTask}"
@@ -85,8 +86,8 @@
                 Style="{StaticResource CondTaskCard}">
 
                 <HorizontalStackLayout
-                    Spacing="10"
-                    Margin="10, 0, 0, 0">
+                    Spacing="15"
+                    Margin="15, 0, 0, 0">
 
                     <BoxView
                         BackgroundColor="{StaticResource Gray}"
@@ -111,12 +112,11 @@
 
                             <Frame
                                 Style="{StaticResource ModificatorCard}"
-                                BackgroundColor="{StaticResource Freq}">
+                                BackgroundColor="{StaticResource Frequency}">
 
                                 <Label
                                     Style="{StaticResource ModificatorLabel}"
                                     Text="3 р/неделя"/>
-
                             </Frame>
 
                             <Frame
@@ -126,7 +126,6 @@
                                 <Label
                                     Style="{StaticResource ModificatorLabel}"
                                     Text="30 мин"/>
-
                             </Frame>
 
                         </HorizontalStackLayout>
@@ -134,7 +133,7 @@
                     </VerticalStackLayout>
 
                 </HorizontalStackLayout>
-                
+
             </Frame>
 
         </VerticalStackLayout>

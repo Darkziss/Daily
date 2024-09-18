@@ -1,4 +1,5 @@
-﻿namespace Daily;
+﻿
+namespace Daily;
 
 public partial class MainPage : ContentPage
 {

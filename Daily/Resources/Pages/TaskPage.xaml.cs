@@ -1,3 +1,4 @@
+
 namespace Daily;
 
 public partial class TaskPage : ContentPage
