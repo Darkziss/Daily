@@ -81,11 +81,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Models\ViewModels\" />
 	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Resources\Pages\TaskPage.xaml">
+	  <MauiXaml Update="Pages\TaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
