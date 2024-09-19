@@ -2,7 +2,10 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.TaskPage"
+    x:DataType="viewmodels:TaskPageViewModel"
     BackgroundColor="{StaticResource Background}">
 
     <ContentPage.Resources>
@@ -13,6 +16,7 @@
             <Color x:Key="CondTask">#ed7f3d</Color>
             <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
+            <!--<Color x:Key="GoalInputField">#850000</Color>-->
 
             <Style TargetType="Frame" x:Key="CondTaskCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
@@ -62,20 +66,46 @@
                 VerticalOptions="Start"
                 HorizontalOptions="Start">
 
-                <Label
-                    FontSize="16"
-                    Text="Пример цели в приложении Daily"
-                    Margin="10, 0, 0, 0"
-                    LineBreakMode="TailTruncation"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"/>
+                <HorizontalStackLayout
+                    Margin="10, 0, 0, 0">
+
+                    <Label
+                        IsVisible="{Binding IsGoalLabelVisible}"
+                        FontSize="16"
+                        Text="Зажмите, чтобы добавить цель"
+                        LineBreakMode="TailTruncation"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start">
+
+                        <Label.Behaviors>
+                            <toolkit:TouchBehavior
+                                LongPressDuration="500"
+                                LongPressCommand="{Binding ShowGoalEntryCommand}"/>
+                        </Label.Behaviors>
+
+                    </Label>
+
+                    <Entry
+                        IsVisible="{Binding IsGoalEntryVisible}"
+                        Placeholder="Введите цель"
+                        PlaceholderColor="Black"
+                        FontSize="16"
+                        Keyboard="Text"
+                        MaxLength="50"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        WidthRequest="330"
+                        ReturnCommand="{Binding ShowGoalLabelCommand}"/>
+
+                </HorizontalStackLayout>
 
             </Frame>
 
         </VerticalStackLayout>
 
         <VerticalStackLayout
-            Spacing="5">
+            Spacing="5"
+            IsVisible="False">
 
             <Label
                 Style="{StaticResource SubHeadline}"

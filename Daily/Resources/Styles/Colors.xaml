@@ -18,6 +18,7 @@
     <Color x:Key="Gray">#b8b8b8</Color>
     <Color x:Key="Background">#f8f8f8</Color>
     <Color x:Key="Hover">#ededed</Color>
+    <Color x:Key="InputField">#858585</Color>
 
     <Color x:Key="Magenta">#D600AA</Color>
     <Color x:Key="MidnightBlue">#190649</Color>

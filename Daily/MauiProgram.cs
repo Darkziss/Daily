@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using CommunityToolkit.Maui;
 
 namespace Daily
 {
@@ -9,6 +10,7 @@ namespace Daily
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Nunito-Bold.ttf", "Nunito");

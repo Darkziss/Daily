@@ -13,10 +13,6 @@
         <Setter Property="SelectedIndicatorColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray100}}"/>
     </Style>
 
-    <Style TargetType="Border">
-        <Setter Property="StrokeThickness" Value="0"/>
-    </Style>
-
     <Style TargetType="BoxView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
@@ -88,22 +84,18 @@
     </Style>
 
     <Style TargetType="Entry">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="OpenSansRegular"/>
+        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="PlaceholderColor" Value="{StaticResource InputField}"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
-                    <VisualState x:Name="Disabled">
-                        <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
-                        </VisualState.Setters>
-                    </VisualState>
+                    <VisualState x:Name="Normal"/>
+                    <VisualState x:Name="Disabled"/>
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
@@ -160,11 +152,6 @@
     <Style TargetType="Label" x:Key="SubHeadline">
         <Setter Property="FontFamily" Value="NunitoBold"/>
         <Setter Property="FontSize" Value="23" />
-    </Style>
-
-    <Style TargetType="ListView">
-        <Setter Property="SeparatorColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
-        <Setter Property="RefreshControlColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
     </Style>
 
     <Style TargetType="Picker">
@@ -303,19 +290,6 @@
         <Setter Property="Shell.NavBarIsVisible" Value="False"/>
         <Setter Property="Shell.TabBarIsVisible" Value="False"/>
         <Setter Property="Shell.FlyoutBehavior" Value="Disabled"/>
-    </Style>
-
-    <Style TargetType="NavigationPage">
-        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
-        <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
-    </Style>
-
-    <Style TargetType="TabbedPage">
-        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
-        <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
-        <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 
 </ResourceDictionary>

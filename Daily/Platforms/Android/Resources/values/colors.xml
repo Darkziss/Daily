@@ -2,7 +2,8 @@
 <resources>
     <color name="colorPrimary">#512BD4</color>
     <color name="colorPrimaryDark">#858585</color>
-    <color name="colorAccent">#2B0B98</color>
+    <color name="colorAccent">#000000</color>
+	<color name="colorControlNormal">#000000</color>
 
     <style name="SplashTheme" parent="@style/Maui.SplashTheme">
         <item name="android:statusBarColor">@android:color/white</item>
