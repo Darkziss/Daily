@@ -72,7 +72,7 @@
                     <Label
                         IsVisible="{Binding IsGoalLabelVisible}"
                         FontSize="16"
-                        Text="Зажмите, чтобы добавить цель"
+                        Text="{Binding GoalLabelText}"
                         LineBreakMode="TailTruncation"
                         VerticalOptions="Center"
                         HorizontalOptions="Start">
@@ -80,7 +80,7 @@
                         <Label.Behaviors>
                             <toolkit:TouchBehavior
                                 LongPressDuration="500"
-                                LongPressCommand="{Binding ShowGoalEntryCommand}"/>
+                                LongPressCommand="{Binding ChangeGoalCommand}"/>
                         </Label.Behaviors>
 
                     </Label>
@@ -95,7 +95,8 @@
                         VerticalOptions="Center"
                         HorizontalOptions="Start"
                         WidthRequest="330"
-                        ReturnCommand="{Binding ShowGoalLabelCommand}"/>
+                        ReturnCommand="{Binding SaveGoalCommand}"
+                        ReturnCommandParameter="{Binding Source={RelativeSource Mode=Self}, Path=Text}"/>
 
                 </HorizontalStackLayout>
 

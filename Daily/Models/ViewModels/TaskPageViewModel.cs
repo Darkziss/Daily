@@ -7,26 +7,41 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _isGoalLabelVisible = true;
         [ObservableProperty] private bool _isGoalEntryVisible = false;
 
-        public Command ShowGoalLabelCommand { get; private set; }
+        [ObservableProperty] private string _goalLabelText;
 
-        public Command ShowGoalEntryCommand { get; private set; }
+        public Command ChangeGoalCommand { get; private set; }
+        public Command SaveGoalCommand { get; private set; }
+
+        private const string goalLabelDefaultText = "Зажмите, чтобы изменить текст";
 
         public TaskPageViewModel()
         {
-            ShowGoalLabelCommand = new Command(() =>
-            {
-                if (IsGoalLabelVisible) return;
-
-                IsGoalEntryVisible = false;
-                IsGoalLabelVisible = true;
-            });
+            _goalLabelText = goalLabelDefaultText;
             
-            ShowGoalEntryCommand = new Command(() =>
+            ChangeGoalCommand = new Command(
+            execute: () =>
             {
-                if (IsGoalEntryVisible) return;
-                
                 IsGoalLabelVisible = false;
                 IsGoalEntryVisible = true;
+            }, 
+            canExecute: () =>
+            {
+                return !IsGoalEntryVisible;
+            });
+
+            SaveGoalCommand = new Command(
+            execute: (args) =>
+            {
+                IsGoalEntryVisible = false;
+
+                string text = (string)args;
+                if (text != GoalLabelText) GoalLabelText = text;
+
+                IsGoalLabelVisible = true;
+            },
+            canExecute: (_) =>
+            {
+                return !IsGoalLabelVisible;
             });
         }
     }

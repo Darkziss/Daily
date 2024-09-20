@@ -1,15 +1,11 @@
 ﻿
-namespace Daily;
-
-public partial class MainPage : ContentPage
+namespace Daily
 {
-    public MainPage()
+    public partial class MainPage : ContentPage
     {
-        InitializeComponent();
-    }
-
-    private async void RouteToTaskPage(object? sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(TaskPage));
+        public MainPage()
+        {
+            InitializeComponent();
+        }
     }
 }
