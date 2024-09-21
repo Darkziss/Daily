@@ -1,13 +1,18 @@
 using Daily.ViewModels;
 
-namespace Daily;
-
-public partial class TaskPage : ContentPage
+namespace Daily
 {
-	public TaskPage()
-	{
-		InitializeComponent();
+    public partial class TaskPage : ContentPage
+    {
+        private static TaskPageViewModel _viewModel = new TaskPageViewModel();
 
-		BindingContext = new TaskPageViewModel();
-	}
+        public TaskPage()
+        {
+            InitializeComponent();
+
+            BindingContext = _viewModel;
+
+            _viewModel.PreparePage();
+        }
+    }
 }

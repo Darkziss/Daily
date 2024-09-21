@@ -1,12 +1,13 @@
 ﻿
-namespace Daily;
-
-public partial class App : Application
+namespace Daily
 {
-    public App()
+    public partial class App : Application
     {
-        InitializeComponent();
+        public App()
+        {
+            InitializeComponent();
 
-        MainPage = new AppShell();      
+            MainPage = new AppShell();
+        }
     }
 }

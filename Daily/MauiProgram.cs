@@ -18,9 +18,7 @@ namespace Daily
                     fonts.AddFont("Nunito-ExtraBold.ttf", "NunitoBold");
                 });
 
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            builder.Logging.AddDebug();
 
             return builder.Build();
         }

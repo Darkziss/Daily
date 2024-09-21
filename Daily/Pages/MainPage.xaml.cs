@@ -1,4 +1,5 @@
-﻿
+﻿using Daily.ViewModels;
+
 namespace Daily
 {
     public partial class MainPage : ContentPage
@@ -6,6 +7,8 @@ namespace Daily
         public MainPage()
         {
             InitializeComponent();
+
+            BindingContext = new MainPageViewModel();
         }
     }
 }

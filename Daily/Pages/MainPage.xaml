@@ -88,7 +88,7 @@
 
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer 
-                        Command="{Binding RouteToTaskPage}" 
+                        Command="{Binding RouteToTaskPage}"
                         NumberOfTapsRequired="1"/>
                 </Frame.GestureRecognizers>
 

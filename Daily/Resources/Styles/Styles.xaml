@@ -88,7 +88,8 @@
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="PlaceholderColor" Value="{StaticResource InputField}"/>
         <Setter Property="FontFamily" Value="Nunito"/>
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Keyboard" Value="Default"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">

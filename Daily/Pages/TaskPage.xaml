@@ -13,6 +13,7 @@
         <ResourceDictionary>
 
             <Color x:Key="Goal">#eda5a2</Color>
+            <Color x:Key="GoalText">#850000</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
             <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
@@ -72,6 +73,7 @@
                     <Label
                         IsVisible="{Binding IsGoalLabelVisible}"
                         FontSize="16"
+                        TextColor="{StaticResource GoalText}"
                         Text="{Binding GoalLabelText}"
                         LineBreakMode="TailTruncation"
                         VerticalOptions="Center"
@@ -90,6 +92,7 @@
                         Placeholder="Введите цель"
                         PlaceholderColor="Black"
                         FontSize="16"
+                        TextColor="{StaticResource GoalText}"
                         Keyboard="Text"
                         MaxLength="50"
                         VerticalOptions="Center"

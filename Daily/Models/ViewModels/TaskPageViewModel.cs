@@ -12,7 +12,7 @@ namespace Daily.ViewModels
         public Command ChangeGoalCommand { get; private set; }
         public Command SaveGoalCommand { get; private set; }
 
-        private const string goalLabelDefaultText = "Зажмите, чтобы изменить текст";
+        private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
         public TaskPageViewModel()
         {
@@ -35,7 +35,10 @@ namespace Daily.ViewModels
                 IsGoalEntryVisible = false;
 
                 string text = (string)args;
-                if (text != GoalLabelText) GoalLabelText = text;
+                bool isNullOrWhiteSpace = string.IsNullOrWhiteSpace(text);
+
+                if (isNullOrWhiteSpace) GoalLabelText = goalLabelDefaultText;
+                else if (text != GoalLabelText) GoalLabelText = text;
 
                 IsGoalLabelVisible = true;
             },
@@ -43,6 +46,12 @@ namespace Daily.ViewModels
             {
                 return !IsGoalLabelVisible;
             });
+        }
+
+        public void PreparePage()
+        {
+            _isGoalLabelVisible = true;
+            _isGoalEntryVisible = false;
         }
     }
 }

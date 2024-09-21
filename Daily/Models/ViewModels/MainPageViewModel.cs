@@ -11,10 +11,9 @@ namespace Daily.ViewModels
         public MainPageViewModel()
         {
             RouteToTaskPage = new Command(
-            execute: () =>
+            execute: async () =>
             {
-                RouteTo(nameof(TaskPage));
-                System.Diagnostics.Debug.WriteLine("Routing...");
+                await RouteTo(nameof(TaskPage));
             },
             canExecute: () =>
             {
@@ -22,10 +21,8 @@ namespace Daily.ViewModels
             });
         }
 
-        private async void RouteTo(string pageName)
+        private async Task RouteTo(string pageName)
         {
-            _isRouting = true;
-
             await Shell.Current.GoToAsync(pageName);
         }
     }
