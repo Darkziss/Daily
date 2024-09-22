@@ -23,7 +23,11 @@ namespace Daily.ViewModels
 
         private async Task RouteTo(string pageName)
         {
+            _isRouting = true;
+
             await Shell.Current.GoToAsync(pageName);
+
+            _isRouting = false;
         }
     }
 }

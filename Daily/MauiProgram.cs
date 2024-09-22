@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using Daily.ViewModels;
 
 namespace Daily
 {
@@ -7,7 +8,7 @@ namespace Daily
     {
         public static MauiApp CreateMauiApp()
         {
-            var builder = MauiApp.CreateBuilder();
+            MauiAppBuilder builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
@@ -18,9 +19,38 @@ namespace Daily
                     fonts.AddFont("Nunito-ExtraBold.ttf", "NunitoBold");
                 });
 
+            RegisterModels(builder);
+            RegisterViewModels(builder);
+            RegisterViews(builder);
+
+#if DEBUG
             builder.Logging.AddDebug();
+#endif
 
             return builder.Build();
+        }
+
+        private static void RegisterModels(MauiAppBuilder builder)
+        {
+            builder
+                .Services
+                .AddSingleton<GoalStorage>();
+        }
+
+        private static void RegisterViewModels(MauiAppBuilder builder)
+        {
+            builder
+                .Services
+                .AddSingleton<MainPageViewModel>()
+                .AddSingleton<TaskPageViewModel>();
+        }
+
+        private static void RegisterViews(MauiAppBuilder builder)
+        {
+            builder
+                .Services
+                .AddSingleton<MainPage>()
+                .AddSingleton<TaskPage>();
         }
     }
 }

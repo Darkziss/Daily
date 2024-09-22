@@ -9,13 +9,17 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private string _goalLabelText;
 
+        private readonly GoalStorage _goalStorage;
+
         public Command ChangeGoalCommand { get; private set; }
         public Command SaveGoalCommand { get; private set; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
-        public TaskPageViewModel()
+        public TaskPageViewModel(GoalStorage goalStorage)
         {
+            _goalStorage = goalStorage;
+
             _goalLabelText = goalLabelDefaultText;
             
             ChangeGoalCommand = new Command(
