@@ -11,7 +11,7 @@ namespace Daily.ViewModels
 
         private readonly GoalStorage _goalStorage;
 
-        public Command ChangeGoalCommand { get; private set; }
+        public Command EditGoalCommand { get; private set; }
         public Command SaveGoalCommand { get; private set; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
@@ -20,9 +20,9 @@ namespace Daily.ViewModels
         {
             _goalStorage = goalStorage;
 
-            _goalLabelText = goalLabelDefaultText;
+            _goalLabelText = GetGoalOrDefault();
             
-            ChangeGoalCommand = new Command(
+            EditGoalCommand = new Command(
             execute: () =>
             {
                 IsGoalLabelVisible = false;
@@ -34,15 +34,20 @@ namespace Daily.ViewModels
             });
 
             SaveGoalCommand = new Command(
-            execute: (args) =>
+            execute: async (args) =>
             {
                 IsGoalEntryVisible = false;
 
                 string text = (string)args;
-                bool isNullOrWhiteSpace = string.IsNullOrWhiteSpace(text);
 
-                if (isNullOrWhiteSpace) GoalLabelText = goalLabelDefaultText;
-                else if (text != GoalLabelText) GoalLabelText = text;
+                bool isSameGoal = _goalStorage.IsSameGoal(text);
+
+                if (!isSameGoal)
+                {
+                    await _goalStorage.SetGoalAsync(text);
+
+                    GoalLabelText = GetGoalOrDefault();
+                }
 
                 IsGoalLabelVisible = true;
             },
@@ -56,6 +61,13 @@ namespace Daily.ViewModels
         {
             _isGoalLabelVisible = true;
             _isGoalEntryVisible = false;
+        }
+
+        private string GetGoalOrDefault()
+        {
+            bool isNullOrWhiteSpace = string.IsNullOrWhiteSpace(_goalStorage.Goal);
+
+            return isNullOrWhiteSpace ? goalLabelDefaultText : _goalStorage.Goal;
         }
     }
 }

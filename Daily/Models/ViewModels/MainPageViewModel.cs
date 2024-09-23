@@ -13,21 +13,12 @@ namespace Daily.ViewModels
             RouteToTaskPage = new Command(
             execute: async () =>
             {
-                await RouteTo(nameof(TaskPage));
+                await PageRouter.RouteTo(nameof(TaskPage));
             },
             canExecute: () =>
             {
-                return !_isRouting;
+                return !PageRouter.IsRouting;
             });
-        }
-
-        private async Task RouteTo(string pageName)
-        {
-            _isRouting = true;
-
-            await Shell.Current.GoToAsync(pageName);
-
-            _isRouting = false;
         }
     }
 }

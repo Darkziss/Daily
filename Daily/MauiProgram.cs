@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using Daily.Data;
 using Daily.ViewModels;
 
 namespace Daily
@@ -34,6 +35,7 @@ namespace Daily
         {
             builder
                 .Services
+                .AddSingleton<DataProvider>()
                 .AddSingleton<GoalStorage>();
         }
 

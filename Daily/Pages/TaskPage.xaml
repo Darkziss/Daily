@@ -82,7 +82,7 @@
                         <Label.Behaviors>
                             <toolkit:TouchBehavior
                                 LongPressDuration="500"
-                                LongPressCommand="{Binding ChangeGoalCommand}"/>
+                                LongPressCommand="{Binding EditGoalCommand}"/>
                         </Label.Behaviors>
 
                     </Label>
@@ -92,7 +92,7 @@
                         Placeholder="Введите цель"
                         PlaceholderColor="Black"
                         FontSize="16"
-                        TextColor="{StaticResource GoalText}"
+                        TextColor="Black"
                         Keyboard="Text"
                         MaxLength="50"
                         VerticalOptions="Center"
