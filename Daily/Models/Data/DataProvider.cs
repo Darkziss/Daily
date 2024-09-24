@@ -1,4 +1,8 @@
 ﻿using System.Text.Json;
+using System.Diagnostics;
+using AndroidFile = Java.IO.File;
+using AndroidApplication = Android.App.Application;
+using AndroidEnvironment = Android.OS.Environment;
 
 namespace Daily.Data
 {
@@ -6,7 +10,7 @@ namespace Daily.Data
     {
         private readonly AppData _appData;
 
-        private readonly string _savePath = $@"{FileSystem.AppDataDirectory}/{fileName}";
+        private readonly string _savePath;
 
         private const string fileName = "appData.json";
 
@@ -14,10 +18,12 @@ namespace Daily.Data
 
         public DataProvider()
         {
-            AppData? data = LoadAppData();
+            AndroidFile? documentsFolderFile = AndroidApplication.Context.GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments);
+            string appDataPath = documentsFolderFile!.AbsoluteFile.Path;
 
-            if (data != null) _appData = data;
-            else _appData = new AppData();
+            _savePath = $"{appDataPath}/{fileName}";
+
+            _appData = LoadAppData();
         }
         
         public async Task SaveGoalAsync(string goal)
@@ -38,15 +44,15 @@ namespace Daily.Data
             {
                 appData = DeserializeAppData();
 
-                return appData == null ? new AppData() : appData;
+                return appData!;
             }
             else
             {
+                appData = new AppData();
+
                 using (FileStream stream = File.Create(_savePath))
                 {
-                    appData = new AppData();
-
-                    JsonSerializer.Serialize<AppData>(appData);
+                    JsonSerializer.Serialize<AppData>(stream, appData);
                 }
 
                 return appData;
