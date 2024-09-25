@@ -12,14 +12,20 @@
 
         <ResourceDictionary>
 
+            <x:Double x:Key="GoalElementWidth">330</x:Double>
+
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
+
+            <Color x:Key="GeneralTask">#858585</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
+
+            <Color x:Key="DailyTask">#edd8c3</Color>
+
             <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
-            <!--<Color x:Key="GoalInputField">#850000</Color>-->
 
-            <Style TargetType="Frame" x:Key="CondTaskCard">
+            <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="HeightRequest" Value="70"/>
@@ -27,8 +33,15 @@
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
+            <Style TargetType="Label" x:Key="TaskLabel">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                <Setter Property="WidthRequest" Value="300"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
             <Style TargetType="Frame" x:Key="ModificatorCard">
-                <Setter Property="WidthRequest" Value="85"/>
                 <Setter Property="HeightRequest" Value="25"/>
                 <Setter Property="CornerRadius" Value="5"/>
                 <Setter Property="VerticalOptions" Value="End"/>
@@ -39,6 +52,7 @@
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="Margin" Value="3, 0, 3, 0"/>
             </Style>
 
         </ResourceDictionary>
@@ -76,6 +90,7 @@
                         TextColor="{StaticResource GoalText}"
                         Text="{Binding GoalLabelText}"
                         LineBreakMode="TailTruncation"
+                        WidthRequest="{StaticResource GoalElementWidth}"
                         VerticalOptions="Center"
                         HorizontalOptions="Start">
 
@@ -92,14 +107,13 @@
                         Placeholder="Введите цель"
                         PlaceholderColor="Black"
                         FontSize="16"
-                        TextColor="Black"
+                        Text="{Binding GoalEntryText, Mode=TwoWay}"
                         Keyboard="Text"
                         MaxLength="50"
+                        WidthRequest="{StaticResource GoalElementWidth}"
                         VerticalOptions="Center"
                         HorizontalOptions="Start"
-                        WidthRequest="330"
-                        ReturnCommand="{Binding SaveGoalCommand}"
-                        ReturnCommandParameter="{Binding Source={RelativeSource Mode=Self}, Path=Text}"/>
+                        ReturnCommand="{Binding SaveGoalCommand}"/>
 
                 </HorizontalStackLayout>
 
@@ -108,16 +122,15 @@
         </VerticalStackLayout>
 
         <VerticalStackLayout
-            Spacing="5"
-            IsVisible="False">
+            Spacing="5">
 
             <Label
                 Style="{StaticResource SubHeadline}"
-                TextColor="{StaticResource CondTask}"
-                Text="Условные задачи"/>
+                TextColor="{StaticResource GeneralTask}"
+                Text="Основные задачи"/>
 
             <Frame
-                Style="{StaticResource CondTaskCard}">
+                Style="{StaticResource TaskCard}">
 
                 <HorizontalStackLayout
                     Spacing="15"
@@ -135,34 +148,17 @@
                         Margin="0, 10, 0, 0">
 
                         <Label
-                            FontSize="16"
-                            Text="Читать &quot;Наказание наградой&quot;"
-                            LineBreakMode="TailTruncation"
-                            VerticalOptions="Start"
-                            HorizontalOptions="Start"/>
+                            Style="{StaticResource TaskLabel}"
+                            Text="Записать в дневник мысли"/>
+                        
+                        <Frame
+                            Style="{StaticResource ModificatorCard}"
+                            BackgroundColor="{StaticResource DailyTask}">
 
-                        <HorizontalStackLayout
-                            Spacing="5">
-
-                            <Frame
-                                Style="{StaticResource ModificatorCard}"
-                                BackgroundColor="{StaticResource Frequency}">
-
-                                <Label
-                                    Style="{StaticResource ModificatorLabel}"
-                                    Text="3 р/неделя"/>
-                            </Frame>
-
-                            <Frame
-                                Style="{StaticResource ModificatorCard}"
-                                BackgroundColor="{StaticResource Time}">
-
-                                <Label
-                                    Style="{StaticResource ModificatorLabel}"
-                                    Text="30 мин"/>
-                            </Frame>
-
-                        </HorizontalStackLayout>
+                            <Label
+                                Style="{StaticResource ModificatorLabel}"
+                                Text="Ежедневная"/>
+                        </Frame>
 
                     </VerticalStackLayout>
 

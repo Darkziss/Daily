@@ -4,13 +4,20 @@ namespace Daily
 {
     public partial class TaskPage : ContentPage
     {
+        private readonly TaskPageViewModel _viewModel;
+        
         public TaskPage(TaskPageViewModel viewModel)
         {
             InitializeComponent();
 
-            BindingContext = viewModel;
+            _viewModel = viewModel;
 
-            viewModel.PreparePage();
+            BindingContext = viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            _viewModel.PreparePage();
         }
     }
 }

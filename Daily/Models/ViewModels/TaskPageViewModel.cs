@@ -8,11 +8,12 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _isGoalEntryVisible = false;
 
         [ObservableProperty] private string _goalLabelText;
+        [ObservableProperty] private string _goalEntryText;
 
         private readonly GoalStorage _goalStorage;
 
-        public Command EditGoalCommand { get; private set; }
-        public Command SaveGoalCommand { get; private set; }
+        public Command EditGoalCommand { get; }
+        public Command SaveGoalCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
@@ -20,7 +21,8 @@ namespace Daily.ViewModels
         {
             _goalStorage = goalStorage;
 
-            _goalLabelText = GetGoalOrDefault();
+            _goalLabelText = GetGoalOrDefaultText();
+            _goalEntryText = goalStorage.Goal;
             
             EditGoalCommand = new Command(
             execute: () =>
@@ -34,24 +36,24 @@ namespace Daily.ViewModels
             });
 
             SaveGoalCommand = new Command(
-            execute: async (args) =>
+            execute: async () =>
             {
                 IsGoalEntryVisible = false;
 
-                string text = (string)args;
+                string newGoal = GoalEntryText;
 
-                bool isSameGoal = _goalStorage.IsSameGoal(text);
+                bool isSameGoal = _goalStorage.IsSameGoal(newGoal);
 
                 if (!isSameGoal)
                 {
-                    await _goalStorage.SetGoalAsync(text);
+                    await _goalStorage.SetGoalAsync(newGoal);
 
-                    GoalLabelText = GetGoalOrDefault();
+                    GoalLabelText = GetGoalOrDefaultText();
                 }
 
                 IsGoalLabelVisible = true;
             },
-            canExecute: (_) =>
+            canExecute: () =>
             {
                 return !IsGoalLabelVisible;
             });
@@ -59,11 +61,11 @@ namespace Daily.ViewModels
 
         public void PreparePage()
         {
-            _isGoalLabelVisible = true;
-            _isGoalEntryVisible = false;
+            IsGoalLabelVisible = true;
+            IsGoalEntryVisible = false;
         }
 
-        private string GetGoalOrDefault()
+        private string GetGoalOrDefaultText()
         {
             bool isNullOrWhiteSpace = string.IsNullOrWhiteSpace(_goalStorage.Goal);
 

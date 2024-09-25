@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Diagnostics;
 using AndroidFile = Java.IO.File;
 using AndroidApplication = Android.App.Application;
 using AndroidEnvironment = Android.OS.Environment;
@@ -10,18 +9,19 @@ namespace Daily.Data
     {
         private readonly AppData _appData;
 
-        private readonly string _savePath;
+        private readonly string _appDataPath;
 
         private const string fileName = "appData.json";
 
-        private const FileMode fileMode = FileMode.OpenOrCreate;
+        private const FileMode saveFileMode = FileMode.Create;
+        private const FileMode loadFileMode = FileMode.Open;
 
         public DataProvider()
         {
-            AndroidFile? documentsFolderFile = AndroidApplication.Context.GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments);
-            string appDataPath = documentsFolderFile!.AbsoluteFile.Path;
+            AndroidFile dataFolder = AndroidApplication.Context.
+                GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments)!;
 
-            _savePath = $"{appDataPath}/{fileName}";
+            _appDataPath = Path.Combine(dataFolder.AbsolutePath, fileName);
 
             _appData = LoadAppData();
         }
@@ -37,43 +37,39 @@ namespace Daily.Data
 
         private AppData LoadAppData()
         {
-            bool exists = File.Exists(_savePath);
-            AppData? appData;
+            bool exists = File.Exists(_appDataPath);
 
-            if (exists)
+            if (exists) return DeserializeAppData();
+            else return CreateAndSerializeAppData();
+        }
+
+        private AppData CreateAndSerializeAppData()
+        {
+            AppData appData = new AppData();
+            
+            using (FileStream stream = File.Create(_appDataPath))
             {
-                appData = DeserializeAppData();
-
-                return appData!;
+                JsonSerializer.Serialize<AppData>(stream, appData);
             }
-            else
-            {
-                appData = new AppData();
 
-                using (FileStream stream = File.Create(_savePath))
-                {
-                    JsonSerializer.Serialize<AppData>(stream, appData);
-                }
-
-                return appData;
-            }
+            return appData;
         }
 
         private async Task SerializeAppDataAsync()
         {
-            using (FileStream stream = new FileStream(_savePath, fileMode))
+            using (FileStream stream = new FileStream(_appDataPath, saveFileMode))
             {
                 await JsonSerializer.SerializeAsync<AppData>(stream, _appData);
             }
         }
 
-        private AppData? DeserializeAppData()
+        private AppData DeserializeAppData()
         {
-            using (FileStream stream = new FileStream(_savePath, fileMode))
+            using (FileStream stream = new FileStream(_appDataPath, loadFileMode))
             {
                 AppData? data = JsonSerializer.Deserialize<AppData>(stream);
 
-                return data;
+                return data!;
             }
         }
     }

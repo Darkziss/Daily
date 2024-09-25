@@ -14,6 +14,11 @@
             <Color x:Key="Good">#aaf786</Color>
             <Color x:Key="Bad">#f78686</Color>
             
+            <Color x:Key="Tasks">#86f790</Color>
+            <Color x:Key="Diary">#f5d589</Color>
+            <Color x:Key="Thoughts">#86a4f7</Color>
+            <Color x:Key="Settings">#8e93a2</Color>
+            
             <Style TargetType="Frame" x:Key="Card">
                 <Setter Property="WidthRequest" Value="175"/>
                 <Setter Property="HeightRequest" Value="230"/>
@@ -44,7 +49,8 @@
             HorizontalOptions="Center">
 
             <HorizontalStackLayout
-                Spacing="10">
+                Spacing="10"
+                Margin="10, 0, 0, 0">
 
                 <BoxView
                     BackgroundColor="{StaticResource Good}"
@@ -58,6 +64,7 @@
                     Text="Все задачи выполнены!"
                     LineBreakMode="WordWrap"
                     MaxLines="2"
+                    WidthRequest="300"
                     VerticalOptions="Center"
                     HorizontalOptions="End"/>
 
@@ -82,7 +89,7 @@
 
             <Frame
                 Style="{StaticResource Card}"
-                BackgroundColor="#86f790"
+                BackgroundColor="{StaticResource Tasks}"
                 Grid.Column="0"
                 Grid.Row="0">
 
@@ -98,8 +105,9 @@
             </Frame>
 
             <Frame
+                IsEnabled="False"
                 Style="{StaticResource Card}"
-                BackgroundColor="#f5d589"
+                BackgroundColor="{StaticResource Diary}"
                 Grid.Column="1"
                 Grid.Row="0">
 
@@ -109,8 +117,9 @@
             </Frame>
 
             <Frame
+                IsEnabled="False"
                 Style="{StaticResource Card}"
-                BackgroundColor="#86a4f7"
+                BackgroundColor="{StaticResource Thoughts}"
                 Grid.Column="0"
                 Grid.Row="1">
 
@@ -120,8 +129,9 @@
             </Frame>
 
             <Frame
+                IsEnabled="False"
                 Style="{StaticResource Card}"
-                BackgroundColor="#8e93a2"
+                BackgroundColor="{StaticResource Settings}"
                 Grid.Column="1"
                 Grid.Row="1">
 
