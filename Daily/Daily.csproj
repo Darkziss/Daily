@@ -91,6 +91,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\TaskEditPage.xaml.cs">
+	    <DependentUpon>TaskEditPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\TaskEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\TaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

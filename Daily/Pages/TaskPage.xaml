@@ -5,8 +5,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.TaskPage"
-    x:DataType="viewmodels:TaskPageViewModel"
-    BackgroundColor="{StaticResource Background}">
+    x:DataType="viewmodels:TaskPageViewModel">
 
     <ContentPage.Resources>
 
@@ -41,13 +40,12 @@
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
-            <Style TargetType="BoxView" x:Key="TaskProgressCircle">
+            <Style TargetType="Ellipse" x:Key="TaskProgressCircle">
                 <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
-                <Setter Property="WidthRequest" Value="15"/>
-                <Setter Property="HeightRequest" Value="15"/>
-                <Setter Property="CornerRadius" Value="25"/>
+                <Setter Property="WidthRequest" Value="20"/>
+                <Setter Property="HeightRequest" Value="20"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
             <Style TargetType="Frame" x:Key="ModificatorCard">
@@ -61,7 +59,7 @@
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
-                <Setter Property="Margin" Value="3, 0, 3, 0"/>
+                <Setter Property="Margin" Value="5, 0, 5, 0"/>
             </Style>
 
         </ResourceDictionary>
@@ -74,8 +72,7 @@
 
         <Label
             Style="{StaticResource Headline}"
-            Text="Задачи"
-            Margin="0, 0, 0, 0"/>
+            Text="Задачи"/>
 
         <VerticalStackLayout>
 
@@ -115,7 +112,6 @@
                         IsVisible="{Binding IsGoalEntryVisible}"
                         Placeholder="Введите цель"
                         PlaceholderColor="Black"
-                        FontSize="16"
                         Text="{Binding GoalEntryText, Mode=TwoWay}"
                         Keyboard="Text"
                         MaxLength="50"
@@ -142,20 +138,12 @@
                 Style="{StaticResource TaskCard}">
 
                 <Grid
-                    ColumnSpacing="0"
+                    ColumnDefinitions="Auto, Auto"
+                    RowDefinitions="Auto, Auto"
+                    ColumnSpacing="10"
                     Margin="10, 0, 0, 0">
-                    
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <BoxView
+                    <Ellipse
                         Style="{StaticResource TaskProgressCircle}"
                         Grid.Column="0"
                         Grid.Row="0"

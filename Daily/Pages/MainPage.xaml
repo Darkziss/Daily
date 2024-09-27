@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.MainPage"
-    x:DataType="viewmodels:MainPageViewModel"
-    BackgroundColor="{StaticResource Background}">
+    x:DataType="viewmodels:MainPageViewModel">
 
     <ContentPage.Resources>
 
@@ -35,11 +34,13 @@
     </ContentPage.Resources>
 
     <VerticalStackLayout
-        Spacing="20">
+        Spacing="20"
+        Margin="0, 40, 0, 0">
 
         <Label 
             Style="{StaticResource Headline}"
-            Text="Daily"/>
+            Text="Daily"
+            Margin="20, 0, 0, 0"/>
 
         <Frame
             BackgroundColor="{StaticResource Hover}"
@@ -117,11 +118,16 @@
             </Frame>
 
             <Frame
-                IsEnabled="False"
                 Style="{StaticResource Card}"
                 BackgroundColor="{StaticResource Thoughts}"
                 Grid.Column="0"
                 Grid.Row="1">
+
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer 
+                        Command="{Binding RouteToTaskEditPage}"
+                        NumberOfTapsRequired="1"/>
+                </Frame.GestureRecognizers>
 
                 <Label
                     Style="{StaticResource CardLabel}"

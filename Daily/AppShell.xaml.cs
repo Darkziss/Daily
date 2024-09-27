@@ -1,4 +1,5 @@
-﻿
+﻿using Daily.Pages;
+
 namespace Daily;
 
 public partial class AppShell : Shell
@@ -9,5 +10,6 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
         Routing.RegisterRoute(nameof(TaskPage), typeof(TaskPage));
+        Routing.RegisterRoute(nameof(TaskEditPage), typeof(TaskEditPage));
     }
 }
