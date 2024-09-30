@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui;
 using Daily.Data;
 using Daily.ViewModels;
+using Daily.Pages;
 
 namespace Daily
 {
@@ -44,7 +45,8 @@ namespace Daily
             builder
                 .Services
                 .AddSingleton<MainPageViewModel>()
-                .AddSingleton<TaskPageViewModel>();
+                .AddSingleton<TaskPageViewModel>()
+                .AddSingleton<TaskEditPageViewModel>();
         }
 
         private static void RegisterViews(MauiAppBuilder builder)
@@ -52,7 +54,8 @@ namespace Daily
             builder
                 .Services
                 .AddSingleton<MainPage>()
-                .AddSingleton<TaskPage>();
+                .AddSingleton<TaskPage>()
+                .AddTransient<TaskEditPage>();
         }
     }
 }

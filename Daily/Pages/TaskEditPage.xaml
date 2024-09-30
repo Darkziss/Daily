@@ -2,118 +2,121 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Daily.Pages.TaskEditPage">
-    
-    <VerticalStackLayout
-        Spacing="20"
-        Margin="20, 40, 0, 0">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    x:Class="Daily.Pages.TaskEditPage"
+    x:DataType="viewmodels:TaskEditPageViewModel">
 
-        <Label
-            Style="{StaticResource Headline}"
-            FontSize="30"
-            Text="Создание задачи"/>
-
-        <Entry
-            FontSize="20"
-            Placeholder="Действие"
-            Keyboard="Text"
-            MaxLength="50"
-            WidthRequest="350"
-            VerticalOptions="Start"
-            HorizontalOptions="Start"/>
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, *">
 
         <VerticalStackLayout
-            VerticalOptions="Start"
-            HorizontalOptions="Start"
-            RadioButtonGroup.GroupName="Priority">
+            Spacing="20"
+            Padding="20, 40, 0, 0"
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill"
+            Grid.Column="0"
+            Grid.Row="0">
 
             <Label
+                Style="{StaticResource Headline}"
+                FontSize="30"
+                Text="Создание задачи"/>
+
+            <Entry
                 FontSize="20"
-                Text="Приоритет"/>
-
-            <RadioButton
-                FontSize="16"
-                Content="Ежедневная"
-                IsChecked="True"
-                Margin="-5, 0, 0, 0"/>
-
-            <RadioButton
-                Content="Обязательная"
-                Margin="-5, 0, 0, 0"/>
-
-            <RadioButton
-                Content="Важная"
-                Margin="-5, 0, 0, 0"/>
-
-            <RadioButton
-                Content="Обычная"
-                Margin="-5, 0, 0, 0"/>
-
-        </VerticalStackLayout>
-
-        <Grid
-            ColumnDefinitions="Auto, Auto"
-            RowDefinitions="Auto, Auto"
-            ColumnSpacing="10"
-            RowSpacing="-5"
-            BackgroundColor="Red"
-            WidthRequest="350"
-            VerticalOptions="Start"
-            HorizontalOptions="Start">
-
-            <Label
-                FontSize="20"
-                Text="Сколько раз в день нужно выполнить задачу? (максимум 3 раза)"
-                LineBreakMode="WordWrap"
+                Placeholder="Действие"
+                Keyboard="Text"
+                MaxLength="50"
                 WidthRequest="350"
                 VerticalOptions="Start"
-                HorizontalOptions="Center"
-                Grid.ColumnSpan="2"
-                Grid.Row="0"/>
+                HorizontalOptions="Start"/>
 
-            <Stepper
-                Value="1"
-                Maximum="3"
-                Minimum="1"
-                VerticalOptions="End"
+            <VerticalStackLayout
+                VerticalOptions="Start"
                 HorizontalOptions="Start"
-                Grid.Column="0"
-                Grid.Row="1"/>
+                RadioButtonGroup.GroupName="Priority">
 
-            <Label
-                FontSize="40"
-                Text="1"
-                VerticalOptions="End"
-                HorizontalOptions="End"
-                Grid.Column="1"
-                Grid.Row="1"/>
+                <Label
+                    FontSize="20"
+                    Text="Приоритет"/>
 
-        </Grid>
+                <RadioButton
+                    FontSize="16"
+                    Content="Ежедневная"
+                    IsChecked="True"/>
 
-        <HorizontalStackLayout
-            Margin="0, 10, 0, 0"
-            BackgroundColor="Green"
-            WidthRequest="350"
-            VerticalOptions="Start"
-            HorizontalOptions="Start">
+                <RadioButton
+                    Content="Обязательная"/>
 
-            <Stepper
-                Value="1"
-                Maximum="3"
-                Minimum="1"
-                VerticalOptions="Center"/>
-            
-            <Label
-                FontSize="40"
-                Text="1"
-                VerticalOptions="End"
-                HorizontalOptions="Start"
-                VerticalTextAlignment="Center"
-                HorizontalTextAlignment="Center"
-                BackgroundColor="Red"/>
+                <RadioButton
+                    Content="Важная"/>
 
-        </HorizontalStackLayout>
+                <RadioButton
+                    Content="Обычная"/>
 
-    </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <Grid
+                ColumnDefinitions="100, Auto"
+                RowDefinitions="Auto, Auto"
+                WidthRequest="350"
+                VerticalOptions="Start"
+                HorizontalOptions="Start">
+
+                <Label
+                    FontSize="20"
+                    Text="Количество повторений (в день)"
+                    WidthRequest="350"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"/>
+
+                <Label
+                    FontSize="40"
+                    Text="{Binding RepeatCountLabelText}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="0"
+                    Grid.Row="1"/>
+
+                <Stepper
+                    x:Name="RepeatCountStepper"
+                    Value="1"
+                    Maximum="3"
+                    Minimum="1"
+                    WidthRequest="200"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="1"
+                    Grid.Row="1">
+
+                    <Stepper.Behaviors>
+                        <toolkit:EventToCommandBehavior
+                            EventName="ValueChanged"
+                            CommandParameter="{Binding Source={x:Reference RepeatCountStepper}, Path={x:Binding Value}}"/>
+                    </Stepper.Behaviors>
+                    
+                </Stepper>
+
+            </Grid>
+
+        </VerticalStackLayout>
+        
+        <Button
+            BackgroundColor="{StaticResource Good}"
+            FontSize="27"
+            Text="Создать"
+            WidthRequest="230"
+            HeightRequest="50"
+            VerticalOptions="End"
+            HorizontalOptions="Center"
+            Margin="0, 0, 0, 20"
+            Grid.Column="0"
+            Grid.Row="1"/>
+
+    </Grid>
 
 </ContentPage>
