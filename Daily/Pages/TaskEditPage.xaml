@@ -14,8 +14,6 @@
         <VerticalStackLayout
             Spacing="20"
             Padding="20, 40, 0, 0"
-            VerticalOptions="Fill"
-            HorizontalOptions="Fill"
             Grid.Column="0"
             Grid.Row="0">
 
@@ -28,10 +26,19 @@
                 FontSize="20"
                 Placeholder="Действие"
                 Keyboard="Text"
-                MaxLength="50"
+                MaxLength="30"
                 WidthRequest="350"
                 VerticalOptions="Start"
-                HorizontalOptions="Start"/>
+                HorizontalOptions="Start">
+
+                <Entry.Behaviors>
+                    <toolkit:TextValidationBehavior
+                        x:Name="TaskNameEntryValidator"
+                        Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                        MinimumLength="1"/>
+                </Entry.Behaviors>
+                
+            </Entry>
 
             <VerticalStackLayout
                 VerticalOptions="Start"
@@ -43,7 +50,6 @@
                     Text="Приоритет"/>
 
                 <RadioButton
-                    FontSize="16"
                     Content="Ежедневная"
                     IsChecked="True"/>
 
@@ -55,7 +61,7 @@
 
                 <RadioButton
                     Content="Обычная"/>
-
+                
             </VerticalStackLayout>
 
             <Grid
@@ -76,7 +82,7 @@
 
                 <Label
                     FontSize="40"
-                    Text="{Binding RepeatCountLabelText}"
+                    Text="{Binding Value, Source={x:Reference RepeatCountStepper}}"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     Grid.Column="0"
@@ -87,18 +93,12 @@
                     Value="1"
                     Maximum="3"
                     Minimum="1"
-                    WidthRequest="200"
+                    WidthRequest="130"
                     VerticalOptions="Center"
-                    HorizontalOptions="Center"
+                    HorizontalOptions="Start"
                     Grid.Column="1"
                     Grid.Row="1">
 
-                    <Stepper.Behaviors>
-                        <toolkit:EventToCommandBehavior
-                            EventName="ValueChanged"
-                            CommandParameter="{Binding Source={x:Reference RepeatCountStepper}, Path={x:Binding Value}}"/>
-                    </Stepper.Behaviors>
-                    
                 </Stepper>
 
             </Grid>
@@ -106,6 +106,7 @@
         </VerticalStackLayout>
         
         <Button
+            IsEnabled="{Binding IsValid, Source={x:Reference TaskNameEntryValidator}}"
             BackgroundColor="{StaticResource Good}"
             FontSize="27"
             Text="Создать"

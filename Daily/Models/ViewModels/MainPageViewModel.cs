@@ -5,8 +5,6 @@ namespace Daily.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject
     {
-        private bool _isRouting = false;
-        
         public Command RouteToTaskPage { get; }
         public Command RouteToTaskEditPage { get; }
 

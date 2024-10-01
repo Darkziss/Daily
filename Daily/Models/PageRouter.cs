@@ -11,7 +11,7 @@ namespace Daily
 
         public static async Task RouteTo(string pageName)
         {
-            if (string.IsNullOrWhiteSpace(pageName)) return;
+            if (_isRouting || string.IsNullOrWhiteSpace(pageName)) return;
 
             _isRouting = true;
 
