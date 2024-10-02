@@ -41,7 +41,6 @@ namespace Daily.ViewModels
                 IsGoalEntryVisible = false;
 
                 string newGoal = GoalEntryText;
-
                 bool isSameGoal = _goalStorage.IsSameGoal(newGoal);
 
                 if (!isSameGoal)

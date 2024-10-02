@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using Daily.Tasks;
 using Daily.Data;
 using Daily.ViewModels;
 using Daily.Pages;
@@ -37,7 +38,8 @@ namespace Daily
             builder
                 .Services
                 .AddSingleton<DataProvider>()
-                .AddSingleton<GoalStorage>();
+                .AddSingleton<GoalStorage>()
+                .AddSingleton<TaskStorage>();
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)
@@ -55,7 +57,7 @@ namespace Daily
                 .Services
                 .AddSingleton<MainPage>()
                 .AddSingleton<TaskPage>()
-                .AddTransient<TaskEditPage>();
+                .AddSingleton<TaskEditPage>();
         }
     }
 }

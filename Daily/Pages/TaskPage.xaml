@@ -113,7 +113,6 @@
                         Placeholder="Введите цель"
                         PlaceholderColor="Black"
                         Text="{Binding GoalEntryText, Mode=TwoWay}"
-                        Keyboard="Text"
                         MaxLength="50"
                         WidthRequest="{StaticResource GoalElementWidth}"
                         VerticalOptions="Center"

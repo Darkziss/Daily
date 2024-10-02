@@ -1,7 +1,7 @@
 ﻿
 namespace Daily.Tasks
 {
-    public class GeneralTask
+    public struct GeneralTask
     {
         private string _taskAction = string.Empty;
         private TaskPriority _priority = TaskPriority.Daily;
@@ -13,6 +13,13 @@ namespace Daily.Tasks
         public TaskPriority Priority => _priority;
         public int RepeatCount => _repeatCount;
 
-        public bool IsCompleted => _isCompleted;
+        public bool IsCompleted { get => _isCompleted; set => _isCompleted = value; }
+
+        public GeneralTask(string taskAction, TaskPriority priority, int repeatCount)
+        {
+            _taskAction = taskAction;
+            _priority = priority;
+            _repeatCount = repeatCount;
+        }
     }
 }

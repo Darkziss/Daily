@@ -7,6 +7,25 @@
     x:Class="Daily.Pages.TaskEditPage"
     x:DataType="viewmodels:TaskEditPageViewModel">
 
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <x:Double x:Key="Size">20</x:Double>
+
+            <Style TargetType="Button" x:Key="BottomButton">
+                <Setter Property="FontSize" Value="27"/>
+                <Setter Property="WidthRequest" Value="230"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="Margin" Value="0, 0, 0, 20"/>
+            </Style>
+            
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
+
     <Grid
         ColumnDefinitions="*"
         RowDefinitions="Auto, *">
@@ -22,46 +41,62 @@
                 FontSize="30"
                 Text="Создание задачи"/>
 
-            <Entry
-                FontSize="20"
-                Placeholder="Действие"
-                Keyboard="Text"
-                MaxLength="30"
-                WidthRequest="350"
+            <VerticalStackLayout
                 VerticalOptions="Start"
                 HorizontalOptions="Start">
 
-                <Entry.Behaviors>
-                    <toolkit:TextValidationBehavior
-                        x:Name="TaskNameEntryValidator"
-                        Flags="ValidateOnAttaching, ValidateOnValueChanged"
-                        MinimumLength="1"/>
-                </Entry.Behaviors>
-                
-            </Entry>
+                <Label
+                    FontSize="{StaticResource Size}"
+                    Text="Действие"/>
+
+                <Entry
+                    FontSize="{StaticResource Size}"
+                    Placeholder="Введите действие"
+                    Text="{Binding TaskAction, Mode=OneWayToSource}"
+                    MaxLength="30"
+                    WidthRequest="350">
+
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior
+                            x:Name="TaskNameEntryValidator"
+                            Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                            MinimumLength="1"/>
+                    </Entry.Behaviors>
+
+                </Entry>
+
+            </VerticalStackLayout>
 
             <VerticalStackLayout
                 VerticalOptions="Start"
-                HorizontalOptions="Start"
-                RadioButtonGroup.GroupName="Priority">
+                HorizontalOptions="Start">
 
                 <Label
-                    FontSize="20"
+                    FontSize="{StaticResource Size}"
                     Text="Приоритет"/>
 
-                <RadioButton
-                    Content="Ежедневная"
-                    IsChecked="True"/>
+                <Frame
+                    BackgroundColor="{StaticResource Gray}"
+                    WidthRequest="250"
+                    HeightRequest="50">
 
-                <RadioButton
-                    Content="Обязательная"/>
+                    <Picker
+                        SelectedIndex="{Binding SelectedPriorityIndex, FallbackValue=0, Mode=OneWayToSource}"
+                        FontSize="20">
 
-                <RadioButton
-                    Content="Важная"/>
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Ежедневная</x:String>
+                                <x:String>Обязательная</x:String>
+                                <x:String>Важная</x:String>
+                                <x:String>Обычная</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                        
+                    </Picker>
 
-                <RadioButton
-                    Content="Обычная"/>
-                
+                </Frame>
+
             </VerticalStackLayout>
 
             <Grid
@@ -72,7 +107,7 @@
                 HorizontalOptions="Start">
 
                 <Label
-                    FontSize="20"
+                    FontSize="{StaticResource Size}"
                     Text="Количество повторений (в день)"
                     WidthRequest="350"
                     VerticalOptions="Center"
@@ -90,7 +125,7 @@
 
                 <Stepper
                     x:Name="RepeatCountStepper"
-                    Value="1"
+                    Value="{Binding RepeatCount, Mode=OneWayToSource}"
                     Maximum="3"
                     Minimum="1"
                     WidthRequest="130"
@@ -106,17 +141,13 @@
         </VerticalStackLayout>
         
         <Button
+            Style="{StaticResource BottomButton}"
             IsEnabled="{Binding IsValid, Source={x:Reference TaskNameEntryValidator}}"
             BackgroundColor="{StaticResource Good}"
-            FontSize="27"
             Text="Создать"
-            WidthRequest="230"
-            HeightRequest="50"
-            VerticalOptions="End"
-            HorizontalOptions="Center"
-            Margin="0, 0, 0, 20"
             Grid.Column="0"
-            Grid.Row="1"/>
+            Grid.Row="1"
+            Command="{Binding CreateTaskCommand}"/>
 
     </Grid>
 
