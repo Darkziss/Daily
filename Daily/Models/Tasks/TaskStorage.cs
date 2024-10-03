@@ -4,7 +4,7 @@ namespace Daily.Tasks
 {
     public class TaskStorage
     {
-        private readonly List<GeneralTask> _generalTasks = new List<GeneralTask>(maxGeneralTaskCount);
+        private readonly List<GeneralTask> _generalTasks;
 
         private readonly DataProvider _dataProvider;
 
@@ -14,7 +14,7 @@ namespace Daily.Tasks
         {
             _dataProvider = dataProvider;
 
-            _generalTasks = dataProvider.GetGeneralTasks();
+            _generalTasks = dataProvider.GeneralTasks ?? new List<GeneralTask>(maxGeneralTaskCount);
         }
 
         public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int repeatCount)
@@ -25,7 +25,7 @@ namespace Daily.Tasks
 
             _generalTasks.Add(task);
 
-            await _dataProvider.SaveGeneralTasks(_generalTasks);
+            await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
         }
     }
 }

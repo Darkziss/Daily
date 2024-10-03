@@ -3,19 +3,21 @@ using AndroidFile = Java.IO.File;
 using AndroidApplication = Android.App.Application;
 using AndroidEnvironment = Android.OS.Environment;
 using Daily.Tasks;
-using Android.AdServices.Common;
 
 namespace Daily.Data
 {
     public class DataProvider
     {
-        private readonly AppData _appData;
-        private List<GeneralTask> _generalTasks;
+        public string? Goal { get; private set; }
+        public List<GeneralTask>? GeneralTasks { get; private set; }
 
-        private readonly string _appDataPath;
+        private readonly string _goalPath;
         private readonly string _generalTasksDataPath;
 
-        private const string appDataFileName = "appData.json";
+        private readonly TextWriter _textWriter = new TextWriter();
+        private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
+
+        private const string goalDataFileName = "goal.txt";
         private const string generalTasksDataFileName = "generalTasks.json";
 
         private const FileMode saveFileMode = FileMode.Create;
@@ -26,103 +28,39 @@ namespace Daily.Data
             AndroidFile dataFolder = AndroidApplication.Context.
                 GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments)!;
 
-            _appDataPath = Path.Combine(dataFolder.AbsolutePath, appDataFileName);
+            _goalPath = Path.Combine(dataFolder.AbsolutePath, goalDataFileName);
             _generalTasksDataPath = Path.Combine(dataFolder.AbsolutePath, generalTasksDataFileName);
 
-            _appData = LoadAppData();
-            _generalTasks = LoadGeneralTasks();
+            Goal = LoadGoal();
+            GeneralTasks = LoadGeneralTasks();
         }
         
         public async Task SaveGoalAsync(string goal)
         {
-            _appData.goal = goal;
+            Goal = goal;
 
-            await SerializeAppDataAsync();
+            await _textWriter.WriteTextAsync(_goalPath, goal);
         }
 
-        public string LoadGoal() => _appData.goal;
-
-        public async Task SaveGeneralTasks(List<GeneralTask> generalTasks)
+        public async Task SaveGeneralTasksAsync(List<GeneralTask> generalTasks)
         {
-            _generalTasks = generalTasks;
-
-            await SerializeGeneralTasksAsync();
+            await _dataSerializer.SerializeAsync<List<GeneralTask>>(_generalTasksDataPath, generalTasks);
         }
 
-        public List<GeneralTask> GetGeneralTasks() => _generalTasks;
-
-        private AppData LoadAppData()
+        private string? LoadGoal()
         {
-            bool exists = File.Exists(_appDataPath);
+            bool exists = File.Exists(_goalPath);
 
-            if (exists) return DeserializeAppData();
-            else return CreateAndSerializeAppData();
+            if (exists) return _textWriter.ReadText(_goalPath);
+            else return null;
         }
 
-        private List<GeneralTask> LoadGeneralTasks()
+        private List<GeneralTask>? LoadGeneralTasks()
         {
-            bool exits = File.Exists(_generalTasksDataPath);
+            bool exists = File.Exists(_generalTasksDataPath);
 
-            if (exits) return DeserializeGeneralTasks();
-            else return CreateAndSerializeGeneralTasks();
-        }
-
-        private AppData CreateAndSerializeAppData()
-        {
-            AppData appData = new AppData();
-            
-            using (FileStream stream = File.Create(_appDataPath))
-            {
-                JsonSerializer.Serialize<AppData>(stream, appData);
-            }
-
-            return appData;
-        }
-
-        private async Task SerializeAppDataAsync()
-        {
-            using (FileStream stream = new FileStream(_appDataPath, saveFileMode))
-            {
-                await JsonSerializer.SerializeAsync<AppData>(stream, _appData);
-            }
-        }
-
-        private AppData DeserializeAppData()
-        {
-            using (FileStream stream = new FileStream(_appDataPath, loadFileMode))
-            {
-                AppData? data = JsonSerializer.Deserialize<AppData>(stream);
-
-                return data!;
-            }
-        }
-
-        private List<GeneralTask> CreateAndSerializeGeneralTasks()
-        {
-            List<GeneralTask> tasks = new List<GeneralTask>(0);
-
-            using (FileStream stream = File.Create(_generalTasksDataPath))
-            {
-                JsonSerializer.Serialize<List<GeneralTask>>(stream, tasks);
-            }
-
-            return tasks;
-        }
-
-        private async Task SerializeGeneralTasksAsync()
-        {
-            using (FileStream stream = new FileStream(_generalTasksDataPath, saveFileMode))
-            {
-                await JsonSerializer.SerializeAsync<List<GeneralTask>>(stream, _generalTasks);
-            }
-        }
-
-        private List<GeneralTask> DeserializeGeneralTasks()
-        {
-            using (FileStream stream = new FileStream(_generalTasksDataPath, loadFileMode))
-            {
-                return JsonSerializer.Deserialize<List<GeneralTask>>(stream)!;
-            }
+            if (exists) return _dataSerializer.Deserialize<List<GeneralTask>>(_generalTasksDataPath);
+            else return null;
         }
     }
 }

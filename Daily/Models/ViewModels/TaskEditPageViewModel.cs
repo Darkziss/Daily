@@ -5,15 +5,11 @@ namespace Daily.ViewModels
 {
     public class TaskEditPageViewModel
     {
-        private string _taskAction = string.Empty;
-        private TaskPriority _taskPriority = TaskPriority.Daily;
-        private int _repeatCount = 1;
-
         private readonly TaskStorage _taskStorage;
 
-        public string TaskAction { get => _taskAction; set => _taskAction = value; }
-        public int SelectedPriorityIndex { get => (int)_taskPriority; set => _taskPriority = (TaskPriority)value; }
-        public int RepeatCount { get => _repeatCount; set => _repeatCount = value; }
+        public string TaskAction { get; set; } = string.Empty;
+        public int SelectedPriorityIndex { get; set; } = 0;
+        public int RepeatCount { get; set; } = 1;
 
         public Command CreateTaskCommand { get; }
 
@@ -22,8 +18,13 @@ namespace Daily.ViewModels
             _taskStorage = taskStorage;
 
             CreateTaskCommand = new Command(
-            execute: async () => await taskStorage.CreateGeneralTaskAsync(_taskAction,
-                _taskPriority, _repeatCount));
+            execute: async () =>
+            {
+                TaskPriority priority = (TaskPriority)SelectedPriorityIndex;
+
+                await taskStorage.CreateGeneralTaskAsync(TaskAction,
+                    priority, RepeatCount);
+            });
         }
     }
 }

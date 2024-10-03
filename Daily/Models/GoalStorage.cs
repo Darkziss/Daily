@@ -12,7 +12,7 @@ namespace Daily
 
         public GoalStorage(DataProvider dataProvider)
         {
-            _goal = dataProvider.LoadGoal();
+            _goal = dataProvider.Goal ?? string.Empty;
 
             _dataProvider = dataProvider;
         }

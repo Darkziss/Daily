@@ -81,7 +81,7 @@
                     HeightRequest="50">
 
                     <Picker
-                        SelectedIndex="{Binding SelectedPriorityIndex, FallbackValue=0, Mode=OneWayToSource}"
+                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=TwoWay}"
                         FontSize="20">
 
                         <Picker.ItemsSource>
