@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Daily.Tasks;
 
 namespace Daily.ViewModels
 {
@@ -11,15 +12,17 @@ namespace Daily.ViewModels
         [ObservableProperty] private string _goalEntryText;
 
         private readonly GoalStorage _goalStorage;
+        private readonly TaskStorage _taskStorage;
 
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
-        public TaskPageViewModel(GoalStorage goalStorage)
+        public TaskPageViewModel(GoalStorage goalStorage, TaskStorage taskStorage)
         {
             _goalStorage = goalStorage;
+            _taskStorage = taskStorage;
 
             _goalLabelText = GetGoalOrDefaultText();
             _goalEntryText = goalStorage.Goal;

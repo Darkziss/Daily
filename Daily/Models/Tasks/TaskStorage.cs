@@ -1,10 +1,11 @@
-﻿using Daily.Data;
+﻿using System.Collections.ObjectModel;
+using Daily.Data;
 
 namespace Daily.Tasks
 {
     public class TaskStorage
     {
-        private readonly List<GeneralTask> _generalTasks;
+        private readonly ObservableCollection<GeneralTask> _generalTasks;
 
         private readonly DataProvider _dataProvider;
 
@@ -14,7 +15,8 @@ namespace Daily.Tasks
         {
             _dataProvider = dataProvider;
 
-            _generalTasks = dataProvider.GeneralTasks ?? new List<GeneralTask>(maxGeneralTaskCount);
+            if (dataProvider.GeneralTasks == null) _generalTasks = new ObservableCollection<GeneralTask>();
+            else _generalTasks = new ObservableCollection<GeneralTask>(dataProvider.GeneralTasks);
         }
 
         public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int repeatCount)
@@ -25,7 +27,8 @@ namespace Daily.Tasks
 
             _generalTasks.Add(task);
 
-            await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
+            List<GeneralTask> tasks = _generalTasks.ToList();
+            await _dataProvider.SaveGeneralTasksAsync(tasks);
         }
     }
 }

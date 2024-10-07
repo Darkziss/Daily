@@ -11,7 +11,7 @@ namespace Daily.Data
         public string? Goal { get; private set; }
         public List<GeneralTask>? GeneralTasks { get; private set; }
 
-        private readonly string _goalPath;
+        private readonly string _goalDataPath;
         private readonly string _generalTasksDataPath;
 
         private readonly TextWriter _textWriter = new TextWriter();
@@ -20,16 +20,13 @@ namespace Daily.Data
         private const string goalDataFileName = "goal.txt";
         private const string generalTasksDataFileName = "generalTasks.json";
 
-        private const FileMode saveFileMode = FileMode.Create;
-        private const FileMode loadFileMode = FileMode.Open;
-
         public DataProvider()
         {
-            AndroidFile dataFolder = AndroidApplication.Context.
-                GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments)!;
+            string dataFolderPath = AndroidApplication.Context.
+                GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments)!.AbsolutePath;
 
-            _goalPath = Path.Combine(dataFolder.AbsolutePath, goalDataFileName);
-            _generalTasksDataPath = Path.Combine(dataFolder.AbsolutePath, generalTasksDataFileName);
+            _goalDataPath = Path.Combine(dataFolderPath, goalDataFileName);
+            _generalTasksDataPath = Path.Combine(dataFolderPath, generalTasksDataFileName);
 
             Goal = LoadGoal();
             GeneralTasks = LoadGeneralTasks();
@@ -39,7 +36,7 @@ namespace Daily.Data
         {
             Goal = goal;
 
-            await _textWriter.WriteTextAsync(_goalPath, goal);
+            await _textWriter.WriteTextAsync(_goalDataPath, goal);
         }
 
         public async Task SaveGeneralTasksAsync(List<GeneralTask> generalTasks)
@@ -49,9 +46,9 @@ namespace Daily.Data
 
         private string? LoadGoal()
         {
-            bool exists = File.Exists(_goalPath);
+            bool exists = File.Exists(_goalDataPath);
 
-            if (exists) return _textWriter.ReadText(_goalPath);
+            if (exists) return _textWriter.ReadText(_goalDataPath);
             else return null;
         }
 

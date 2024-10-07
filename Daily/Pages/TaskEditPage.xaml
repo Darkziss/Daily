@@ -13,8 +13,7 @@
 
             <x:Double x:Key="Size">20</x:Double>
 
-            <Style TargetType="Button" x:Key="BottomButton">
-                <Setter Property="FontSize" Value="27"/>
+            <Style TargetType="Frame" x:Key="BottomFrameButton">
                 <Setter Property="WidthRequest" Value="230"/>
                 <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="VerticalOptions" Value="End"/>
@@ -50,20 +49,12 @@
                     Text="Действие"/>
 
                 <Entry
+                    IsReadOnly="{Binding IsCreatingNewTask}"
                     FontSize="{StaticResource Size}"
                     Placeholder="Введите действие"
                     Text="{Binding TaskAction, Mode=OneWayToSource}"
                     MaxLength="30"
-                    WidthRequest="350">
-
-                    <Entry.Behaviors>
-                        <toolkit:TextValidationBehavior
-                            x:Name="TaskNameEntryValidator"
-                            Flags="ValidateOnAttaching, ValidateOnValueChanged"
-                            MinimumLength="1"/>
-                    </Entry.Behaviors>
-
-                </Entry>
+                    WidthRequest="350"/>
 
             </VerticalStackLayout>
 
@@ -81,7 +72,8 @@
                     HeightRequest="50">
 
                     <Picker
-                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=TwoWay}"
+                        IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
+                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=TwoWay, FallbackValue=0}"
                         FontSize="20">
 
                         <Picker.ItemsSource>
@@ -125,6 +117,7 @@
 
                 <Stepper
                     x:Name="RepeatCountStepper"
+                    IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
                     Value="{Binding RepeatCount, Mode=OneWayToSource}"
                     Maximum="3"
                     Minimum="1"
@@ -132,22 +125,40 @@
                     VerticalOptions="Center"
                     HorizontalOptions="Start"
                     Grid.Column="1"
-                    Grid.Row="1">
-
-                </Stepper>
+                    Grid.Row="1"/>
 
             </Grid>
 
         </VerticalStackLayout>
-        
-        <Button
-            Style="{StaticResource BottomButton}"
-            IsEnabled="{Binding IsValid, Source={x:Reference TaskNameEntryValidator}}"
+
+        <Frame
+            Style="{StaticResource BottomFrameButton}"
             BackgroundColor="{StaticResource Good}"
-            Text="Создать"
             Grid.Column="0"
-            Grid.Row="1"
-            Command="{Binding CreateTaskCommand}"/>
+            Grid.Row="1">
+
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Command="{Binding CreateGeneralTaskCommand}"
+                    NumberOfTapsRequired="1"/>
+            </Frame.GestureRecognizers>
+
+            <VerticalStackLayout
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+                
+                <Label
+                    IsVisible="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
+                    FontSize="27"
+                    Text="Создать"/>
+
+                <ActivityIndicator
+                    IsRunning="{Binding IsCreatingNewTask}"
+                    WidthRequest="30"/>
+
+            </VerticalStackLayout>
+
+        </Frame>
 
     </Grid>
 
