@@ -26,7 +26,7 @@ namespace Daily.Data
         {
             using (FileStream stream = new FileStream(path, writeFileMode))
             {
-                await JsonSerializer.SerializeAsync(stream, value);
+                await JsonSerializer.SerializeAsync(stream, value, _options);
             }
         }
     }

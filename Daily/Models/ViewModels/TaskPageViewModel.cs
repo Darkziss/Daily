@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
 
 namespace Daily.ViewModels
@@ -14,6 +15,8 @@ namespace Daily.ViewModels
         private readonly GoalStorage _goalStorage;
         private readonly TaskStorage _taskStorage;
 
+        public ObservableCollection<GeneralTask> GeneralTasks => _taskStorage.GeneralTasks;
+
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
 
@@ -26,7 +29,7 @@ namespace Daily.ViewModels
 
             _goalLabelText = GetGoalOrDefaultText();
             _goalEntryText = goalStorage.Goal;
-            
+
             EditGoalCommand = new Command(
             execute: () =>
             {

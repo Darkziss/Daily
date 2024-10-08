@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Daily.Tasks;
 
 namespace Daily.ViewModels
@@ -17,7 +16,7 @@ namespace Daily.ViewModels
 
         public Command CreateGeneralTaskCommand { get; }
 
-        private const int loadingDelay = 3000;
+        private const int loadingDelay = 1500;
 
         public TaskEditPageViewModel(TaskStorage taskStorage)
         {

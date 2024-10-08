@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:tasks="clr-namespace:Daily.Tasks"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.TaskPage"
     x:DataType="viewmodels:TaskPageViewModel">
@@ -12,6 +13,7 @@
         <ResourceDictionary>
 
             <x:Double x:Key="GoalElementWidth">330</x:Double>
+            <x:Double x:Key="MainWidth">350</x:Double>
 
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
@@ -20,13 +22,16 @@
             <Color x:Key="CondTask">#ed7f3d</Color>
 
             <Color x:Key="DailyTask">#edd8c3</Color>
+            <Color x:Key="MandatoryTask">#edc3c3</Color>
+            <Color x:Key="ImportantTask">#edebc3</Color>
+            <Color x:Key="CommonTask">#c3edc4</Color>
 
             <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
 
             <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                <Setter Property="WidthRequest" Value="350"/>
+                <Setter Property="WidthRequest" Value="{StaticResource MainWidth}"/>
                 <Setter Property="HeightRequest" Value="70"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
@@ -82,7 +87,7 @@
 
             <Frame
                 BackgroundColor="{StaticResource Goal}"
-                WidthRequest="350"
+                WidthRequest="{StaticResource MainWidth}"
                 HeightRequest="50"
                 VerticalOptions="Start"
                 HorizontalOptions="Start">
@@ -133,43 +138,138 @@
                 TextColor="{StaticResource GeneralTask}"
                 Text="Основные задачи"/>
 
-            <Frame
-                Style="{StaticResource TaskCard}">
+            <CollectionView
+                BackgroundColor="Transparent"
+                ItemsSource="{Binding GeneralTasks}"
+                ItemsLayout="VerticalList"
+                ItemSizingStrategy="MeasureFirstItem"
+                WidthRequest="{StaticResource MainWidth}"
+                HorizontalOptions="Start">
 
-                <Grid
-                    ColumnDefinitions="Auto, Auto"
-                    RowDefinitions="Auto, Auto"
-                    ColumnSpacing="10"
-                    Margin="10, 0, 0, 0">
-
-                    <Ellipse
-                        Style="{StaticResource TaskProgressCircle}"
-                        Grid.Column="0"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"/>
-
+                <CollectionView.EmptyView>
+                    
                     <Label
-                        Style="{StaticResource TaskLabel}"
-                        Text="Записать в дневник мысли"
-                        Grid.Column="1"
-                        Grid.Row="0"
-                        Margin="0, 8, 0, 0"/>
+                        TextColor="{StaticResource GeneralTask}"
+                        FontSize="18"
+                        Text="Пока здесь нет задач"
+                        HorizontalOptions="Center"/>
 
-                    <Frame
-                        Style="{StaticResource ModificatorCard}"
-                        BackgroundColor="{StaticResource DailyTask}"
-                        Grid.Column="1"
-                        Grid.Row="1"
-                        Margin="0, 0, 0, 8">
+                </CollectionView.EmptyView>
 
-                        <Label
-                            Style="{StaticResource ModificatorLabel}"
-                            Text="Ежедневная"/>
-                    </Frame>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate
+                        x:DataType="tasks:GeneralTask">
+                        
+                        <Frame
+                            Style="{StaticResource TaskCard}">
 
-                </Grid>
+                            <Grid
+                                ColumnDefinitions="Auto, Auto"
+                                RowDefinitions="Auto, Auto"
+                                ColumnSpacing="10"
+                                Margin="10, 0, 0, 0">
 
-            </Frame>
+                                <Ellipse
+                                    Style="{StaticResource TaskProgressCircle}"
+                                    Grid.Column="0"
+                                    Grid.RowSpan="2"/>
+
+                                <Label
+                                    Style="{StaticResource TaskLabel}"
+                                    Text="{Binding TaskAction}"
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Margin="0, 8, 0, 0"/>
+
+                                <Frame
+                                    Style="{StaticResource ModificatorCard}"
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    Margin="0, 0, 0, 8">
+
+                                    <Frame.Triggers>
+                                        <DataTrigger
+                                            TargetType="Frame"
+                                            Binding="{Binding Priority}"
+                                            Value="{x:Static tasks:TaskPriority.Daily}">
+
+                                            <Setter Property="BackgroundColor" Value="{StaticResource DailyTask}"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger
+                                            TargetType="Frame"
+                                            Binding="{Binding Priority}"
+                                            Value="{x:Static tasks:TaskPriority.Mandatory}">
+
+                                            <Setter Property="BackgroundColor" Value="{StaticResource MandatoryTask}"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger
+                                            TargetType="Frame"
+                                            Binding="{Binding Priority}"
+                                            Value="{x:Static tasks:TaskPriority.Important}">
+
+                                            <Setter Property="BackgroundColor" Value="{StaticResource ImportantTask}"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger
+                                            TargetType="Frame"
+                                            Binding="{Binding Priority}"
+                                            Value="{x:Static tasks:TaskPriority.Common}">
+
+                                            <Setter Property="BackgroundColor" Value="{StaticResource CommonTask}"/>
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+
+                                    <Label
+                                        Style="{StaticResource ModificatorLabel}">
+
+                                        <Label.Triggers>
+                                            <DataTrigger
+                                                TargetType="Label"
+                                                Binding="{Binding Priority}"
+                                                Value="{x:Static tasks:TaskPriority.Daily}">
+
+                                                <Setter Property="Text" Value="Ежедневная"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger
+                                                TargetType="Label"
+                                                Binding="{Binding Priority}"
+                                                Value="{x:Static tasks:TaskPriority.Mandatory}">
+
+                                                <Setter Property="Text" Value="Обязательная"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger
+                                                TargetType="Label"
+                                                Binding="{Binding Priority}"
+                                                Value="{x:Static tasks:TaskPriority.Important}">
+
+                                                <Setter Property="Text" Value="Важная"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger
+                                                TargetType="Label"
+                                                Binding="{Binding Priority}"
+                                                Value="{x:Static tasks:TaskPriority.Common}">
+
+                                                <Setter Property="Text" Value="Обычная"/>
+                                            </DataTrigger>
+
+                                        </Label.Triggers>
+                                        
+                                    </Label>
+                                </Frame>
+
+                            </Grid>
+
+                        </Frame>
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                
+            </CollectionView>
 
         </VerticalStackLayout>
 

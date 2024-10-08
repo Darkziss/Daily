@@ -9,6 +9,10 @@ namespace Daily.Tasks
 
         private readonly DataProvider _dataProvider;
 
+        public ObservableCollection<GeneralTask> GeneralTasks => _generalTasks;
+
+        private bool IsGeneralTasksFull => _generalTasks.Count == maxGeneralTaskCount;
+
         private const int maxGeneralTaskCount = 10;
 
         public TaskStorage(DataProvider dataProvider)
@@ -21,7 +25,7 @@ namespace Daily.Tasks
 
         public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int repeatCount)
         {
-            if (repeatCount < 1 || _generalTasks.Count == maxGeneralTaskCount || string.IsNullOrWhiteSpace(action)) return;
+            if (repeatCount < 1 || IsGeneralTasksFull || string.IsNullOrWhiteSpace(action)) return;
 
             GeneralTask task = new GeneralTask(action, priority, repeatCount);
 
