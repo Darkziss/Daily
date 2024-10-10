@@ -101,6 +101,14 @@
         <Setter Property="CornerRadius" Value="10"/>
     </Style>
 
+    <Style TargetType="Border">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Stroke" Value="Transparent"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+
+        <Setter Property="StrokeShape" Value="RoundRectangle 10, 10, 10, 10"/>
+    </Style>
+
     <Style TargetType="ImageButton">
         <Setter Property="Opacity" Value="1" />
         <Setter Property="BorderColor" Value="Transparent"/>

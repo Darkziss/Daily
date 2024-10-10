@@ -66,7 +66,7 @@
                     FontSize="{StaticResource Size}"
                     Text="Приоритет"/>
 
-                <Frame
+                <Border
                     BackgroundColor="{StaticResource Gray}"
                     WidthRequest="250"
                     HeightRequest="50">
@@ -87,7 +87,7 @@
                         
                     </Picker>
 
-                </Frame>
+                </Border>
 
             </VerticalStackLayout>
 
