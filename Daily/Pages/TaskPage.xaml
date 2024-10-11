@@ -3,9 +3,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:local="clr-namespace:Daily"
     xmlns:tasks="clr-namespace:Daily.Tasks"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    xmlns:converters="clr-namespace:Daily.Converters"
     x:Class="Daily.TaskPage"
     x:DataType="viewmodels:TaskPageViewModel">
 
@@ -21,11 +21,6 @@
 
             <Color x:Key="GeneralTask">#858585</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
-
-            <Color x:Key="DailyTask">#edd8c3</Color>
-            <Color x:Key="MandatoryTask">#edc3c3</Color>
-            <Color x:Key="ImportantTask">#edebc3</Color>
-            <Color x:Key="CommonTask">#c3edc4</Color>
 
             <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
@@ -67,10 +62,6 @@
                 <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="Margin" Value="5, 0, 5, 0"/>
             </Style>
-
-            <local:SwitchConverter Default="{x:Static tasks:TaskPriority.Daily}" x:Key="PriorityToTextConverter">
-
-            </local:SwitchConverter>
 
         </ResourceDictionary>
 
@@ -162,10 +153,10 @@
                 </CollectionView.EmptyView>
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate
-                        x:DataType="tasks:GeneralTask">
+                    <DataTemplate>
                         
                         <Frame
+                            x:DataType="tasks:GeneralTask"
                             Style="{StaticResource TaskCard}">
 
                             <Grid
@@ -188,85 +179,14 @@
 
                                 <Frame
                                     Style="{StaticResource ModificatorCard}"
+                                    BackgroundColor="{Binding Priority, Converter={converters:PriorityToColorConverter}}"
                                     Grid.Column="1"
                                     Grid.Row="1"
                                     Margin="0, 0, 0, 8">
-                                    
-                                    
-
-                                    <Frame.Triggers>
-                                        <DataTrigger
-                                            TargetType="Frame"
-                                            Binding="{Binding Priority}"
-                                            Value="{x:Static tasks:TaskPriority.Daily}">
-
-                                            <Setter Property="BackgroundColor" Value="{StaticResource DailyTask}"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger
-                                            TargetType="Frame"
-                                            Binding="{Binding Priority}"
-                                            Value="{x:Static tasks:TaskPriority.Mandatory}">
-
-                                            <Setter Property="BackgroundColor" Value="{StaticResource MandatoryTask}"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger
-                                            TargetType="Frame"
-                                            Binding="{Binding Priority}"
-                                            Value="{x:Static tasks:TaskPriority.Important}">
-
-                                            <Setter Property="BackgroundColor" Value="{StaticResource ImportantTask}"/>
-                                        </DataTrigger>
-
-                                        <DataTrigger
-                                            TargetType="Frame"
-                                            Binding="{Binding Priority}"
-                                            Value="{x:Static tasks:TaskPriority.Common}">
-
-                                            <Setter Property="BackgroundColor" Value="{StaticResource CommonTask}"/>
-                                        </DataTrigger>
-                                    </Frame.Triggers>
 
                                     <Label
-                                        Style="{StaticResource ModificatorLabel}">
-
-                                        <Label.Triggers>
-                                            <DataTrigger
-                                                TargetType="Label"
-                                                Binding="{Binding Priority}"
-                                                Value="{x:Static tasks:TaskPriority.Daily}">
-
-                                                <Setter Property="Text" Value="Ежедневная"/>
-                                            </DataTrigger>
-
-                                            <DataTrigger
-                                                TargetType="Label"
-                                                Binding="{Binding Priority}"
-                                                Value="{x:Static tasks:TaskPriority.Mandatory}">
-
-                                                <Setter Property="Text" Value="Обязательная"/>
-                                            </DataTrigger>
-
-                                            <DataTrigger
-                                                TargetType="Label"
-                                                Binding="{Binding Priority}"
-                                                Value="{x:Static tasks:TaskPriority.Important}">
-
-                                                <Setter Property="Text" Value="Важная"/>
-                                            </DataTrigger>
-
-                                            <DataTrigger
-                                                TargetType="Label"
-                                                Binding="{Binding Priority}"
-                                                Value="{x:Static tasks:TaskPriority.Common}">
-
-                                                <Setter Property="Text" Value="Обычная"/>
-                                            </DataTrigger>
-
-                                        </Label.Triggers>
-                                        
-                                    </Label>
+                                        Style="{StaticResource ModificatorLabel}"
+                                        Text="{Binding Priority, Converter={converters:PriorityToTextConverter}}"/>
                                 </Frame>
 
                             </Grid>
