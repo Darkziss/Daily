@@ -52,7 +52,7 @@
                     IsReadOnly="{Binding IsCreatingNewTask}"
                     FontSize="{StaticResource Size}"
                     Placeholder="Введите действие"
-                    Text="{Binding TaskAction, Mode=OneWayToSource}"
+                    Text="{Binding ActionName, Mode=OneWayToSource}"
                     MaxLength="30"
                     WidthRequest="350"/>
 
@@ -73,7 +73,7 @@
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=TwoWay, FallbackValue=0}"
+                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=OneWayToSource, FallbackValue=0}"
                         FontSize="20">
 
                         <Picker.ItemsSource>
@@ -84,7 +84,6 @@
                                 <x:String>Обычная</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
-                        
                     </Picker>
 
                 </Border>
@@ -118,7 +117,7 @@
                 <Stepper
                     x:Name="RepeatCountStepper"
                     IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                    Value="{Binding RepeatCount, Mode=OneWayToSource}"
+                    Value="{Binding RepeatCount, Mode=OneWayToSource, FallbackValue=1}"
                     Maximum="3"
                     Minimum="1"
                     WidthRequest="130"

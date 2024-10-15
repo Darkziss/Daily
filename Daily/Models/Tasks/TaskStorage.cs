@@ -6,7 +6,6 @@ namespace Daily.Tasks
     public class TaskStorage
     {
         private readonly ObservableCollection<GeneralTask> _generalTasks;
-
         private readonly DataProvider _dataProvider;
 
         public ObservableCollection<GeneralTask> GeneralTasks => _generalTasks;

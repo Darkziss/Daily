@@ -5,8 +5,7 @@ namespace Daily.ViewModels
 {
     public partial class TaskPageViewModel : ObservableObject
     {
-        [ObservableProperty] private bool _isGoalLabelVisible = true;
-        [ObservableProperty] private bool _isGoalEntryVisible = false;
+        [ObservableProperty] private bool _isEditingGoal = false;
 
         [ObservableProperty] private string _goalLabelText;
         [ObservableProperty] private string _goalEntryText;
@@ -32,19 +31,16 @@ namespace Daily.ViewModels
             EditGoalCommand = new Command(
             execute: () =>
             {
-                IsGoalLabelVisible = false;
-                IsGoalEntryVisible = true;
+                IsEditingGoal = true;
             }, 
             canExecute: () =>
             {
-                return !IsGoalEntryVisible;
+                return !IsEditingGoal;
             });
 
             SaveGoalCommand = new Command(
             execute: async () =>
             {
-                IsGoalEntryVisible = false;
-
                 string newGoal = GoalEntryText;
                 bool isSameGoal = _goalStorage.IsSameGoal(newGoal);
 
@@ -55,18 +51,17 @@ namespace Daily.ViewModels
                     GoalLabelText = GetGoalOrDefaultText();
                 }
 
-                IsGoalLabelVisible = true;
+                IsEditingGoal = false;
             },
             canExecute: () =>
             {
-                return !IsGoalLabelVisible;
+                return IsEditingGoal;
             });
         }
 
         public void PreparePage()
         {
-            IsGoalLabelVisible = true;
-            IsGoalEntryVisible = false;
+            IsEditingGoal = false;
         }
 
         private string GetGoalOrDefaultText()

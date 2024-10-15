@@ -10,7 +10,7 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private bool _isCreatingNewTask = false;
 
-        public string TaskAction { get; set; } = string.Empty;
+        public string ActionName { get; set; } = string.Empty;
         public int SelectedPriorityIndex { get; set; } = 0;
         public int RepeatCount { get; set; } = 1;
 
@@ -30,10 +30,9 @@ namespace Daily.ViewModels
                 TaskPriority priority = (TaskPriority)SelectedPriorityIndex;
 
 #if DEBUG
-                Debug.WriteLine($"Creating a new task: {TaskAction}");
+                Debug.WriteLine($"Creating a new task: {ActionName}");
 #endif
-                await taskStorage.CreateGeneralTaskAsync(TaskAction,
-                    priority, RepeatCount);
+                await taskStorage.CreateGeneralTaskAsync(ActionName, priority, RepeatCount);
 
                 await Task.Delay(loadingDelay);
 

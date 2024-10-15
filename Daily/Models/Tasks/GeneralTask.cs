@@ -3,7 +3,7 @@ namespace Daily.Tasks
 {
     public struct GeneralTask
     {
-        public string TaskAction { get; set; } = string.Empty;
+        public string ActionName { get; set; } = string.Empty;
         public TaskPriority Priority { get; set; } = TaskPriority.Daily;
         public int RepeatCount { get; set; } = 1;
 
@@ -11,7 +11,7 @@ namespace Daily.Tasks
 
         public GeneralTask(string taskAction, TaskPriority priority, int repeatCount)
         {
-            TaskAction = taskAction;
+            ActionName = taskAction;
             Priority = priority;
             RepeatCount = repeatCount;
         }
