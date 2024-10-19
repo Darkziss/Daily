@@ -73,7 +73,7 @@
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=OneWayToSource, FallbackValue=0}"
+                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=OneWayToSource}"
                         FontSize="20">
 
                         <Picker.ItemsSource>
@@ -117,7 +117,7 @@
                 <Stepper
                     x:Name="RepeatCountStepper"
                     IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                    Value="{Binding RepeatCount, Mode=OneWayToSource, FallbackValue=1}"
+                    Value="{Binding RepeatCount, Mode=OneWayToSource}"
                     Maximum="3"
                     Minimum="1"
                     WidthRequest="130"

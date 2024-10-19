@@ -5,6 +5,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:tasks="clr-namespace:Daily.Tasks"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    xmlns:controls="clr-namespace:Daily.Controls"
     xmlns:converters="clr-namespace:Daily.Converters"
     x:Class="Daily.TaskPage"
     x:DataType="viewmodels:TaskPageViewModel">
@@ -36,9 +37,8 @@
             <Style TargetType="Label" x:Key="TaskLabel">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="LineBreakMode" Value="TailTruncation"/>
-                <Setter Property="WidthRequest" Value="300"/>
-                <Setter Property="VerticalOptions" Value="Start"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
             <Style TargetType="Ellipse" x:Key="TaskProgressCircle">
@@ -156,30 +156,17 @@
                             Style="{StaticResource TaskCard}">
 
                             <Grid
-                                ColumnDefinitions="30, Auto"
-                                RowDefinitions="Auto, Auto"
+                                ColumnDefinitions="30, *"
+                                RowDefinitions="35, 35"
                                 ColumnSpacing="10"
                                 Margin="10, 0, 0, 0">
 
-                                <FlexLayout
-                                    BackgroundColor="Red"
-                                    IsVisible="True"
-                                    Direction="Row"
-                                    Wrap="NoWrap"
-                                    JustifyContent="Center"
-                                    AlignItems="Stretch"
-                                    VerticalOptions="Center"
-                                    HorizontalOptions="Center"
+                                <controls:TaskProgressIndicator
+                                    IndicatorColor="{StaticResource Gray}"
+                                    VerticalOptions="Fill"
+                                    HorizontalOptions="Fill"
                                     Grid.Column="0"
-                                    Grid.RowSpan="2">
-
-                                    <Ellipse
-                                        Style="{StaticResource TaskProgressCircle}"/>
-
-                                    <Ellipse
-                                        Style="{StaticResource TaskProgressCircle}"/>
-
-                                </FlexLayout>
+                                    Grid.RowSpan="2"/>
 
                                 <Label
                                     Style="{StaticResource TaskLabel}"
