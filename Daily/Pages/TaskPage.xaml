@@ -23,6 +23,8 @@
             <Color x:Key="GeneralTask">#858585</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
 
+            <Color x:Key="Completed">#71b866</Color>
+
             <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
 
@@ -162,7 +164,10 @@
                                 Margin="10, 0, 0, 0">
 
                                 <controls:TaskProgressIndicator
-                                    IndicatorColor="{StaticResource Gray}"
+                                    RepeatedCount="0"
+                                    RepeatCount="3"
+                                    IncompletedColor="{StaticResource Gray}"
+                                    CompletedColor="{StaticResource Completed}"
                                     VerticalOptions="Fill"
                                     HorizontalOptions="Fill"
                                     Grid.Column="0"

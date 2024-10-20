@@ -12,6 +12,9 @@ namespace Daily.Tasks
 
         private bool IsGeneralTasksFull => _generalTasks.Count == maxGeneralTaskCount;
 
+        private const int minRepeatCount = 1;
+        private const int maxRepeatCount = 3;
+
         private const int maxGeneralTaskCount = 10;
 
         public TaskStorage(DataProvider dataProvider)
@@ -24,7 +27,7 @@ namespace Daily.Tasks
 
         public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int repeatCount)
         {
-            if (repeatCount < 1 || IsGeneralTasksFull || string.IsNullOrWhiteSpace(action)) return;
+            if (ValidateRepeatCount(repeatCount) || IsGeneralTasksFull || string.IsNullOrWhiteSpace(action)) return;
 
             GeneralTask task = new GeneralTask(action, priority, repeatCount);
 
@@ -33,5 +36,7 @@ namespace Daily.Tasks
             List<GeneralTask> tasks = _generalTasks.ToList();
             await _dataProvider.SaveGeneralTasksAsync(tasks);
         }
+
+        private bool ValidateRepeatCount(int count) => !(count < minRepeatCount || count > maxRepeatCount);
     }
 }
