@@ -31,14 +31,14 @@
             <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource MainWidth}"/>
-                <Setter Property="HeightRequest" Value="70"/>
+                <!--<Setter Property="HeightRequest" Value="70"/>-->
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
             <Style TargetType="Label" x:Key="TaskLabel">
                 <Setter Property="FontSize" Value="16"/>
-                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                <Setter Property="LineBreakMode" Value="WordWrap"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
@@ -138,7 +138,7 @@
             <CollectionView
                 ItemsSource="{Binding GeneralTasks}"
                 ItemsLayout="VerticalList"
-                ItemSizingStrategy="MeasureFirstItem"
+                ItemSizingStrategy="MeasureAllItems"
                 WidthRequest="{StaticResource MainWidth}"
                 HorizontalOptions="Start">
 
@@ -152,20 +152,17 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        
                         <Frame
                             x:DataType="tasks:GeneralTask"
                             Style="{StaticResource TaskCard}">
 
                             <Grid
-                                ColumnDefinitions="30, *"
-                                RowDefinitions="35, 35"
-                                ColumnSpacing="10"
-                                Margin="10, 0, 0, 0">
+                                ColumnDefinitions="50, *"
+                                RowDefinitions="Auto, 35">
 
                                 <controls:TaskProgressIndicator
                                     RepeatedCount="0"
-                                    RepeatCount="3"
+                                    RepeatCount="2"
                                     IncompletedColor="{StaticResource Gray}"
                                     CompletedColor="{StaticResource Completed}"
                                     VerticalOptions="Fill"
@@ -195,7 +192,6 @@
                             </Grid>
 
                         </Frame>
-                        
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 

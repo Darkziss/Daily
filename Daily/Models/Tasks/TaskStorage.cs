@@ -37,6 +37,6 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(tasks);
         }
 
-        private bool ValidateRepeatCount(int count) => !(count < minRepeatCount || count > maxRepeatCount);
+        private bool ValidateRepeatCount(int count) => count >= minRepeatCount && count <= maxRepeatCount;
     }
 }

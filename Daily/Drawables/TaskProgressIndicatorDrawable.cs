@@ -11,13 +11,14 @@ namespace Daily.Drawables
         public Color completedColor = Colors.Green;
 
         private const float bigEllipseSize = 20f;
-        private const float mediumEllipseSize = bigEllipseSize * mediumEllipseSizeFactor;
-        private const float smallEllipseSize = bigEllipseSize * smallEllipseSizeFactor;
+        private const float mediumEllipseSize = bigEllipseSize * mediumSizeFactor;
+        private const float smallEllipseSize = bigEllipseSize * smallSizeFactor;
 
-        private const float mediumEllipseSizeFactor = 0.7f;
-        private const float smallEllipseSizeFactor = 0.6f;
+        private const float mediumSizeFactor = 0.7f;
+        private const float smallSizeFactor = 0.6f;
 
-        private const float tripleOffset = 1.7f;
+        private const float doubleOffset = 0.45f;
+        private const float tripleOffset = 0.75f;
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
@@ -41,58 +42,40 @@ namespace Daily.Drawables
             drawAction.Invoke(canvas, dirtyRect);
         }
 
-        private void DrawSingle(ICanvas canvas, RectF dirtyRect)
+        private void DrawSingle(ICanvas canvas, RectF rect)
         {
+            Vector2 center = CalculateCenterDrawPoint(rect.Width, rect.Height, bigEllipseSize);
+
             canvas.FillColor = repeatedCount == repeatCount ? completedColor : incompletedColor;
-            
-            Vector2 center = CalculateCenterDrawPoint(dirtyRect.Width, dirtyRect.Height, bigEllipseSize);
 
             canvas.FillEllipse(center.X, center.Y, bigEllipseSize, bigEllipseSize);
         }
 
-        private void DrawDouble(ICanvas canvas, RectF dirtyRect)
+        private void DrawDouble(ICanvas canvas, RectF rect)
         {
-            Vector2 center = CalculateCenterDrawPoint(dirtyRect.Width, dirtyRect.Height, mediumEllipseSize);
+            Vector2 center = CalculateCenterDrawPoint(rect.Width, rect.Height, mediumEllipseSize);
 
-            float[] xPositions = new float[] 
+            Span<float> xPositions = stackalloc float[]
             { 
-                center.X - center.X,
-                center.X + center.X
+                center.X - (center.X * doubleOffset),
+                center.X + (center.X * doubleOffset)
             };
 
-            Span<bool> completed = stackalloc bool[2];
-
-            for (int i = 0; i < 2; i++)
-            {
-                completed[i] = repeatedCount >= i + 1;
-
-                canvas.FillColor = completed[i] ? completedColor : incompletedColor;
-
-                canvas.FillEllipse(xPositions[i], center.Y, mediumEllipseSize, mediumEllipseSize);
-            }
+            DrawMultiple(canvas, xPositions, center.Y, mediumEllipseSize);
         }
 
-        private void DrawTriple(ICanvas canvas, RectF dirtyRect)
+        private void DrawTriple(ICanvas canvas, RectF rect)
         {
-            Vector2 center = CalculateCenterDrawPoint(dirtyRect.Width, dirtyRect.Height, smallEllipseSize);
+            Vector2 center = CalculateCenterDrawPoint(rect.Width, rect.Height, smallEllipseSize);
 
-            float[] xPositions = new float[] 
+            Span<float> xPositions = stackalloc float[]
             { 
                 center.X - (center.X * tripleOffset),
                 center.X,
                 center.X + (center.X * tripleOffset)
             };
 
-            Span<bool> completed = stackalloc bool[3];
-
-            for (int i = 0; i < 3; i++)
-            {
-                completed[i] = repeatedCount >= i + 1;
-                
-                canvas.FillColor = completed[i] ? completedColor : incompletedColor;
-
-                canvas.FillEllipse(xPositions[i], center.Y, smallEllipseSize, smallEllipseSize);
-            }
+            DrawMultiple(canvas, xPositions, center.Y, smallEllipseSize);
         }
 
         private Vector2 CalculateCenterDrawPoint(float width, float height, float ellipseSize)
@@ -105,6 +88,20 @@ namespace Daily.Drawables
             result.Y = CalculateByAxis(height);
 
             return result;
+        }
+
+        private void DrawMultiple(ICanvas canvas, Span<float> xPositions, float yPosition, float ellipseSize)
+        {
+            bool isCompleted;
+
+            for (int i = 0; i < repeatCount; i++)
+            {
+                isCompleted = repeatedCount >= i + 1;
+
+                canvas.FillColor = isCompleted ? completedColor : incompletedColor;
+
+                canvas.FillEllipse(xPositions[i], yPosition, ellipseSize, ellipseSize);
+            }
         }
     }
 }
