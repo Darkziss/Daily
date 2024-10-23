@@ -4,8 +4,8 @@ namespace Daily.Drawables
 {
     public class TaskProgressIndicatorDrawable : IDrawable
     {
-        public int repeatedCount = 0;
-        public int repeatCount = 1;
+        public int repeatCount;
+        public int targetRepeatCount;
 
         public Color incompletedColor = Colors.White;
         public Color completedColor = Colors.Green;
@@ -24,7 +24,7 @@ namespace Daily.Drawables
         {
             Action<ICanvas, RectF> drawAction;
 
-            switch (repeatCount)
+            switch (targetRepeatCount)
             {
                 case 1:
                     drawAction = DrawSingle;
@@ -36,7 +36,7 @@ namespace Daily.Drawables
                     drawAction = DrawTriple;
                     break;
                 default:
-                    throw new Exception($"Invalid {nameof(repeatCount)}: {repeatCount}");
+                    throw new Exception($"Invalid {nameof(targetRepeatCount)}: {targetRepeatCount}");
             }
 
             drawAction.Invoke(canvas, dirtyRect);
@@ -46,7 +46,7 @@ namespace Daily.Drawables
         {
             Vector2 center = CalculateCenterDrawPoint(rect.Width, rect.Height, bigEllipseSize);
 
-            canvas.FillColor = repeatedCount == repeatCount ? completedColor : incompletedColor;
+            canvas.FillColor = targetRepeatCount == repeatCount ? completedColor : incompletedColor;
 
             canvas.FillEllipse(center.X, center.Y, bigEllipseSize, bigEllipseSize);
         }
@@ -61,7 +61,7 @@ namespace Daily.Drawables
                 center.X + (center.X * doubleOffset)
             };
 
-            DrawMultiple(canvas, xPositions, center.Y, mediumEllipseSize);
+            DrawMultiple(canvas, ref xPositions, center.Y, mediumEllipseSize);
         }
 
         private void DrawTriple(ICanvas canvas, RectF rect)
@@ -75,7 +75,7 @@ namespace Daily.Drawables
                 center.X + (center.X * tripleOffset)
             };
 
-            DrawMultiple(canvas, xPositions, center.Y, smallEllipseSize);
+            DrawMultiple(canvas, ref xPositions, center.Y, smallEllipseSize);
         }
 
         private Vector2 CalculateCenterDrawPoint(float width, float height, float ellipseSize)
@@ -90,13 +90,13 @@ namespace Daily.Drawables
             return result;
         }
 
-        private void DrawMultiple(ICanvas canvas, Span<float> xPositions, float yPosition, float ellipseSize)
+        private void DrawMultiple(ICanvas canvas, ref Span<float> xPositions, float yPosition, float ellipseSize)
         {
             bool isCompleted;
 
-            for (int i = 0; i < repeatCount; i++)
+            for (int i = 0; i < targetRepeatCount; i++)
             {
-                isCompleted = repeatedCount >= i + 1;
+                isCompleted = repeatCount >= i + 1;
 
                 canvas.FillColor = isCompleted ? completedColor : incompletedColor;
 

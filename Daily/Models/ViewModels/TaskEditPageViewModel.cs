@@ -6,13 +6,15 @@ namespace Daily.ViewModels
 {
     public partial class TaskEditPageViewModel : ObservableObject
     {
-        private readonly TaskStorage _taskStorage;
+        [ObservableProperty] private string _actionName = string.Empty;
+        [ObservableProperty] private int _selectedPriorityIndex = 0;
+        [ObservableProperty] private int _targetRepeatCount = 1;
 
         [ObservableProperty] private bool _isCreatingNewTask = false;
 
-        public string ActionName { get; set; } = string.Empty;
-        public int SelectedPriorityIndex { get; set; } = 0;
-        public int RepeatCount { get; set; } = 1;
+        private readonly TaskStorage _taskStorage;
+
+        public bool IsActionNameEntryEmpty { get; set; }
 
         public Command CreateGeneralTaskCommand { get; }
 
@@ -29,16 +31,23 @@ namespace Daily.ViewModels
                 
                 TaskPriority priority = (TaskPriority)SelectedPriorityIndex;
 
-#if DEBUG
-                Debug.WriteLine($"Creating a new task: {ActionName}");
-#endif
-                await taskStorage.CreateGeneralTaskAsync(ActionName, priority, RepeatCount);
+                Debug.WriteLine($"TargetRepeatCount: {TargetRepeatCount}");
 
+                await _taskStorage.CreateGeneralTaskAsync(ActionName, priority, TargetRepeatCount);
                 await Task.Delay(loadingDelay);
 
                 IsCreatingNewTask = false;
+
+                ResetToDefault();
             },
-            canExecute: () => !_isCreatingNewTask);
+            canExecute: () => !IsCreatingNewTask && !IsActionNameEntryEmpty);
+        }
+
+        private void ResetToDefault()
+        {
+            ActionName = string.Empty;
+            SelectedPriorityIndex = 0;
+            TargetRepeatCount = 1;
         }
     }
 }

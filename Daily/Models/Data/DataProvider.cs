@@ -9,7 +9,7 @@ namespace Daily.Data
     public class DataProvider
     {
         public string? Goal { get; private set; }
-        public List<GeneralTask>? GeneralTasks { get; private set; }
+        public ICollection<GeneralTask>? GeneralTasks { get; private set; }
 
         private readonly string _goalDataPath;
         private readonly string _generalTasksDataPath;
@@ -39,9 +39,9 @@ namespace Daily.Data
             await _textWriter.WriteTextAsync(_goalDataPath, goal);
         }
 
-        public async Task SaveGeneralTasksAsync(List<GeneralTask> generalTasks)
+        public async Task SaveGeneralTasksAsync(ICollection<GeneralTask> generalTasks)
         {
-            await _dataSerializer.SerializeAsync<List<GeneralTask>>(_generalTasksDataPath, generalTasks);
+            await _dataSerializer.SerializeAsync<ICollection<GeneralTask>>(_generalTasksDataPath, generalTasks);
         }
 
         private string? LoadGoal()
@@ -52,11 +52,11 @@ namespace Daily.Data
             else return null;
         }
 
-        private List<GeneralTask>? LoadGeneralTasks()
+        private ICollection<GeneralTask>? LoadGeneralTasks()
         {
             bool exists = File.Exists(_generalTasksDataPath);
 
-            if (exists) return _dataSerializer.Deserialize<List<GeneralTask>>(_generalTasksDataPath);
+            if (exists) return _dataSerializer.Deserialize<ICollection<GeneralTask>>(_generalTasksDataPath);
             else return null;
         }
     }

@@ -5,15 +5,16 @@ namespace Daily.Tasks
     {
         public string ActionName { get; set; } = string.Empty;
         public TaskPriority Priority { get; set; } = TaskPriority.Daily;
-        public int RepeatCount { get; set; } = 1;
+        public int RepeatCount { get; set; } = 0;
+        public int TargetRepeatCount { get; set; } = 1;
 
         public bool IsCompleted { get; set; } = false;
 
-        public GeneralTask(string taskAction, TaskPriority priority, int repeatCount)
+        public GeneralTask(string actionName, TaskPriority priority, int targetRepeatCount)
         {
-            ActionName = taskAction;
+            ActionName = actionName;
             Priority = priority;
-            RepeatCount = repeatCount;
+            TargetRepeatCount = targetRepeatCount;
         }
     }
 }

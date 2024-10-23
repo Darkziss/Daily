@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Daily.Data;
 
 namespace Daily.Tasks
@@ -25,18 +26,18 @@ namespace Daily.Tasks
             else _generalTasks = new ObservableCollection<GeneralTask>(dataProvider.GeneralTasks);
         }
 
-        public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int repeatCount)
+        public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int targetRepeatCount)
         {
-            if (ValidateRepeatCount(repeatCount) || IsGeneralTasksFull || string.IsNullOrWhiteSpace(action)) return;
+            if (string.IsNullOrWhiteSpace(action) || !ValidateTargetRepeatCount(targetRepeatCount) || IsGeneralTasksFull) return;
 
-            GeneralTask task = new GeneralTask(action, priority, repeatCount);
+            Debug.WriteLine($"Creating General Task.. Target Repeat Count: {targetRepeatCount}");
+            GeneralTask task = new GeneralTask(action, priority, targetRepeatCount);
 
             _generalTasks.Add(task);
 
-            List<GeneralTask> tasks = _generalTasks.ToList();
-            await _dataProvider.SaveGeneralTasksAsync(tasks);
+            await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
         }
 
-        private bool ValidateRepeatCount(int count) => count >= minRepeatCount && count <= maxRepeatCount;
+        private bool ValidateTargetRepeatCount(int count) => count >= minRepeatCount && count <= maxRepeatCount;
     }
 }

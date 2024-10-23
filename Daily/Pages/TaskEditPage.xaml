@@ -52,9 +52,19 @@
                     IsReadOnly="{Binding IsCreatingNewTask}"
                     FontSize="{StaticResource Size}"
                     Placeholder="Введите действие"
-                    Text="{Binding ActionName, Mode=OneWayToSource}"
+                    Text="{Binding ActionName, Mode=TwoWay}"
                     MaxLength="30"
-                    WidthRequest="350"/>
+                    WidthRequest="350">
+                    
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior
+                            x:Name="ActionNameValidator"
+                            Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                            MinimumLength="1"
+                            IsNotValid="{Binding IsActionNameEntryEmpty, Mode=OneWayToSource}"/>
+                    </Entry.Behaviors>
+
+                </Entry>
 
             </VerticalStackLayout>
 
@@ -73,7 +83,7 @@
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=OneWayToSource}"
+                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=TwoWay}"
                         FontSize="20">
 
                         <Picker.ItemsSource>
@@ -117,7 +127,7 @@
                 <Stepper
                     x:Name="RepeatCountStepper"
                     IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                    Value="{Binding RepeatCount, Mode=OneWayToSource}"
+                    Value="{Binding TargetRepeatCount, Mode=TwoWay}"
                     Maximum="3"
                     Minimum="1"
                     WidthRequest="130"
@@ -137,13 +147,18 @@
             Grid.Row="1">
 
             <Frame.Triggers>
-                <DataTrigger
-                    TargetType="Frame"
-                    Binding="{Binding IsCreatingNewTask}"
-                    Value="True">
+                <MultiTrigger
+                    TargetType="Frame">
+
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding IsValid, Source={x:Reference ActionNameValidator}}"
+                                          Value="False"/>
+                        <BindingCondition Binding="{Binding IsCreatingNewTask}"
+                                          Value="True"/>
+                    </MultiTrigger.Conditions>
                     
                     <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
-                </DataTrigger>
+                </MultiTrigger>
             </Frame.Triggers>
 
             <Frame.GestureRecognizers>

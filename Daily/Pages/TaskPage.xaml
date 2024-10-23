@@ -17,6 +17,8 @@
             <x:Double x:Key="GoalElementWidth">330</x:Double>
             <x:Double x:Key="MainWidth">350</x:Double>
 
+            <Thickness x:Key="TaskCardSpacing">0, 7, 0, 0</Thickness>
+
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
 
@@ -31,7 +33,6 @@
             <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource MainWidth}"/>
-                <!--<Setter Property="HeightRequest" Value="70"/>-->
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
@@ -154,15 +155,16 @@
                     <DataTemplate>
                         <Frame
                             x:DataType="tasks:GeneralTask"
-                            Style="{StaticResource TaskCard}">
+                            Style="{StaticResource TaskCard}"
+                            Margin="{StaticResource TaskCardSpacing}">
 
                             <Grid
                                 ColumnDefinitions="50, *"
                                 RowDefinitions="Auto, 35">
 
                                 <controls:TaskProgressIndicator
-                                    RepeatedCount="0"
-                                    RepeatCount="2"
+                                    RepeatCount="{Binding RepeatCount}"
+                                    TargetRepeatCount="{Binding TargetRepeatCount}"
                                     IncompletedColor="{StaticResource Gray}"
                                     CompletedColor="{StaticResource Completed}"
                                     VerticalOptions="Fill"
@@ -188,13 +190,10 @@
                                         Style="{StaticResource ModificatorLabel}"
                                         Text="{Binding Priority, Converter={converters:PriorityToTextConverter}}"/>
                                 </Frame>
-
                             </Grid>
-
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-                
             </CollectionView>
 
         </VerticalStackLayout>
