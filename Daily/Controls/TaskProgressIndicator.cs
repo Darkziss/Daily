@@ -6,11 +6,11 @@ namespace Daily.Controls
     {
         public static readonly BindableProperty RepeatCountProperty =
             BindableProperty.Create(nameof(RepeatCount), typeof(int), 
-                typeof(TaskProgressIndicator), 0, propertyChanged: OnRepeatCountChanged);
+                typeof(TaskProgressIndicator), defaultRepeatCount, propertyChanged: OnRepeatCountChanged);
 
         public static readonly BindableProperty TargetRepeatCountProperty =
             BindableProperty.Create(nameof(TargetRepeatCount), typeof(int), 
-                typeof(TaskProgressIndicator), 1, propertyChanged: OnTargetRepeatCountChanged);
+                typeof(TaskProgressIndicator), defaultTargetRepeatCount, propertyChanged: OnTargetRepeatCountChanged);
 
         public static readonly BindableProperty IncompletedColorProperty =
             BindableProperty.Create(nameof(IncompletedColor), typeof(Color), 
@@ -19,6 +19,9 @@ namespace Daily.Controls
         public static readonly BindableProperty CompletedColorProperty =
             BindableProperty.Create(nameof(CompletedColor), typeof(Color),
                 typeof(TaskProgressIndicator), Colors.Green, propertyChanged: OnCompletedColorChanged);
+
+        private const int defaultRepeatCount = 0;
+        private const int defaultTargetRepeatCount = 1;
 
         public int RepeatCount
         {
@@ -46,7 +49,10 @@ namespace Daily.Controls
 
         public TaskProgressIndicator()
         {
-            Drawable = new TaskProgressIndicatorDrawable();
+            var drawable = new TaskProgressIndicatorDrawable(RepeatCount, TargetRepeatCount, 
+                IncompletedColor, CompletedColor);
+
+            Drawable = drawable;
         }
 
         private static void GetThisGraphicsViewAndDrawable(BindableObject bindable, out GraphicsView graphicsView, out TaskProgressIndicatorDrawable drawable)

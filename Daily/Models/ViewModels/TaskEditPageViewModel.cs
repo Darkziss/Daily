@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
+﻿using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Maui.Alerts;
 using Daily.Tasks;
 
 namespace Daily.ViewModels
@@ -14,11 +15,20 @@ namespace Daily.ViewModels
 
         private readonly TaskStorage _taskStorage;
 
-        public bool IsActionNameEntryEmpty { get; set; }
+        private readonly IToast _taskCreatedToast = Toast.Make(taskCreatedToastMessage, 
+            defaultToastDuration, defaultToastTextSize);
+        private readonly IToast _generalTasksFullToast = Toast.Make(generalTasksFullToastMessage, 
+            defaultToastDuration, defaultToastTextSize);
 
         public Command CreateGeneralTaskCommand { get; }
 
-        private const int loadingDelay = 1500;
+        private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
+
+        private const string taskCreatedToastMessage = "Задача была успешно создана";
+        private const string generalTasksFullToastMessage = "Уже создано максимум основных задач (10)";
+
+        private const ToastDuration defaultToastDuration = ToastDuration.Long;
+        private const double defaultToastTextSize = 16d;
 
         public TaskEditPageViewModel(TaskStorage taskStorage)
         {
@@ -29,18 +39,22 @@ namespace Daily.ViewModels
             {
                 IsCreatingNewTask = true;
                 
-                TaskPriority priority = (TaskPriority)SelectedPriorityIndex;
+                if (taskStorage.IsGeneralTasksFull) await _generalTasksFullToast.Show();
+                else
+                {
+                    TaskPriority priority = (TaskPriority)SelectedPriorityIndex;
 
-                Debug.WriteLine($"TargetRepeatCount: {TargetRepeatCount}");
+                    await _taskStorage.CreateGeneralTaskAsync(ActionName, priority, TargetRepeatCount);
+                    await _taskCreatedToast.Show();
+                }
 
-                await _taskStorage.CreateGeneralTaskAsync(ActionName, priority, TargetRepeatCount);
-                await Task.Delay(loadingDelay);
+                await PageRouter.RouteToPrevious();
 
                 IsCreatingNewTask = false;
 
                 ResetToDefault();
             },
-            canExecute: () => !IsCreatingNewTask && !IsActionNameEntryEmpty);
+            canExecute: () => CanCreateTask);
         }
 
         private void ResetToDefault()

@@ -20,6 +20,15 @@ namespace Daily.Drawables
         private const float doubleOffset = 0.45f;
         private const float tripleOffset = 0.75f;
 
+        public TaskProgressIndicatorDrawable(int repeatCount, int targetRepeatCount, Color incompletedColor, Color completedColor)
+        {
+            this.repeatCount = repeatCount;
+            this.targetRepeatCount = targetRepeatCount;
+
+            this.incompletedColor = incompletedColor;
+            this.completedColor = completedColor;
+        }
+
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             Action<ICanvas, RectF> drawAction;

@@ -8,7 +8,6 @@
     x:DataType="viewmodels:TaskEditPageViewModel">
 
     <ContentPage.Resources>
-
         <ResourceDictionary>
 
             <x:Double x:Key="Size">20</x:Double>
@@ -22,7 +21,6 @@
             </Style>
             
         </ResourceDictionary>
-        
     </ContentPage.Resources>
 
     <Grid
@@ -60,12 +58,10 @@
                         <toolkit:TextValidationBehavior
                             x:Name="ActionNameValidator"
                             Flags="ValidateOnAttaching, ValidateOnValueChanged"
-                            MinimumLength="1"
-                            IsNotValid="{Binding IsActionNameEntryEmpty, Mode=OneWayToSource}"/>
+                            MinimumLength="1"/>
                     </Entry.Behaviors>
 
                 </Entry>
-
             </VerticalStackLayout>
 
             <VerticalStackLayout
@@ -97,7 +93,6 @@
                     </Picker>
 
                 </Border>
-
             </VerticalStackLayout>
 
             <Grid
@@ -135,9 +130,7 @@
                     HorizontalOptions="Start"
                     Grid.Column="1"
                     Grid.Row="1"/>
-
             </Grid>
-
         </VerticalStackLayout>
 
         <Frame
@@ -147,18 +140,13 @@
             Grid.Row="1">
 
             <Frame.Triggers>
-                <MultiTrigger
-                    TargetType="Frame">
+                <DataTrigger
+                    TargetType="Frame"
+                    Binding="{Binding IsValid, Source={x:Reference ActionNameValidator}}"
+                    Value="False">
 
-                    <MultiTrigger.Conditions>
-                        <BindingCondition Binding="{Binding IsValid, Source={x:Reference ActionNameValidator}}"
-                                          Value="False"/>
-                        <BindingCondition Binding="{Binding IsCreatingNewTask}"
-                                          Value="True"/>
-                    </MultiTrigger.Conditions>
-                    
                     <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
-                </MultiTrigger>
+                </DataTrigger>
             </Frame.Triggers>
 
             <Frame.GestureRecognizers>
@@ -167,23 +155,12 @@
                     NumberOfTapsRequired="1"/>
             </Frame.GestureRecognizers>
 
-            <VerticalStackLayout
+            <Label
+                FontSize="27"
+                Text="Создать"
                 VerticalOptions="Center"
-                HorizontalOptions="Center">
-                
-                <Label
-                    IsVisible="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                    FontSize="27"
-                    Text="Создать"/>
-
-                <ActivityIndicator
-                    IsRunning="{Binding IsCreatingNewTask}"
-                    WidthRequest="30"/>
-
-            </VerticalStackLayout>
+                HorizontalOptions="Center"/>
 
         </Frame>
-
     </Grid>
-
 </ContentPage>

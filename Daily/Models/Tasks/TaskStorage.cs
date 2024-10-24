@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using Daily.Data;
 
 namespace Daily.Tasks
@@ -11,12 +10,14 @@ namespace Daily.Tasks
 
         public ObservableCollection<GeneralTask> GeneralTasks => _generalTasks;
 
-        private bool IsGeneralTasksFull => _generalTasks.Count == maxGeneralTaskCount;
+        public bool IsGeneralTasksFull => _generalTasks.Count == maxGeneralTaskCount;
 
         private const int minRepeatCount = 1;
         private const int maxRepeatCount = 3;
 
         private const int maxGeneralTaskCount = 10;
+
+        private const string maxGeneralTasksExceptionText = "Already created max amount of general tasks";
 
         public TaskStorage(DataProvider dataProvider)
         {
@@ -28,16 +29,22 @@ namespace Daily.Tasks
 
         public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int targetRepeatCount)
         {
-            if (string.IsNullOrWhiteSpace(action) || !ValidateTargetRepeatCount(targetRepeatCount) || IsGeneralTasksFull) return;
+            if (IsGeneralTasksFull) throw new Exception(maxGeneralTasksExceptionText);
 
-            Debug.WriteLine($"Creating General Task.. Target Repeat Count: {targetRepeatCount}");
             GeneralTask task = new GeneralTask(action, priority, targetRepeatCount);
+
+            if (!ValidateGeneralTask(task)) return;
 
             _generalTasks.Add(task);
 
             await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
         }
 
-        private bool ValidateTargetRepeatCount(int count) => count >= minRepeatCount && count <= maxRepeatCount;
+        private bool ValidateGeneralTask(GeneralTask task)
+        {
+            if (string.IsNullOrWhiteSpace(task.ActionName)) return false;
+            else if (task.TargetRepeatCount < minRepeatCount || task.TargetRepeatCount > maxRepeatCount) return false;
+            else return true;
+        }
     }
 }
