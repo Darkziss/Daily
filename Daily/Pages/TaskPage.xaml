@@ -14,10 +14,10 @@
 
         <ResourceDictionary>
 
+            <x:Double x:Key="DefaultElementWidth">350</x:Double>
             <x:Double x:Key="GoalElementWidth">330</x:Double>
-            <x:Double x:Key="MainWidth">350</x:Double>
 
-            <Thickness x:Key="TaskCardSpacing">0, 7, 0, 0</Thickness>
+            <x:Double x:Key="TaskCardSpacing">7</x:Double>
 
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
@@ -32,7 +32,7 @@
 
             <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                <Setter Property="WidthRequest" Value="{StaticResource MainWidth}"/>
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
@@ -42,14 +42,6 @@
                 <Setter Property="LineBreakMode" Value="WordWrap"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
-            </Style>
-
-            <Style TargetType="Ellipse" x:Key="TaskProgressCircle">
-                <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
-                <Setter Property="WidthRequest" Value="20"/>
-                <Setter Property="HeightRequest" Value="20"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
             <Style TargetType="Frame" x:Key="ModificatorCard">
@@ -86,7 +78,7 @@
 
             <Frame
                 BackgroundColor="{StaticResource Goal}"
-                WidthRequest="{StaticResource MainWidth}"
+                WidthRequest="{StaticResource DefaultElementWidth}"
                 HeightRequest="50"
                 VerticalOptions="Start"
                 HorizontalOptions="Start">
@@ -128,20 +120,34 @@
 
         </VerticalStackLayout>
 
-        <VerticalStackLayout
-            Spacing="5">
+        <Grid
+            RowSpacing="5"
+            ColumnDefinitions="*"
+            RowDefinitions="Auto, *"
+            WidthRequest="{StaticResource DefaultElementWidth}"
+            HorizontalOptions="Start">
 
             <Label
                 Style="{StaticResource SubHeadline}"
                 TextColor="{StaticResource GeneralTask}"
-                Text="Основные задачи"/>
+                Text="Основные задачи"
+                Grid.Column="0"
+                Grid.Row="0"/>
 
             <CollectionView
                 ItemsSource="{Binding GeneralTasks}"
-                ItemsLayout="VerticalList"
                 ItemSizingStrategy="MeasureAllItems"
-                WidthRequest="{StaticResource MainWidth}"
-                HorizontalOptions="Start">
+                VerticalScrollBarVisibility="Always"
+                WidthRequest="{StaticResource DefaultElementWidth}"
+                HorizontalOptions="Start"
+                Grid.Column="0"
+                Grid.Row="1">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout 
+                        Orientation="Vertical"
+                        ItemSpacing="{StaticResource TaskCardSpacing}"/>
+                </CollectionView.ItemsLayout>
 
                 <CollectionView.EmptyView>
                     <Label
@@ -155,12 +161,11 @@
                     <DataTemplate>
                         <Frame
                             x:DataType="tasks:GeneralTask"
-                            Style="{StaticResource TaskCard}"
-                            Margin="{StaticResource TaskCardSpacing}">
+                            Style="{StaticResource TaskCard}">
 
                             <Grid
                                 ColumnDefinitions="50, *"
-                                RowDefinitions="Auto, 35">
+                                RowDefinitions="Auto, Auto">
 
                                 <controls:TaskProgressIndicator
                                     RepeatCount="{Binding RepeatCount}"
@@ -196,7 +201,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-        </VerticalStackLayout>
+        </Grid>
 
     </VerticalStackLayout>
 

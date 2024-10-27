@@ -25,7 +25,7 @@ namespace Daily.ViewModels
         private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
 
         private const string taskCreatedToastMessage = "Задача была успешно создана";
-        private const string generalTasksFullToastMessage = "Уже создано максимум основных задач (10)";
+        private const string generalTasksFullToastMessage = "Уже создано максимум основных задач";
 
         private const ToastDuration defaultToastDuration = ToastDuration.Long;
         private const double defaultToastTextSize = 16d;

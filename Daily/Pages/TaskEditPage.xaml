@@ -10,7 +10,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <x:Double x:Key="Size">20</x:Double>
+            <x:Double x:Key="DefaultFontSize">20</x:Double>
 
             <Style TargetType="Frame" x:Key="BottomFrameButton">
                 <Setter Property="WidthRequest" Value="230"/>
@@ -43,15 +43,15 @@
                 HorizontalOptions="Start">
 
                 <Label
-                    FontSize="{StaticResource Size}"
+                    FontSize="{StaticResource DefaultFontSize}"
                     Text="Действие"/>
 
                 <Entry
                     IsReadOnly="{Binding IsCreatingNewTask}"
-                    FontSize="{StaticResource Size}"
+                    FontSize="{StaticResource DefaultFontSize}"
                     Placeholder="Введите действие"
                     Text="{Binding ActionName, Mode=TwoWay}"
-                    MaxLength="30"
+                    MaxLength="40"
                     WidthRequest="350">
                     
                     <Entry.Behaviors>
@@ -69,7 +69,7 @@
                 HorizontalOptions="Start">
 
                 <Label
-                    FontSize="{StaticResource Size}"
+                    FontSize="{StaticResource DefaultFontSize}"
                     Text="Приоритет"/>
 
                 <Border
@@ -103,7 +103,7 @@
                 HorizontalOptions="Start">
 
                 <Label
-                    FontSize="{StaticResource Size}"
+                    FontSize="{StaticResource DefaultFontSize}"
                     Text="Количество повторений (в день)"
                     WidthRequest="350"
                     VerticalOptions="Center"

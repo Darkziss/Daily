@@ -1,6 +1,6 @@
 ﻿using Daily.Data;
 
-namespace Daily
+namespace Daily.Tasks
 {
     public class GoalStorage
     {
