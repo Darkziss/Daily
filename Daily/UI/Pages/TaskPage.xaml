@@ -135,10 +135,12 @@
                 Grid.Row="0"/>
 
             <CollectionView
+                BackgroundColor="Red"
                 ItemsSource="{Binding GeneralTasks}"
                 ItemSizingStrategy="MeasureAllItems"
                 VerticalScrollBarVisibility="Always"
                 WidthRequest="{StaticResource DefaultElementWidth}"
+                HeightRequest="500"
                 HorizontalOptions="Start"
                 Grid.Column="0"
                 Grid.Row="1">
