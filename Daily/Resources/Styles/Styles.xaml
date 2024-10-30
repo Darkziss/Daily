@@ -6,6 +6,7 @@
 
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="Black"/>
+        <Setter Property="IsRunning" Value="True"/>
     </Style>
 
     <Style TargetType="BoxView">

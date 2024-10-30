@@ -28,9 +28,10 @@
             <Color x:Key="Completed">#71b866</Color>
 
             <Color x:Key="Frequency">#c8edc3</Color>
-            <Color x:Key="Time">#c3eced</Color>
+            <!--<Color x:Key="Time">#c3eced</Color>-->
 
             <Style TargetType="Frame" x:Key="TaskCard">
+                <Setter Property="InputTransparent" Value="True"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
@@ -134,14 +135,33 @@
                 Grid.Column="0"
                 Grid.Row="0"/>
 
+            <VerticalStackLayout
+                IsVisible="{Binding IsGeneralTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
+                Margin="0, 50, 0, 0"
+                Grid.Column="0"
+                Grid.Row="1">
+
+                <ActivityIndicator
+                    Color="{StaticResource GeneralTask}"
+                    WidthRequest="30"
+                    HeightRequest="30"/>
+
+                <Label
+                    TextColor="{StaticResource GeneralTask}"
+                    Text="Загружаем основные задачи.."
+                    HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+
             <CollectionView
-                BackgroundColor="Red"
+                IsVisible="{Binding IsGeneralTasksLoaded}"
                 ItemsSource="{Binding GeneralTasks}"
                 ItemSizingStrategy="MeasureAllItems"
-                VerticalScrollBarVisibility="Always"
+                SelectionMode="Single"
+                SelectionChangedCommand="{Binding TaskPerformedCommand}"
+                SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                 WidthRequest="{StaticResource DefaultElementWidth}"
                 HeightRequest="500"
-                HorizontalOptions="Start"
                 Grid.Column="0"
                 Grid.Row="1">
 
@@ -164,6 +184,17 @@
                         <Frame
                             x:DataType="tasks:GeneralTask"
                             Style="{StaticResource TaskCard}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
 
                             <Grid
                                 ColumnDefinitions="50, *"
