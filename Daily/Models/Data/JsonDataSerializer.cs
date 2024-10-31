@@ -4,7 +4,12 @@ namespace Daily.Data
 {
     public class JsonDataSerializer : DataSerializer
     {
-        private readonly JsonSerializerOptions _options = new JsonSerializerOptions() { WriteIndented = true };
+        private readonly JsonSerializerOptions _options = new JsonSerializerOptions()
+        {
+            IncludeFields = false,
+            IgnoreReadOnlyProperties = true,
+            WriteIndented = true
+        };
 
         public override void Serialize<T>(string path, T value)
         {

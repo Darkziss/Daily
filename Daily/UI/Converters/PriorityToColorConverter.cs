@@ -5,10 +5,10 @@ namespace Daily.Converters
 {
     public class PriorityToColorConverter : IValueConverter
     {
-        private readonly Color _dailyTaskColor = Color.FromRgba(dailyTaskColorHex);
-        private readonly Color _mandatoryTaskColor = Color.FromRgba(mandatoryTaskColorHex);
-        private readonly Color _importantTaskColor = Color.FromRgba(importantTaskColorHex);
-        private readonly Color _commonTaskColor = Color.FromRgba(commonTaskColorHex);
+        private static readonly Color _dailyTaskColor = Color.FromRgba(dailyTaskColorHex);
+        private static readonly Color _mandatoryTaskColor = Color.FromRgba(mandatoryTaskColorHex);
+        private static readonly Color _importantTaskColor = Color.FromRgba(importantTaskColorHex);
+        private static readonly Color _commonTaskColor = Color.FromRgba(commonTaskColorHex);
 
         private const string dailyTaskColorHex = "edd8c3";
         private const string mandatoryTaskColorHex = "edc3c3";

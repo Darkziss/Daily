@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
-using System.Diagnostics;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -11,6 +10,8 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private string _goalLabelText;
         [ObservableProperty] private string _goalEntryText;
+
+        [ObservableProperty] private object? _selectedTask = null;
 
         [ObservableProperty] private bool _isGeneralTasksLoaded = false;
 
@@ -65,7 +66,7 @@ namespace Daily.ViewModels
             });
 
             TaskPerformedCommand = new Command(
-            execute: (obj) =>
+            execute: async (obj) =>
             {
                 GeneralTask task = (GeneralTask)obj;
 
@@ -75,13 +76,12 @@ namespace Daily.ViewModels
 
                     if (isSameTask)
                     {
-                        _taskStorage.MarkGeneralTaskAsCompleted(i);
+                        await _taskStorage.PerformGeneralTaskByIndexAsync(i);
                         break;
                     }
                 }
 
-                Debug.WriteLine($"Marking task: {task.ActionName}");
-                Debug.WriteLine($"Progress: {task.RepeatCount}/{task.TargetRepeatCount}");
+                SelectedTask = null;
             },
             canExecute: (obj) =>
             {
@@ -91,7 +91,7 @@ namespace Daily.ViewModels
             });
         }
 
-        public void PreparePage()
+        public void PrepareView()
         {
             IsEditingGoal = false;
             IsGeneralTasksLoaded = false;

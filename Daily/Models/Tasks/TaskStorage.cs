@@ -41,11 +41,13 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
         }
 
-        public void MarkGeneralTaskAsCompleted(int index)
+        public async Task PerformGeneralTaskByIndexAsync(int index)
         {
             if (index < 0 || index >= _generalTasks.Count) throw new IndexOutOfRangeException(taskIndexOutOfRangeExceptionText);
 
-            _generalTasks[index].RepeatCount++;
+            _generalTasks[index].Perform();
+
+            await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
         }
 
         private bool ValidateGeneralTask(GeneralTask task)
