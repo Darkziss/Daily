@@ -19,6 +19,7 @@ namespace Daily.Tasks
 
         private const string maxGeneralTasksExceptionText = "Already created max amount of general tasks";
         private const string taskIndexOutOfRangeExceptionText = "Task index is out of range";
+        private const string taskIsNotOnListExceptionText = "Task is not on the list";
 
         public TaskStorage(DataProvider dataProvider)
         {
@@ -41,11 +42,12 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
         }
 
-        public async Task PerformGeneralTaskByIndexAsync(int index)
+        public async Task PerformGeneralTaskAsync(GeneralTask task)
         {
-            if (index < 0 || index >= _generalTasks.Count) throw new IndexOutOfRangeException(taskIndexOutOfRangeExceptionText);
+            if (task == null) return;
+            else if (!_generalTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
-            _generalTasks[index].Perform();
+            task.Perform();
 
             await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
         }

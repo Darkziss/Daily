@@ -28,6 +28,8 @@
             <Color x:Key="Frequency">#c8edc3</Color>
             <!--<Color x:Key="Time">#c3eced</Color>-->
 
+            <Color x:Key="Completed">#71b866</Color>
+
             <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="InputTransparent" Value="True"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
@@ -152,6 +154,7 @@
             </VerticalStackLayout>
 
             <CollectionView
+                x:Name="GeneralTaskCollectionView"
                 IsVisible="{Binding IsGeneralTasksLoaded}"
                 ItemsSource="{Binding GeneralTasks}"
                 ItemSizingStrategy="MeasureAllItems"
@@ -163,7 +166,7 @@
                 HeightRequest="500"
                 Grid.Column="0"
                 Grid.Row="1">
-
+                
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout 
                         Orientation="Vertical"
@@ -178,6 +181,16 @@
                         HorizontalOptions="Center"/>
                 </CollectionView.EmptyView>
 
+                <CollectionView.Triggers>
+                    <DataTrigger
+                        TargetType="CollectionView"
+                        Binding="{Binding IsEnabled, Source={x:Reference GeneralTaskCollectionView}}"
+                        Value="False">
+
+                        <Setter Property="BackgroundColor" Value="Red"/>
+                    </DataTrigger>
+                </CollectionView.Triggers>
+                
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame

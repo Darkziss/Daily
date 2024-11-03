@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
+using System.Diagnostics;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
 {
-    public partial class TaskPageViewModel : ObservableObject
+    public partial class TaskPageViewModel : ObservableObject, IPrepareView
     {
         [ObservableProperty] private bool _isEditingGoal = false;
 
@@ -23,7 +24,7 @@ namespace Daily.ViewModels
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
 
-        public Command TaskPerformedCommand { get; }
+        public Command<GeneralTask> TaskPerformedCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
@@ -65,36 +66,35 @@ namespace Daily.ViewModels
                 return IsEditingGoal;
             });
 
-            TaskPerformedCommand = new Command(
-            execute: async (obj) =>
+            TaskPerformedCommand = new Command<GeneralTask>(
+            execute: async (task) =>
             {
-                GeneralTask task = (GeneralTask)obj;
+                await _taskStorage.PerformGeneralTaskAsync(task);
 
-                for (int i = 0; i < GeneralTasks.Count; i++)
-                {
-                    bool isSameTask = string.Equals(task.ActionName, GeneralTasks[i].ActionName);
-
-                    if (isSameTask)
-                    {
-                        await _taskStorage.PerformGeneralTaskByIndexAsync(i);
-                        break;
-                    }
-                }
+                Debug.WriteLine($"TaskPeformedCommand");
 
                 SelectedTask = null;
             },
-            canExecute: (obj) =>
+            canExecute: (task) =>
             {
-                GeneralTask task = (GeneralTask)obj;
-
-                return !task.IsCompleted;
+                return task == null ? false : !task.IsCompleted;
             });
+
+            PropertyChanged += (_, args) =>
+            {
+                if (args.PropertyName == nameof(SelectedTask))
+                {
+                    TaskPerformedCommand.ChangeCanExecute();
+                }
+            };
         }
 
         public void PrepareView()
         {
             IsEditingGoal = false;
             IsGeneralTasksLoaded = false;
+
+            TaskPerformedCommand.ChangeCanExecute();
 
             const double delay = 800d;
             AsyncTimer timer = new AsyncTimer(delay);

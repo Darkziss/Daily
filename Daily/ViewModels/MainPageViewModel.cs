@@ -3,7 +3,7 @@ using Daily.Pages;
 
 namespace Daily.ViewModels
 {
-    public partial class MainPageViewModel : ObservableObject
+    public partial class MainPageViewModel : ObservableObject, IPrepareView
     {
         public Command RouteToTaskPage { get; }
         public Command RouteToTaskEditPage { get; }
@@ -29,6 +29,12 @@ namespace Daily.ViewModels
             {
                 return !PageRouter.IsRouting;
             });
+        }
+
+        public void PrepareView()
+        {
+            RouteToTaskPage.ChangeCanExecute();
+            RouteToTaskEditPage.ChangeCanExecute();
         }
     }
 }

@@ -5,7 +5,7 @@ using Daily.Tasks;
 
 namespace Daily.ViewModels
 {
-    public partial class TaskEditPageViewModel : ObservableObject
+    public partial class TaskEditPageViewModel : ObservableObject, IPrepareView
     {
         [ObservableProperty] private string _actionName = string.Empty;
         [ObservableProperty] private int _selectedPriorityIndex = 0;
@@ -51,13 +51,19 @@ namespace Daily.ViewModels
                 await PageRouter.RouteToPrevious();
 
                 IsCreatingNewTask = false;
-
-                ResetToDefault();
             },
             canExecute: () => CanCreateTask);
+
+            PropertyChanged += (_, args) =>
+            {
+                if (args.PropertyName == nameof(ActionName))
+                {
+                    CreateGeneralTaskCommand.ChangeCanExecute();
+                }
+            };
         }
 
-        private void ResetToDefault()
+        public void PrepareView()
         {
             ActionName = string.Empty;
             SelectedPriorityIndex = 0;

@@ -12,7 +12,7 @@
 
             <x:Double x:Key="DefaultFontSize">20</x:Double>
 
-            <Style TargetType="Frame" x:Key="BottomFrameButton">
+            <Style TargetType="Button" x:Key="BottomButton">
                 <Setter Property="WidthRequest" Value="230"/>
                 <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="VerticalOptions" Value="End"/>
@@ -52,16 +52,7 @@
                     Placeholder="Введите действие"
                     Text="{Binding ActionName, Mode=TwoWay}"
                     MaxLength="40"
-                    WidthRequest="350">
-                    
-                    <Entry.Behaviors>
-                        <toolkit:TextValidationBehavior
-                            x:Name="ActionNameValidator"
-                            Flags="ValidateOnAttaching, ValidateOnValueChanged"
-                            MinimumLength="1"/>
-                    </Entry.Behaviors>
-
-                </Entry>
+                    WidthRequest="350"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout
@@ -133,34 +124,13 @@
             </Grid>
         </VerticalStackLayout>
 
-        <Frame
-            Style="{StaticResource BottomFrameButton}"
+        <Button
+            Style="{StaticResource BottomButton}"
             BackgroundColor="{StaticResource Good}"
+            FontSize="27"
+            Text="Создать"
+            Command="{Binding CreateGeneralTaskCommand}"
             Grid.Column="0"
-            Grid.Row="1">
-
-            <Frame.Triggers>
-                <DataTrigger
-                    TargetType="Frame"
-                    Binding="{Binding IsValid, Source={x:Reference ActionNameValidator}}"
-                    Value="False">
-
-                    <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
-                </DataTrigger>
-            </Frame.Triggers>
-
-            <Frame.GestureRecognizers>
-                <TapGestureRecognizer 
-                    Command="{Binding CreateGeneralTaskCommand}"
-                    NumberOfTapsRequired="1"/>
-            </Frame.GestureRecognizers>
-
-            <Label
-                FontSize="27"
-                Text="Создать"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"/>
-
-        </Frame>
+            Grid.Row="1"/>
     </Grid>
 </ContentPage>
