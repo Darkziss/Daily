@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
-using System.Diagnostics;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -70,8 +69,6 @@ namespace Daily.ViewModels
             execute: async (task) =>
             {
                 await _taskStorage.PerformGeneralTaskAsync(task);
-
-                Debug.WriteLine($"TaskPeformedCommand");
 
                 SelectedTask = null;
             },

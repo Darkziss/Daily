@@ -5,12 +5,11 @@ namespace Daily.Tasks
 {
     public class TaskStorage
     {
-        private readonly ObservableCollection<GeneralTask> _generalTasks;
         private readonly DataProvider _dataProvider;
 
-        public ObservableCollection<GeneralTask> GeneralTasks => _generalTasks;
+        public ObservableCollection<GeneralTask> GeneralTasks { get; }
 
-        public bool IsGeneralTasksFull => _generalTasks.Count == maxGeneralTaskCount;
+        public bool IsGeneralTasksFull => GeneralTasks.Count == maxGeneralTaskCount;
 
         private const int minRepeatCount = 1;
         private const int maxRepeatCount = 3;
@@ -25,8 +24,8 @@ namespace Daily.Tasks
         {
             _dataProvider = dataProvider;
 
-            if (dataProvider.GeneralTasks == null) _generalTasks = new ObservableCollection<GeneralTask>();
-            else _generalTasks = new ObservableCollection<GeneralTask>(dataProvider.GeneralTasks);
+            if (dataProvider.GeneralTasks == null) GeneralTasks = new ObservableCollection<GeneralTask>();
+            else GeneralTasks = new ObservableCollection<GeneralTask>(dataProvider.GeneralTasks);
         }
 
         public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int targetRepeatCount)
@@ -37,19 +36,19 @@ namespace Daily.Tasks
 
             if (!ValidateGeneralTask(task)) return;
 
-            _generalTasks.Add(task);
+            GeneralTasks.Add(task);
 
-            await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
+            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
         public async Task PerformGeneralTaskAsync(GeneralTask task)
         {
             if (task == null) return;
-            else if (!_generalTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
+            else if (!GeneralTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
             task.Perform();
 
-            await _dataProvider.SaveGeneralTasksAsync(_generalTasks);
+            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
         private bool ValidateGeneralTask(GeneralTask task)
