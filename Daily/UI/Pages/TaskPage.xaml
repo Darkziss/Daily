@@ -39,8 +39,8 @@
                 <Setter Property="ItemsLayout">
                     <Setter.Value>
                         <LinearItemsLayout 
-                                Orientation="Vertical"
-                                ItemSpacing="{StaticResource TaskCardSpacing}"/>
+                            Orientation="Vertical"
+                            ItemSpacing="{StaticResource TaskCardSpacing}"/>
                     </Setter.Value>
                 </Setter>
             </Style>

@@ -2,10 +2,9 @@
 
 namespace Daily.Tasks
 {
-    public class GeneralTask : INotifyPropertyChanged
+    public class TaskBase : INotifyPropertyChanged
     {
         private string _actionName = string.Empty;
-        private TaskPriority _priority;
 
         private int _repeatCount = 0;
         private int _targetRepeatCount;
@@ -21,22 +20,11 @@ namespace Daily.Tasks
                 OnPropertyChanged(nameof(ActionName));
             }
         }
-        public TaskPriority Priority
-        {
-            get => _priority;
-            set
-            {
-                if (value == _priority) return;
-
-                _priority = value;
-                OnPropertyChanged(nameof(Priority));
-            }
-        }
 
         public int RepeatCount
         {
             get => _repeatCount;
-            set 
+            set
             {
                 if (value == _repeatCount) return;
 
@@ -57,13 +45,12 @@ namespace Daily.Tasks
         }
 
         public bool IsCompleted => RepeatCount == TargetRepeatCount;
-
+        
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public GeneralTask(string actionName, TaskPriority priority, int targetRepeatCount)
+        public TaskBase(string actionName, int targetRepeatCount)
         {
             ActionName = actionName;
-            Priority = priority;
             TargetRepeatCount = targetRepeatCount;
         }
 
@@ -76,9 +63,9 @@ namespace Daily.Tasks
             if (IsCompleted) OnPropertyChanged(nameof(IsCompleted));
         }
 
-        private void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        } 
+        }
     }
 }

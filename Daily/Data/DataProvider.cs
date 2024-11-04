@@ -9,16 +9,22 @@ namespace Daily.Data
     public class DataProvider
     {
         public string? Goal { get; private set; }
+
         public ICollection<GeneralTask>? GeneralTasks { get; private set; }
+        public ICollection<СonditionalTask>? СonditionalTasks { get; private set; }
 
         private readonly string _goalDataPath;
+
         private readonly string _generalTasksDataPath;
+        private readonly string _conditionalTasksDataPath;
 
         private readonly TextWriter _textWriter = new TextWriter();
         private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
 
         private const string goalDataFileName = "goal.txt";
+
         private const string generalTasksDataFileName = "generalTasks.json";
+        private const string conditionalTasksDataFileName = "conditionalTasks.json";
 
         public DataProvider()
         {
@@ -26,10 +32,14 @@ namespace Daily.Data
                 GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments)!.AbsolutePath;
 
             _goalDataPath = Path.Combine(dataFolderPath, goalDataFileName);
+
             _generalTasksDataPath = Path.Combine(dataFolderPath, generalTasksDataFileName);
+            _conditionalTasksDataPath = Path.Combine(dataFolderPath, conditionalTasksDataFileName);
 
             Goal = LoadGoal();
+            
             GeneralTasks = LoadGeneralTasks();
+            СonditionalTasks = LoadСonditionalTasks();
         }
         
         public async Task SaveGoalAsync(string goal)
@@ -42,6 +52,11 @@ namespace Daily.Data
         public async Task SaveGeneralTasksAsync(ICollection<GeneralTask> generalTasks)
         {
             await _dataSerializer.SerializeAsync<ICollection<GeneralTask>>(_generalTasksDataPath, generalTasks);
+        }
+
+        public async Task SaveConditionalTasksAsync(ICollection<СonditionalTask> сonditionalTasks)
+        {
+            await _dataSerializer.SerializeAsync<ICollection<СonditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
         }
 
         private string? LoadGoal()
@@ -57,6 +72,14 @@ namespace Daily.Data
             bool exists = File.Exists(_generalTasksDataPath);
 
             if (exists) return _dataSerializer.Deserialize<ICollection<GeneralTask>>(_generalTasksDataPath);
+            else return null;
+        }
+
+        private ICollection<СonditionalTask>? LoadСonditionalTasks()
+        {
+            bool exists = File.Exists(_conditionalTasksDataPath);
+
+            if (exists) return _dataSerializer.Deserialize<ICollection<СonditionalTask>>(_conditionalTasksDataPath);
             else return null;
         }
     }
