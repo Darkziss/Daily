@@ -82,6 +82,7 @@
         <Setter Property="TitleColor" Value="Black"/>
         <Setter Property="TextColor" Value="Black"/>
         <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="FontSize" Value="20"/>
     </Style>
 
     <Style TargetType="Editor">

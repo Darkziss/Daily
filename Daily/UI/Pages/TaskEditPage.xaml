@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    xmlns:controls="http://plugin.segmentedControl.maui"
     x:Class="Daily.Pages.TaskEditPage"
     x:DataType="viewmodels:TaskEditPageViewModel">
 
@@ -11,6 +12,33 @@
         <ResourceDictionary>
 
             <x:Double x:Key="DefaultFontSize">20</x:Double>
+
+            <x:Double x:Key="DefaultElementWidth">350</x:Double>
+
+            <Style TargetType="Border" x:Key="PickerBorder">
+                <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="HeightRequest" Value="50"/>
+            </Style>
+
+            <Style TargetType="Grid" x:Key="TaskFieldGrid">
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="TaskFieldHeader">
+                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="StepperValueLabel">
+                <Setter Property="FontSize" Value="40"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
 
             <Style TargetType="Button" x:Key="BottomButton">
                 <Setter Property="WidthRequest" Value="230"/>
@@ -38,6 +66,26 @@
                 FontSize="30"
                 Text="Создание задачи"/>
 
+            <controls:SegmentedControl
+                SelectedTextColor="Black"
+                TintColor="{StaticResource Gray}"
+                BorderColor="Transparent"
+                BorderWidth="0"
+                FontFamily="Nunito"
+                FontSize="20"
+                WidthRequest="330"
+                VerticalOptions="Start"
+                HorizontalOptions="Center">
+
+                <controls:SegmentedControl.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Основная</x:String>
+                        <x:String>Условная</x:String>
+                    </x:Array>
+                </controls:SegmentedControl.ItemsSource>
+                
+            </controls:SegmentedControl>
+
             <VerticalStackLayout
                 VerticalOptions="Start"
                 HorizontalOptions="Start">
@@ -56,6 +104,7 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout
+                IsVisible="False"
                 VerticalOptions="Start"
                 HorizontalOptions="Start">
 
@@ -64,14 +113,11 @@
                     Text="Приоритет"/>
 
                 <Border
-                    BackgroundColor="{StaticResource Gray}"
-                    WidthRequest="250"
-                    HeightRequest="50">
+                    Style="{StaticResource PickerBorder}">
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
-                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=TwoWay}"
-                        FontSize="20">
+                        SelectedIndex="{Binding SelectedPriorityIndex, Mode=TwoWay}">
 
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
@@ -86,27 +132,46 @@
                 </Border>
             </VerticalStackLayout>
 
-            <Grid
-                ColumnDefinitions="100, Auto"
-                RowDefinitions="Auto, Auto"
-                WidthRequest="350"
+            <VerticalStackLayout
                 VerticalOptions="Start"
                 HorizontalOptions="Start">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
-                    Text="Количество повторений (в день)"
-                    WidthRequest="350"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
+                    Text="Промежуток времени"/>
+
+                <Border
+                    Style="{StaticResource PickerBorder}">
+
+                    <Picker>
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>День</x:String>
+                                <x:String>Неделя</x:String>
+                                <x:String>Месяц</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                    
+                </Border>
+
+            </VerticalStackLayout>
+
+            <Grid
+                IsVisible="False"
+                Style="{StaticResource TaskFieldGrid}"
+                ColumnDefinitions="100, Auto"
+                RowDefinitions="Auto, Auto">
+
+                <Label
+                    Style="{StaticResource TaskFieldHeader}"
+                    Text="Количество повторений"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"/>
 
                 <Label
-                    FontSize="40"
+                    Style="{StaticResource StepperValueLabel}"
                     Text="{Binding Value, Source={x:Reference RepeatCountStepper}}"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
                     Grid.Column="0"
                     Grid.Row="1"/>
 
@@ -121,6 +186,38 @@
                     HorizontalOptions="Start"
                     Grid.Column="1"
                     Grid.Row="1"/>
+            </Grid>
+
+            <Grid
+                Style="{StaticResource TaskFieldGrid}"
+                ColumnDefinitions="80, Auto"
+                RowDefinitions="Auto, Auto">
+
+                <Label
+                    Style="{StaticResource TaskFieldHeader}"
+                    Text="Время на выполненеие (необязательно)"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"/>
+
+                <Entry
+                    FontSize="25"
+                    Placeholder="0"
+                    Keyboard="Numeric"
+                    MaxLength="3"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="Start"
+                    HorizontalOptions="Fill"
+                    Grid.Column="0"
+                    Grid.Row="1"/>
+
+                <Label
+                    FontSize="{StaticResource DefaultFontSize}"
+                    Text="минут"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    Grid.Column="1"
+                    Grid.Row="1"/>
+
             </Grid>
         </VerticalStackLayout>
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using Plugin.SegmentedControl.Maui;
 using Daily.Tasks;
 using Daily.Data;
 using Daily.ViewModels;
@@ -15,6 +16,7 @@ namespace Daily
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseSegmentedControl()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Nunito-Bold.ttf", "Nunito");
