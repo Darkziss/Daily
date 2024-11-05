@@ -2,7 +2,7 @@
 
 namespace Daily.Tasks
 {
-    public class TaskBase : INotifyPropertyChanged
+    public abstract class TaskBase : INotifyPropertyChanged
     {
         private string _actionName = string.Empty;
 

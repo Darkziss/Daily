@@ -26,7 +26,7 @@
             <Color x:Key="CondTask">#ed7f3d</Color>
 
             <Color x:Key="Frequency">#c8edc3</Color>
-            <!--<Color x:Key="Time">#c3eced</Color>-->
+            <Color x:Key="Time">#c3eced</Color>
 
             <Color x:Key="Completed">#71b866</Color>
 
@@ -143,6 +143,107 @@
         </VerticalStackLayout>
 
         <Grid
+            RowSpacing="5"
+            ColumnDefinitions="*"
+            RowDefinitions="Auto, *"
+            WidthRequest="{StaticResource DefaultElementWidth}"
+            HorizontalOptions="Start">
+
+            <Label
+                Style="{StaticResource SubHeadline}"
+                TextColor="{StaticResource CondTask}"
+                Text="Условные задачи"
+                Grid.Column="0"
+                Grid.Row="0"/>
+
+            <CollectionView
+                Style="{StaticResource TasksCollectionView}"
+                ItemsSource="{Binding СonditionalTasks}"
+                Grid.Column="0"
+                Grid.Row="1">
+
+                <CollectionView.EmptyView>
+                    <Label
+                        Style="{StaticResource EmptyViewLabel}"
+                        TextColor="{StaticResource CondTask}"/>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame
+                            x:DataType="tasks:СonditionalTask"
+                            Style="{StaticResource TaskCard}">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Grid
+                                ColumnDefinitions="50, *"
+                                RowDefinitions="Auto, Auto">
+
+                                <controls:TaskProgressIndicator
+                                    RepeatCount="{Binding RepeatCount}"
+                                    TargetRepeatCount="{Binding TargetRepeatCount}"
+                                    IncompletedColor="{StaticResource Gray}"
+                                    CompletedColor="{StaticResource Completed}"
+                                    VerticalOptions="Fill"
+                                    HorizontalOptions="Fill"
+                                    Grid.Column="0"
+                                    Grid.RowSpan="2"/>
+
+                                <Label
+                                    Style="{StaticResource TaskLabel}"
+                                    Text="{Binding ActionName}"
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Margin="0, 8, 0, 0"/>
+
+                                <HorizontalStackLayout
+                                    Spacing="5"
+                                    Margin="0, 0, 0, 8"
+                                    Grid.Column="1"
+                                    Grid.Row="1">
+                                    
+                                    <Frame
+                                        Style="{StaticResource ModificatorCard}"
+                                        BackgroundColor="{StaticResource Frequency}">
+
+                                        <Label
+                                            Style="{StaticResource ModificatorLabel}"
+                                            Text="3/р неделя"/>
+                                    </Frame>
+
+                                    <Frame
+                                        Style="{StaticResource ModificatorCard}"
+                                        BackgroundColor="{StaticResource Time}">
+
+                                        <Label
+                                            Style="{StaticResource ModificatorLabel}"
+                                            Text="30 мин"/>
+                                    </Frame>
+                                </HorizontalStackLayout>
+
+                                
+                            </Grid>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </Grid>
+
+        <Grid
+            IsVisible="False"
             RowSpacing="5"
             ColumnDefinitions="*"
             RowDefinitions="Auto, *"

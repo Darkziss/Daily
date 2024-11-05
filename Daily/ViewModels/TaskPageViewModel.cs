@@ -19,6 +19,7 @@ namespace Daily.ViewModels
         private readonly TaskStorage _taskStorage;
 
         public IReadOnlyList<GeneralTask> GeneralTasks => _taskStorage.GeneralTasks;
+        public IReadOnlyList<СonditionalTask> СonditionalTasks => _taskStorage.СonditionalTasks;
 
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }

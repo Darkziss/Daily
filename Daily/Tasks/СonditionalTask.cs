@@ -31,10 +31,10 @@ namespace Daily.Tasks
             }
         }
 
-        public СonditionalTask(string actionName, int targetRepeatCount, TimeSpan repeatTimePeriod, int minCompletionTimeMinutes) : base(actionName, targetRepeatCount)
+        public СonditionalTask(string actionName, int targetRepeatCount, TimeSpan repeatTimePeriod, int completionTime) : base(actionName, targetRepeatCount)
         {
-            _repeatTimePeriod = repeatTimePeriod;
-            _completionTime = minCompletionTimeMinutes;
+            RepeatTimePeriod = repeatTimePeriod;
+            CompletionTime = completionTime;
         }
     }
 }
