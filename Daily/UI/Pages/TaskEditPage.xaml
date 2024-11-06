@@ -16,6 +16,8 @@
 
             <x:Double x:Key="DefaultElementWidth">350</x:Double>
 
+            <Color x:Key="FieldBackground">#efefef</Color>
+
             <Style TargetType="controls:SegmentedControl" x:Key="TaskSegmentedControl">
                 <Setter Property="TintColor" Value="{StaticResource Gray}"/>
                 <Setter Property="SelectedTextColor" Value="Black"/>
@@ -29,12 +31,13 @@
                 <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
             </Style>
 
             <Style TargetType="Grid" x:Key="TaskFieldGrid">
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="VerticalOptions" Value="Start"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
             <Style TargetType="Label" x:Key="TaskFieldHeader">
@@ -45,9 +48,11 @@
             </Style>
 
             <Style TargetType="Label" x:Key="StepperValueLabel">
-                <Setter Property="FontSize" Value="40"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
             <Style TargetType="Button" x:Key="BottomButton">
@@ -66,15 +71,16 @@
         RowDefinitions="Auto, *">
 
         <VerticalStackLayout
-            Spacing="20"
-            Padding="20, 40, 0, 0"
+            Spacing="17"
+            Padding="0, 40, 0, 0"
             Grid.Column="0"
             Grid.Row="0">
 
             <Label
                 Style="{StaticResource Headline}"
                 FontSize="30"
-                Text="Создание задачи"/>
+                Text="Создание задачи"
+                Margin="20, 0, 0, 0"/>
 
             <controls:SegmentedControl
                 Style="{StaticResource TaskSegmentedControl}"
@@ -95,12 +101,15 @@
             </controls:SegmentedControl>
 
             <VerticalStackLayout
-                VerticalOptions="Start"
-                HorizontalOptions="Start">
+                BackgroundColor="{StaticResource FieldBackground}"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                Padding="20, 0, 0, 0">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
-                    Text="Действие"/>
+                    Text="Действие"
+                    HorizontalOptions="Start"/>
 
                 <Entry
                     IsReadOnly="{Binding IsCreatingNewTask}"
@@ -108,17 +117,21 @@
                     Placeholder="Введите действие"
                     Text="{Binding ActionName, Mode=TwoWay}"
                     MaxLength="40"
-                    WidthRequest="350"/>
+                    WidthRequest="{StaticResource DefaultElementWidth}"
+                    HorizontalOptions="Start"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout
                 IsVisible="{Binding IsConditionalTaskMode, Converter={toolkit:InvertedBoolConverter}}"
-                VerticalOptions="Start"
-                HorizontalOptions="Start">
+                BackgroundColor="{StaticResource FieldBackground}"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                Padding="20, 0, 0, 0">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
-                    Text="Приоритет"/>
+                    Text="Приоритет"
+                    HorizontalOptions="Start"/>
 
                 <Border
                     Style="{StaticResource PickerBorder}">
@@ -142,8 +155,9 @@
 
             <VerticalStackLayout
                 IsVisible="{Binding IsConditionalTaskMode}"
-                VerticalOptions="Start"
-                HorizontalOptions="Start">
+                BackgroundColor="{StaticResource FieldBackground}"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
@@ -171,8 +185,10 @@
 
             <Grid
                 Style="{StaticResource TaskFieldGrid}"
+                BackgroundColor="{StaticResource FieldBackground}"
                 ColumnDefinitions="100, Auto"
-                RowDefinitions="Auto, Auto">
+                RowDefinitions="Auto, Auto"
+                Padding="20, 0, 0, 0">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
@@ -207,18 +223,19 @@
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
-                    Text="Время на выполненеие (необязательно)"
+                    Text="Длительность"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"/>
 
                 <Entry
-                    FontSize="40"
-                    Text="{Binding CompletionTime, Mode=TwoWay, Converter={converters:CompletionTimeToStringConverter}}"
+                    IsReadOnly="{Binding IsCreatingNewTask}"
+                    FontSize="30"
                     Placeholder="0"
+                    Text="{Binding CompletionTime, Mode=TwoWay, Converter={converters:CompletionTimeToStringConverter}}"
                     Keyboard="Numeric"
                     MaxLength="3"
                     HorizontalTextAlignment="Center"
-                    VerticalOptions="Start"
+                    VerticalOptions="Fill"
                     HorizontalOptions="Fill"
                     Grid.Column="0"
                     Grid.Row="1"/>
@@ -229,6 +246,32 @@
                     VerticalOptions="Center"
                     HorizontalOptions="Start"
                     Grid.Column="1"
+                    Grid.Row="1"/>
+
+            </Grid>
+
+            <Grid
+                Style="{StaticResource TaskFieldGrid}"
+                IsVisible="{Binding IsConditionalTaskMode}"
+                ColumnDefinitions="100, Auto"
+                RowDefinitions="Auto, Auto">
+
+                <Label
+                    Style="{StaticResource TaskFieldHeader}"
+                    Text="Примечание (необязательно)"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"/>
+
+                <Entry
+                    IsReadOnly="{Binding IsCreatingNewTask}"
+                    FontSize="{StaticResource DefaultFontSize}"
+                    Placeholder="Введите примечание"
+                    Text="{Binding Note, Mode=TwoWay}"
+                    Keyboard="Text"
+                    MaxLength="20"
+                    WidthRequest="{StaticResource DefaultElementWidth}"
+                    HorizontalOptions="Start"
+                    Grid.Column="0"
                     Grid.Row="1"/>
 
             </Grid>

@@ -7,6 +7,8 @@ namespace Daily.Tasks
 
         private int _completionTime = 0;
 
+        private string _note = string.Empty;
+
         public TaskRepeatTimePeriod RepeatTimePeriod
         {
             get => _repeatTimePeriod;
@@ -31,10 +33,23 @@ namespace Daily.Tasks
             }
         }
 
-        public СonditionalTask(string actionName, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int completionTime) : base(actionName, targetRepeatCount)
+        public string Note
+        {
+            get => _note;
+            set
+            {
+                if (value.Equals(_note)) return;
+
+                _note = value;
+                OnPropertyChanged(nameof(Note));
+            }
+        }
+
+        public СonditionalTask(string actionName, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int completionTime, string note) : base(actionName, targetRepeatCount)
         {
             RepeatTimePeriod = repeatTimePeriod;
             CompletionTime = completionTime;
+            Note = note;
         }
     }
 }

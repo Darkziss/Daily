@@ -18,6 +18,7 @@ namespace Daily.ViewModels
         [ObservableProperty] private int _targetRepeatCount = 1;
 
         [ObservableProperty] private int _completionTime = 0;
+        [ObservableProperty] private string _note = string.Empty;
 
         [ObservableProperty] private bool _isConditionalTaskMode = false;
         [ObservableProperty] private bool _isCreatingNewTask = false;
@@ -95,6 +96,7 @@ namespace Daily.ViewModels
             TargetRepeatCount = 1;
 
             CompletionTime = 0;
+            Note = string.Empty;
         }
 
         private async Task CreateGeneralTaskAsync()
@@ -116,7 +118,7 @@ namespace Daily.ViewModels
             {
                 TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
 
-                await _taskStorage.CreateConditionalTaskAsync(ActionName, TargetRepeatCount, repeatTimePeriod, CompletionTime);
+                await _taskStorage.CreateConditionalTaskAsync(ActionName, TargetRepeatCount, repeatTimePeriod, CompletionTime, Note);
                 await _taskCreatedToast.Show();
             }
         }

@@ -27,6 +27,7 @@
 
             <Color x:Key="Frequency">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
+            <Color x:Key="Note">#edc2df</Color>
 
             <Color x:Key="Completed">#71b866</Color>
 
@@ -254,12 +255,30 @@
                                             Style="{StaticResource ModificatorLabel}"
                                             Text="{Binding CompletionTime, StringFormat='{0} мин'}"/>
                                     </Frame>
+
+                                    <Frame
+                                        Style="{StaticResource ModificatorCard}"
+                                        BackgroundColor="{StaticResource Note}">
+                                        
+                                        <Frame.Triggers>
+                                            <DataTrigger
+                                                TargetType="Frame"
+                                                Binding="{Binding Note}"
+                                                Value="">
+
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Frame.Triggers>
+
+                                        <Label
+                                            Style="{StaticResource ModificatorLabel}"
+                                            Text="{Binding Note}"/>
+                                    </Frame>
                                 </HorizontalStackLayout>
                             </Grid>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-
             </CollectionView>
 
         </Grid>
