@@ -19,11 +19,7 @@ namespace Daily.Converters
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value == null || value is not double) return null;
-
-            double opacity = (double)value;
-
-            return opacity == completedOpacity;
+            return null;
         }
     }
 }

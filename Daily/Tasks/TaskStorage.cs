@@ -36,11 +36,11 @@ namespace Daily.Tasks
             else СonditionalTasks = new ObservableCollection<СonditionalTask>(dataProvider.СonditionalTasks);
         }
 
-        public async Task CreateGeneralTaskAsync(string action, TaskPriority priority, int targetRepeatCount)
+        public async Task CreateGeneralTaskAsync(string action, int targetRepeatCount, TaskPriority priority)
         {
             if (IsGeneralTasksFull) throw new Exception(maxGeneralTasksExceptionText);
 
-            GeneralTask task = new GeneralTask(action, priority, targetRepeatCount);
+            GeneralTask task = new GeneralTask(action, targetRepeatCount, priority);
 
             bool isValid = TaskValidator.ValidateTask(task);
 
@@ -65,15 +65,23 @@ namespace Daily.Tasks
         {
             if (IsConditionalTasksFull) throw new Exception(maxConditionalTasksExceptionText);
 
-            TimeSpan period = GetRepeatTimePeriod(repeatTimePeriod);
-
-            СonditionalTask task = new СonditionalTask(action, targetRepeatCount, period, minCompletionTime);
+            СonditionalTask task = new СonditionalTask(action, targetRepeatCount, repeatTimePeriod, minCompletionTime);
 
             bool isValid = TaskValidator.ValidateСonditionalTask(task);
 
             if (!isValid) return;
 
             СonditionalTasks.Add(task);
+
+            await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
+        }
+
+        public async Task PerformСonditionalTaskAsync(СonditionalTask task)
+        {
+            if (task == null) return;
+            else if (!СonditionalTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
+
+            task.Perform();
 
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
         }

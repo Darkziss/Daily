@@ -77,12 +77,10 @@ namespace Daily.ViewModels
                 if (args.PropertyName == nameof(ActionName))
                 {
                     CreateTaskCommand.ChangeCanExecute();
-                    return;
                 }
                 else if (args.PropertyName == nameof(IsCreatingNewTask))
                 {
                     ChangeViewCommand.ChangeCanExecute();
-                    return;
                 }
             };
         }
@@ -106,7 +104,7 @@ namespace Daily.ViewModels
             {
                 TaskPriority priority = (TaskPriority)PriorityIndex;
 
-                await _taskStorage.CreateGeneralTaskAsync(ActionName, priority, TargetRepeatCount);
+                await _taskStorage.CreateGeneralTaskAsync(ActionName, TargetRepeatCount, priority);
                 await _taskCreatedToast.Show();
             }
         }

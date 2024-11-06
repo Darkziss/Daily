@@ -28,18 +28,7 @@ namespace Daily.Converters
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value == null || value is not string) return null;
-
-            string text = (string)value;
-
-            return text switch
-            {
-                dailyTaskText => TaskPriority.Daily,
-                mandatoryTaskText => TaskPriority.Mandatory,
-                importantTaskText => TaskPriority.Important,
-                commonTaskText => TaskPriority.Common,
-                _ => TaskPriority.Daily
-            };
+            return null;
         }
     }
 }

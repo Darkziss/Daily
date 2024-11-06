@@ -3,11 +3,11 @@ namespace Daily.Tasks
 {
     public class СonditionalTask : TaskBase
     {
-        private TimeSpan _repeatTimePeriod;
+        private TaskRepeatTimePeriod _repeatTimePeriod;
 
         private int _completionTime = 0;
 
-        public TimeSpan RepeatTimePeriod
+        public TaskRepeatTimePeriod RepeatTimePeriod
         {
             get => _repeatTimePeriod;
             set
@@ -31,7 +31,7 @@ namespace Daily.Tasks
             }
         }
 
-        public СonditionalTask(string actionName, int targetRepeatCount, TimeSpan repeatTimePeriod, int completionTime) : base(actionName, targetRepeatCount)
+        public СonditionalTask(string actionName, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int completionTime) : base(actionName, targetRepeatCount)
         {
             RepeatTimePeriod = repeatTimePeriod;
             CompletionTime = completionTime;

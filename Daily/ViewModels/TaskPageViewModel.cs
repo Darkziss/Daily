@@ -12,8 +12,9 @@ namespace Daily.ViewModels
         [ObservableProperty] private string _goalEntryText;
 
         [ObservableProperty] private object? _selectedTask = null;
+        [ObservableProperty] private object? _selectedСonditionalTask = null;
 
-        [ObservableProperty] private bool _isGeneralTasksLoaded = false;
+        [ObservableProperty] private bool _isTasksLoaded = false;
 
         private readonly GoalStorage _goalStorage;
         private readonly TaskStorage _taskStorage;
@@ -25,6 +26,7 @@ namespace Daily.ViewModels
         public Command SaveGoalCommand { get; }
 
         public Command<GeneralTask> TaskPerformedCommand { get; }
+        public Command<СonditionalTask> ConditionalTaskPerformedCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
@@ -66,6 +68,8 @@ namespace Daily.ViewModels
                 return IsEditingGoal;
             });
 
+            bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;
+
             TaskPerformedCommand = new Command<GeneralTask>(
             execute: async (task) =>
             {
@@ -73,10 +77,16 @@ namespace Daily.ViewModels
 
                 SelectedTask = null;
             },
-            canExecute: (task) =>
+            canExecute: CanPerformTask);
+
+            ConditionalTaskPerformedCommand = new Command<СonditionalTask>(
+            execute: async (task) =>
             {
-                return task == null ? false : !task.IsCompleted;
-            });
+                await _taskStorage.PerformСonditionalTaskAsync(task);
+
+                SelectedСonditionalTask = null;
+            },
+            canExecute: CanPerformTask);
 
             PropertyChanged += (_, args) =>
             {
@@ -84,15 +94,20 @@ namespace Daily.ViewModels
                 {
                     TaskPerformedCommand.ChangeCanExecute();
                 }
+                else if (args.PropertyName == nameof(SelectedСonditionalTask))
+                {
+                    ConditionalTaskPerformedCommand.ChangeCanExecute();
+                }
             };
         }
 
         public void PrepareView()
         {
             IsEditingGoal = false;
-            IsGeneralTasksLoaded = false;
+            IsTasksLoaded = false;
 
             TaskPerformedCommand.ChangeCanExecute();
+            ConditionalTaskPerformedCommand.ChangeCanExecute();
 
             const double delay = 800d;
             AsyncTimer timer = new AsyncTimer(delay);
@@ -102,7 +117,7 @@ namespace Daily.ViewModels
                 timer.Stop();
                 timer.Dispose();
 
-                IsGeneralTasksLoaded = true;
+                IsTasksLoaded = true;
             };
 
             timer.Start();

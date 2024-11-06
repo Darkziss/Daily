@@ -51,6 +51,19 @@
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
 
             <Style TargetType="Label" x:Key="EmptyViewLabel">
@@ -77,7 +90,7 @@
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
-                <Setter Property="Margin" Value="5, 0, 5, 0"/>
+                <Setter Property="Margin" Value="7, 0, 7, 0"/>
             </Style>
 
         </ResourceDictionary>
@@ -158,7 +171,11 @@
 
             <CollectionView
                 Style="{StaticResource TasksCollectionView}"
+                IsVisible="{Binding IsTasksLoaded}"
                 ItemsSource="{Binding СonditionalTasks}"
+                SelectedItem="{Binding SelectedСonditionalTask, Mode=TwoWay}"
+                SelectionChangedCommand="{Binding ConditionalTaskPerformedCommand}"
+                SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                 Grid.Column="0"
                 Grid.Row="1">
 
@@ -172,18 +189,9 @@
                     <DataTemplate>
                         <Frame
                             x:DataType="tasks:СonditionalTask"
-                            Style="{StaticResource TaskCard}">
-
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal" />
-                                    <VisualState x:Name="Selected">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
+                            Style="{StaticResource TaskCard}"
+                            Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
+                            BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
 
                             <Grid
                                 ColumnDefinitions="50, *"
@@ -217,23 +225,37 @@
                                         BackgroundColor="{StaticResource Frequency}">
 
                                         <Label
-                                            Style="{StaticResource ModificatorLabel}"
-                                            Text="3/р неделя"/>
+                                            Style="{StaticResource ModificatorLabel}">
+
+                                            <Label.Text>
+                                                <MultiBinding Converter="{converters:RepeatTimePeriodConverter}">
+                                                    <Binding Path="TargetRepeatCount"/>
+                                                    <Binding Path="RepeatTimePeriod"/>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
                                     </Frame>
 
                                     <Frame
                                         Style="{StaticResource ModificatorCard}"
                                         BackgroundColor="{StaticResource Time}">
 
+                                        <Frame.Triggers>
+                                            <DataTrigger
+                                                TargetType="Frame"
+                                                Binding="{Binding CompletionTime}"
+                                                Value="0">
+
+                                                <Setter Property="IsVisible" Value="False"/>
+                                            </DataTrigger>
+                                        </Frame.Triggers>
+
                                         <Label
                                             Style="{StaticResource ModificatorLabel}"
-                                            Text="30 мин"/>
+                                            Text="{Binding CompletionTime, StringFormat='{0} мин'}"/>
                                     </Frame>
                                 </HorizontalStackLayout>
-
-                                
                             </Grid>
-
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -258,7 +280,7 @@
                 Grid.Row="0"/>
 
             <VerticalStackLayout
-                IsVisible="{Binding IsGeneralTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
+                IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
                 Margin="0, 50, 0, 0"
                 Grid.Column="0"
                 Grid.Row="1">
@@ -277,9 +299,9 @@
 
             <CollectionView
                 Style="{StaticResource TasksCollectionView}"
-                IsVisible="{Binding IsGeneralTasksLoaded}"
+                IsVisible="{Binding IsTasksLoaded}"
                 ItemsSource="{Binding GeneralTasks}"
-                SelectedItem="{Binding SelectedTask}"
+                SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
                 SelectionChangedCommand="{Binding TaskPerformedCommand}"
                 SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                 Grid.Column="0"
@@ -298,17 +320,6 @@
                             Style="{StaticResource TaskCard}"
                             Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
                             BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
-
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal" />
-                                    <VisualState x:Name="Selected">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
 
                             <Grid
                                 ColumnDefinitions="50, *"
