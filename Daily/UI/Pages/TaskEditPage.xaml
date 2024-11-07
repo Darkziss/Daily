@@ -13,9 +13,10 @@
         <ResourceDictionary>
 
             <x:Double x:Key="DefaultFontSize">20</x:Double>
-
             <x:Double x:Key="DefaultElementWidth">350</x:Double>
 
+            <Thickness x:Key="TaskFieldPadding">20, 0, 0, 0</Thickness>
+            
             <Color x:Key="FieldBackground">#efefef</Color>
 
             <Style TargetType="controls:SegmentedControl" x:Key="TaskSegmentedControl">
@@ -32,12 +33,21 @@
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="VerticalStackLayout" x:Key="TaskFieldStackLayout">
+                <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="Padding" Value="{StaticResource TaskFieldPadding}"/>
             </Style>
 
             <Style TargetType="Grid" x:Key="TaskFieldGrid">
                 <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="Padding" Value="{StaticResource TaskFieldPadding}"/>
             </Style>
 
             <Style TargetType="Label" x:Key="TaskFieldHeader">
@@ -71,7 +81,7 @@
         RowDefinitions="Auto, *">
 
         <VerticalStackLayout
-            Spacing="17"
+            Spacing="15"
             Padding="0, 40, 0, 0"
             Grid.Column="0"
             Grid.Row="0">
@@ -101,10 +111,7 @@
             </controls:SegmentedControl>
 
             <VerticalStackLayout
-                BackgroundColor="{StaticResource FieldBackground}"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill"
-                Padding="20, 0, 0, 0">
+                Style="{StaticResource TaskFieldStackLayout}">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
@@ -122,11 +129,8 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout
-                IsVisible="{Binding IsConditionalTaskMode, Converter={toolkit:InvertedBoolConverter}}"
-                BackgroundColor="{StaticResource FieldBackground}"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill"
-                Padding="20, 0, 0, 0">
+                Style="{StaticResource TaskFieldStackLayout}"
+                IsVisible="{Binding IsConditionalTaskMode, Converter={toolkit:InvertedBoolConverter}}">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
@@ -154,14 +158,13 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout
-                IsVisible="{Binding IsConditionalTaskMode}"
-                BackgroundColor="{StaticResource FieldBackground}"
-                VerticalOptions="Fill"
-                HorizontalOptions="Fill">
+                Style="{StaticResource TaskFieldStackLayout}"
+                IsVisible="{Binding IsConditionalTaskMode}">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
-                    Text="Промежуток времени"/>
+                    Text="Промежуток времени"
+                    HorizontalOptions="Start"/>
 
                 <Border
                     Style="{StaticResource PickerBorder}">
