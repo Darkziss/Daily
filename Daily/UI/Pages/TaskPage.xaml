@@ -157,6 +157,7 @@
         </VerticalStackLayout>
 
         <Grid
+            IsVisible="False"
             RowSpacing="5"
             ColumnDefinitions="*"
             RowDefinitions="Auto, *"
@@ -284,7 +285,7 @@
         </Grid>
 
         <Grid
-            IsVisible="False"
+            IsVisible="True"
             RowSpacing="5"
             ColumnDefinitions="*"
             RowDefinitions="Auto, *"

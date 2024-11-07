@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Maui.Alerts;
 using Daily.Tasks;
-using System.Diagnostics;
 
 namespace Daily.ViewModels
 {

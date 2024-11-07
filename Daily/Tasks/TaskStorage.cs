@@ -7,8 +7,8 @@ namespace Daily.Tasks
     {
         private readonly DataProvider _dataProvider;
 
-        public ObservableCollection<GeneralTask> GeneralTasks { get; }
-        public ObservableCollection<СonditionalTask> СonditionalTasks { get; }
+        public ObservableCollection<GeneralTask> GeneralTasks { get; private set; }
+        public ObservableCollection<СonditionalTask> СonditionalTasks { get; private set; }
 
         public bool IsGeneralTasksFull => GeneralTasks.Count == maxGeneralTaskCount;
         public bool IsConditionalTasksFull => СonditionalTasks.Count == maxConditionalTaskCount;
@@ -47,6 +47,7 @@ namespace Daily.Tasks
             if (!isValid) return;
 
             GeneralTasks.Add(task);
+            if (GeneralTasks.Count > 1) SortGeneralTasks();
 
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
@@ -93,26 +94,15 @@ namespace Daily.Tasks
             else return true;
         }
 
-        private TimeSpan GetRepeatTimePeriod(TaskRepeatTimePeriod period)
+        private void SortGeneralTasks()
         {
-            switch (period)
-            {
-                case TaskRepeatTimePeriod.Day:
-                    return TimeSpan.FromDays(1);
-                case TaskRepeatTimePeriod.Week:
-                    return TimeSpan.FromDays(7);
-                case TaskRepeatTimePeriod.Month:
-                    return GetDaysInCurrentMonth();
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            var sorted = GeneralTasks.OrderBy(task => task.Priority).ToList();
 
-            TimeSpan GetDaysInCurrentMonth()
-            {
-                DateTime now = DateTime.Now;
-                int days = DateTime.DaysInMonth(now.Year, now.Month);
+            GeneralTasks.Clear();
 
-                return TimeSpan.FromDays(days);
+            foreach (GeneralTask task in sorted)
+            {
+                GeneralTasks.Add(task);
             }
         }
     }
