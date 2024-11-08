@@ -19,6 +19,8 @@
 
             <x:Double x:Key="TaskCardSpacing">7</x:Double>
 
+            <Thickness x:Key="ModificatorMargin">0, 0, 0, 8</Thickness>
+
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
 
@@ -35,7 +37,7 @@
                 <Setter Property="BackgroundColor" Value="{StaticResource Goal}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="HeightRequest" Value="50"/>
-                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
@@ -47,6 +49,7 @@
                 <Setter Property="HorizontalTextAlignment" Value="Start"/>
                 <Setter Property="WidthRequest" Value="{StaticResource GoalElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
             <Style TargetType="Entry" x:Key="GoalEntry">
@@ -55,6 +58,15 @@
                 <Setter Property="MaxLength" Value="50"/>
                 <Setter Property="WidthRequest" Value="{StaticResource GoalElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Grid" x:Key="TasksCollectionGrid">
+                <Setter Property="RowSpacing" Value="5"/>
+                <Setter Property="ColumnDefinitions" Value="*"/>
+                <Setter Property="RowDefinitions" Value="Auto, *"/>
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
             <Style TargetType="CollectionView" x:Key="TasksCollectionView">
@@ -93,6 +105,11 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="Grid" x:Key="TaskCardGrid">
+                <Setter Property="ColumnDefinitions" Value="50, *"/>
+                <Setter Property="RowDefinitions" Value="Auto, Auto"/>
+            </Style>
+
             <Style TargetType="Label" x:Key="EmptyViewLabel">
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Text" Value="Пока здесь нет задач"/>
@@ -104,6 +121,12 @@
                 <Setter Property="LineBreakMode" Value="WordWrap"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="Margin" Value="0, 8, 0, 0"/>
+            </Style>
+
+            <Style TargetType="HorizontalStackLayout" x:Key="ModificatorCardStackLayout">
+                <Setter Property="Spacing" Value="5"/>
+                <Setter Property="Margin" Value="{StaticResource ModificatorMargin}"/>
             </Style>
 
             <Style TargetType="Frame" x:Key="ModificatorCard">
@@ -127,7 +150,7 @@
     <ScrollView>
         <VerticalStackLayout
             Spacing="20"
-            Margin="20, 40, 0, 0">
+            Padding="20, 40, 0, 0">
 
             <Label
                 Style="{StaticResource Headline}"
@@ -143,7 +166,7 @@
                     Style="{StaticResource GoalCard}">
 
                     <HorizontalStackLayout
-                        Margin="10, 0, 0, 0">
+                        Padding="10, 0, 0, 0">
 
                         <Label
                             Style="{StaticResource GoalLabel}"
@@ -167,12 +190,7 @@
             </VerticalStackLayout>
 
             <Grid
-                IsVisible="True"
-                RowSpacing="5"
-                ColumnDefinitions="*"
-                RowDefinitions="Auto, *"
-                WidthRequest="{StaticResource DefaultElementWidth}"
-                HorizontalOptions="Start">
+                Style="{StaticResource TasksCollectionGrid}">
 
                 <Label
                     Style="{StaticResource SubHeadline}"
@@ -206,8 +224,7 @@
                                 BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
 
                                 <Grid
-                                    ColumnDefinitions="50, *"
-                                    RowDefinitions="Auto, Auto">
+                                    Style="{StaticResource TaskCardGrid}">
 
                                     <controls:TaskProgressIndicator
                                         RepeatCount="{Binding RepeatCount}"
@@ -223,69 +240,24 @@
                                         Style="{StaticResource TaskLabel}"
                                         Text="{Binding ActionName}"
                                         Grid.Column="1"
-                                        Grid.Row="0"
-                                        Margin="0, 8, 0, 0"/>
+                                        Grid.Row="0"/>
 
-                                    <HorizontalStackLayout
-                                        Spacing="5"
-                                        Margin="0, 0, 0, 8"
+                                    <controls:СonditionalTaskModificatorsView
+                                        FrequencyCardColor="{StaticResource Frequency}"
+                                        CompletionTimeCardColor="{StaticResource Time}"
+                                        NoteCardColor="{StaticResource Note}"
+                                        CompletionTime="{Binding CompletionTime}"
+                                        Note="{Binding Note}"
                                         Grid.Column="1"
                                         Grid.Row="1">
 
-                                        <Frame
-                                            Style="{StaticResource ModificatorCard}"
-                                            BackgroundColor="{StaticResource Frequency}">
-
-                                            <Label
-                                                Style="{StaticResource ModificatorLabel}">
-
-                                                <Label.Text>
-                                                    <MultiBinding Converter="{converters:RepeatTimePeriodConverter}">
-                                                        <Binding Path="TargetRepeatCount"/>
-                                                        <Binding Path="RepeatTimePeriod"/>
-                                                    </MultiBinding>
-                                                </Label.Text>
-                                            </Label>
-                                        </Frame>
-
-                                        <Frame
-                                            Style="{StaticResource ModificatorCard}"
-                                            BackgroundColor="{StaticResource Time}">
-
-                                            <Frame.Triggers>
-                                                <DataTrigger
-                                                    TargetType="Frame"
-                                                    Binding="{Binding CompletionTime}"
-                                                    Value="0">
-
-                                                    <Setter Property="IsVisible" Value="False"/>
-                                                </DataTrigger>
-                                            </Frame.Triggers>
-
-                                            <Label
-                                                Style="{StaticResource ModificatorLabel}"
-                                                Text="{Binding CompletionTime, StringFormat='{0} мин'}"/>
-                                        </Frame>
-
-                                        <Frame
-                                            Style="{StaticResource ModificatorCard}"
-                                            BackgroundColor="{StaticResource Note}">
-
-                                            <Frame.Triggers>
-                                                <DataTrigger
-                                                    TargetType="Frame"
-                                                    Binding="{Binding Note}"
-                                                    Value="">
-
-                                                    <Setter Property="IsVisible" Value="False"/>
-                                                </DataTrigger>
-                                            </Frame.Triggers>
-
-                                            <Label
-                                                Style="{StaticResource ModificatorLabel}"
-                                                Text="{Binding Note}"/>
-                                        </Frame>
-                                    </HorizontalStackLayout>
+                                        <controls:СonditionalTaskModificatorsView.Frequency>
+                                            <MultiBinding Converter="{converters:RepeatTimePeriodConverter}">
+                                                <Binding Path="TargetRepeatCount"/>
+                                                <Binding Path="RepeatTimePeriod"/>
+                                            </MultiBinding>
+                                        </controls:СonditionalTaskModificatorsView.Frequency>
+                                    </controls:СonditionalTaskModificatorsView>
                                 </Grid>
                             </Frame>
                         </DataTemplate>
@@ -294,12 +266,7 @@
             </Grid>
 
             <Grid
-                IsVisible="True"
-                RowSpacing="5"
-                ColumnDefinitions="*"
-                RowDefinitions="Auto, *"
-                WidthRequest="{StaticResource DefaultElementWidth}"
-                HorizontalOptions="Start">
+                Style="{StaticResource TasksCollectionGrid}">
 
                 <Label
                     Style="{StaticResource SubHeadline}"
@@ -351,8 +318,7 @@
                                 BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
 
                                 <Grid
-                                    ColumnDefinitions="50, *"
-                                    RowDefinitions="Auto, Auto">
+                                    Style="{StaticResource TaskCardGrid}">
 
                                     <controls:TaskProgressIndicator
                                         RepeatCount="{Binding RepeatCount}"
@@ -368,15 +334,14 @@
                                         Style="{StaticResource TaskLabel}"
                                         Text="{Binding ActionName}"
                                         Grid.Column="1"
-                                        Grid.Row="0"
-                                        Margin="0, 8, 0, 0"/>
+                                        Grid.Row="0"/>
 
                                     <Frame
                                         Style="{StaticResource ModificatorCard}"
                                         BackgroundColor="{Binding Priority, Converter={converters:PriorityToColorConverter}}"
                                         Grid.Column="1"
                                         Grid.Row="1"
-                                        Margin="0, 0, 0, 8">
+                                        Margin="{StaticResource ModificatorMargin}">
 
                                         <Label
                                             Style="{StaticResource ModificatorLabel}"
