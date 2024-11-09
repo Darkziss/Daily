@@ -34,6 +34,8 @@
 
             <Color x:Key="Completed">#71b866</Color>
 
+            <Color x:Key="PanelBackground">#f9fbff</Color>
+
             <Style TargetType="Frame" x:Key="GoalCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Goal}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
@@ -145,219 +147,303 @@
                 <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
+            <Style TargetType="Frame" x:Key="BottomPanel">
+                <Setter Property="BackgroundColor" Value="{StaticResource PanelBackground}"/>
+                <Setter Property="BorderColor" Value="{StaticResource Gray}"/>
+                <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
+
+            <Style TargetType="ImageButton" x:Key="ActionButton">
+                <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+                <Setter Property="WidthRequest" Value="50"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="ActionButtonLabel">
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
         </ResourceDictionary>
 
     </ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="20"
-            Padding="20, 40, 0, 0">
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="*, 80"
+        VerticalOptions="Fill"
+        HorizontalOptions="Fill">
 
-            <Label
-                Style="{StaticResource Headline}"
-                Text="Задачи"/>
-
-            <VerticalStackLayout>
-
-                <Label
-                    Style="{StaticResource SubHeadline}"
-                    Text="Текущая цель"/>
-
-                <Frame
-                    Style="{StaticResource GoalCard}">
-
-                    <HorizontalStackLayout
-                        Padding="10, 0, 0, 0">
-
-                        <Label
-                            Style="{StaticResource GoalLabel}"
-                            IsVisible="{Binding IsEditingGoal, Converter={toolkit:InvertedBoolConverter}}"
-                            Text="{Binding GoalLabelText}">
-
-                            <Label.Behaviors>
-                                <toolkit:TouchBehavior
-                                    LongPressDuration="500"
-                                    LongPressCommand="{Binding EditGoalCommand}"/>
-                            </Label.Behaviors>
-                        </Label>
-
-                        <Entry
-                            Style="{StaticResource GoalEntry}"
-                            IsVisible="{Binding IsEditingGoal}"
-                            Text="{Binding GoalEntryText, Mode=TwoWay}"
-                            ReturnCommand="{Binding SaveGoalCommand}"/>
-                    </HorizontalStackLayout>
-                </Frame>
-            </VerticalStackLayout>
-
-            <Grid
-                Style="{StaticResource TasksCollectionGrid}">
+        <ScrollView
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill"
+            Grid.Column="0"
+            Grid.Row="0">
+            
+            <VerticalStackLayout
+                Spacing="20"
+                Padding="20, 40, 0, 0">
 
                 <Label
-                    Style="{StaticResource SubHeadline}"
-                    TextColor="{StaticResource CondTask}"
-                    Text="Условные задачи"
-                    Grid.Column="0"
-                    Grid.Row="0"/>
+                    Style="{StaticResource Headline}"
+                    Text="Задачи"/>
 
-                <VerticalStackLayout
-                    IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
-                    Margin="{StaticResource DummyLabelMargin}"
-                    Grid.Column="0"
-                    Grid.Row="1">
-
-                    <ActivityIndicator
-                        Style="{StaticResource DummyActivityIndicator}"
-                        Color="{StaticResource CondTask}"/>
+                <VerticalStackLayout>
 
                     <Label
+                        Style="{StaticResource SubHeadline}"
+                        Text="Текущая цель"/>
+
+                    <Frame
+                        Style="{StaticResource GoalCard}">
+
+                        <HorizontalStackLayout
+                            Padding="10, 0, 0, 0">
+
+                            <Label
+                                Style="{StaticResource GoalLabel}"
+                                IsVisible="{Binding IsEditingGoal, Converter={toolkit:InvertedBoolConverter}}"
+                                Text="{Binding GoalLabelText}">
+
+                                <Label.Behaviors>
+                                    <toolkit:TouchBehavior
+                                        LongPressDuration="500"
+                                        LongPressCommand="{Binding EditGoalCommand}"/>
+                                </Label.Behaviors>
+                            </Label>
+
+                            <Entry
+                                Style="{StaticResource GoalEntry}"
+                                IsVisible="{Binding IsEditingGoal}"
+                                Text="{Binding GoalEntryText, Mode=TwoWay}"
+                                ReturnCommand="{Binding SaveGoalCommand}"/>
+                        </HorizontalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <Grid
+                    Style="{StaticResource TasksCollectionGrid}">
+
+                    <Label
+                        Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource CondTask}"
-                        Text="Загружаем условные задачи.."
-                        HorizontalOptions="Center"/>
-                </VerticalStackLayout>
+                        Text="Условные задачи"
+                        Grid.Column="0"
+                        Grid.Row="0"/>
 
-                <CollectionView
-                    Style="{StaticResource TasksCollectionView}"
-                    IsVisible="{Binding IsTasksLoaded}"
-                    ItemsSource="{Binding СonditionalTasks}"
-                    SelectedItem="{Binding SelectedСonditionalTask, Mode=TwoWay}"
-                    SelectionChangedCommand="{Binding ConditionalTaskPerformedCommand}"
-                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
-                    Grid.Column="0"
-                    Grid.Row="1">
+                    <VerticalStackLayout
+                        IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
+                        Margin="{StaticResource DummyLabelMargin}"
+                        Grid.Column="0"
+                        Grid.Row="1">
 
-                    <CollectionView.EmptyView>
+                        <ActivityIndicator
+                            Style="{StaticResource DummyActivityIndicator}"
+                            Color="{StaticResource CondTask}"/>
+
                         <Label
-                            Style="{StaticResource EmptyViewLabel}"
-                            TextColor="{StaticResource CondTask}"/>
-                    </CollectionView.EmptyView>
+                            TextColor="{StaticResource CondTask}"
+                            Text="Загружаем условные задачи.."
+                            HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame
-                                x:DataType="tasks:СonditionalTask"
-                                Style="{StaticResource TaskCard}"
-                                Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
-                                BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
+                    <CollectionView
+                        Style="{StaticResource TasksCollectionView}"
+                        IsVisible="{Binding IsTasksLoaded}"
+                        ItemsSource="{Binding СonditionalTasks}"
+                        SelectedItem="{Binding SelectedСonditionalTask, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding ConditionalTaskPerformedCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
+                        Grid.Column="0"
+                        Grid.Row="1">
 
-                                <Grid
-                                    Style="{StaticResource TaskCardGrid}">
+                        <CollectionView.EmptyView>
+                            <Label
+                                Style="{StaticResource EmptyViewLabel}"
+                                TextColor="{StaticResource CondTask}"/>
+                        </CollectionView.EmptyView>
 
-                                    <controls:TaskProgressIndicator
-                                        RepeatCount="{Binding RepeatCount}"
-                                        TargetRepeatCount="{Binding TargetRepeatCount}"
-                                        Grid.Column="0"
-                                        Grid.RowSpan="2"/>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame
+                                    x:DataType="tasks:СonditionalTask"
+                                    Style="{StaticResource TaskCard}"
+                                    Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
 
-                                    <Label
-                                        Style="{StaticResource TaskLabel}"
-                                        Text="{Binding ActionName}"
-                                        Grid.Column="1"
-                                        Grid.Row="0"/>
+                                    <Grid
+                                        Style="{StaticResource TaskCardGrid}">
 
-                                    <controls:СonditionalTaskModificatorsView
-                                        CompletionTime="{Binding CompletionTime}"
-                                        Note="{Binding Note}"
-                                        Grid.Column="1"
-                                        Grid.Row="1">
-
-                                        <controls:СonditionalTaskModificatorsView.Frequency>
-                                            <MultiBinding Converter="{converters:RepeatTimePeriodConverter}">
-                                                <Binding Path="TargetRepeatCount"/>
-                                                <Binding Path="RepeatTimePeriod"/>
-                                            </MultiBinding>
-                                        </controls:СonditionalTaskModificatorsView.Frequency>
-                                    </controls:СonditionalTaskModificatorsView>
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
-
-            <Grid
-                Style="{StaticResource TasksCollectionGrid}">
-
-                <Label
-                    Style="{StaticResource SubHeadline}"
-                    TextColor="{StaticResource GeneralTask}"
-                    Text="Основные задачи"
-                    Grid.Column="0"
-                    Grid.Row="0"/>
-
-                <VerticalStackLayout
-                    IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
-                    Margin="{StaticResource DummyLabelMargin}"
-                    Grid.Column="0"
-                    Grid.Row="1">
-
-                    <ActivityIndicator
-                        Style="{StaticResource DummyActivityIndicator}"
-                        Color="{StaticResource GeneralTask}"/>
-
-                    <Label
-                        TextColor="{StaticResource GeneralTask}"
-                        Text="Загружаем основные задачи.."
-                        HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-
-                <CollectionView
-                    Style="{StaticResource TasksCollectionView}"
-                    IsVisible="{Binding IsTasksLoaded}"
-                    ItemsSource="{Binding GeneralTasks}"
-                    SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
-                    SelectionChangedCommand="{Binding TaskPerformedCommand}"
-                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
-                    Grid.Column="0"
-                    Grid.Row="1">
-
-                    <CollectionView.EmptyView>
-                        <Label
-                            Style="{StaticResource EmptyViewLabel}"
-                            TextColor="{StaticResource GeneralTask}"/>
-                    </CollectionView.EmptyView>
-
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame
-                                x:DataType="tasks:GeneralTask"
-                                Style="{StaticResource TaskCard}"
-                                Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
-                                BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
-
-                                <Grid
-                                    Style="{StaticResource TaskCardGrid}">
-
-                                    <controls:TaskProgressIndicator
-                                        RepeatCount="{Binding RepeatCount}"
-                                        TargetRepeatCount="{Binding TargetRepeatCount}"
-                                        Grid.Column="0"
-                                        Grid.RowSpan="2"/>
-
-                                    <Label
-                                        Style="{StaticResource TaskLabel}"
-                                        Text="{Binding ActionName}"
-                                        Grid.Column="1"
-                                        Grid.Row="0"/>
-
-                                    <Frame
-                                        Style="{StaticResource ModificatorCard}"
-                                        BackgroundColor="{Binding Priority, Converter={converters:PriorityToColorConverter}}"
-                                        Grid.Column="1"
-                                        Grid.Row="1"
-                                        Margin="{StaticResource ModificatorMargin}">
+                                        <controls:TaskProgressIndicator
+                                            RepeatCount="{Binding RepeatCount}"
+                                            TargetRepeatCount="{Binding TargetRepeatCount}"
+                                            Grid.Column="0"
+                                            Grid.RowSpan="2"/>
 
                                         <Label
-                                            Style="{StaticResource ModificatorLabel}"
-                                            Text="{Binding Priority, Converter={converters:PriorityToTextConverter}}"/>
-                                    </Frame>
-                                </Grid>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </Grid>
-        </VerticalStackLayout>
-    </ScrollView>
+                                            Style="{StaticResource TaskLabel}"
+                                            Text="{Binding ActionName}"
+                                            Grid.Column="1"
+                                            Grid.Row="0"/>
+
+                                        <controls:СonditionalTaskModificatorsView
+                                            CompletionTime="{Binding CompletionTime}"
+                                            Note="{Binding Note}"
+                                            Grid.Column="1"
+                                            Grid.Row="1">
+
+                                            <controls:СonditionalTaskModificatorsView.Frequency>
+                                                <MultiBinding Converter="{converters:RepeatTimePeriodConverter}">
+                                                    <Binding Path="TargetRepeatCount"/>
+                                                    <Binding Path="RepeatTimePeriod"/>
+                                                </MultiBinding>
+                                            </controls:СonditionalTaskModificatorsView.Frequency>
+                                        </controls:СonditionalTaskModificatorsView>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+
+                <Grid
+                    Style="{StaticResource TasksCollectionGrid}">
+
+                    <Label
+                        Style="{StaticResource SubHeadline}"
+                        TextColor="{StaticResource GeneralTask}"
+                        Text="Основные задачи"
+                        Grid.Column="0"
+                        Grid.Row="0"/>
+
+                    <VerticalStackLayout
+                        IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
+                        Margin="{StaticResource DummyLabelMargin}"
+                        Grid.Column="0"
+                        Grid.Row="1">
+
+                        <ActivityIndicator
+                            Style="{StaticResource DummyActivityIndicator}"
+                            Color="{StaticResource GeneralTask}"/>
+
+                        <Label
+                            TextColor="{StaticResource GeneralTask}"
+                            Text="Загружаем основные задачи.."
+                            HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <CollectionView
+                        Style="{StaticResource TasksCollectionView}"
+                        IsVisible="{Binding IsTasksLoaded}"
+                        ItemsSource="{Binding GeneralTasks}"
+                        SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding TaskPerformedCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
+                        Grid.Column="0"
+                        Grid.Row="1">
+
+                        <CollectionView.EmptyView>
+                            <Label
+                            Style="{StaticResource EmptyViewLabel}"
+                            TextColor="{StaticResource GeneralTask}"/>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame
+                                    x:DataType="tasks:GeneralTask"
+                                    Style="{StaticResource TaskCard}"
+                                    Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
+
+                                    <Grid
+                                        Style="{StaticResource TaskCardGrid}">
+
+                                        <controls:TaskProgressIndicator
+                                            RepeatCount="{Binding RepeatCount}"
+                                            TargetRepeatCount="{Binding TargetRepeatCount}"
+                                            Grid.Column="0"
+                                            Grid.RowSpan="2"/>
+
+                                        <Label
+                                            Style="{StaticResource TaskLabel}"
+                                            Text="{Binding ActionName}"
+                                            Grid.Column="1"
+                                            Grid.Row="0"/>
+
+                                        <Frame
+                                            Style="{StaticResource ModificatorCard}"
+                                            BackgroundColor="{Binding Priority, Converter={converters:PriorityToColorConverter}}"
+                                            Grid.Column="1"
+                                            Grid.Row="1"
+                                            Margin="{StaticResource ModificatorMargin}">
+
+                                            <Label
+                                                Style="{StaticResource ModificatorLabel}"
+                                                Text="{Binding Priority, Converter={converters:PriorityToTextConverter}}"/>
+                                        </Frame>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Frame
+            Style="{StaticResource BottomPanel}"
+            Grid.Column="0"
+            Grid.Row="1">
+
+            <HorizontalStackLayout
+                Spacing="20"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+
+                <VerticalStackLayout>
+                    <ImageButton
+                        Style="{StaticResource ActionButton}"
+                        Command="{Binding AddTaskCommand}"/>
+
+                    <Label
+                        Style="{StaticResource ActionButtonLabel}"
+                        Text="Добавить"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <ImageButton
+                        Style="{StaticResource ActionButton}"/>
+
+                    <Label
+                        Style="{StaticResource ActionButtonLabel}"
+                        Text="Изменить"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <ImageButton
+                        Style="{StaticResource ActionButton}"/>
+
+                    <Label
+                        Style="{StaticResource ActionButtonLabel}"                        
+                        Text="Удалить"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <ImageButton
+                        Style="{StaticResource ActionButton}"/>
+
+                    <Label
+                        Style="{StaticResource ActionButtonLabel}"
+                        TextColor="{StaticResource GeneralTask}"
+                        Text="Очистить"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+    </Grid>
 </ContentPage>

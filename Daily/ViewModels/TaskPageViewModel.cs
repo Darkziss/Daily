@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
+using Daily.Pages;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -27,6 +28,8 @@ namespace Daily.ViewModels
 
         public Command<GeneralTask> TaskPerformedCommand { get; }
         public Command<СonditionalTask> ConditionalTaskPerformedCommand { get; }
+
+        public Command AddTaskCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
@@ -87,6 +90,13 @@ namespace Daily.ViewModels
                 SelectedСonditionalTask = null;
             },
             canExecute: CanPerformTask);
+
+            AddTaskCommand = new Command(
+            execute: async () =>
+            {
+                await PageRouter.RouteTo(nameof(TaskEditPage));
+            },
+            canExecute: () => PageRouter.IsRouting);
 
             PropertyChanged += (_, args) =>
             {
