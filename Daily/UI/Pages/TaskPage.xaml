@@ -20,6 +20,7 @@
             <x:Double x:Key="TaskCardSpacing">7</x:Double>
 
             <Thickness x:Key="ModificatorMargin">0, 0, 0, 8</Thickness>
+            <Thickness x:Key="DummyLabelMargin">0, 30, 0, 0</Thickness>
 
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
@@ -67,6 +68,11 @@
                 <Setter Property="RowDefinitions" Value="Auto, *"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="ActivityIndicator" x:Key="DummyActivityIndicator">
+                <Setter Property="WidthRequest" Value="30"/>
+                <Setter Property="HeightRequest" Value="30"/>
             </Style>
 
             <Style TargetType="CollectionView" x:Key="TasksCollectionView">
@@ -180,6 +186,22 @@
                     Grid.Column="0"
                     Grid.Row="0"/>
 
+                <VerticalStackLayout
+                    IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
+                    Margin="{StaticResource DummyLabelMargin}"
+                    Grid.Column="0"
+                    Grid.Row="1">
+
+                    <ActivityIndicator
+                        Style="{StaticResource DummyActivityIndicator}"
+                        Color="{StaticResource CondTask}"/>
+
+                    <Label
+                        TextColor="{StaticResource CondTask}"
+                        Text="Загружаем условные задачи.."
+                        HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
                 <CollectionView
                     Style="{StaticResource TasksCollectionView}"
                     IsVisible="{Binding IsTasksLoaded}"
@@ -258,20 +280,18 @@
 
                 <VerticalStackLayout
                     IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
-                    Margin="0, 50, 0, 0"
+                    Margin="{StaticResource DummyLabelMargin}"
                     Grid.Column="0"
                     Grid.Row="1">
 
                     <ActivityIndicator
-                        Color="{StaticResource GeneralTask}"
-                        WidthRequest="30"
-                        HeightRequest="30"/>
+                        Style="{StaticResource DummyActivityIndicator}"
+                        Color="{StaticResource GeneralTask}"/>
 
                     <Label
                         TextColor="{StaticResource GeneralTask}"
                         Text="Загружаем основные задачи.."
                         HorizontalOptions="Center"/>
-
                 </VerticalStackLayout>
 
                 <CollectionView
