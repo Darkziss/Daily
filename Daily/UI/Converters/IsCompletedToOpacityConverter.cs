@@ -3,7 +3,7 @@ using Daily.Tasks;
 
 namespace Daily.Converters
 {
-    public class BoolToOpacityConverter : IValueConverter
+    public class IsCompletedToOpacityConverter : IValueConverter
     {
         private double incompletedOpacity = 1d;
         private double completedOpacity = 0.5d;

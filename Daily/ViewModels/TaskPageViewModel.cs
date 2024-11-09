@@ -17,6 +17,10 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private bool _isTasksLoaded = false;
 
+        [ObservableProperty] private bool _canAddTask = true;
+        [ObservableProperty] private bool _canEditTask = false;
+        [ObservableProperty] private bool _canDeleteTask = false;
+
         private readonly GoalStorage _goalStorage;
         private readonly TaskStorage _taskStorage;
 
@@ -30,6 +34,8 @@ namespace Daily.ViewModels
         public Command<СonditionalTask> ConditionalTaskPerformedCommand { get; }
 
         public Command AddTaskCommand { get; }
+        public Command SwitchCanEditTaskCommand { get; }
+        public Command SwitchCanDeleteTaskCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
@@ -94,9 +100,14 @@ namespace Daily.ViewModels
             AddTaskCommand = new Command(
             execute: async () =>
             {
-                await PageRouter.RouteTo(nameof(TaskEditPage));
-            },
-            canExecute: () => PageRouter.IsRouting);
+                CanAddTask = false;
+                
+                await PageRouter.RouteToPage(nameof(TaskEditPage));
+            });
+
+            SwitchCanEditTaskCommand = new Command(() => CanEditTask = !CanEditTask);
+
+            SwitchCanDeleteTaskCommand = new Command(() => CanDeleteTask = !CanDeleteTask);
 
             PropertyChanged += (_, args) =>
             {
@@ -115,6 +126,10 @@ namespace Daily.ViewModels
         {
             IsEditingGoal = false;
             IsTasksLoaded = false;
+
+            CanAddTask = true;
+            CanEditTask = false;
+            CanDeleteTask = false;
 
             TaskPerformedCommand.ChangeCanExecute();
             ConditionalTaskPerformedCommand.ChangeCanExecute();

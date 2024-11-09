@@ -1,27 +1,23 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 
 namespace Daily.Converters
 {
     public class BoolToColorConverter : IValueConverter
     {
-        private static readonly Color incompletedColor;
-        private static readonly Color completedColor;
+        public Color TrueColor { get; set; } = Colors.White;
+        public Color FalseColor { get; set; } = Colors.Gray;
 
-        private const string completedColorHex = "71b866";
-
-        static BoolToColorConverter()
-        {
-            incompletedColor = Colors.Transparent;
-            completedColor = Color.FromRgba(completedColorHex);
-        }
-        
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value == null || value is not bool) return null;
+            if (value is not bool) return null;
 
-            bool isCompleted = (bool)value;
+            Debug.WriteLine($"TrueColor: {TrueColor.ToRgbaHex()}");
+            Debug.WriteLine($"FalseColor: {FalseColor.ToRgbaHex()}");
 
-            return isCompleted ? completedColor : incompletedColor;
+            bool canEditTask = (bool)value;
+
+            return canEditTask ? TrueColor : FalseColor;
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

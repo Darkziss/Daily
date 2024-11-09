@@ -11,7 +11,7 @@ namespace Daily.ViewModels
             RouteToTaskPage = new Command(
             execute: async () =>
             {
-                await PageRouter.RouteTo(nameof(TaskPage));
+                await PageRouter.RouteToPage(nameof(TaskPage));
             },
             canExecute: () =>
             {

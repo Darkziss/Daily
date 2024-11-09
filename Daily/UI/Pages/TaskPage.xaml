@@ -36,6 +36,21 @@
 
             <Color x:Key="PanelBackground">#f9fbff</Color>
 
+            <Color x:Key="GreenSelected">#aaf786</Color>
+            <Color x:Key="RedSelected">#f78786</Color>
+            
+            <Color x:Key="Disabled">#c3c3c3</Color>
+
+            <converters:BoolToColorConverter
+                x:Key="CanEditTaskToColorConverter"
+                TrueColor="{StaticResource GreenSelected}"
+                FalseColor="{StaticResource Hover}"/>
+
+            <converters:BoolToColorConverter
+                x:Key="CanDeleteTaskToColorConverter"
+                TrueColor="{StaticResource RedSelected}"
+                FalseColor="{StaticResource Hover}"/>
+
             <Style TargetType="Frame" x:Key="GoalCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Goal}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
@@ -161,6 +176,20 @@
                 <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
+
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal"/>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Disabled}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver"/>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
 
             <Style TargetType="Label" x:Key="ActionButtonLabel">
@@ -273,8 +302,8 @@
                                 <Frame
                                     x:DataType="tasks:СonditionalTask"
                                     Style="{StaticResource TaskCard}"
-                                    Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
-                                    BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
+                                    Opacity="{Binding IsCompleted, Converter={converters:IsCompletedToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={converters:IsCompletedToColorConverter}}">
 
                                     <Grid
                                         Style="{StaticResource TaskCardGrid}">
@@ -349,8 +378,8 @@
 
                         <CollectionView.EmptyView>
                             <Label
-                            Style="{StaticResource EmptyViewLabel}"
-                            TextColor="{StaticResource GeneralTask}"/>
+                                Style="{StaticResource EmptyViewLabel}"
+                                TextColor="{StaticResource GeneralTask}"/>
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemTemplate>
@@ -358,8 +387,8 @@
                                 <Frame
                                     x:DataType="tasks:GeneralTask"
                                     Style="{StaticResource TaskCard}"
-                                    Opacity="{Binding IsCompleted, Converter={converters:BoolToOpacityConverter}}"
-                                    BorderColor="{Binding IsCompleted, Converter={converters:BoolToColorConverter}}">
+                                    Opacity="{Binding IsCompleted, Converter={converters:IsCompletedToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={converters:IsCompletedToColorConverter}}">
 
                                     <Grid
                                         Style="{StaticResource TaskCardGrid}">
@@ -408,6 +437,7 @@
 
                 <VerticalStackLayout>
                     <ImageButton
+                        IsEnabled="{Binding CanAddTask}"
                         Style="{StaticResource ActionButton}"
                         Command="{Binding AddTaskCommand}"/>
 
@@ -418,7 +448,10 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        Style="{StaticResource ActionButton}"/>
+                        IsEnabled="{Binding CanAddTask}"
+                        Style="{StaticResource ActionButton}"
+                        BackgroundColor="{Binding CanEditTask, Converter={StaticResource CanEditTaskToColorConverter}}"
+                        Command="{Binding SwitchCanEditTaskCommand}"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
@@ -427,7 +460,10 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        Style="{StaticResource ActionButton}"/>
+                        IsEnabled="{Binding CanAddTask}"
+                        Style="{StaticResource ActionButton}"
+                        BackgroundColor="{Binding CanDeleteTask, Converter={StaticResource CanDeleteTaskToColorConverter}}"
+                        Command="{Binding SwitchCanDeleteTaskCommand}"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"                        

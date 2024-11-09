@@ -19,10 +19,5 @@ namespace Daily
         {
             _viewModel.PrepareView();
         }
-
-        protected override void OnNavigatedTo(NavigatedToEventArgs args)
-        {
-            _viewModel.AddTaskCommand.ChangeCanExecute();
-        }
     }
 }

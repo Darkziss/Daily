@@ -66,7 +66,7 @@ namespace Daily.ViewModels
                 if (IsConditionalTaskMode) await CreateConditionalTaskAsync();
                 else await CreateGeneralTaskAsync();
                 
-                await PageRouter.RouteToPrevious();
+                await PageRouter.RouteToPreviousPage();
 
                 IsCreatingNewTask = false;
             },

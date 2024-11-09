@@ -11,10 +11,12 @@ namespace Daily
         private const bool animateRouting = false;
 
         private const string routingExceptionText = "Already routing to page";
+        private const string nullPageNameExceptionText = "Page name is null";
 
-        public static async Task RouteTo(string pageName)
+        public static async Task RouteToPage(string pageName)
         {
-            if (_isRouting || string.IsNullOrWhiteSpace(pageName)) throw new Exception(routingExceptionText);
+            if (_isRouting) throw new Exception(routingExceptionText);
+            else if (string.IsNullOrWhiteSpace(pageName)) throw new ArgumentNullException(nullPageNameExceptionText);
 
             _isRouting = true;
 
@@ -23,15 +25,6 @@ namespace Daily
             _isRouting = false;
         }
 
-        public static async Task RouteToPrevious()
-        {
-            if (_isRouting) throw new Exception(routingExceptionText);
-
-            _isRouting = true;
-
-            await Shell.Current.GoToAsync(backwards, animateRouting);
-
-            _isRouting = false;
-        }
+        public static async Task RouteToPreviousPage() => await RouteToPage(backwards);
     }
 }
