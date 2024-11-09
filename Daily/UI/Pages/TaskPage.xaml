@@ -116,18 +116,33 @@
                 <Setter Property="RowDefinitions" Value="Auto, Auto"/>
             </Style>
 
-            <Style TargetType="Label" x:Key="EmptyViewLabel">
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Text" Value="Пока здесь нет задач"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
             <Style TargetType="Label" x:Key="TaskLabel">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="LineBreakMode" Value="WordWrap"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
                 <Setter Property="Margin" Value="0, 8, 0, 0"/>
+            </Style>
+
+            <Style TargetType="controls:TaskProgressIndicator">
+                <Setter Property="IncompletedColor" Value="{StaticResource Gray}"/>
+                <Setter Property="CompletedColor" Value="{StaticResource Completed}"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
+
+            <Style TargetType="controls:СonditionalTaskModificatorsView">
+                <Setter Property="FrequencyCardColor" Value="{StaticResource Frequency}"/>
+                <Setter Property="CompletionTimeCardColor" Value="{StaticResource Time}"/>
+                <Setter Property="NoteCardColor" Value="{StaticResource Note}"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="EmptyViewLabel">
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Text" Value="Пока здесь нет задач"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
         </ResourceDictionary>
@@ -232,10 +247,6 @@
                                     <controls:TaskProgressIndicator
                                         RepeatCount="{Binding RepeatCount}"
                                         TargetRepeatCount="{Binding TargetRepeatCount}"
-                                        IncompletedColor="{StaticResource Gray}"
-                                        CompletedColor="{StaticResource Completed}"
-                                        VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Grid.Column="0"
                                         Grid.RowSpan="2"/>
 
@@ -246,9 +257,6 @@
                                         Grid.Row="0"/>
 
                                     <controls:СonditionalTaskModificatorsView
-                                        FrequencyCardColor="{StaticResource Frequency}"
-                                        CompletionTimeCardColor="{StaticResource Time}"
-                                        NoteCardColor="{StaticResource Note}"
                                         CompletionTime="{Binding CompletionTime}"
                                         Note="{Binding Note}"
                                         Grid.Column="1"
@@ -324,10 +332,6 @@
                                     <controls:TaskProgressIndicator
                                         RepeatCount="{Binding RepeatCount}"
                                         TargetRepeatCount="{Binding TargetRepeatCount}"
-                                        IncompletedColor="{StaticResource Gray}"
-                                        CompletedColor="{StaticResource Completed}"
-                                        VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
                                         Grid.Column="0"
                                         Grid.RowSpan="2"/>
 
