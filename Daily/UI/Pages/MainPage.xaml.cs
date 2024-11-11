@@ -1,6 +1,6 @@
 ﻿using Daily.ViewModels;
 
-namespace Daily
+namespace Daily.Pages
 {
     public partial class MainPage : ContentPage
     {

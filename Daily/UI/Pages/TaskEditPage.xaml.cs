@@ -1,22 +1,23 @@
 using Daily.ViewModels;
 
-namespace Daily.Pages;
-
-public partial class TaskEditPage : ContentPage
+namespace Daily.Pages
 {
-	private TaskEditPageViewModel _viewModel;
-	
-	public TaskEditPage(TaskEditPageViewModel viewModel)
-	{
-		InitializeComponent();
-
-		_viewModel = viewModel;
-
-		BindingContext = viewModel;
-	}
-
-    protected override void OnAppearing()
+    public partial class TaskEditPage : ContentPage
     {
-		_viewModel.PrepareView();
+        private readonly TaskEditPageViewModel _viewModel;
+
+        public TaskEditPage(TaskEditPageViewModel viewModel)
+        {
+            InitializeComponent();
+
+            _viewModel = viewModel;
+
+            BindingContext = viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            _viewModel.PrepareView();
+        }
     }
 }
