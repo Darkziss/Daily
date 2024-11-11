@@ -8,7 +8,7 @@ namespace Daily
         public static bool IsRouting => _isRouting;
 
         private const string backwards = "..";
-        private const bool animateRouting = false;
+        private const bool animateRouting = true;
 
         private const string routingExceptionText = "Already routing to page";
         private const string nullPageNameExceptionText = "Page name is null";

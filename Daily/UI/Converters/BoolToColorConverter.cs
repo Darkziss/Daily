@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Daily.Converters
 {
@@ -11,9 +10,6 @@ namespace Daily.Converters
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is not bool) return null;
-
-            Debug.WriteLine($"TrueColor: {TrueColor.ToRgbaHex()}");
-            Debug.WriteLine($"FalseColor: {FalseColor.ToRgbaHex()}");
 
             bool canEditTask = (bool)value;
 
