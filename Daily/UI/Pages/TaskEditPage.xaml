@@ -287,6 +287,18 @@
             Text="Создать"
             Command="{Binding CreateTaskCommand}"
             Grid.Column="0"
-            Grid.Row="1"/>
+            Grid.Row="1">
+
+            <Button.Triggers>
+                <DataTrigger
+                    TargetType="Button"
+                    Binding="{Binding IsEditMode}"
+                    Value="True">
+
+                    <Setter Property="Text" Value="Изменить"/>
+                    <Setter Property="Command" Value="{Binding EditTaskCommand}"/>
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
     </Grid>
 </ContentPage>

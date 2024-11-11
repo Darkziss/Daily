@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Maui.Alerts;
 using Daily.Tasks;
+using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -19,8 +20,12 @@ namespace Daily.ViewModels
         [ObservableProperty] private int _completionTime = 0;
         [ObservableProperty] private string _note = string.Empty;
 
+        [ObservableProperty] private bool _isEditMode = false;
+
         [ObservableProperty] private bool _isConditionalTaskMode = false;
         [ObservableProperty] private bool _isCreatingNewTask = false;
+
+        private TaskBase? _currentTask = null;
 
         private readonly TaskStorage _taskStorage;
 
@@ -35,6 +40,7 @@ namespace Daily.ViewModels
         public Command ChangeViewCommand { get; }
 
         public Command CreateTaskCommand { get; }
+        public Command EditTaskCommand { get; }
 
         private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
 
@@ -72,6 +78,25 @@ namespace Daily.ViewModels
             },
             canExecute: () => CanCreateTask);
 
+            EditTaskCommand = new Command(
+            execute: async () =>
+            {
+                if (_currentTask == null)
+                {
+                    return;
+                }
+                
+                IsCreatingNewTask = true;
+
+                TaskPriority priority = (TaskPriority)PriorityIndex;
+
+                GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
+
+                await _taskStorage.EditGeneralTaskAsync(_currentTask, task);
+
+                IsCreatingNewTask = false;
+            });
+
             PropertyChanged += (_, args) =>
             {
                 if (args.PropertyName == nameof(ActionName))
@@ -85,10 +110,50 @@ namespace Daily.ViewModels
             };
         }
 
-        public void PrepareView()
+        public void PrepareViewForEdit(GeneralTask task)
         {
-            ActionName = string.Empty;
+            _currentTask = task;
             
+            IsEditMode = true;
+
+            SelectedTaskSegmentIndex = 0;
+
+            ActionName = task.ActionName;
+
+            PriorityIndex = (int)task.Priority;
+            RepeatTimePeriodIndex = 0;
+
+            TargetRepeatCount = task.TargetRepeatCount;
+
+            CompletionTime = 0;
+            Note = string.Empty;
+        }
+
+        public void PrepareViewForEdit(СonditionalTask task)
+        {
+            IsEditMode = true;
+
+            SelectedTaskSegmentIndex = 1;
+
+            ActionName = task.ActionName;
+
+            PriorityIndex = 0;
+            RepeatTimePeriodIndex = (int)task.RepeatTimePeriod;
+
+            TargetRepeatCount = task.TargetRepeatCount;
+
+            CompletionTime = task.CompletionTime;
+            Note = task.Note;
+        }
+
+        public void ResetView()
+        {
+            IsEditMode = false;
+
+            SelectedTaskSegmentIndex = 0;
+            
+            ActionName = string.Empty;
+
             PriorityIndex = 0;
             RepeatTimePeriodIndex = 0;
 

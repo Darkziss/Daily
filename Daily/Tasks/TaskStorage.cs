@@ -62,6 +62,24 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
+        public async Task EditGeneralTaskAsync(TaskBase oldTask, GeneralTask newTask)
+        {
+            bool isValid = TaskValidator.ValidateTask(newTask);
+
+            if (!isValid) return;
+
+            int index = GeneralTasks.IndexOf((GeneralTask)oldTask);
+
+            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
+
+            GeneralTasks.RemoveAt(index);
+            
+            GeneralTasks.Add(newTask);
+            if (GeneralTasks.Count > 1) SortGeneralTasks();
+
+            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
+        }
+
         public async Task CreateConditionalTaskAsync(string action, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int minCompletionTime, string note)
         {
             if (IsConditionalTasksFull) throw new Exception(maxConditionalTasksExceptionText);
@@ -87,6 +105,7 @@ namespace Daily.Tasks
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
         }
 
+        [Obsolete]
         private bool ValidateTask(TaskBase task)
         {
             if (string.IsNullOrWhiteSpace(task.ActionName)) return false;

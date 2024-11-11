@@ -286,7 +286,7 @@
                         IsVisible="{Binding IsTasksLoaded}"
                         ItemsSource="{Binding СonditionalTasks}"
                         SelectedItem="{Binding SelectedСonditionalTask, Mode=TwoWay}"
-                        SelectionChangedCommand="{Binding ConditionalTaskPerformedCommand}"
+                        SelectionChangedCommand="{Binding СonditionalTaskInteractCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                         Grid.Column="0"
                         Grid.Row="1">
@@ -371,7 +371,7 @@
                         IsVisible="{Binding IsTasksLoaded}"
                         ItemsSource="{Binding GeneralTasks}"
                         SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
-                        SelectionChangedCommand="{Binding TaskPerformedCommand}"
+                        SelectionChangedCommand="{Binding GeneralTaskInteractCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                         Grid.Column="0"
                         Grid.Row="1">

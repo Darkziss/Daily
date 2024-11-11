@@ -2,6 +2,7 @@
 using Daily.Tasks;
 using Daily.Pages;
 using AsyncTimer = System.Timers.Timer;
+using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -30,14 +31,16 @@ namespace Daily.ViewModels
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
 
-        public Command<GeneralTask> TaskPerformedCommand { get; }
-        public Command<СonditionalTask> ConditionalTaskPerformedCommand { get; }
+        public Command<GeneralTask> GeneralTaskInteractCommand { get; }
+        public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
 
         public Command AddTaskCommand { get; }
         public Command SwitchCanEditTaskCommand { get; }
         public Command SwitchCanDeleteTaskCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
+
+        private const string generalTaskParameterName = "GeneralTask";
 
         public TaskPageViewModel(GoalStorage goalStorage, TaskStorage taskStorage)
         {
@@ -77,25 +80,51 @@ namespace Daily.ViewModels
                 return IsEditingGoal;
             });
 
-            bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;
-
-            TaskPerformedCommand = new Command<GeneralTask>(
+            GeneralTaskInteractCommand = new Command<GeneralTask>(
             execute: async (task) =>
             {
-                await _taskStorage.PerformGeneralTaskAsync(task);
+                if (SelectedTask == null) return;
+                
+                if (CanEditTask)
+                {
+                    CanAddTask = false;
+                    
+                    var parameters = new ShellNavigationQueryParameters()
+                    {
+                        [nameof(GeneralTask)] = task
+                    };
+
+                    await PageRouter.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+                }
+                else
+                {
+                    await PerformGeneralTaskAsync(task);
+                }
 
                 SelectedTask = null;
-            },
-            canExecute: CanPerformTask);
+            });
 
-            ConditionalTaskPerformedCommand = new Command<СonditionalTask>(
+            СonditionalTaskInteractCommand = new Command<СonditionalTask>(
             execute: async (task) =>
             {
-                await _taskStorage.PerformСonditionalTaskAsync(task);
+                if (CanEditTask)
+                {
+                    CanAddTask = false;
 
-                SelectedСonditionalTask = null;
-            },
-            canExecute: CanPerformTask);
+                    var parameters = new ShellNavigationQueryParameters()
+                    {
+                        [nameof(СonditionalTask)] = task
+                    };
+
+                    await PageRouter.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+                }
+                else
+                {
+                    await PerformСonditionalTaskAsync(task);
+                }
+
+                SelectedTask = null;
+            });
 
             AddTaskCommand = new Command(
             execute: async () =>
@@ -108,31 +137,18 @@ namespace Daily.ViewModels
             SwitchCanEditTaskCommand = new Command(() => CanEditTask = !CanEditTask);
 
             SwitchCanDeleteTaskCommand = new Command(() => CanDeleteTask = !CanDeleteTask);
-
-            PropertyChanged += (_, args) =>
-            {
-                if (args.PropertyName == nameof(SelectedTask))
-                {
-                    TaskPerformedCommand.ChangeCanExecute();
-                }
-                else if (args.PropertyName == nameof(SelectedСonditionalTask))
-                {
-                    ConditionalTaskPerformedCommand.ChangeCanExecute();
-                }
-            };
         }
 
-        public void PrepareView()
+        public void ResetView()
         {
             IsEditingGoal = false;
             IsTasksLoaded = false;
 
+            SelectedTask = null;
+
             CanAddTask = true;
             CanEditTask = false;
             CanDeleteTask = false;
-
-            TaskPerformedCommand.ChangeCanExecute();
-            ConditionalTaskPerformedCommand.ChangeCanExecute();
 
             const double delay = 800d;
             AsyncTimer timer = new AsyncTimer(delay);
@@ -154,5 +170,21 @@ namespace Daily.ViewModels
 
             return isNullOrWhiteSpace ? goalLabelDefaultText : _goalStorage.Goal;
         }
+
+        private async Task PerformGeneralTaskAsync(GeneralTask task)
+        {
+            if (!CanPerformTask(task)) return;
+
+            await _taskStorage.PerformGeneralTaskAsync(task);
+        }
+
+        private async Task PerformСonditionalTaskAsync(СonditionalTask task)
+        {
+            if (!CanPerformTask(task)) return;
+
+            await _taskStorage.PerformСonditionalTaskAsync(task);
+        }
+
+        private bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Daily.Pages;
 
 namespace Daily.ViewModels
 {
@@ -19,7 +20,7 @@ namespace Daily.ViewModels
             });
         }
 
-        public void PrepareView()
+        public void ResetView()
         {
             RouteToTaskPage.ChangeCanExecute();
         }

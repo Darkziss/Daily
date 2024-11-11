@@ -1,8 +1,10 @@
+using Daily.Tasks;
 using Daily.ViewModels;
+using System.Diagnostics;
 
 namespace Daily.Pages
 {
-    public partial class TaskEditPage : ContentPage
+    public partial class TaskEditPage : ContentPage, IQueryAttributable
     {
         private readonly TaskEditPageViewModel _viewModel;
 
@@ -15,9 +17,23 @@ namespace Daily.Pages
             BindingContext = viewModel;
         }
 
-        protected override void OnAppearing()
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            _viewModel.PrepareView();
+            bool isGeneralTask = query.ContainsKey(nameof(GeneralTask));
+            bool isConditionalTask = query.ContainsKey(nameof(ÑonditionalTask));
+            
+            if (isGeneralTask)
+            {
+                GeneralTask task = (GeneralTask)query[nameof(GeneralTask)];
+
+                _viewModel.PrepareViewForEdit(task);
+            }
+            else if (isConditionalTask)
+            {
+                ÑonditionalTask task = (ÑonditionalTask)query[nameof(ÑonditionalTask)];
+                _viewModel.PrepareViewForEdit(task);
+            }
+            else _viewModel.ResetView();
         }
     }
 }

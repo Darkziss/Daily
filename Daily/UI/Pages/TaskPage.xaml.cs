@@ -17,7 +17,7 @@ namespace Daily.Pages
 
         protected override void OnAppearing()
         {
-            _viewModel.PrepareView();
+            _viewModel.ResetView();
         }
     }
 }
