@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Maui.Alerts;
 using Daily.Tasks;
 using System.Diagnostics;
+using Daily.Toasts;
 
 namespace Daily.ViewModels
 {
@@ -29,27 +30,12 @@ namespace Daily.ViewModels
 
         private readonly TaskStorage _taskStorage;
 
-        private readonly IToast _taskCreatedToast = Toast.Make(taskCreatedToastMessage, 
-            toastDuration, toastTextSize);
-
-        private readonly IToast _generalTasksFullToast = Toast.Make(generalTasksFullToastMessage, 
-            toastDuration, toastTextSize);
-        private readonly IToast _conditionalTasksFullToast = Toast.Make(conditionalTasksFullToastMessage,
-            toastDuration, toastTextSize);
-
         public Command ChangeViewCommand { get; }
 
         public Command CreateTaskCommand { get; }
         public Command EditTaskCommand { get; }
 
         private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
-
-        private const string taskCreatedToastMessage = "Задача была успешно создана";
-        private const string generalTasksFullToastMessage = "Ошибка: Уже создано максимум основных задач";
-        private const string conditionalTasksFullToastMessage = "Ошибка: Уже создано максимум условных задач";
-
-        private const ToastDuration toastDuration = ToastDuration.Long;
-        private const double toastTextSize = 16d;
 
         public TaskEditPageViewModel(TaskStorage taskStorage)
         {
@@ -165,25 +151,25 @@ namespace Daily.ViewModels
 
         private async Task CreateGeneralTaskAsync()
         {
-            if (_taskStorage.IsGeneralTasksFull) await _generalTasksFullToast.Show();
+            if (_taskStorage.IsGeneralTasksFull) await TaskToastHandler.ShowGeneralTasksFullToastAsync();
             else
             {
                 TaskPriority priority = (TaskPriority)PriorityIndex;
 
                 await _taskStorage.CreateGeneralTaskAsync(ActionName, TargetRepeatCount, priority);
-                await _taskCreatedToast.Show();
+                await TaskToastHandler.ShowTaskCreatedToastAsync();
             }
         }
 
         private async Task CreateConditionalTaskAsync()
         {
-            if (_taskStorage.IsConditionalTasksFull) await _conditionalTasksFullToast.Show();
+            if (_taskStorage.IsConditionalTasksFull) await TaskToastHandler.ShowConditionalTasksFullToastAsync();
             else
             {
                 TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
 
                 await _taskStorage.CreateConditionalTaskAsync(ActionName, TargetRepeatCount, repeatTimePeriod, CompletionTime, Note);
-                await _taskCreatedToast.Show();
+                await TaskToastHandler.ShowTaskCreatedToastAsync();
             }
         }
     }

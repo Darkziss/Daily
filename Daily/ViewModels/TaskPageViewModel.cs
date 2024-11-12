@@ -13,7 +13,7 @@ namespace Daily.ViewModels
         [ObservableProperty] private string _goalLabelText;
         [ObservableProperty] private string _goalEntryText;
 
-        [ObservableProperty] private object? _selectedTask = null;
+        [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
 
         [ObservableProperty] private bool _isTasksLoaded = false;
@@ -83,7 +83,7 @@ namespace Daily.ViewModels
             GeneralTaskInteractCommand = new Command<GeneralTask>(
             execute: async (task) =>
             {
-                if (SelectedTask == null) return;
+                if (SelectedGeneralTask == null) return;
                 
                 if (CanEditTask)
                 {
@@ -101,12 +101,14 @@ namespace Daily.ViewModels
                     await PerformGeneralTaskAsync(task);
                 }
 
-                SelectedTask = null;
+                SelectedGeneralTask = null;
             });
 
             СonditionalTaskInteractCommand = new Command<СonditionalTask>(
             execute: async (task) =>
             {
+                if (SelectedСonditionalTask == null) return;
+                
                 if (CanEditTask)
                 {
                     CanAddTask = false;
@@ -123,7 +125,7 @@ namespace Daily.ViewModels
                     await PerformСonditionalTaskAsync(task);
                 }
 
-                SelectedTask = null;
+                SelectedСonditionalTask = null;
             });
 
             AddTaskCommand = new Command(
@@ -143,8 +145,6 @@ namespace Daily.ViewModels
         {
             IsEditingGoal = false;
             IsTasksLoaded = false;
-
-            SelectedTask = null;
 
             CanAddTask = true;
             CanEditTask = false;

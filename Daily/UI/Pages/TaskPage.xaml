@@ -370,7 +370,7 @@
                         Style="{StaticResource TasksCollectionView}"
                         IsVisible="{Binding IsTasksLoaded}"
                         ItemsSource="{Binding GeneralTasks}"
-                        SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                        SelectedItem="{Binding SelectedGeneralTask, Mode=TwoWay}"
                         SelectionChangedCommand="{Binding GeneralTaskInteractCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                         Grid.Column="0"
