@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Pages;
+using Daily.Navigation;
 
 namespace Daily.ViewModels
 {
@@ -12,11 +13,11 @@ namespace Daily.ViewModels
             RouteToTaskPage = new Command(
             execute: async () =>
             {
-                await PageRouter.RouteToPage(nameof(TaskPage));
+                await PageNavigator.RouteToPage(nameof(TaskPage));
             },
             canExecute: () =>
             {
-                return !PageRouter.IsRouting;
+                return !PageNavigator.IsRouting;
             });
         }
 

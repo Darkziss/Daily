@@ -1,9 +1,7 @@
-﻿using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Maui.Alerts;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
-using System.Diagnostics;
 using Daily.Toasts;
+using Daily.Navigation;
 
 namespace Daily.ViewModels
 {
@@ -58,7 +56,7 @@ namespace Daily.ViewModels
                 if (IsConditionalTaskMode) await CreateConditionalTaskAsync();
                 else await CreateGeneralTaskAsync();
                 
-                await PageRouter.RouteToPreviousPage();
+                await PageNavigator.RouteToPreviousPage();
 
                 IsCreatingNewTask = false;
             },
@@ -67,18 +65,13 @@ namespace Daily.ViewModels
             EditTaskCommand = new Command(
             execute: async () =>
             {
-                if (_currentTask == null)
-                {
-                    return;
-                }
-                
+                if (_currentTask == null) return;
+
                 IsCreatingNewTask = true;
 
-                TaskPriority priority = (TaskPriority)PriorityIndex;
+                await EditGeneralTaskAsync();
 
-                GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
-
-                await _taskStorage.EditGeneralTaskAsync(_currentTask, task);
+                await PageNavigator.RouteToPreviousPage();
 
                 IsCreatingNewTask = false;
             });
@@ -171,6 +164,18 @@ namespace Daily.ViewModels
                 await _taskStorage.CreateConditionalTaskAsync(ActionName, TargetRepeatCount, repeatTimePeriod, CompletionTime, Note);
                 await TaskToastHandler.ShowTaskCreatedToastAsync();
             }
+        }
+
+        private async Task EditGeneralTaskAsync()
+        {
+            if (_currentTask == null) return;
+            
+            TaskPriority priority = (TaskPriority)PriorityIndex;
+
+            GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
+
+            await _taskStorage.EditGeneralTaskAsync(_currentTask, task);
+            await TaskToastHandler.ShowTaskEditedToastAsync();
         }
     }
 }

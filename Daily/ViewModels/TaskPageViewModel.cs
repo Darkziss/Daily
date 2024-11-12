@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
 using Daily.Pages;
+using Daily.Navigation;
 using AsyncTimer = System.Timers.Timer;
-using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -39,8 +39,6 @@ namespace Daily.ViewModels
         public Command SwitchCanDeleteTaskCommand { get; }
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
-
-        private const string generalTaskParameterName = "GeneralTask";
 
         public TaskPageViewModel(GoalStorage goalStorage, TaskStorage taskStorage)
         {
@@ -94,7 +92,7 @@ namespace Daily.ViewModels
                         [nameof(GeneralTask)] = task
                     };
 
-                    await PageRouter.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+                    await PageNavigator.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
                 }
                 else
                 {
@@ -118,7 +116,7 @@ namespace Daily.ViewModels
                         [nameof(СonditionalTask)] = task
                     };
 
-                    await PageRouter.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+                    await PageNavigator.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
                 }
                 else
                 {
@@ -133,7 +131,7 @@ namespace Daily.ViewModels
             {
                 CanAddTask = false;
                 
-                await PageRouter.RouteToPage(nameof(TaskEditPage));
+                await PageNavigator.RouteToPage(nameof(TaskEditPage));
             });
 
             SwitchCanEditTaskCommand = new Command(() => CanEditTask = !CanEditTask);

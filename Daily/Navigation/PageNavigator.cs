@@ -1,7 +1,8 @@
-﻿
-namespace Daily
+﻿using Daily.Pages;
+
+namespace Daily.Navigation
 {
-    public static class PageRouter
+    public static class PageNavigator
     {
         public static bool IsRouting { get; private set; }
 
