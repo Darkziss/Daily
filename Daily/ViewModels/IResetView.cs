@@ -1,7 +1,7 @@
 ﻿
 namespace Daily.ViewModels
 {
-    public interface IPrepareView
+    public interface IResetView
     {
         public void ResetView();
     }

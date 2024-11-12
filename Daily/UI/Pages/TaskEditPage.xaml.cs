@@ -21,7 +21,7 @@ namespace Daily.Pages
         {
             bool isGeneralTask = query.ContainsKey(nameof(GeneralTask));
             bool isConditionalTask = query.ContainsKey(nameof(ÑonditionalTask));
-            
+
             if (isGeneralTask)
             {
                 GeneralTask task = (GeneralTask)query[nameof(GeneralTask)];

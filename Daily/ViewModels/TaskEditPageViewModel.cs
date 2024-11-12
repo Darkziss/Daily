@@ -5,7 +5,7 @@ using Daily.Navigation;
 
 namespace Daily.ViewModels
 {
-    public partial class TaskEditPageViewModel : ObservableObject, IPrepareView
+    public partial class TaskEditPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private int _selectedTaskSegmentIndex = 0;
         
@@ -144,14 +144,16 @@ namespace Daily.ViewModels
 
         private async Task CreateGeneralTaskAsync()
         {
-            if (_taskStorage.IsGeneralTasksFull) await TaskToastHandler.ShowGeneralTasksFullToastAsync();
-            else
+            if (_taskStorage.IsGeneralTasksFull)
             {
-                TaskPriority priority = (TaskPriority)PriorityIndex;
-
-                await _taskStorage.CreateGeneralTaskAsync(ActionName, TargetRepeatCount, priority);
-                await TaskToastHandler.ShowTaskCreatedToastAsync();
+                await TaskToastHandler.ShowGeneralTasksFullToastAsync();
+                return;
             }
+            
+            TaskPriority priority = (TaskPriority)PriorityIndex;
+
+            await _taskStorage.CreateGeneralTaskAsync(ActionName, TargetRepeatCount, priority);
+            await TaskToastHandler.ShowTaskCreatedToastAsync();
         }
 
         private async Task CreateConditionalTaskAsync()
@@ -168,13 +170,11 @@ namespace Daily.ViewModels
 
         private async Task EditGeneralTaskAsync()
         {
-            if (_currentTask == null) return;
-            
             TaskPriority priority = (TaskPriority)PriorityIndex;
 
             GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
 
-            await _taskStorage.EditGeneralTaskAsync(_currentTask, task);
+            await _taskStorage.EditGeneralTaskAsync(_currentTask!, task);
             await TaskToastHandler.ShowTaskEditedToastAsync();
         }
     }

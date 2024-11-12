@@ -4,7 +4,7 @@ using Daily.Navigation;
 
 namespace Daily.ViewModels
 {
-    public partial class MainPageViewModel : ObservableObject, IPrepareView
+    public partial class MainPageViewModel : ObservableObject, IResetView
     {
         public Command RouteToTaskPage { get; }
 

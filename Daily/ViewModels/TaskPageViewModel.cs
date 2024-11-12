@@ -6,7 +6,7 @@ using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
 {
-    public partial class TaskPageViewModel : ObservableObject, IPrepareView
+    public partial class TaskPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isEditingGoal = false;
 

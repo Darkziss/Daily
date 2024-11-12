@@ -93,6 +93,7 @@
                 Margin="20, 0, 0, 0"/>
 
             <controls:SegmentedControl
+                IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
                 Style="{StaticResource TaskSegmentedControl}"
                 AutoDisconnectHandler="False"
                 WidthRequest="330"
