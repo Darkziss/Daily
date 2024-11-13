@@ -36,6 +36,8 @@ namespace Daily.Tasks
             else СonditionalTasks = new ObservableCollection<СonditionalTask>(dataProvider.СonditionalTasks);
         }
 
+        #region GeneralTasks
+
         public async Task CreateGeneralTaskAsync(string action, int targetRepeatCount, TaskPriority priority)
         {
             if (IsGeneralTasksFull) throw new Exception(maxGeneralTasksExceptionText);
@@ -80,6 +82,16 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
+        public async Task ResetGeneralTaskAsync(GeneralTask task)
+        {
+            if (task == null) return;
+            else if (!GeneralTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
+
+            task.Reset();
+
+            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
+        }
+
         public async Task DeleteGeneralTaskAsync(GeneralTask task)
         {
             if (task == null) return;
@@ -92,6 +104,10 @@ namespace Daily.Tasks
 
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
+
+        #endregion
+
+        #region СonditionalTasks
 
         public async Task CreateConditionalTaskAsync(string action, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int minCompletionTime, string note)
         {
@@ -137,6 +153,16 @@ namespace Daily.Tasks
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
         }
 
+        public async Task ResetСonditionalTaskAsync(СonditionalTask task)
+        {
+            if (task == null) return;
+            else if (!СonditionalTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
+
+            task.Reset();
+
+            await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
+        }
+
         public async Task DeleteConditionalTaskAsync(СonditionalTask task)
         {
             if (task == null) return;
@@ -177,5 +203,7 @@ namespace Daily.Tasks
                 СonditionalTasks.Add(task);
             }
         }
+
+        #endregion
     }
 }

@@ -89,11 +89,11 @@ namespace Daily.ViewModels
             execute: async (task) =>
             {
                 if (SelectedGeneralTask == null || !CanInteractWithTask) return;
-                
+
                 if (CanEditTask)
                 {
                     CanInteractWithTask = false;
-                    
+
                     var parameters = new ShellNavigationQueryParameters()
                     {
                         [nameof(GeneralTask)] = task
@@ -110,10 +110,8 @@ namespace Daily.ViewModels
 
                     ShowDummy();
                 }
-                else
-                {
-                    await PerformGeneralTaskAsync(task);
-                }
+                else if (CanResetTask) await ResetGeneralTaskAsync(task);
+                else await PerformGeneralTaskAsync(task);
 
                 SelectedGeneralTask = null;
             });
@@ -143,10 +141,8 @@ namespace Daily.ViewModels
 
                     ShowDummy();
                 }
-                else
-                {
-                    await PerformСonditionalTaskAsync(task);
-                }
+                else if (CanResetTask) await ResetConditionalTaskAsync(task);
+                else await PerformСonditionalTaskAsync(task);
 
                 SelectedСonditionalTask = null;
             });
@@ -222,6 +218,20 @@ namespace Daily.ViewModels
             if (!CanPerformTask(task)) return;
 
             await _taskStorage.PerformСonditionalTaskAsync(task);
+        }
+
+        private async Task ResetGeneralTaskAsync(GeneralTask task)
+        {
+            if (task == null || task.RepeatCount == 0) return;
+
+            await _taskStorage.ResetGeneralTaskAsync(task);
+        }
+
+        private async Task ResetConditionalTaskAsync(СonditionalTask task)
+        {
+            if (task == null || task.RepeatCount == 0) return;
+
+            await _taskStorage.ResetСonditionalTaskAsync(task);
         }
 
         private bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;

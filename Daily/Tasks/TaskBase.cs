@@ -63,6 +63,17 @@ namespace Daily.Tasks
             if (IsCompleted) OnPropertyChanged(nameof(IsCompleted));
         }
 
+        public void Reset()
+        {
+            if (RepeatCount == 0) return;
+
+            bool wasCompleted = IsCompleted;
+
+            RepeatCount = 0;
+
+            if (wasCompleted) OnPropertyChanged(nameof(IsCompleted));
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
