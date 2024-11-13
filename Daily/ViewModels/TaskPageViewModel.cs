@@ -38,6 +38,8 @@ namespace Daily.ViewModels
         public Command SwitchCanEditTaskCommand { get; }
         public Command SwitchCanDeleteTaskCommand { get; }
 
+        private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
+
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
         public TaskPageViewModel(GoalStorage goalStorage, TaskStorage taskStorage)
@@ -142,24 +144,29 @@ namespace Daily.ViewModels
         public void ResetView()
         {
             IsEditingGoal = false;
-            IsTasksLoaded = false;
 
             CanAddTask = true;
             CanEditTask = false;
             CanDeleteTask = false;
 
-            const double delay = 800d;
-            AsyncTimer timer = new AsyncTimer(delay);
-
-            timer.Elapsed += (_, _) =>
+            if (ShouldLoadTask)
             {
-                timer.Stop();
-                timer.Dispose();
+                IsTasksLoaded = false;
+                
+                const double delay = 800d;
+                AsyncTimer timer = new AsyncTimer(delay);
 
-                IsTasksLoaded = true;
-            };
+                timer.Elapsed += (_, _) =>
+                {
+                    timer.Stop();
+                    timer.Dispose();
 
-            timer.Start();
+                    IsTasksLoaded = true;
+                };
+
+                timer.Start();
+            }
+            else IsTasksLoaded = true;
         }
 
         private string GetGoalOrDefaultText()

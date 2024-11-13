@@ -22,7 +22,7 @@ namespace Daily.Tasks
         private const string maxGeneralTasksExceptionText = "Already created max amount of general tasks";
         private const string maxConditionalTasksExceptionText = "Already created max amount of conditional tasks";
 
-        private const string taskIndexOutOfRangeExceptionText = "Task index is out of range";
+        private const string invalidTaskExceptionText = "Invalid task";
         private const string taskIsNotOnListExceptionText = "Task is not on the list";
 
         public TaskStorage(DataProvider dataProvider)
@@ -52,30 +52,30 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
+        public async Task EditGeneralTaskAsync(GeneralTask oldTask, GeneralTask newTask)
+        {
+            bool isValid = TaskValidator.ValidateTask(newTask);
+
+            if (!isValid) return;
+
+            int index = GeneralTasks.IndexOf(oldTask);
+
+            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
+
+            GeneralTasks.RemoveAt(index);
+
+            GeneralTasks.Add(newTask);
+            if (GeneralTasks.Count > 1) SortGeneralTasks();
+
+            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
+        }
+
         public async Task PerformGeneralTaskAsync(GeneralTask task)
         {
             if (task == null) return;
             else if (!GeneralTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
             task.Perform();
-
-            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
-        }
-
-        public async Task EditGeneralTaskAsync(TaskBase oldTask, GeneralTask newTask)
-        {
-            bool isValid = TaskValidator.ValidateTask(newTask);
-
-            if (!isValid) return;
-
-            int index = GeneralTasks.IndexOf((GeneralTask)oldTask);
-
-            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
-
-            GeneralTasks.RemoveAt(index);
-            
-            GeneralTasks.Add(newTask);
-            if (GeneralTasks.Count > 1) SortGeneralTasks();
 
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
@@ -91,6 +91,25 @@ namespace Daily.Tasks
             if (!isValid) return;
 
             СonditionalTasks.Add(task);
+            if (СonditionalTasks.Count > 1) SortConditionalTasks();
+
+            await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
+        }
+
+        public async Task EditConditionalTaskAsync(СonditionalTask oldTask, СonditionalTask newTask)
+        {
+            bool isValid = TaskValidator.ValidateСonditionalTask(newTask);
+
+            if (!isValid) return;
+
+            int index = СonditionalTasks.IndexOf(oldTask);
+
+            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
+
+            СonditionalTasks.RemoveAt(index);
+
+            СonditionalTasks.Add(newTask);
+            if (СonditionalTasks.Count > 1) SortConditionalTasks();
 
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
         }
@@ -105,23 +124,31 @@ namespace Daily.Tasks
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
         }
 
-        [Obsolete]
-        private bool ValidateTask(TaskBase task)
-        {
-            if (string.IsNullOrWhiteSpace(task.ActionName)) return false;
-            else if (task.TargetRepeatCount < minRepeatCount || task.TargetRepeatCount > maxRepeatCount) return false;
-            else return true;
-        }
-
         private void SortGeneralTasks()
         {
-            var sorted = GeneralTasks.OrderBy(task => task.Priority).ToList();
+            var sorted = GeneralTasks.OrderBy(task => task.Priority)
+                .ThenBy(task => task.ActionName)
+                .ToList();
 
             GeneralTasks.Clear();
 
             foreach (GeneralTask task in sorted)
             {
                 GeneralTasks.Add(task);
+            }
+        }
+
+        private void SortConditionalTasks()
+        {
+            var sorted = СonditionalTasks.OrderByDescending(task => task.RepeatTimePeriod)
+                .ThenBy(task => task.ActionName)
+                .ToList();
+
+            СonditionalTasks.Clear();
+
+            foreach (СonditionalTask task in sorted)
+            {
+                СonditionalTasks.Add(task);
             }
         }
     }

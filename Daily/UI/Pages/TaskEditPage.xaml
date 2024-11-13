@@ -90,7 +90,18 @@
                 Style="{StaticResource Headline}"
                 FontSize="30"
                 Text="Создание задачи"
-                Margin="20, 0, 0, 0"/>
+                Margin="20, 0, 0, 0">
+
+                <Label.Triggers>
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding IsEditMode}"
+                        Value="True">
+
+                        <Setter Property="Text" Value="Изменение задачи"/>
+                    </DataTrigger>
+                </Label.Triggers>                
+            </Label>
 
             <controls:SegmentedControl
                 IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"

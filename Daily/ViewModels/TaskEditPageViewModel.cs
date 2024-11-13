@@ -69,12 +69,14 @@ namespace Daily.ViewModels
 
                 IsCreatingNewTask = true;
 
-                await EditGeneralTaskAsync();
+                if (IsConditionalTaskMode) await EditConditionalTaskAsync();
+                else await EditGeneralTaskAsync();
 
                 await PageNavigator.RouteToPreviousPage();
 
                 IsCreatingNewTask = false;
-            });
+            },
+            canExecute: () => CanCreateTask);
 
             PropertyChanged += (_, args) =>
             {
@@ -94,6 +96,7 @@ namespace Daily.ViewModels
             _currentTask = task;
             
             IsEditMode = true;
+            IsConditionalTaskMode = false;
 
             SelectedTaskSegmentIndex = 0;
 
@@ -110,7 +113,10 @@ namespace Daily.ViewModels
 
         public void PrepareViewForEdit(СonditionalTask task)
         {
+            _currentTask = task;
+            
             IsEditMode = true;
+            IsConditionalTaskMode = true;
 
             SelectedTaskSegmentIndex = 1;
 
@@ -174,7 +180,18 @@ namespace Daily.ViewModels
 
             GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
 
-            await _taskStorage.EditGeneralTaskAsync(_currentTask!, task);
+            await _taskStorage.EditGeneralTaskAsync((GeneralTask)_currentTask!, task);
+            await TaskToastHandler.ShowTaskEditedToastAsync();
+        }
+
+        private async Task EditConditionalTaskAsync()
+        {
+            TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
+
+            СonditionalTask task = new СonditionalTask(ActionName, TargetRepeatCount, repeatTimePeriod,
+                CompletionTime, Note);
+
+            await _taskStorage.EditConditionalTaskAsync((СonditionalTask)_currentTask!, task);
             await TaskToastHandler.ShowTaskEditedToastAsync();
         }
     }
