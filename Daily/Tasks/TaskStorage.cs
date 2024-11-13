@@ -80,6 +80,19 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
+        public async Task DeleteGeneralTaskAsync(GeneralTask task)
+        {
+            if (task == null) return;
+
+            int index = GeneralTasks.IndexOf(task);
+
+            if (index == -1) throw new ArgumentException(taskIsNotOnListExceptionText);
+
+            GeneralTasks.RemoveAt(index);
+
+            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
+        }
+
         public async Task CreateConditionalTaskAsync(string action, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int minCompletionTime, string note)
         {
             if (IsConditionalTasksFull) throw new Exception(maxConditionalTasksExceptionText);
@@ -120,6 +133,19 @@ namespace Daily.Tasks
             else if (!СonditionalTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
             task.Perform();
+
+            await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
+        }
+
+        public async Task DeleteConditionalTaskAsync(СonditionalTask task)
+        {
+            if (task == null) return;
+
+            int index = СonditionalTasks.IndexOf(task);
+
+            if (index == -1) throw new ArgumentException(taskIsNotOnListExceptionText);
+
+            СonditionalTasks.RemoveAt(index);
 
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
         }

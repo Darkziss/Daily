@@ -9,6 +9,8 @@ namespace Daily.Toasts
             toastDuration, toastTextSize);
         private static readonly IToast _taskEditedToast = Toast.Make(taskEditedToastMessage,
             toastDuration, toastTextSize);
+        private static readonly IToast _taskDeletedToast = Toast.Make(taskDeletedToastMessage,
+            toastDuration, toastTextSize);
 
         private static readonly IToast _generalTasksFullToast = Toast.Make(generalTasksFullToastMessage,
             toastDuration, toastTextSize);
@@ -17,6 +19,7 @@ namespace Daily.Toasts
 
         private const string taskCreatedToastMessage = "Задача была успешно создана";
         private const string taskEditedToastMessage = "Задача была успешно изменена";
+        private const string taskDeletedToastMessage = "Задача удалена";
 
         private const string generalTasksFullToastMessage = "Ошибка: Уже создано максимум основных задач";
         private const string conditionalTasksFullToastMessage = "Ошибка: Уже создано максимум условных задач";
@@ -27,6 +30,8 @@ namespace Daily.Toasts
         public static async Task ShowTaskCreatedToastAsync() => await _taskCreatedToast.Show();
 
         public static async Task ShowTaskEditedToastAsync() => await _taskEditedToast.Show();
+
+        public static async Task ShowTaskDeletedToastAsync() => await _taskDeletedToast.Show();
 
         public static async Task ShowGeneralTasksFullToastAsync() => await _generalTasksFullToast.Show();
 

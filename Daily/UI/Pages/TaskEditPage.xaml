@@ -283,7 +283,7 @@
                     Placeholder="Введите примечание"
                     Text="{Binding Note, Mode=TwoWay}"
                     Keyboard="Text"
-                    MaxLength="15"
+                    MaxLength="12"
                     WidthRequest="{StaticResource DefaultElementWidth}"
                     HorizontalOptions="Start"
                     Grid.Column="0"
@@ -297,7 +297,7 @@
             BackgroundColor="{StaticResource Good}"
             FontSize="27"
             Text="Создать"
-            Command="{Binding CreateTaskCommand}"
+            Command="{Binding MakeTaskReady}"
             Grid.Column="0"
             Grid.Row="1">
 
@@ -308,7 +308,6 @@
                     Value="True">
 
                     <Setter Property="Text" Value="Изменить"/>
-                    <Setter Property="Command" Value="{Binding EditTaskCommand}"/>
                 </DataTrigger>
             </Button.Triggers>
         </Button>

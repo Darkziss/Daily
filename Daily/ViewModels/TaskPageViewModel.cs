@@ -2,6 +2,7 @@
 using Daily.Tasks;
 using Daily.Pages;
 using Daily.Navigation;
+using Daily.Toasts;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -87,7 +88,7 @@ namespace Daily.ViewModels
             GeneralTaskInteractCommand = new Command<GeneralTask>(
             execute: async (task) =>
             {
-                if (SelectedGeneralTask == null) return;
+                if (SelectedGeneralTask == null || !CanInteractWithTask) return;
                 
                 if (CanEditTask)
                 {
@@ -100,6 +101,15 @@ namespace Daily.ViewModels
 
                     await PageNavigator.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
                 }
+                else if (CanDeleteTask)
+                {
+                    CanInteractWithTask = false;
+
+                    await _taskStorage.DeleteGeneralTaskAsync(task);
+                    await TaskToastHandler.ShowTaskDeletedToastAsync();
+
+                    ShowDummy();
+                }
                 else
                 {
                     await PerformGeneralTaskAsync(task);
@@ -111,7 +121,7 @@ namespace Daily.ViewModels
             СonditionalTaskInteractCommand = new Command<СonditionalTask>(
             execute: async (task) =>
             {
-                if (SelectedСonditionalTask == null) return;
+                if (SelectedСonditionalTask == null || !CanInteractWithTask) return;
                 
                 if (CanEditTask)
                 {
@@ -123,6 +133,15 @@ namespace Daily.ViewModels
                     };
 
                     await PageNavigator.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+                }
+                else if (CanDeleteTask)
+                {
+                    CanInteractWithTask = false;
+
+                    await _taskStorage.DeleteConditionalTaskAsync(task);
+                    await TaskToastHandler.ShowTaskDeletedToastAsync();
+
+                    ShowDummy();
                 }
                 else
                 {
@@ -172,30 +191,16 @@ namespace Daily.ViewModels
         {
             IsEditingGoal = false;
 
-            CanInteractWithTask = true;
-
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
 
-            if (ShouldLoadTask)
+            if (ShouldLoadTask) ShowDummy();
+            else
             {
-                IsTasksLoaded = false;
-                
-                const double delay = 800d;
-                AsyncTimer timer = new AsyncTimer(delay);
-
-                timer.Elapsed += (_, _) =>
-                {
-                    timer.Stop();
-                    timer.Dispose();
-
-                    IsTasksLoaded = true;
-                };
-
-                timer.Start();
+                IsTasksLoaded = true;
+                CanInteractWithTask = true;
             }
-            else IsTasksLoaded = true;
         }
 
         private string GetGoalOrDefaultText()
@@ -220,5 +225,24 @@ namespace Daily.ViewModels
         }
 
         private bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;
+
+        private void ShowDummy()
+        {
+            IsTasksLoaded = false;
+
+            const double delay = 800d;
+            AsyncTimer timer = new AsyncTimer(delay);
+
+            timer.Elapsed += (_, _) =>
+            {
+                timer.Stop();
+                timer.Dispose();
+
+                IsTasksLoaded = true;
+                CanInteractWithTask = true;
+            };
+
+            timer.Start();
+        }
     }
 }

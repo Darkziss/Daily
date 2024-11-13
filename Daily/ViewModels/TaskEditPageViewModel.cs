@@ -30,8 +30,7 @@ namespace Daily.ViewModels
 
         public Command ChangeViewCommand { get; }
 
-        public Command CreateTaskCommand { get; }
-        public Command EditTaskCommand { get; }
+        public Command MakeTaskReady { get; }
 
         private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
 
@@ -48,29 +47,21 @@ namespace Daily.ViewModels
             },
             canExecute: () => !IsCreatingNewTask);
 
-            CreateTaskCommand = new Command(
+            MakeTaskReady = new Command(
             execute: async () =>
             {
                 IsCreatingNewTask = true;
 
-                if (IsConditionalTaskMode) await CreateConditionalTaskAsync();
-                else await CreateGeneralTaskAsync();
-                
-                await PageNavigator.RouteToPreviousPage();
-
-                IsCreatingNewTask = false;
-            },
-            canExecute: () => CanCreateTask);
-
-            EditTaskCommand = new Command(
-            execute: async () =>
-            {
-                if (_currentTask == null) return;
-
-                IsCreatingNewTask = true;
-
-                if (IsConditionalTaskMode) await EditConditionalTaskAsync();
-                else await EditGeneralTaskAsync();
+                if (IsEditMode)
+                {
+                    if (IsConditionalTaskMode) await EditConditionalTaskAsync();
+                    else await EditGeneralTaskAsync();
+                }
+                else
+                {
+                    if (IsConditionalTaskMode) await CreateConditionalTaskAsync();
+                    else await CreateGeneralTaskAsync();
+                }
 
                 await PageNavigator.RouteToPreviousPage();
 
@@ -82,7 +73,7 @@ namespace Daily.ViewModels
             {
                 if (args.PropertyName == nameof(ActionName))
                 {
-                    CreateTaskCommand.ChangeCanExecute();
+                    MakeTaskReady.ChangeCanExecute();
                 }
                 else if (args.PropertyName == nameof(IsCreatingNewTask))
                 {
@@ -133,6 +124,8 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
+            _currentTask = null;
+
             IsEditMode = false;
 
             SelectedTaskSegmentIndex = 0;
