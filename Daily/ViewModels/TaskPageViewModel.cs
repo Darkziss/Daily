@@ -18,9 +18,11 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private bool _isTasksLoaded = false;
 
-        [ObservableProperty] private bool _canAddTask = true;
+        [ObservableProperty] private bool _canInteractWithTask = true;
+
         [ObservableProperty] private bool _canEditTask = false;
         [ObservableProperty] private bool _canDeleteTask = false;
+        [ObservableProperty] private bool _canResetTask = false;
 
         private readonly GoalStorage _goalStorage;
         private readonly TaskStorage _taskStorage;
@@ -35,8 +37,10 @@ namespace Daily.ViewModels
         public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
 
         public Command AddTaskCommand { get; }
+
         public Command SwitchCanEditTaskCommand { get; }
         public Command SwitchCanDeleteTaskCommand { get; }
+        public Command SwitchCanResetTaskCommand { get; }
 
         private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
 
@@ -87,7 +91,7 @@ namespace Daily.ViewModels
                 
                 if (CanEditTask)
                 {
-                    CanAddTask = false;
+                    CanInteractWithTask = false;
                     
                     var parameters = new ShellNavigationQueryParameters()
                     {
@@ -111,7 +115,7 @@ namespace Daily.ViewModels
                 
                 if (CanEditTask)
                 {
-                    CanAddTask = false;
+                    CanInteractWithTask = false;
 
                     var parameters = new ShellNavigationQueryParameters()
                     {
@@ -131,23 +135,48 @@ namespace Daily.ViewModels
             AddTaskCommand = new Command(
             execute: async () =>
             {
-                CanAddTask = false;
+                CanInteractWithTask = false;
                 
                 await PageNavigator.RouteToPage(nameof(TaskEditPage));
             });
 
-            SwitchCanEditTaskCommand = new Command(() => CanEditTask = !CanEditTask);
+            SwitchCanEditTaskCommand = new Command(
+            execute: () =>
+            {
+                CanEditTask = !CanEditTask;
 
-            SwitchCanDeleteTaskCommand = new Command(() => CanDeleteTask = !CanDeleteTask);
+                CanDeleteTask = false;
+                CanResetTask = false;
+            });
+
+            SwitchCanDeleteTaskCommand = new Command(
+            execute: () =>
+            {
+                CanDeleteTask = !CanDeleteTask;
+
+                CanEditTask = false;
+                CanResetTask = false;
+            });
+
+            SwitchCanResetTaskCommand = new Command(
+            execute: () =>
+            {
+                CanResetTask = !CanResetTask;
+
+                CanEditTask = false;
+                CanDeleteTask = false;
+            });
         }
 
         public void ResetView()
         {
             IsEditingGoal = false;
 
-            CanAddTask = true;
+            CanInteractWithTask = true;
+
             CanEditTask = false;
             CanDeleteTask = false;
+            CanResetTask = false;
 
             if (ShouldLoadTask)
             {

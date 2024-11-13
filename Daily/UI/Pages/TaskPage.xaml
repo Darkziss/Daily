@@ -38,6 +38,7 @@
 
             <Color x:Key="GreenSelected">#aaf786</Color>
             <Color x:Key="RedSelected">#f78786</Color>
+            <Color x:Key="BlueSelected">#86f7ea</Color>
             
             <Color x:Key="Disabled">#c3c3c3</Color>
 
@@ -49,6 +50,11 @@
             <converters:BoolToColorConverter
                 x:Key="CanDeleteTaskToColorConverter"
                 TrueColor="{StaticResource RedSelected}"
+                FalseColor="{StaticResource Hover}"/>
+
+            <converters:BoolToColorConverter
+                x:Key="CanResetTaskToColorConverter"
+                TrueColor="{StaticResource BlueSelected}"
                 FalseColor="{StaticResource Hover}"/>
 
             <Style TargetType="Frame" x:Key="GoalCard">
@@ -437,7 +443,7 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        IsEnabled="{Binding CanAddTask}"
+                        IsEnabled="{Binding CanInteractWithTask}"
                         Style="{StaticResource ActionButton}"
                         Command="{Binding AddTaskCommand}"/>
 
@@ -448,7 +454,7 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        IsEnabled="{Binding CanAddTask}"
+                        IsEnabled="{Binding CanInteractWithTask}"
                         Style="{StaticResource ActionButton}"
                         BackgroundColor="{Binding CanEditTask, Converter={StaticResource CanEditTaskToColorConverter}}"
                         Command="{Binding SwitchCanEditTaskCommand}"/>
@@ -460,24 +466,26 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        IsEnabled="{Binding CanAddTask}"
+                        IsEnabled="{Binding CanInteractWithTask}"
                         Style="{StaticResource ActionButton}"
                         BackgroundColor="{Binding CanDeleteTask, Converter={StaticResource CanDeleteTaskToColorConverter}}"
                         Command="{Binding SwitchCanDeleteTaskCommand}"/>
 
                     <Label
-                        Style="{StaticResource ActionButtonLabel}"                        
+                        Style="{StaticResource ActionButtonLabel}"
                         Text="Удалить"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout>
                     <ImageButton
-                        Style="{StaticResource ActionButton}"/>
+                        IsEnabled="{Binding CanInteractWithTask}"
+                        Style="{StaticResource ActionButton}"
+                        BackgroundColor="{Binding CanResetTask, Converter={StaticResource CanResetTaskToColorConverter}}"
+                        Command="{Binding SwitchCanResetTaskCommand}"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
-                        TextColor="{StaticResource GeneralTask}"
-                        Text="Очистить"/>
+                        Text="Сбросить"/>
                 </VerticalStackLayout>
             </HorizontalStackLayout>
         </Frame>
