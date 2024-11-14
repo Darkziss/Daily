@@ -12,9 +12,13 @@ namespace Daily.Controls
             BindableProperty.Create(nameof(TargetRepeatCount), typeof(int), 
                 typeof(TaskProgressIndicator), defaultTargetRepeatCount, propertyChanged: OnTargetRepeatCountChanged);
 
-        public static readonly BindableProperty IncompletedColorProperty =
-            BindableProperty.Create(nameof(IncompletedColor), typeof(Color), 
-                typeof(TaskProgressIndicator), Colors.White, propertyChanged: OnIncompletedColorChanged);
+        public static readonly BindableProperty ProgressFillColorProperty =
+            BindableProperty.Create(nameof(ProgressFillColor), typeof(Color),
+                typeof(TaskProgressIndicator), Colors.White, propertyChanged: OnProgressFillColorChanged);
+
+        public static readonly BindableProperty BackgroundFillColorProperty =
+            BindableProperty.Create(nameof(BackgroundColor), typeof(Color),
+                typeof(TaskProgressIndicator), Colors.Gray, propertyChanged: OnBackgroundFillColorChanged);
 
         public static readonly BindableProperty CompletedColorProperty =
             BindableProperty.Create(nameof(CompletedColor), typeof(Color),
@@ -35,10 +39,16 @@ namespace Daily.Controls
             set { SetValue(TargetRepeatCountProperty, value); }
         }
 
-        public Color IncompletedColor
+        public Color ProgressFillColor
         {
-            get { return (Color)GetValue(IncompletedColorProperty); }
-            set { SetValue(IncompletedColorProperty, value); }
+            get { return (Color)GetValue(ProgressFillColorProperty); }
+            set { SetValue(ProgressFillColorProperty, value); }
+        }
+
+        public Color BackgroundFillColor
+        {
+            get { return (Color)GetValue(BackgroundFillColorProperty); }
+            set { SetValue(BackgroundFillColorProperty, value); }
         }
 
         public Color CompletedColor
@@ -49,21 +59,21 @@ namespace Daily.Controls
 
         public TaskProgressIndicator()
         {
-            var drawable = new TaskProgressIndicatorDrawable(RepeatCount, TargetRepeatCount, 
-                IncompletedColor, CompletedColor);
+            var drawable = new RadialProgressBarDrawable(RepeatCount, TargetRepeatCount, ProgressFillColor, 
+                BackgroundFillColor, CompletedColor);
 
             Drawable = drawable;
         }
 
-        private static void GetThisGraphicsViewAndDrawable(BindableObject bindable, out GraphicsView graphicsView, out TaskProgressIndicatorDrawable drawable)
+        private static void GetThisGraphicsViewAndDrawable(BindableObject bindable, out GraphicsView graphicsView, out RadialProgressBarDrawable drawable)
         {
             graphicsView = (GraphicsView)bindable;
-            drawable = (TaskProgressIndicatorDrawable)graphicsView.Drawable;
+            drawable = (RadialProgressBarDrawable)graphicsView.Drawable;
         }
 
         private static void OnRepeatCountChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out TaskProgressIndicatorDrawable drawable);
+            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.repeatCount = (int)newValue;
             graphicsView.Invalidate();
@@ -71,24 +81,32 @@ namespace Daily.Controls
 
         private static void OnTargetRepeatCountChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out TaskProgressIndicatorDrawable drawable);
+            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.targetRepeatCount = (int)newValue;
 
             graphicsView.Invalidate();
         }
 
-        private static void OnIncompletedColorChanged(BindableObject bindable, object oldValue, object newValue)
+        private static void OnProgressFillColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out TaskProgressIndicatorDrawable drawable);
+            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
-            drawable.incompletedColor = (Color)newValue;
+            drawable.progressFillColor = (Color)newValue;
+            graphicsView.Invalidate();
+        }
+
+        private static void OnBackgroundFillColorChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+
+            drawable.backgroundFillColor = (Color)newValue;
             graphicsView.Invalidate();
         }
 
         private static void OnCompletedColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out TaskProgressIndicatorDrawable drawable);
+            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.completedColor = (Color)newValue;
             graphicsView.Invalidate();
