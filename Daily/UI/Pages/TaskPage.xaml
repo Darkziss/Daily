@@ -156,6 +156,12 @@
                 <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
+            <Style TargetType="Label" x:Key="TaskProgressLabel">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
             <Style TargetType="controls:СonditionalTaskModificatorsView">
                 <Setter Property="FrequencyCardColor" Value="{StaticResource Frequency}"/>
                 <Setter Property="CompletionTimeCardColor" Value="{StaticResource Time}"/>
@@ -323,11 +329,8 @@
                                             Grid.RowSpan="2"/>
 
                                         <Label
-                                            IsVisible="False"
-                                            FontSize="14"
+                                            Style="{StaticResource TaskProgressLabel}"
                                             Text="1/3"
-                                            VerticalOptions="Center"
-                                            HorizontalOptions="Center"
                                             Grid.Column="0"
                                             Grid.RowSpan="2"/>
 

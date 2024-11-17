@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Daily.Drawables
 {
@@ -26,16 +25,12 @@ namespace Daily.Drawables
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            const float radiusDivisor = 3.5f;
+            const float radiusDivisor = 4f;
             float radius = dirtyRect.Height / radiusDivisor;
 
             Vector2 center = new Vector2(dirtyRect.Width / 2f, dirtyRect.Height / 2f);
-            Vector2 arcCenter = new Vector2(center.X - radius / 2f, center.Y - radius / 2f);
 
             const float startAngle = 90f;
-
-            float fillAmount = (float)repeatCount / (float)targetRepeatCount;
-            float endAngle = startAngle - fillAmount * 360f;
 
             const bool clockwise = true;
             const bool closed = false;
@@ -48,13 +43,18 @@ namespace Daily.Drawables
 
             if (!isEmpty && !isFull)
             {
-                canvas.FillColor = backgroundFillColor;
+                Vector2 arcCenter = new Vector2(center.X - radius / 2f, center.Y - radius / 2f);
+
+                float fillAmount = (float)repeatCount / (float)targetRepeatCount;
+                float endAngle = startAngle - fillAmount * 360f;
+
                 canvas.FillCircle(center.X, center.Y, radius);
 
                 canvas.StrokeColor = progressFillColor;
                 canvas.StrokeSize = radius;
 
-                canvas.DrawArc(arcCenter.X, arcCenter.Y, radius, radius, startAngle, endAngle, clockwise, closed);
+                canvas.DrawArc(arcCenter.X, arcCenter.Y, radius, radius, startAngle, endAngle, 
+                    clockwise, closed);
             }
         }
     }
