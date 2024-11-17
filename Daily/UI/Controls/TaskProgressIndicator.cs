@@ -65,7 +65,7 @@ namespace Daily.Controls
             Drawable = drawable;
         }
 
-        private static void GetThisGraphicsViewAndDrawable(BindableObject bindable, out GraphicsView graphicsView, out RadialProgressBarDrawable drawable)
+        private static void GetGraphicsViewAndDrawable(BindableObject bindable, out GraphicsView graphicsView, out RadialProgressBarDrawable drawable)
         {
             graphicsView = (GraphicsView)bindable;
             drawable = (RadialProgressBarDrawable)graphicsView.Drawable;
@@ -73,7 +73,7 @@ namespace Daily.Controls
 
         private static void OnRepeatCountChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.repeatCount = (int)newValue;
             graphicsView.Invalidate();
@@ -81,7 +81,7 @@ namespace Daily.Controls
 
         private static void OnTargetRepeatCountChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.targetRepeatCount = (int)newValue;
 
@@ -90,7 +90,7 @@ namespace Daily.Controls
 
         private static void OnProgressFillColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.progressFillColor = (Color)newValue;
             graphicsView.Invalidate();
@@ -98,7 +98,7 @@ namespace Daily.Controls
 
         private static void OnBackgroundFillColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.backgroundFillColor = (Color)newValue;
             graphicsView.Invalidate();
@@ -106,7 +106,7 @@ namespace Daily.Controls
 
         private static void OnCompletedColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
-            GetThisGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.completedColor = (Color)newValue;
             graphicsView.Invalidate();

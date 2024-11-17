@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics;
+using System.Numerics;
 
 namespace Daily.Drawables
 {
@@ -25,49 +26,36 @@ namespace Daily.Drawables
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            float radius = dirtyRect.Width / 2f;
-            Vector2 center = CalculateCenterDrawPoint(dirtyRect.Width, dirtyRect.Height, radius);
+            const float radiusDivisor = 3.5f;
+            float radius = dirtyRect.Height / radiusDivisor;
+
+            Vector2 center = new Vector2(dirtyRect.Width / 2f, dirtyRect.Height / 2f);
+            Vector2 arcCenter = new Vector2(center.X - radius / 2f, center.Y - radius / 2f);
+
+            const float startAngle = 90f;
+
+            float fillAmount = (float)repeatCount / (float)targetRepeatCount;
+            float endAngle = startAngle - fillAmount * 360f;
+
+            const bool clockwise = true;
+            const bool closed = false;
 
             bool isEmpty = repeatCount == 0;
             bool isFull = repeatCount == targetRepeatCount;
 
-            if (isEmpty)
+            canvas.FillColor = isFull ? completedColor : backgroundFillColor;
+            canvas.FillCircle(center.X, center.Y, radius);
+
+            if (!isEmpty && !isFull)
             {
                 canvas.FillColor = backgroundFillColor;
                 canvas.FillCircle(center.X, center.Y, radius);
+
+                canvas.StrokeColor = progressFillColor;
+                canvas.StrokeSize = radius;
+
+                canvas.DrawArc(arcCenter.X, arcCenter.Y, radius, radius, startAngle, endAngle, clockwise, closed);
             }
-            else if (isFull)
-            {
-                canvas.FillColor = completedColor;
-
-                canvas.FillCircle(center.X, center.Y, radius);
-            }
-            else
-            {
-                const float startAngle = 90f;
-                const bool clockwise = true;
-
-                float fillAmount = (float)repeatCount / (float)targetRepeatCount;
-                float endAngle = fillAmount * 360f;
-
-                canvas.FillColor = backgroundFillColor;
-                canvas.FillCircle(center.X, center.Y, radius);
-
-                canvas.FillColor = progressFillColor;
-                canvas.FillArc(center.X, center.Y, radius, radius, startAngle, endAngle, clockwise);
-            }
-        }
-
-        private Vector2 CalculateCenterDrawPoint(float width, float height, float ellipseSize)
-        {
-            float CalculateByAxis(float axis) => (axis / 2f) - (ellipseSize / 2f);
-
-            Vector2 result = new Vector2();
-
-            result.X = CalculateByAxis(width);
-            result.Y = CalculateByAxis(height);
-
-            return result;
         }
     }
 }
