@@ -17,7 +17,7 @@ namespace Daily.Controls
                 typeof(TaskProgressIndicator), Colors.White, propertyChanged: OnProgressFillColorChanged);
 
         public static readonly BindableProperty BackgroundFillColorProperty =
-            BindableProperty.Create(nameof(BackgroundColor), typeof(Color),
+            BindableProperty.Create(nameof(BackgroundFillColor), typeof(Color),
                 typeof(TaskProgressIndicator), Colors.Gray, propertyChanged: OnBackgroundFillColorChanged);
 
         public static readonly BindableProperty CompletedColorProperty =

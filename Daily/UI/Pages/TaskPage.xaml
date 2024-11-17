@@ -33,7 +33,7 @@
             <Color x:Key="Note">#edc2df</Color>
 
             <Color x:Key="ProgressFill">#cfcfcf</Color>
-            <Color x:Key="ProgressBackgroundFill">#b1b2b5</Color>
+            <Color x:Key="ProgressBackgroundFill">#a4a4a4</Color>
             <Color x:Key="Completed">#71b866</Color>
 
             <Color x:Key="PanelBackground">#f9fbff</Color>
@@ -158,7 +158,7 @@
             </Style>
 
             <Style TargetType="Label" x:Key="TaskProgressLabel">
-                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontSize" Value="12"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="Shadow">

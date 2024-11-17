@@ -13,9 +13,6 @@ namespace Daily.Tasks
         public bool IsGeneralTasksFull => GeneralTasks.Count == maxGeneralTaskCount;
         public bool IsConditionalTasksFull => СonditionalTasks.Count == maxConditionalTaskCount;
 
-        private const int minRepeatCount = 1;
-        private const int maxRepeatCount = 3;
-
         private const int maxGeneralTaskCount = 10;
         private const int maxConditionalTaskCount = 5;
 

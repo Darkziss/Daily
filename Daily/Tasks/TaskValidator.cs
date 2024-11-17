@@ -4,7 +4,7 @@ namespace Daily.Tasks
     public static class TaskValidator
     {
         private const int minRepeatCount = 1;
-        private const int maxRepeatCount = 3;
+        private const int maxRepeatCount = 10;
 
         private const int minCompletionTime = 0;
 

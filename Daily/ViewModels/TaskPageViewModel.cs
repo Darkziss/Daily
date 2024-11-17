@@ -187,6 +187,8 @@ namespace Daily.ViewModels
         {
             IsEditingGoal = false;
 
+            CanInteractWithTask = false;
+
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;

@@ -221,7 +221,7 @@
                     x:Name="RepeatCountStepper"
                     IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
                     Value="{Binding TargetRepeatCount, Mode=TwoWay}"
-                    Maximum="3"
+                    Maximum="10"
                     Minimum="1"
                     WidthRequest="130"
                     VerticalOptions="Center"
