@@ -10,7 +10,10 @@ namespace Daily.Drawables
         public Color progressFillColor = Colors.White;
         public Color backgroundFillColor = Colors.Gray;
 
-        public Color completedColor = Colors.Green;
+        public Color completedFillColor = Colors.Green;
+
+        private const float radiusDivisor = 3.7f;
+        private const float startAngle = 90f;
 
         public RadialProgressBarDrawable(int repeatCount, int targetRepeatCount, Color progressFillColor, Color backgroundFillColor, Color completedColor)
         {
@@ -20,17 +23,14 @@ namespace Daily.Drawables
             this.progressFillColor = progressFillColor;
             this.backgroundFillColor = backgroundFillColor;
 
-            this.completedColor = completedColor;
+            this.completedFillColor = completedColor;
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            const float radiusDivisor = 4f;
             float radius = dirtyRect.Height / radiusDivisor;
 
             Vector2 center = new Vector2(dirtyRect.Width / 2f, dirtyRect.Height / 2f);
-
-            const float startAngle = 90f;
 
             const bool clockwise = true;
             const bool closed = false;
@@ -38,7 +38,7 @@ namespace Daily.Drawables
             bool isEmpty = repeatCount == 0;
             bool isFull = repeatCount == targetRepeatCount;
 
-            canvas.FillColor = isFull ? completedColor : backgroundFillColor;
+            canvas.FillColor = isFull ? completedFillColor : backgroundFillColor;
             canvas.FillCircle(center.X, center.Y, radius);
 
             if (!isEmpty && !isFull)

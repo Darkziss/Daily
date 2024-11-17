@@ -3,6 +3,7 @@ using Daily.Tasks;
 using Daily.Pages;
 using Daily.Navigation;
 using Daily.Toasts;
+using Daily.Popups;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -105,10 +106,21 @@ namespace Daily.ViewModels
                 {
                     CanInteractWithTask = false;
 
-                    await _taskStorage.DeleteGeneralTaskAsync(task);
-                    await TaskToastHandler.ShowTaskDeletedToastAsync();
+                    const string title = "Удаление задачи";
+                    const string message = "Вы хотите удалить задачу?";
 
-                    ShowDummy();
+                    const string accept = "Да";
+                    const string cancel = "Нет";
+
+                    bool shouldDelete = await PopupHandler.ShowPopupAtCurrentPage(title, message, accept, cancel);
+
+                    if (shouldDelete)
+                    {
+                        await _taskStorage.DeleteGeneralTaskAsync(task);
+                        await TaskToastHandler.ShowTaskDeletedToastAsync();
+
+                        ShowDummy();
+                    }
                 }
                 else if (CanResetTask) await ResetGeneralTaskAsync(task);
                 else await PerformGeneralTaskAsync(task);

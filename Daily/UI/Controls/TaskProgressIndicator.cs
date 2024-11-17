@@ -20,8 +20,8 @@ namespace Daily.Controls
             BindableProperty.Create(nameof(BackgroundFillColor), typeof(Color),
                 typeof(TaskProgressIndicator), Colors.Gray, propertyChanged: OnBackgroundFillColorChanged);
 
-        public static readonly BindableProperty CompletedColorProperty =
-            BindableProperty.Create(nameof(CompletedColor), typeof(Color),
+        public static readonly BindableProperty CompletedFillColorProperty =
+            BindableProperty.Create(nameof(CompletedFillColor), typeof(Color),
                 typeof(TaskProgressIndicator), Colors.Green, propertyChanged: OnCompletedColorChanged);
 
         private const int defaultRepeatCount = 0;
@@ -51,16 +51,16 @@ namespace Daily.Controls
             set { SetValue(BackgroundFillColorProperty, value); }
         }
 
-        public Color CompletedColor
+        public Color CompletedFillColor
         {
-            get { return (Color)GetValue(CompletedColorProperty); }
-            set { SetValue(CompletedColorProperty, value); }
+            get { return (Color)GetValue(CompletedFillColorProperty); }
+            set { SetValue(CompletedFillColorProperty, value); }
         }
 
         public TaskProgressIndicator()
         {
             var drawable = new RadialProgressBarDrawable(RepeatCount, TargetRepeatCount, ProgressFillColor, 
-                BackgroundFillColor, CompletedColor);
+                BackgroundFillColor, CompletedFillColor);
 
             Drawable = drawable;
         }
@@ -108,7 +108,7 @@ namespace Daily.Controls
         {
             GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
-            drawable.completedColor = (Color)newValue;
+            drawable.completedFillColor = (Color)newValue;
             graphicsView.Invalidate();
         }
     }

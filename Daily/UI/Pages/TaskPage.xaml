@@ -152,7 +152,7 @@
             <Style TargetType="controls:TaskProgressIndicator">
                 <Setter Property="ProgressFillColor" Value="{StaticResource ProgressFill}"/>
                 <Setter Property="BackgroundFillColor" Value="{StaticResource ProgressBackgroundFill}"/>
-                <Setter Property="CompletedColor" Value="{StaticResource Completed}"/>
+                <Setter Property="CompletedFillColor" Value="{StaticResource Completed}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
@@ -164,7 +164,7 @@
                 <Setter Property="Shadow">
                     <Setter.Value>
                         <Shadow
-                            Brush="White"
+                            Brush="{StaticResource Gray}"
                             Offset="0, 0"
                             Radius="8"
                             Opacity="1"/>
@@ -378,8 +378,7 @@
                 </Grid>
 
                 <Grid
-                    Style="{StaticResource TasksCollectionGrid}"
-                    IsVisible="False">
+                    Style="{StaticResource TasksCollectionGrid}">
 
                     <Label
                         Style="{StaticResource SubHeadline}"
@@ -436,6 +435,19 @@
                                             TargetRepeatCount="{Binding TargetRepeatCount}"
                                             Grid.Column="0"
                                             Grid.RowSpan="2"/>
+
+                                        <Label
+                                            Style="{StaticResource TaskProgressLabel}"
+                                            Grid.Column="0"
+                                            Grid.RowSpan="2">
+
+                                            <Label.Text>
+                                                <MultiBinding Converter="{converters:TaskProgressConverter}">
+                                                    <Binding Path="RepeatCount"/>
+                                                    <Binding Path="TargetRepeatCount"/>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
 
                                         <Label
                                             Style="{StaticResource TaskLabel}"
