@@ -106,13 +106,7 @@ namespace Daily.ViewModels
                 {
                     CanInteractWithTask = false;
 
-                    const string title = "Удаление задачи";
-                    const string message = "Вы хотите удалить задачу?";
-
-                    const string accept = "Да";
-                    const string cancel = "Нет";
-
-                    bool shouldDelete = await PopupHandler.ShowPopupAtCurrentPage(title, message, accept, cancel);
+                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync();
 
                     if (shouldDelete)
                     {
