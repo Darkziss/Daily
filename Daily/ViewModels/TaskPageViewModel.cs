@@ -264,8 +264,6 @@ namespace Daily.ViewModels
 
                 IsTasksLoaded = true;
                 CanInteractWithTask = true;
-
-                System.Diagnostics.Debug.WriteLine($"Is timer null? {timer == null}");
             };
 
             timer.Start();
