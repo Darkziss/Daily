@@ -51,19 +51,21 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
-        public async Task EditGeneralTaskAsync(GeneralTask oldTask, GeneralTask newTask)
+        public async Task EditGeneralTaskAsync(GeneralTask task, string action, int targetRepeatCount, TaskPriority priority)
         {
-            bool isValid = TaskValidator.ValidateTask(newTask);
+            bool isValid = TaskValidator.ValidateTask(task);
 
             if (!isValid) return;
 
-            int index = GeneralTasks.IndexOf(oldTask);
+            bool contains = GeneralTasks.Contains(task);
 
-            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
+            if (!contains) throw new Exception(taskIsNotOnListExceptionText);
 
-            GeneralTasks.RemoveAt(index);
+            task.ActionName = action;
+            task.TargetRepeatCount = targetRepeatCount;
 
-            GeneralTasks.Add(newTask);
+            task.Priority = priority;
+
             if (GeneralTasks.Count > 1) SortGeneralTasks();
 
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
@@ -102,6 +104,20 @@ namespace Daily.Tasks
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
         }
 
+        private void SortGeneralTasks()
+        {
+            var sorted = GeneralTasks.OrderBy(task => task.Priority)
+                .ThenBy(task => task.ActionName)
+                .ToList();
+
+            GeneralTasks.Clear();
+
+            foreach (GeneralTask task in sorted)
+            {
+                GeneralTasks.Add(task);
+            }
+        }
+
         #endregion
 
         #region СonditionalTasks
@@ -122,19 +138,24 @@ namespace Daily.Tasks
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
         }
 
-        public async Task EditConditionalTaskAsync(СonditionalTask oldTask, СonditionalTask newTask)
+        public async Task EditConditionalTaskAsync(СonditionalTask task, string action, int targetRepeatCount, 
+            TaskRepeatTimePeriod repeatTimePeriod, int completionTime, string note)
         {
-            bool isValid = TaskValidator.ValidateСonditionalTask(newTask);
+            bool isValid = TaskValidator.ValidateСonditionalTask(task);
 
             if (!isValid) return;
 
-            int index = СonditionalTasks.IndexOf(oldTask);
+            bool contains = СonditionalTasks.Contains(task);
 
-            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
+            if (!contains) throw new Exception(taskIsNotOnListExceptionText);
 
-            СonditionalTasks.RemoveAt(index);
+            task.ActionName = action;
+            task.TargetRepeatCount = targetRepeatCount;
 
-            СonditionalTasks.Add(newTask);
+            task.RepeatTimePeriod = repeatTimePeriod;
+            task.CompletionTime = completionTime;
+            task.Note = note;
+
             if (СonditionalTasks.Count > 1) SortConditionalTasks();
 
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
@@ -171,20 +192,6 @@ namespace Daily.Tasks
             СonditionalTasks.RemoveAt(index);
 
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
-        }
-
-        private void SortGeneralTasks()
-        {
-            var sorted = GeneralTasks.OrderBy(task => task.Priority)
-                .ThenBy(task => task.ActionName)
-                .ToList();
-
-            GeneralTasks.Clear();
-
-            foreach (GeneralTask task in sorted)
-            {
-                GeneralTasks.Add(task);
-            }
         }
 
         private void SortConditionalTasks()

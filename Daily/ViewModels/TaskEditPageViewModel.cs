@@ -52,16 +52,20 @@ namespace Daily.ViewModels
             {
                 IsCreatingNewTask = true;
 
-                if (IsEditMode)
-                {
-                    if (IsConditionalTaskMode) await EditConditionalTaskAsync();
-                    else await EditGeneralTaskAsync();
-                }
-                else
+                async Task CreateTaskAsync()
                 {
                     if (IsConditionalTaskMode) await CreateConditionalTaskAsync();
                     else await CreateGeneralTaskAsync();
                 }
+
+                async Task EditTaskAsync()
+                {
+                    if (IsConditionalTaskMode) await EditConditionalTaskAsync();
+                    else await EditGeneralTaskAsync();
+                }
+
+                if (IsEditMode) await EditTaskAsync();
+                else await CreateTaskAsync();
 
                 await PageNavigator.RouteToPreviousPage();
 
@@ -171,9 +175,9 @@ namespace Daily.ViewModels
         {
             TaskPriority priority = (TaskPriority)PriorityIndex;
 
-            GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
+            GeneralTask task = (GeneralTask)_currentTask!;
 
-            await _taskStorage.EditGeneralTaskAsync((GeneralTask)_currentTask!, task);
+            await _taskStorage.EditGeneralTaskAsync(task, ActionName, TargetRepeatCount, priority);
             await TaskToastHandler.ShowTaskEditedToastAsync();
         }
 
@@ -181,10 +185,10 @@ namespace Daily.ViewModels
         {
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
 
-            СonditionalTask task = new СonditionalTask(ActionName, TargetRepeatCount, repeatTimePeriod,
-                CompletionTime, Note);
+            СonditionalTask task = (СonditionalTask)_currentTask!;
 
-            await _taskStorage.EditConditionalTaskAsync((СonditionalTask)_currentTask!, task);
+            await _taskStorage.EditConditionalTaskAsync(task, ActionName, TargetRepeatCount, 
+                repeatTimePeriod, CompletionTime, Note);
             await TaskToastHandler.ShowTaskEditedToastAsync();
         }
     }
