@@ -13,7 +13,15 @@ namespace Daily.Navigation
         private const string invalidPageNameExceptionText = "Page name is null or white space";
         private const string nullNavigationParameterExceptionText = "Navigation parameters are null";
 
-        public static async Task RouteToPage(string pageName)
+        public static async Task GoToTaskPageAsync() => await RouteToPage(nameof(TaskPage));
+
+        public static async Task GoToTaskEditPageAsync() => await RouteToPage(nameof(TaskEditPage));
+
+        public static async Task GoToTaskEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+
+        public static async Task RouteToPreviousPage() => await RouteToPage(backwards);
+
+        private static async Task RouteToPage(string pageName)
         {
             if (IsRouting) throw new Exception(routingExceptionText);
             else if (string.IsNullOrWhiteSpace(pageName)) throw new ArgumentException(invalidPageNameExceptionText);
@@ -25,7 +33,7 @@ namespace Daily.Navigation
             IsRouting = false;
         }
 
-        public static async Task RouteToPageWithParameters(string pageName, ShellNavigationQueryParameters parameters)
+        private static async Task RouteToPageWithParameters(string pageName, ShellNavigationQueryParameters parameters)
         {
             if (IsRouting) throw new Exception(routingExceptionText);
             else if (string.IsNullOrWhiteSpace(pageName)) throw new ArgumentException(invalidPageNameExceptionText);
@@ -37,7 +45,5 @@ namespace Daily.Navigation
 
             IsRouting = false;
         }
-
-        public static async Task RouteToPreviousPage() => await RouteToPage(backwards);
     }
 }

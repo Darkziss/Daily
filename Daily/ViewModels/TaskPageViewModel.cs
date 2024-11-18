@@ -100,7 +100,7 @@ namespace Daily.ViewModels
                         [nameof(GeneralTask)] = task
                     };
 
-                    await PageNavigator.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+                    await PageNavigator.GoToTaskEditPageWithParametersAsync(parameters);
                 }
                 else if (CanDeleteTask)
                 {
@@ -137,7 +137,7 @@ namespace Daily.ViewModels
                         [nameof(СonditionalTask)] = task
                     };
 
-                    await PageNavigator.RouteToPageWithParameters(nameof(TaskEditPage), parameters);
+                    await PageNavigator.GoToTaskEditPageWithParametersAsync(parameters);
                 }
                 else if (CanDeleteTask)
                 {
@@ -164,8 +164,8 @@ namespace Daily.ViewModels
             execute: async () =>
             {
                 CanInteractWithTask = false;
-                
-                await PageNavigator.RouteToPage(nameof(TaskEditPage));
+
+                await PageNavigator.GoToTaskEditPageAsync();
             });
 
             SwitchCanEditTaskCommand = new Command(
