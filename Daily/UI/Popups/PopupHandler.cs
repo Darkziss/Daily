@@ -11,10 +11,10 @@ namespace Daily.Popups
             const string title = "Удаление задачи";
             const string message = "Вы хотите удалить задачу?";
 
-            return await ShowPopupAtCurrentPageAsync(title, message, accept, cancel);
+            return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
         }
         
-        private static async Task<bool> ShowPopupAtCurrentPageAsync(string title, string message, string accept, string cancel)
+        private static async Task<bool> ShowDialogPopupAtCurrentPageAsync(string title, string message, string accept, string cancel)
         {
             Page page = Shell.Current.CurrentPage;
 

@@ -115,6 +115,7 @@ namespace Daily.ViewModels
 
                         ShowDummy();
                     }
+                    else CanInteractWithTask = true;
                 }
                 else if (CanResetTask) await ResetGeneralTaskAsync(task);
                 else await PerformGeneralTaskAsync(task);
@@ -142,10 +143,16 @@ namespace Daily.ViewModels
                 {
                     CanInteractWithTask = false;
 
-                    await _taskStorage.DeleteConditionalTaskAsync(task);
-                    await TaskToastHandler.ShowTaskDeletedToastAsync();
+                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync();
 
-                    ShowDummy();
+                    if (shouldDelete)
+                    {
+                        await _taskStorage.DeleteConditionalTaskAsync(task);
+                        await TaskToastHandler.ShowTaskDeletedToastAsync();
+
+                        ShowDummy();
+                    }
+                    else CanInteractWithTask = true;
                 }
                 else if (CanResetTask) await ResetConditionalTaskAsync(task);
                 else await PerformСonditionalTaskAsync(task);
@@ -192,8 +199,6 @@ namespace Daily.ViewModels
         public void ResetView()
         {
             IsEditingGoal = false;
-
-            CanInteractWithTask = false;
 
             CanEditTask = false;
             CanDeleteTask = false;
@@ -247,6 +252,7 @@ namespace Daily.ViewModels
         private void ShowDummy()
         {
             IsTasksLoaded = false;
+            CanInteractWithTask = false;
 
             const double delay = 800d;
             AsyncTimer timer = new AsyncTimer(delay);
