@@ -107,7 +107,7 @@ namespace Daily.Tasks
         private void SortGeneralTasks()
         {
             var sorted = GeneralTasks.OrderBy(task => task.Priority)
-                .ThenBy(task => task.ActionName)
+                .ThenBy(task => task.ActionName.Length)
                 .ToList();
 
             GeneralTasks.Clear();
