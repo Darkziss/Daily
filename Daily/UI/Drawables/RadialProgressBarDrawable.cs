@@ -12,8 +12,10 @@ namespace Daily.Drawables
 
         public Color completedFillColor = Colors.Green;
 
-        private const float radiusDivisor = 3.7f;
         private const float startAngle = 90f;
+
+        private const bool clockwise = true;
+        private const bool closed = false;
 
         public RadialProgressBarDrawable(int repeatCount, int targetRepeatCount, Color progressFillColor, Color backgroundFillColor, Color completedColor)
         {
@@ -34,9 +36,6 @@ namespace Daily.Drawables
             float radius = height;
 
             Vector2 center = new Vector2(width / 2f, height / 2f);
-
-            const bool clockwise = true;
-            const bool closed = false;
 
             bool isEmpty = repeatCount == 0;
             bool isFull = repeatCount == targetRepeatCount;
