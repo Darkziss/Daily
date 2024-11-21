@@ -44,7 +44,6 @@
     </ContentPage.Resources>
 
     <Grid
-        BackgroundColor="Green"
         ColumnDefinitions="*"
         RowDefinitions="Auto, Auto, Auto, *"
         RowSpacing="20"
@@ -61,7 +60,7 @@
         <Frame
             Style="{StaticResource TaskProgressStatusFrame}"
             Grid.Column="0"
-            Grid.Row="0">
+            Grid.Row="1">
 
             <HorizontalStackLayout
                 Spacing="10"
