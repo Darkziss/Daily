@@ -154,42 +154,57 @@ namespace Daily.ViewModels
             }
             
             TaskPriority priority = (TaskPriority)PriorityIndex;
+            GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
 
-            await _taskStorage.CreateGeneralTaskAsync(ActionName, TargetRepeatCount, priority);
-            await TaskToastHandler.ShowTaskCreatedToastAsync();
+            bool isCreated = await _taskStorage.TryAddGeneralTaskAsync(task);
+
+            if (isCreated) await TaskToastHandler.ShowTaskCreatedToastAsync();
+            else await TaskToastHandler.ShowTaskErrorToastAsync();
         }
 
         private async Task CreateConditionalTaskAsync()
         {
-            if (_taskStorage.IsConditionalTasksFull) await TaskToastHandler.ShowConditionalTasksFullToastAsync();
-            else
+            if (_taskStorage.IsConditionalTasksFull)
             {
-                TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-
-                await _taskStorage.CreateConditionalTaskAsync(ActionName, TargetRepeatCount, repeatTimePeriod, CompletionTime, Note);
-                await TaskToastHandler.ShowTaskCreatedToastAsync();
+                await TaskToastHandler.ShowConditionalTasksFullToastAsync();
+                return;
             }
+            
+            TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
+            СonditionalTask task = new СonditionalTask(ActionName, TargetRepeatCount, repeatTimePeriod,
+                CompletionTime, Note);
+
+            bool isCreated = await _taskStorage.TryAddСonditionalTaskAsync(task);
+
+            if (isCreated) await TaskToastHandler.ShowTaskCreatedToastAsync();
+            else await TaskToastHandler.ShowTaskErrorToastAsync();
         }
 
         private async Task EditGeneralTaskAsync()
         {
+            GeneralTask oldTask = (GeneralTask)_currentTask!;
+
             TaskPriority priority = (TaskPriority)PriorityIndex;
+            GeneralTask newTask = new GeneralTask(ActionName, TargetRepeatCount, priority);
 
-            GeneralTask task = (GeneralTask)_currentTask!;
+            bool isEdited = await _taskStorage.TryEditGeneralTaskAsync(oldTask, newTask);
 
-            await _taskStorage.EditGeneralTaskAsync(task, ActionName, TargetRepeatCount, priority);
-            await TaskToastHandler.ShowTaskEditedToastAsync();
+            if (isEdited) await TaskToastHandler.ShowTaskEditedToastAsync();
+            else await TaskToastHandler.ShowTaskErrorToastAsync();
         }
 
         private async Task EditConditionalTaskAsync()
         {
+            СonditionalTask oldTask = (СonditionalTask)_currentTask!;
+
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
+            СonditionalTask newTask = new СonditionalTask(ActionName, TargetRepeatCount, repeatTimePeriod,
+                CompletionTime, Note);
 
-            СonditionalTask task = (СonditionalTask)_currentTask!;
+            bool isEdited = await _taskStorage.TryEditСonditionalTaskAsync(oldTask, newTask);
 
-            await _taskStorage.EditConditionalTaskAsync(task, ActionName, TargetRepeatCount, 
-                repeatTimePeriod, CompletionTime, Note);
-            await TaskToastHandler.ShowTaskEditedToastAsync();
+            if (isEdited) await TaskToastHandler.ShowTaskEditedToastAsync();
+            else await TaskToastHandler.ShowTaskErrorToastAsync();
         }
     }
 }

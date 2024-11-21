@@ -283,7 +283,7 @@
                     Placeholder="Введите примечание"
                     Text="{Binding Note, Mode=TwoWay}"
                     Keyboard="Text"
-                    MaxLength="12"
+                    MaxLength="15"
                     WidthRequest="{StaticResource DefaultElementWidth}"
                     HorizontalOptions="Start"
                     Grid.Column="0"

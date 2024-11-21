@@ -13,6 +13,9 @@ namespace Daily.Tasks
         public bool IsGeneralTasksFull => GeneralTasks.Count == maxGeneralTaskCount;
         public bool IsConditionalTasksFull => СonditionalTasks.Count == maxConditionalTaskCount;
 
+        private bool ShouldSortGeneralTasks => GeneralTasks.Count > 1;
+        private bool ShouldSortСonditionalTasks => СonditionalTasks.Count > 1;
+
         private const int maxGeneralTaskCount = 10;
         private const int maxConditionalTaskCount = 5;
 
@@ -35,45 +38,44 @@ namespace Daily.Tasks
 
         #region GeneralTasks
 
-        public async Task CreateGeneralTaskAsync(string action, int targetRepeatCount, TaskPriority priority)
+        public async Task<bool> TryAddGeneralTaskAsync(GeneralTask task)
         {
             if (IsGeneralTasksFull) throw new Exception(maxGeneralTasksExceptionText);
 
-            GeneralTask task = new GeneralTask(action, targetRepeatCount, priority);
-
             bool isValid = TaskValidator.ValidateTask(task);
-
-            if (!isValid) return;
-
-            GeneralTasks.Add(task);
-            if (GeneralTasks.Count > 1) SortGeneralTasks();
-
-            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
-        }
-
-        public async Task EditGeneralTaskAsync(GeneralTask task, string action, int targetRepeatCount, TaskPriority priority)
-        {
-            bool isValid = TaskValidator.ValidateTask(task);
-
-            if (!isValid) return;
-
             bool contains = GeneralTasks.Contains(task);
 
-            if (!contains) throw new Exception(taskIsNotOnListExceptionText);
+            if (!isValid || contains) return false;
 
-            task.ActionName = action;
-            task.TargetRepeatCount = targetRepeatCount;
-
-            task.Priority = priority;
-
-            if (GeneralTasks.Count > 1) SortGeneralTasks();
+            GeneralTasks.Add(task);
+            if (ShouldSortGeneralTasks) SortGeneralTasks();
 
             await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
+
+            return true;
+        }
+
+        public async Task<bool> TryEditGeneralTaskAsync(GeneralTask oldTask, GeneralTask newTask)
+        {
+            bool isValid = TaskValidator.ValidateTask(newTask);
+
+            if (!isValid) return false;
+
+            int index = GeneralTasks.IndexOf(oldTask);
+
+            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
+
+            GeneralTasks[index] = newTask;
+            if (ShouldSortGeneralTasks) SortGeneralTasks();
+
+            await _dataProvider.SaveGeneralTasksAsync(GeneralTasks);
+
+            return true;
         }
 
         public async Task PerformGeneralTaskAsync(GeneralTask task)
         {
-            if (task == null) return;
+            if (task == null) throw new ArgumentNullException(invalidTaskExceptionText);
             else if (!GeneralTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
             task.Perform();
@@ -83,7 +85,7 @@ namespace Daily.Tasks
 
         public async Task ResetGeneralTaskAsync(GeneralTask task)
         {
-            if (task == null) return;
+            if (task == null) throw new ArgumentNullException(invalidTaskExceptionText);
             else if (!GeneralTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
             task.Reset();
@@ -122,48 +124,44 @@ namespace Daily.Tasks
 
         #region СonditionalTasks
 
-        public async Task CreateConditionalTaskAsync(string action, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int minCompletionTime, string note)
+        public async Task<bool> TryAddСonditionalTaskAsync(СonditionalTask task)
         {
             if (IsConditionalTasksFull) throw new Exception(maxConditionalTasksExceptionText);
 
-            СonditionalTask task = new СonditionalTask(action, targetRepeatCount, repeatTimePeriod, minCompletionTime, note);
-
             bool isValid = TaskValidator.ValidateСonditionalTask(task);
-
-            if (!isValid) return;
-
-            СonditionalTasks.Add(task);
-            if (СonditionalTasks.Count > 1) SortConditionalTasks();
-
-            await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
-        }
-
-        public async Task EditConditionalTaskAsync(СonditionalTask task, string action, int targetRepeatCount, 
-            TaskRepeatTimePeriod repeatTimePeriod, int completionTime, string note)
-        {
-            bool isValid = TaskValidator.ValidateСonditionalTask(task);
-
-            if (!isValid) return;
-
             bool contains = СonditionalTasks.Contains(task);
 
-            if (!contains) throw new Exception(taskIsNotOnListExceptionText);
+            if (!isValid || contains) return false;
 
-            task.ActionName = action;
-            task.TargetRepeatCount = targetRepeatCount;
-
-            task.RepeatTimePeriod = repeatTimePeriod;
-            task.CompletionTime = completionTime;
-            task.Note = note;
-
-            if (СonditionalTasks.Count > 1) SortConditionalTasks();
+            СonditionalTasks.Add(task);
+            if (ShouldSortСonditionalTasks) SortConditionalTasks();
 
             await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
+
+            return true;
+        }
+
+        public async Task<bool> TryEditСonditionalTaskAsync(СonditionalTask oldTask, СonditionalTask newTask)
+        {
+            bool isValid = TaskValidator.ValidateСonditionalTask(newTask);
+
+            if (!isValid) return false;
+
+            int index = СonditionalTasks.IndexOf(oldTask);
+
+            if (index == -1) throw new Exception(taskIsNotOnListExceptionText);
+
+            СonditionalTasks[index] = newTask;
+            if (ShouldSortСonditionalTasks) SortConditionalTasks();
+
+            await _dataProvider.SaveConditionalTasksAsync(СonditionalTasks);
+
+            return true;
         }
 
         public async Task PerformСonditionalTaskAsync(СonditionalTask task)
         {
-            if (task == null) return;
+            if (task == null) throw new ArgumentNullException(invalidTaskExceptionText);
             else if (!СonditionalTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
             task.Perform();
@@ -173,7 +171,7 @@ namespace Daily.Tasks
 
         public async Task ResetСonditionalTaskAsync(СonditionalTask task)
         {
-            if (task == null) return;
+            if (task == null) throw new ArgumentNullException(invalidTaskExceptionText);
             else if (!СonditionalTasks.Contains(task)) throw new ArgumentException(taskIsNotOnListExceptionText);
 
             task.Reset();
@@ -183,7 +181,7 @@ namespace Daily.Tasks
 
         public async Task DeleteConditionalTaskAsync(СonditionalTask task)
         {
-            if (task == null) return;
+            if (task == null) throw new ArgumentNullException(invalidTaskExceptionText);
 
             int index = СonditionalTasks.IndexOf(task);
 
