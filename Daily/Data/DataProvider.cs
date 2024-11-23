@@ -10,8 +10,8 @@ namespace Daily.Data
     {
         public string? Goal { get; private set; }
 
-        public ICollection<GeneralTask>? GeneralTasks { get; private set; }
-        public ICollection<СonditionalTask>? СonditionalTasks { get; private set; }
+        public IReadOnlyList<GeneralTask>? GeneralTasks { get; private set; }
+        public IReadOnlyList<СonditionalTask>? СonditionalTasks { get; private set; }
 
         private readonly string _goalDataPath;
 
@@ -49,14 +49,14 @@ namespace Daily.Data
             await _textWriter.WriteTextAsync(_goalDataPath, goal);
         }
 
-        public async Task SaveGeneralTasksAsync(ICollection<GeneralTask> generalTasks)
+        public async Task SaveGeneralTasksAsync(IReadOnlyList<GeneralTask> generalTasks)
         {
-            await _dataSerializer.SerializeAsync<ICollection<GeneralTask>>(_generalTasksDataPath, generalTasks);
+            await _dataSerializer.SerializeAsync<IReadOnlyList<GeneralTask>>(_generalTasksDataPath, generalTasks);
         }
 
-        public async Task SaveConditionalTasksAsync(ICollection<СonditionalTask> сonditionalTasks)
+        public async Task SaveConditionalTasksAsync(IReadOnlyList<СonditionalTask> сonditionalTasks)
         {
-            await _dataSerializer.SerializeAsync<ICollection<СonditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
+            await _dataSerializer.SerializeAsync<IReadOnlyList<СonditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
         }
 
         private string? LoadGoal()
@@ -67,19 +67,25 @@ namespace Daily.Data
             else return null;
         }
 
-        private ICollection<GeneralTask>? LoadGeneralTasks()
+        private IReadOnlyList<GeneralTask>? LoadGeneralTasks()
         {
             bool exists = File.Exists(_generalTasksDataPath);
 
-            if (exists) return _dataSerializer.Deserialize<ICollection<GeneralTask>>(_generalTasksDataPath);
+            if (exists)
+            {
+                return _dataSerializer.Deserialize<IReadOnlyList<GeneralTask>>(_generalTasksDataPath);
+            }
             else return null;
         }
 
-        private ICollection<СonditionalTask>? LoadСonditionalTasks()
+        private IReadOnlyList<СonditionalTask>? LoadСonditionalTasks()
         {
             bool exists = File.Exists(_conditionalTasksDataPath);
 
-            if (exists) return _dataSerializer.Deserialize<ICollection<СonditionalTask>>(_conditionalTasksDataPath);
+            if (exists)
+            {
+                return _dataSerializer.Deserialize<IReadOnlyList<СonditionalTask>>(_conditionalTasksDataPath);
+            }
             else return null;
         }
     }
