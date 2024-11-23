@@ -1,8 +1,6 @@
-﻿using System.Text.Json;
-using AndroidFile = Java.IO.File;
+﻿using Daily.Tasks;
 using AndroidApplication = Android.App.Application;
 using AndroidEnvironment = Android.OS.Environment;
-using Daily.Tasks;
 
 namespace Daily.Data
 {

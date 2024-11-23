@@ -29,11 +29,11 @@ namespace Daily.Tasks
         {
             _dataProvider = dataProvider;
 
-            if (dataProvider.GeneralTasks == null) GeneralTasks = new ObservableCollection<GeneralTask>();
-            else GeneralTasks = new ObservableCollection<GeneralTask>(dataProvider.GeneralTasks);
+            if (_dataProvider.GeneralTasks == null) GeneralTasks = new ObservableCollection<GeneralTask>();
+            else GeneralTasks = new ObservableCollection<GeneralTask>(_dataProvider.GeneralTasks);
 
-            if (dataProvider.СonditionalTasks == null) СonditionalTasks = new ObservableCollection<СonditionalTask>();
-            else СonditionalTasks = new ObservableCollection<СonditionalTask>(dataProvider.СonditionalTasks);
+            if (_dataProvider.СonditionalTasks == null) СonditionalTasks = new ObservableCollection<СonditionalTask>();
+            else СonditionalTasks = new ObservableCollection<СonditionalTask>(_dataProvider.СonditionalTasks);
         }
 
         #region GeneralTasks

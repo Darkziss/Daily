@@ -2,6 +2,7 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.Pages.MainPage"
     x:DataType="viewmodels:MainPageViewModel">
@@ -28,6 +29,8 @@
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="LineBreakMode" Value="WordWrap"/>
                 <Setter Property="WidthRequest" Value="240"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
@@ -99,25 +102,42 @@
                 ColumnDefinitions="80, Auto"
                 RowDefinitions="*">
 
-                <BoxView
-                    BackgroundColor="{StaticResource Good}"
-                    WidthRequest="50"
-                    HeightRequest="50"
+                <Frame
+                    IsVisible="False"
+                    BackgroundColor="{StaticResource Gray}"
+                    WidthRequest="100"
+                    HeightRequest="100"
                     VerticalOptions="Center"
                     HorizontalOptions="Center"
                     Grid.Column="0"
                     Grid.Row="0"/>
 
+                <Image
+                    Source="checkmark.png"
+                    Aspect="Fill"
+                    WidthRequest="70"
+                    HeightRequest="70"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Grid.Column="0"
+                    Grid.Row="0">
+
+                    <Image.Behaviors>
+                        <toolkit:IconTintColorBehavior
+                            TintColor="{Binding StatusColor}"/>
+                    </Image.Behaviors>
+                </Image>
+
                 <Label
                     Style="{StaticResource TaskProgressStatusLabel}"
-                    Text="Выполнены все задачи!"
+                    Text="{Binding StatusText}"
                     Grid.Column="1"
                     Grid.Row="0"/>
             </Grid>
         </Frame>
 
         <VerticalStackLayout
-            Spacing="10"
+            Spacing="15"
             Grid.Column="0"
             Grid.Row="2">
 
