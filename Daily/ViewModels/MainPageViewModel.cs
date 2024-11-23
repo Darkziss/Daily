@@ -5,24 +5,26 @@ namespace Daily.ViewModels
 {
     public partial class MainPageViewModel : ObservableObject, IResetView
     {
-        public Command RouteToTaskPage { get; }
+        [ObservableProperty] private bool _canNavigate = false;
+        
+        public Command GoToTaskPage { get; }
 
         public MainPageViewModel()
         {
-            RouteToTaskPage = new Command(
+            GoToTaskPage = new Command(
             execute: async () =>
             {
+                CanNavigate = false;
+
                 await PageNavigator.GoToTaskPageAsync();
-            },
-            canExecute: () =>
-            {
-                return !PageNavigator.IsRouting;
+
+                CanNavigate = true;
             });
         }
 
         public void ResetView()
         {
-            RouteToTaskPage.ChangeCanExecute();
+            CanNavigate = true;
         }
     }
 }

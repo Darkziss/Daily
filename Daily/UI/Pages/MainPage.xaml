@@ -37,6 +37,18 @@
                 <Setter Property="FontSize" Value="22"/>
                 <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="HeightRequest" Value="130"/>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal"/>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
 
             <Style TargetType="Frame" x:Key="EndCard">
@@ -110,17 +122,20 @@
             Grid.Row="2">
 
             <Button
+                IsEnabled="{Binding CanNavigate}"
                 Style="{StaticResource Card}"
                 BackgroundColor="{StaticResource Tasks}"
                 Text="Задачи"
-                Command="{Binding RouteToTaskPage}"/>
+                Command="{Binding GoToTaskPage}"/>
 
             <Button
+                IsEnabled="{Binding CanNavigate}"
                 Style="{StaticResource Card}"
                 BackgroundColor="{StaticResource Diary}"
                 Text="Дневник"/>
 
             <Button
+                IsEnabled="{Binding CanNavigate}"
                 Style="{StaticResource Card}"
                 BackgroundColor="{StaticResource Thoughts}"
                 Text="Мысли"/>
