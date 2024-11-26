@@ -5,24 +5,11 @@ namespace Daily.Converters
 {
     public class PriorityToColorConverter : IValueConverter
     {
-        private static readonly Color _dailyTaskColor;
-        private static readonly Color _mandatoryTaskColor;
-        private static readonly Color _importantTaskColor;
-        private static readonly Color _commonTaskColor;
-
-        private const string dailyTaskColorHex = "edd8c3";
-        private const string mandatoryTaskColorHex = "edc3c3";
-        private const string importantTaskColorHex = "edebc3";
-        private const string commonTaskColorHex = "c3edc4";
-
-        static PriorityToColorConverter()
-        {
-            _dailyTaskColor = Color.FromRgba(dailyTaskColorHex);
-            _mandatoryTaskColor = Color.FromRgba(mandatoryTaskColorHex);
-            _importantTaskColor = Color.FromRgba(importantTaskColorHex);
-            _commonTaskColor = Color.FromRgba(commonTaskColorHex);
-        }
-
+        public Color DailyColor { get; set; } = Colors.Orange;
+        public Color MandatoryColor { get; set; } = Colors.Red;
+        public Color ImportantColor { get; set; } = Colors.Yellow;
+        public Color CommonColor { get; set; } = Colors.Green;
+ 
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value == null || value is not TaskPriority) return null;
@@ -31,11 +18,11 @@ namespace Daily.Converters
 
             return priority switch
             {
-                TaskPriority.Daily => _dailyTaskColor,
-                TaskPriority.Mandatory => _mandatoryTaskColor,
-                TaskPriority.Important => _importantTaskColor,
-                TaskPriority.Common => _commonTaskColor,
-                _ => _dailyTaskColor
+                TaskPriority.Daily => DailyColor,
+                TaskPriority.Mandatory => MandatoryColor,
+                TaskPriority.Important => ImportantColor,
+                TaskPriority.Common => CommonColor,
+                _ => null
             };
         }
 

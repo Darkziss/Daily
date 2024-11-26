@@ -18,5 +18,10 @@
     <Color x:Key="Hover">#ededed</Color>
     <Color x:Key="InputField">#858585</Color>
     <Color x:Key="Good">#aaf786</Color>
+
+    <Color x:Key="Daily">#edd8c3</Color>
+    <Color x:Key="Mandatory">#edc3c3</Color>
+    <Color x:Key="Important">#edebc3</Color>
+    <Color x:Key="Common">#c3edc4</Color>
     
 </ResourceDictionary>

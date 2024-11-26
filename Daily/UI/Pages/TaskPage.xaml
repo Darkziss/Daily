@@ -47,6 +47,13 @@
             
             <Color x:Key="Disabled">#c3c3c3</Color>
 
+            <converters:PriorityToColorConverter
+                x:Key="PriorityToColorConverter"
+                DailyColor="{StaticResource Daily}"
+                MandatoryColor="{StaticResource Mandatory}"
+                ImportantColor="{StaticResource Important}"
+                CommonColor="{StaticResource Common}"/>
+
             <converters:BoolToColorConverter
                 x:Key="CanEditTaskToColorConverter"
                 TrueColor="{StaticResource GreenSelected}"
@@ -463,7 +470,7 @@
 
                                         <Frame
                                             Style="{StaticResource ModificatorCard}"
-                                            BackgroundColor="{Binding Priority, Converter={converters:PriorityToColorConverter}}"
+                                            BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
                                             Grid.Column="1"
                                             Grid.Row="1"
                                             Margin="{StaticResource ModificatorMargin}">
