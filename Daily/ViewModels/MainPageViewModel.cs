@@ -20,6 +20,7 @@ namespace Daily.ViewModels
         private readonly IReadOnlyList<GeneralTask> _generalTasks;
 
         public Command GoToTaskPage { get; }
+        public Command GoToThoughtPage { get; }
 
         private const string emptyStatusText = "Задач нет";
         private const string completedStatusText = "Все задачи выполнены!";
@@ -34,6 +35,16 @@ namespace Daily.ViewModels
                 CanNavigate = false;
 
                 await PageNavigator.GoToTaskPageAsync();
+
+                CanNavigate = true;
+            });
+
+            GoToThoughtPage = new Command(
+            execute: async () =>
+            {
+                CanNavigate = false;
+
+                await PageNavigator.GoToThoughtPageAsync();
 
                 CanNavigate = true;
             });

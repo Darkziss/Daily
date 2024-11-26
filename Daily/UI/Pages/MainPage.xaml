@@ -239,7 +239,8 @@
                 IsEnabled="{Binding CanNavigate}"
                 Style="{StaticResource Card}"
                 BackgroundColor="{StaticResource Thoughts}"
-                Text="Мысли"/>
+                Text="Мысли"
+                Command="{Binding GoToThoughtPage}"/>
 
             <Frame
                 Style="{StaticResource EndCard}">

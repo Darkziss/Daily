@@ -91,6 +91,9 @@
 	  <Compile Update="UI\Pages\TaskEditPage.xaml.cs">
 	    <DependentUpon>TaskEditPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="UI\Pages\ThoughtPage.xaml.cs">
+	    <DependentUpon>ThoughtPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -103,6 +106,13 @@
 	  <MauiXaml Update="UI\Pages\TaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UI\Pages\ThoughtPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Resources\Images\" />
 	</ItemGroup>
 
 </Project>
