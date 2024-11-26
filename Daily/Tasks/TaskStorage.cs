@@ -195,7 +195,7 @@ namespace Daily.Tasks
         private void SortConditionalTasks()
         {
             var sorted = СonditionalTasks.OrderByDescending(task => task.RepeatTimePeriod)
-                .ThenBy(task => task.ActionName)
+                .ThenBy(task => task.ActionName.Length)
                 .ToList();
 
             СonditionalTasks.Clear();
