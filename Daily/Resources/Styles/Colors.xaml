@@ -14,10 +14,13 @@
     <Color x:Key="Tertiary">#2B0B98</Color>
 
     <Color x:Key="Background">#f8f8f8</Color>
+    <Color x:Key="PanelBackground">#f9fbff</Color>
+    <Color x:Key="FieldBackground">#efefef</Color>
     <Color x:Key="Gray">#b8b8b8</Color>
     <Color x:Key="Hover">#ededed</Color>
     <Color x:Key="InputField">#858585</Color>
     <Color x:Key="Good">#aaf786</Color>
+    <Color x:Key="Disabled">#c3c3c3</Color>
 
     <Color x:Key="Daily">#edd8c3</Color>
     <Color x:Key="Mandatory">#edc3c3</Color>

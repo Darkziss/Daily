@@ -39,14 +39,10 @@
             <Color x:Key="ProgressBackgroundFill">#a4a4a4</Color>
             <Color x:Key="Completed">#71b866</Color>
 
-            <Color x:Key="PanelBackground">#f9fbff</Color>
-
             <Color x:Key="GreenSelected">#aaf786</Color>
             <Color x:Key="RedSelected">#f78786</Color>
             <Color x:Key="BlueSelected">#86f7ea</Color>
             
-            <Color x:Key="Disabled">#c3c3c3</Color>
-
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
                 DailyColor="{StaticResource Daily}"
@@ -196,42 +192,6 @@
             <Style TargetType="Label" x:Key="EmptyViewLabel">
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Text" Value="Пока здесь нет задач"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <Style TargetType="Frame" x:Key="BottomPanel">
-                <Setter Property="BackgroundColor" Value="{StaticResource PanelBackground}"/>
-                <Setter Property="BorderColor" Value="{StaticResource Gray}"/>
-                <Setter Property="CornerRadius" Value="0"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-            </Style>
-
-            <Style TargetType="ImageButton" x:Key="ActionButton">
-                <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                <Setter Property="WidthRequest" Value="50"/>
-                <Setter Property="HeightRequest" Value="50"/>
-                <Setter Property="VerticalOptions" Value="Start"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-
-                <Setter Property="VisualStateManager.VisualStateGroups">
-                    <VisualStateGroupList>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal"/>
-                            <VisualState x:Name="Disabled">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Disabled}"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="PointerOver"/>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </Setter>
-            </Style>
-
-            <Style TargetType="Label" x:Key="ActionButtonLabel">
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="VerticalOptions" Value="End"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 

@@ -259,7 +259,6 @@ namespace Daily.ViewModels
             timer.Elapsed += (_, _) =>
             {
                 timer.Stop();
-                timer.Dispose();
 
                 IsTasksLoaded = true;
                 CanInteractWithTask = true;

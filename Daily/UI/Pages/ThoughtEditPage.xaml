@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    x:Class="Daily.Pages.ThoughtEditPage"
+    x:DataType="viewmodels:ThoughtEditPageViewModel"
+    HideSoftInputOnTapped="True">
+
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <x:Boolean x:Key="True">True</x:Boolean>
+            <x:Boolean x:Key="False">False</x:Boolean>
+
+            <Style TargetType="Entry" x:Key="ThoughtNameEntry">
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="Placeholder" Value="Заголовок"/>
+                <Setter Property="WidthRequest" Value="350"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Editor" x:Key="ThoughtTextEditor">
+                <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Placeholder" Value="Начните печатать"/>
+                <Setter Property="WidthRequest" Value="350"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+            
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
+
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, *"
+        Margin="20, 40, 0, 0">
+
+        <Entry
+            Style="{StaticResource ThoughtNameEntry}"
+            IsReadOnly="{Binding IsNameEntryReadOnly}"
+            Text="{Binding Name, Mode=TwoWay}"
+            ReturnCommand="{Binding ChangeNameReadOnlyCommand}"
+            ReturnCommandParameter="{StaticResource True}"
+            Grid.Column="0"
+            Grid.Row="0">
+
+            <Entry.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding ChangeNameReadOnlyCommand}"
+                    CommandParameter="{StaticResource False}"
+                    NumberOfTapsRequired="1"/>
+            </Entry.GestureRecognizers>
+        </Entry>
+
+        <Editor
+            Style="{StaticResource ThoughtTextEditor}"
+            Text="{Binding Text, Mode=TwoWay}"
+            Grid.Column="0"
+            Grid.Row="1"/>
+    </Grid>
+</ContentPage>

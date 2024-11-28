@@ -19,9 +19,9 @@
 
             <Style TargetType="CollectionView" x:Key="ThoughtCollectionView">
                 <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
-                <Setter Property="HeightRequest" Value="650"/>
+                <Setter Property="HeightRequest" Value="580"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
-                <Setter Property="Margin" Value="20, 0, 20, 0"/>
+                <Setter Property="Margin" Value="20, 20, 20, 0"/>
             </Style>
             
             <Style TargetType="Frame" x:Key="ThoughtCard">
@@ -58,8 +58,7 @@
     
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="Auto, *, *"
-        RowSpacing="20"
+        RowDefinitions="Auto, Auto, *"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
         Margin="0, 40, 0, 0">
@@ -112,5 +111,36 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
+        <Frame
+            Style="{StaticResource BottomPanel}"
+            Grid.Column="0"
+            Grid.Row="2">
+
+            <HorizontalStackLayout
+                Spacing="20"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+
+                <VerticalStackLayout>
+                    <ImageButton
+                        Style="{StaticResource ActionButton}"
+                        Command="{Binding AddThoughtCommand}"/>
+
+                    <Label
+                        Style="{StaticResource ActionButtonLabel}"
+                        Text="Добавить"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout>
+                    <ImageButton
+                        Style="{StaticResource ActionButton}"/>
+
+                    <Label
+                        Style="{StaticResource ActionButtonLabel}"
+                        Text="Удалить"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
     </Grid>
 </ContentPage>

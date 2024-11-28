@@ -9,9 +9,12 @@ namespace Daily
             InitializeComponent();
 
             Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+
             Routing.RegisterRoute(nameof(TaskPage), typeof(TaskPage));
             Routing.RegisterRoute(nameof(TaskEditPage), typeof(TaskEditPage));
+
             Routing.RegisterRoute(nameof(ThoughtPage), typeof(ThoughtPage));
+            Routing.RegisterRoute(nameof(ThoughtEditPage), typeof(ThoughtEditPage));
         }
     }
 }

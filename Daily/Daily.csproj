@@ -106,6 +106,9 @@
 	  <MauiXaml Update="UI\Pages\TaskPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UI\Pages\ThoughtEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UI\Pages\ThoughtPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

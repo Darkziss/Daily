@@ -53,7 +53,8 @@ namespace Daily
                 .AddSingleton<MainPageViewModel>()
                 .AddSingleton<TaskPageViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
-                .AddSingleton<ThoughtPageViewModel>();
+                .AddSingleton<ThoughtPageViewModel>()
+                .AddSingleton<ThoughtEditPageViewModel>();
         }
 
         private static void RegisterViews(MauiAppBuilder builder)
@@ -63,7 +64,8 @@ namespace Daily
                 .AddSingleton<MainPage>()
                 .AddSingleton<TaskPage>()
                 .AddSingleton<TaskEditPage>()
-                .AddSingleton<ThoughtPage>();
+                .AddSingleton<ThoughtPage>()
+                .AddSingleton<ThoughtEditPage>();
         }
     }
 }
