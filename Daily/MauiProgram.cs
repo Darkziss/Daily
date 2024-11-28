@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui;
 using Plugin.SegmentedControl.Maui;
 using Daily.Tasks;
+using Daily.Thoughts;
 using Daily.Data;
 using Daily.ViewModels;
 using Daily.Pages;
@@ -41,7 +42,8 @@ namespace Daily
                 .Services
                 .AddSingleton<DataProvider>()
                 .AddSingleton<GoalStorage>()
-                .AddSingleton<TaskStorage>();
+                .AddSingleton<TaskStorage>()
+                .AddSingleton<ThoughtStorage>();
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)

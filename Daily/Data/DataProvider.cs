@@ -1,4 +1,5 @@
 ﻿using Daily.Tasks;
+using Daily.Thoughts;
 using AndroidApplication = Android.App.Application;
 using AndroidEnvironment = Android.OS.Environment;
 
@@ -11,10 +12,14 @@ namespace Daily.Data
         public IReadOnlyList<GeneralTask>? GeneralTasks { get; private set; }
         public IReadOnlyList<СonditionalTask>? СonditionalTasks { get; private set; }
 
+        public IReadOnlyList<Thought>? Thoughts { get; private set; }
+
         private readonly string _goalDataPath;
 
         private readonly string _generalTasksDataPath;
         private readonly string _conditionalTasksDataPath;
+
+        private readonly string _thoughtsDataPath;
 
         private readonly TextWriter _textWriter = new TextWriter();
         private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
@@ -23,6 +28,8 @@ namespace Daily.Data
 
         private const string generalTasksDataFileName = "generalTasks.json";
         private const string conditionalTasksDataFileName = "conditionalTasks.json";
+
+        private const string thoughtsDataFileName = "thoughts.json";
 
         public DataProvider()
         {
@@ -34,10 +41,14 @@ namespace Daily.Data
             _generalTasksDataPath = Path.Combine(dataFolderPath, generalTasksDataFileName);
             _conditionalTasksDataPath = Path.Combine(dataFolderPath, conditionalTasksDataFileName);
 
+            _thoughtsDataPath = Path.Combine(dataFolderPath, thoughtsDataFileName);
+
             Goal = LoadGoal();
             
             GeneralTasks = LoadGeneralTasks();
             СonditionalTasks = LoadСonditionalTasks();
+
+            Thoughts = LoadThoughts();
         }
         
         public async Task SaveGoalAsync(string goal)
@@ -55,6 +66,11 @@ namespace Daily.Data
         public async Task SaveConditionalTasksAsync(IReadOnlyList<СonditionalTask> сonditionalTasks)
         {
             await _dataSerializer.SerializeAsync<IReadOnlyList<СonditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
+        }
+
+        public async Task SaveThoughtsAsync(IReadOnlyList<Thought> thoughts)
+        {
+            await _dataSerializer.SerializeAsync<IReadOnlyList<Thought>>(_thoughtsDataPath, thoughts);
         }
 
         private string? LoadGoal()
@@ -83,6 +99,17 @@ namespace Daily.Data
             if (exists)
             {
                 return _dataSerializer.Deserialize<IReadOnlyList<СonditionalTask>>(_conditionalTasksDataPath);
+            }
+            else return null;
+        }
+
+        private IReadOnlyList<Thought>? LoadThoughts()
+        {
+            bool exists = File.Exists(_thoughtsDataPath);
+
+            if (exists)
+            {
+                return _dataSerializer.Deserialize<IReadOnlyList<Thought>>(_thoughtsDataPath);
             }
             else return null;
         }

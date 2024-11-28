@@ -17,35 +17,64 @@
                 <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
+            <Style TargetType="CollectionView" x:Key="ThoughtCollectionView">
+                <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
+                <Setter Property="HeightRequest" Value="650"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="20, 0, 20, 0"/>
+            </Style>
+            
             <Style TargetType="Frame" x:Key="ThoughtCard">
                 <Setter Property="InputTransparent" Value="True"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                <Setter Property="WidthRequest" Value="30"/>
-                <Setter Property="HeightRequest" Value="100"/>
+                <Setter Property="WidthRequest" Value="170"/>
+                <Setter Property="HeightRequest" Value="200"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
-            
+
+            <Style TargetType="Label" x:Key="ThoughtNameLabel">
+                <Setter Property="FontFamily" Value="NunitoBold"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="WidthRequest" Value="150"/>
+                <Setter Property="HeightRequest" Value="30"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="0, 5, 0, 0"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="ThoughtTextLabel">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="TextColor" Value="{StaticResource InputField}"/>
+                <Setter Property="WidthRequest" Value="150"/>
+                <Setter Property="HeightRequest" Value="170"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                <Setter Property="MaxLines" Value="7"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
+
         </ResourceDictionary>
 
     </ContentPage.Resources>
     
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="Auto, Auto, *"
+        RowDefinitions="Auto, *, *"
+        RowSpacing="20"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
         Margin="0, 40, 0, 0">
 
         <Label
             Style="{StaticResource Headline}"
-            FontSize="30"
+            FontSize="35"
             Text="Важные мысли"
             Margin="20, 0, 0, 0"
             Grid.Column="0"
             Grid.Row="0"/>
 
         <CollectionView
-            ItemSizingStrategy="MeasureFirstItem"
-            WidthRequest="350"
+            Style="{StaticResource ThoughtCollectionView}"
+            ItemsSource="{Binding Thoughts}"
             Grid.Column="0"
             Grid.Row="1">
 
@@ -53,8 +82,8 @@
                 <GridItemsLayout
                     Span="2"
                     Orientation="Vertical"
-                    VerticalItemSpacing="0"
-                    HorizontalItemSpacing="0"/>
+                    VerticalItemSpacing="10"
+                    HorizontalItemSpacing="10"/>
             </CollectionView.ItemsLayout>
 
             <CollectionView.EmptyView>
@@ -67,7 +96,18 @@
                     <Frame
                         x:DataType="thoughts:Thought"
                         Style="{StaticResource ThoughtCard}">
-                        
+
+                        <VerticalStackLayout
+                            Padding="10, 0, 10, 0">
+
+                            <Label
+                                Style="{StaticResource ThoughtNameLabel}"
+                                Text="{Binding Name}"/>
+
+                            <Label
+                                Style="{StaticResource ThoughtTextLabel}"
+                                Text="{Binding Text}"/>
+                        </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
