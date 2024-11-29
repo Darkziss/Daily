@@ -16,6 +16,7 @@
             <x:Boolean x:Key="False">False</x:Boolean>
 
             <Color x:Key="Save">#86caf7</Color>
+            <Color x:Key="Edit">#86f7e8</Color>
 
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
@@ -72,6 +73,7 @@
 
         <Editor
             Style="{StaticResource ThoughtTextEditor}"
+            IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
             Text="{Binding Text, Mode=TwoWay}"
             Grid.Column="0"
             Grid.Row="1">
@@ -87,9 +89,20 @@
 
         <Button
             Style="{StaticResource BottomButton}"
+            IsVisible="{Binding IsEditMode}"
             IsEnabled="{Binding CanSave}"
             BackgroundColor="{StaticResource Save}"
             Text="Сохранить"
+            Command="{Binding SaveThoughtCommand}"
+            Grid.Column="0"
+            Grid.Row="2"/>
+
+        <Button
+            Style="{StaticResource BottomButton}"
+            IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
+            BackgroundColor="{StaticResource Edit}"
+            Text="Изменить"
+            Command="{Binding ActivateEditMode}"
             Grid.Column="0"
             Grid.Row="2"/>
     </Grid>

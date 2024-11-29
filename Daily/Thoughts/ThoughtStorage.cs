@@ -7,7 +7,7 @@ namespace Daily.Thoughts
     {
         private readonly DataProvider _dataProvider;
         
-        public ObservableCollection<Thought> Thoughts { get; private set; }
+        public ObservableCollection<Thought> Thoughts { get; }
 
         private const string thoughtIsNotOnListException = "Thought is not on list";
 
@@ -15,23 +15,19 @@ namespace Daily.Thoughts
         {
             _dataProvider = dataProvider;
 
-            Thoughts = new ObservableCollection<Thought>()
-            {
-                new Thought(0, "Настоящий ты это когда все плохо", "Настоящий ты - это когда все плохо, когда сложно и не понятно, " +
-                "а не когда все хорошо"),
-                new Thought(1, "Сомнения", "Не забывайте сомневаться в своих сомнениях"),
-                new Thought(2, "А", "А"),
-                new Thought(3, "Б", "Б")
-            };
+            Thoughts = new ObservableCollection<Thought>();
         }
 
-        public async Task<Thought> AddThoughtAsync()
+        public async Task<bool> TryCreateThoughtAsync(string name, string text)
         {
-            Thought thought = new Thought(0, string.Empty, string.Empty);
+            if (!ValidateThoughtValues(name, text)) return false;
+            
+            Thought thought = new Thought(0, name, text);
+            Thoughts.Add(thought);
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
 
-            return thought;
+            return true;
         }
 
         public async Task EditThoughtAsync(Thought thought, string name, string text)
@@ -44,6 +40,14 @@ namespace Daily.Thoughts
             thought.Text = text;
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
+        }
+
+        private bool ValidateThoughtValues(string name, string text)
+        {
+            bool isNameValid = !string.IsNullOrWhiteSpace(name);
+            bool isTextValid = !string.IsNullOrWhiteSpace(text);
+
+            return isNameValid && isTextValid;
         }
     }
 }
