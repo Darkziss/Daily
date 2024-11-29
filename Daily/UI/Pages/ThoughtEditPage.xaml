@@ -15,12 +15,15 @@
             <x:Boolean x:Key="True">True</x:Boolean>
             <x:Boolean x:Key="False">False</x:Boolean>
 
+            <Color x:Key="Save">#86caf7</Color>
+
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
                 <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="20, 0, 0, 0"/>
             </Style>
 
             <Style TargetType="Editor" x:Key="ThoughtTextEditor">
@@ -30,6 +33,7 @@
                 <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="20, 0, 0, 0"/>
             </Style>
             
         </ResourceDictionary>
@@ -38,8 +42,8 @@
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="Auto, *"
-        Margin="20, 40, 0, 0">
+        RowDefinitions="Auto, 590, *"
+        Margin="0, 40, 0, 0">
 
         <Entry
             Style="{StaticResource ThoughtNameEntry}"
@@ -63,5 +67,12 @@
             Text="{Binding Text, Mode=TwoWay}"
             Grid.Column="0"
             Grid.Row="1"/>
+
+        <Button
+            Style="{StaticResource BottomButton}"
+            BackgroundColor="{StaticResource Save}"
+            Text="Сохранить"
+            Grid.Column="0"
+            Grid.Row="2"/>
     </Grid>
 </ContentPage>
