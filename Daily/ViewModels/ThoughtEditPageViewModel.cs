@@ -9,11 +9,23 @@ namespace Daily.ViewModels
         [ObservableProperty] private string _name = string.Empty;
         [ObservableProperty] private string _text = string.Empty;
 
+        public bool IsNameValid { get; set; }
+        public bool IsTextValid { get; set; }
+
+        [ObservableProperty] private bool _canSave = false;
+
         public Command<bool> ChangeNameReadOnlyCommand { get; }
 
         public ThoughtEditPageViewModel()
         {
             ChangeNameReadOnlyCommand = new Command<bool>((isReadOnly) => IsNameEntryReadOnly = isReadOnly);
+
+            PropertyChanged += (_, args) =>
+            {
+                bool isThoughtProperty = args.PropertyName == nameof(Name) || args.PropertyName == nameof(Text);
+
+                if (isThoughtProperty) CanSave = IsNameValid && IsTextValid;
+            };
         }
 
         public void ResetView()
@@ -22,6 +34,8 @@ namespace Daily.ViewModels
 
             Name = string.Empty;
             Text = string.Empty;
+
+            CanSave = false;
         }
     }
 }

@@ -54,6 +54,14 @@
             Grid.Column="0"
             Grid.Row="0">
 
+            <Entry.Behaviors>
+                <toolkit:TextValidationBehavior
+                    IsValid="{Binding IsNameValid, Mode=OneWayToSource}"
+                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                    MinimumLength="1"
+                    MaximumLength="40"/>
+            </Entry.Behaviors>
+
             <Entry.GestureRecognizers>
                 <TapGestureRecognizer
                     Command="{Binding ChangeNameReadOnlyCommand}"
@@ -66,10 +74,20 @@
             Style="{StaticResource ThoughtTextEditor}"
             Text="{Binding Text, Mode=TwoWay}"
             Grid.Column="0"
-            Grid.Row="1"/>
+            Grid.Row="1">
+
+            <Editor.Behaviors>
+                <toolkit:TextValidationBehavior
+                    IsValid="{Binding IsTextValid, Mode=OneWayToSource}"
+                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                    MinimumLength="1"
+                    MaximumLength="600"/>
+            </Editor.Behaviors>
+        </Editor>
 
         <Button
             Style="{StaticResource BottomButton}"
+            IsEnabled="{Binding CanSave}"
             BackgroundColor="{StaticResource Save}"
             Text="Сохранить"
             Grid.Column="0"
