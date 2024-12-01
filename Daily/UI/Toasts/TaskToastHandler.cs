@@ -5,20 +5,14 @@ namespace Daily.Toasts
 {
     public static class TaskToastHandler
     {
-        private static readonly IToast _taskCreatedToast = Toast.Make(taskCreatedToastMessage, 
-            toastDuration, toastTextSize);
-        private static readonly IToast _taskEditedToast = Toast.Make(taskEditedToastMessage,
-            toastDuration, toastTextSize);
-        private static readonly IToast _taskDeletedToast = Toast.Make(taskDeletedToastMessage,
-            toastDuration, toastTextSize);
+        private static readonly IToast _taskCreatedToast = ToastCreator.Create(taskCreatedToastMessage);
+        private static readonly IToast _taskEditedToast = ToastCreator.Create(taskEditedToastMessage);
+        private static readonly IToast _taskDeletedToast = ToastCreator.Create(taskDeletedToastMessage);
 
-        private static readonly IToast _taskErrorToast = Toast.Make(taskErrorToastMessage,
-            toastDuration, toastTextSize);
+        private static readonly IToast _taskErrorToast = ToastCreator.Create(taskErrorToastMessage);
 
-        private static readonly IToast _generalTasksFullToast = Toast.Make(generalTasksFullToastMessage,
-            toastDuration, toastTextSize);
-        private static readonly IToast _conditionalTasksFullToast = Toast.Make(conditionalTasksFullToastMessage,
-            toastDuration, toastTextSize);
+        private static readonly IToast _generalTasksFullToast = ToastCreator.Create(generalTasksFullToastMessage);
+        private static readonly IToast _conditionalTasksFullToast = ToastCreator.Create(conditionalTasksFullToastMessage);
 
         private const string taskCreatedToastMessage = "Задача была успешно создана";
         private const string taskEditedToastMessage = "Задача была успешно изменена";
@@ -28,9 +22,6 @@ namespace Daily.Toasts
 
         private const string generalTasksFullToastMessage = "Ошибка: Уже создано максимум основных задач";
         private const string conditionalTasksFullToastMessage = "Ошибка: Уже создано максимум условных задач";
-
-        private const ToastDuration toastDuration = ToastDuration.Long;
-        private const double toastTextSize = 16d;
 
         public static async Task ShowTaskCreatedToastAsync() => await _taskCreatedToast.Show();
 

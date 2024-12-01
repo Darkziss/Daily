@@ -67,7 +67,7 @@ namespace Daily.ViewModels
                 if (IsEditMode) await EditTaskAsync();
                 else await CreateTaskAsync();
 
-                await PageNavigator.RouteToPreviousPage();
+                await PageNavigator.ReturnToPreviousPage();
 
                 IsCreatingNewTask = false;
             },

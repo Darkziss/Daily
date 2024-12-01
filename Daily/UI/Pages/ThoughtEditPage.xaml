@@ -5,8 +5,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.Pages.ThoughtEditPage"
-    x:DataType="viewmodels:ThoughtEditPageViewModel"
-    HideSoftInputOnTapped="True">
+    x:DataType="viewmodels:ThoughtEditPageViewModel">
 
     <ContentPage.Resources>
 
@@ -15,12 +14,17 @@
             <x:Boolean x:Key="True">True</x:Boolean>
             <x:Boolean x:Key="False">False</x:Boolean>
 
+            <Color x:Key="Save">#86caf7</Color>
+            <Color x:Key="Edit">#86f7e8</Color>
+
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
+                <Setter Property="MaxLength" Value="40"/>
                 <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="20, 0, 0, 0"/>
             </Style>
 
             <Style TargetType="Editor" x:Key="ThoughtTextEditor">
@@ -30,6 +34,7 @@
                 <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="20, 0, 0, 0"/>
             </Style>
             
         </ResourceDictionary>
@@ -38,8 +43,8 @@
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="Auto, *"
-        Margin="20, 40, 0, 0">
+        RowDefinitions="Auto, 590, *"
+        Margin="0, 40, 0, 0">
 
         <Entry
             Style="{StaticResource ThoughtNameEntry}"
@@ -49,6 +54,13 @@
             ReturnCommandParameter="{StaticResource True}"
             Grid.Column="0"
             Grid.Row="0">
+
+            <Entry.Behaviors>
+                <toolkit:TextValidationBehavior
+                    IsValid="{Binding IsNameValid, Mode=OneWayToSource}"
+                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                    MinimumLength="1"/>
+            </Entry.Behaviors>
 
             <Entry.GestureRecognizers>
                 <TapGestureRecognizer
@@ -60,8 +72,37 @@
 
         <Editor
             Style="{StaticResource ThoughtTextEditor}"
+            IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
             Text="{Binding Text, Mode=TwoWay}"
             Grid.Column="0"
-            Grid.Row="1"/>
+            Grid.Row="1">
+
+            <Editor.Behaviors>
+                <toolkit:TextValidationBehavior
+                    IsValid="{Binding IsTextValid, Mode=OneWayToSource}"
+                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                    MinimumLength="1"
+                    MaximumLength="600"/>
+            </Editor.Behaviors>
+        </Editor>
+
+        <Button
+            Style="{StaticResource BottomButton}"
+            IsVisible="{Binding IsEditMode}"
+            IsEnabled="{Binding CanSave}"
+            BackgroundColor="{StaticResource Save}"
+            Text="Сохранить"
+            Command="{Binding SaveThoughtCommand}"
+            Grid.Column="0"
+            Grid.Row="2"/>
+
+        <Button
+            Style="{StaticResource BottomButton}"
+            IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
+            BackgroundColor="{StaticResource Edit}"
+            Text="Изменить"
+            Command="{Binding ActivateEditMode}"
+            Grid.Column="0"
+            Grid.Row="2"/>
     </Grid>
 </ContentPage>

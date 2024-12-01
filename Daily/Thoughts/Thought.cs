@@ -4,22 +4,8 @@ namespace Daily.Thoughts
 {
     public class Thought : INotifyPropertyChanged
     {
-        private int _id;
-
         private string _name;
         private string _text;
-
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                if (value.Equals(_id)) return;
-
-                _id = value;
-                OnPropertyChanged(nameof(Id));
-            }
-        }
 
         public string Name
         {
@@ -47,10 +33,8 @@ namespace Daily.Thoughts
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public Thought(int id, string name, string text)
+        public Thought(string name, string text)
         {
-            _id = id;
-
             _name = name;
             _text = text;
         }

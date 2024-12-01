@@ -22,6 +22,8 @@
     <Color x:Key="Good">#aaf786</Color>
     <Color x:Key="Disabled">#c3c3c3</Color>
 
+    <Color x:Key="RedSelected">#f78786</Color>
+
     <Color x:Key="Daily">#edd8c3</Color>
     <Color x:Key="Mandatory">#edc3c3</Color>
     <Color x:Key="Important">#edebc3</Color>

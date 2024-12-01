@@ -1,8 +1,9 @@
+using Daily.Thoughts;
 using Daily.ViewModels;
 
 namespace Daily.Pages
 {
-    public partial class ThoughtEditPage : ContentPage
+    public partial class ThoughtEditPage : ContentPage, IQueryAttributable
     {
         private readonly ThoughtEditPageViewModel _viewModel;
 
@@ -15,9 +16,17 @@ namespace Daily.Pages
             BindingContext = viewModel;
         }
 
-        protected override void OnAppearing()
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            _viewModel.ResetView();
+            bool haveThought = query.ContainsKey(nameof(Thought));
+
+            if (haveThought)
+            {
+                Thought thought = (Thought)query[nameof(Thought)];
+
+                _viewModel.PrepareViewForView(thought);
+            }
+            else _viewModel.ResetView();
         }
     }
 }

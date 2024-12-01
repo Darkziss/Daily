@@ -7,7 +7,7 @@ namespace Daily.Thoughts
     {
         private readonly DataProvider _dataProvider;
         
-        public ObservableCollection<Thought> Thoughts { get; private set; }
+        public ObservableCollection<Thought> Thoughts { get; }
 
         private const string thoughtIsNotOnListException = "Thought is not on list";
 
@@ -15,35 +15,59 @@ namespace Daily.Thoughts
         {
             _dataProvider = dataProvider;
 
-            Thoughts = new ObservableCollection<Thought>()
-            {
-                new Thought(0, "Настоящий ты", "Настоящий ты - это когда все плохо, когда сложно и не понятно, " +
-                "а не когда все хорошо"),
-                new Thought(1, "Сомнения", "Не забывайте сомневаться в своих сомнениях"),
-                new Thought(2, "А", "А"),
-                new Thought(3, "Б", "Б")
-            };
+            if (_dataProvider.Thoughts == null) Thoughts = new ObservableCollection<Thought>();
+            else Thoughts = Thoughts = new ObservableCollection<Thought>(_dataProvider.Thoughts);
         }
 
-        public async Task<Thought> AddThoughtAsync()
+        public async Task<bool> TryCreateThoughtAsync(string name, string text)
         {
-            Thought thought = new Thought(0, string.Empty, string.Empty);
+            if (!ValidateThoughtValues(name, text)) return false;
+            
+            Thought thought = new Thought(name, text);
+            Thoughts.Insert(0, thought);
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
 
-            return thought;
+            return true;
         }
 
-        public async Task EditThoughtAsync(Thought thought, string name, string text)
+        public async Task<bool> TryEditThoughtAsync(Thought thought, string name, string text)
         {
             bool contains = Thoughts.Contains(thought);
 
             if (!contains) throw new Exception(thoughtIsNotOnListException);
 
+            bool isValid = ValidateThoughtValues(name, text);
+
+            if (!isValid) return false;
+
             thought.Name = name;
             thought.Text = text;
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
+
+            return true;
+        }
+
+        public async Task DeleteThoughtAsync(Thought thought)
+        {
+            if (thought == null) return;
+
+            int index = Thoughts.IndexOf(thought);
+
+            if (index == -1) throw new Exception(thoughtIsNotOnListException);
+
+            Thoughts.RemoveAt(index);
+
+            await _dataProvider.SaveThoughtsAsync(Thoughts);
+        }
+
+        private bool ValidateThoughtValues(string name, string text)
+        {
+            bool isNameValid = !string.IsNullOrWhiteSpace(name);
+            bool isTextValid = !string.IsNullOrWhiteSpace(text);
+
+            return isNameValid && isTextValid;
         }
     }
 }

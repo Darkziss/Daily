@@ -4,12 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:thoughts="clr-namespace:Daily.Thoughts"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    xmlns:converters="clr-namespace:Daily.Converters"
     x:Class="Daily.Pages.ThoughtPage"
     x:DataType="viewmodels:ThoughtPageViewModel">
 
     <ContentPage.Resources>
         
         <ResourceDictionary>
+
+            <converters:BoolToColorConverter
+                x:Key="CanDeleteToColorConverter"
+                TrueColor="{StaticResource RedSelected}"
+                FalseColor="{StaticResource Hover}"/>
 
             <Style TargetType="Label" x:Key="EmptyViewLabel">
                 <Setter Property="FontSize" Value="18"/>
@@ -19,6 +25,7 @@
 
             <Style TargetType="CollectionView" x:Key="ThoughtCollectionView">
                 <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
+                <Setter Property="SelectionMode" Value="Single"/>
                 <Setter Property="HeightRequest" Value="580"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="Margin" Value="20, 20, 20, 0"/>
@@ -31,11 +38,25 @@
                 <Setter Property="HeightRequest" Value="200"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
 
             <Style TargetType="Label" x:Key="ThoughtNameLabel">
                 <Setter Property="FontFamily" Value="NunitoBold"/>
                 <Setter Property="FontSize" Value="16"/>
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
                 <Setter Property="WidthRequest" Value="150"/>
                 <Setter Property="HeightRequest" Value="30"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
@@ -74,6 +95,9 @@
         <CollectionView
             Style="{StaticResource ThoughtCollectionView}"
             ItemsSource="{Binding Thoughts}"
+            SelectedItem="{Binding SelectedThought, Mode=TwoWay}"
+            SelectionChangedCommand="{Binding ThoughtInteractCommand}"
+            SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
             Grid.Column="0"
             Grid.Row="1">
 
@@ -125,6 +149,7 @@
                 <VerticalStackLayout>
                     <ImageButton
                         Style="{StaticResource ActionButton}"
+                        IsEnabled="{Binding CanInteractWithThought}"
                         Command="{Binding AddThoughtCommand}"/>
 
                     <Label
@@ -134,7 +159,10 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        Style="{StaticResource ActionButton}"/>
+                        Style="{StaticResource ActionButton}"
+                        IsEnabled="{Binding CanInteractWithThought}"
+                        BackgroundColor="{Binding CanDeleteThought, Converter={StaticResource CanDeleteToColorConverter}}"
+                        Command="{Binding SwitchCanDeleteCommand}"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
