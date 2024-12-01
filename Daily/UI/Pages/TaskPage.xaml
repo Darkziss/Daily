@@ -40,7 +40,6 @@
             <Color x:Key="Completed">#71b866</Color>
 
             <Color x:Key="GreenSelected">#aaf786</Color>
-            <Color x:Key="RedSelected">#f78786</Color>
             <Color x:Key="BlueSelected">#86f7ea</Color>
             
             <converters:PriorityToColorConverter

@@ -49,6 +49,19 @@ namespace Daily.Thoughts
             return true;
         }
 
+        public async Task DeleteThoughtAsync(Thought thought)
+        {
+            if (thought == null) return;
+
+            int index = Thoughts.IndexOf(thought);
+
+            if (index == -1) throw new Exception(thoughtIsNotOnListException);
+
+            Thoughts.RemoveAt(index);
+
+            await _dataProvider.SaveThoughtsAsync(Thoughts);
+        }
+
         private bool ValidateThoughtValues(string name, string text)
         {
             bool isNameValid = !string.IsNullOrWhiteSpace(name);

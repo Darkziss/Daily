@@ -4,12 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:thoughts="clr-namespace:Daily.Thoughts"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    xmlns:converters="clr-namespace:Daily.Converters"
     x:Class="Daily.Pages.ThoughtPage"
     x:DataType="viewmodels:ThoughtPageViewModel">
 
     <ContentPage.Resources>
         
         <ResourceDictionary>
+
+            <converters:BoolToColorConverter
+                x:Key="CanDeleteToColorConverter"
+                TrueColor="{StaticResource RedSelected}"
+                FalseColor="{StaticResource Hover}"/>
 
             <Style TargetType="Label" x:Key="EmptyViewLabel">
                 <Setter Property="FontSize" Value="18"/>
@@ -90,7 +96,7 @@
             Style="{StaticResource ThoughtCollectionView}"
             ItemsSource="{Binding Thoughts}"
             SelectedItem="{Binding SelectedThought, Mode=TwoWay}"
-            SelectionChangedCommand="{Binding ViewThoughtCommand}"
+            SelectionChangedCommand="{Binding ThoughtInteractCommand}"
             SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
             Grid.Column="0"
             Grid.Row="1">
@@ -154,7 +160,9 @@
                 <VerticalStackLayout>
                     <ImageButton
                         Style="{StaticResource ActionButton}"
-                        IsEnabled="{Binding CanInteractWithThought}"/>
+                        IsEnabled="{Binding CanInteractWithThought}"
+                        BackgroundColor="{Binding CanDeleteThought, Converter={StaticResource CanDeleteToColorConverter}}"
+                        Command="{Binding SwitchCanDeleteCommand}"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
