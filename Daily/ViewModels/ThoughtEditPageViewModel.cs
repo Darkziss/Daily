@@ -8,11 +8,10 @@ namespace Daily.ViewModels
     public partial class ThoughtEditPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isEditMode = false;
-        
+        [ObservableProperty] private bool _canSave = false;
+
         [ObservableProperty] private string _name = string.Empty;
         [ObservableProperty] private string _text = string.Empty;
-
-        [ObservableProperty] private bool _canSave = false;
 
         [ObservableProperty] private bool _isNameEntryReadOnly = true;
         
@@ -56,6 +55,18 @@ namespace Daily.ViewModels
 
                 if (isThoughtProperty) CanSave = IsNameValid && IsTextValid;
             };
+        }
+
+        public void PrepareViewForView(Thought thought)
+        {
+            IsEditMode = false;
+
+            Name = thought.Name;
+            Text = thought.Text;
+
+            CanSave = false;
+
+            IsNameEntryReadOnly = true;
         }
 
         public void ResetView()

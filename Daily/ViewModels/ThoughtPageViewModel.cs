@@ -7,9 +7,15 @@ namespace Daily.ViewModels
 {
     public partial class ThoughtPageViewModel : ObservableObject
     {
+        [ObservableProperty] private Thought? _selectedThought = null;
+
+        [ObservableProperty] private bool _canInteractWithThought = true;
+        
         private readonly ThoughtStorage _thoughtStorage;
 
         public ObservableCollection<Thought> Thoughts => _thoughtStorage.Thoughts;
+
+        public Command<Thought> ViewThoughtCommand { get; }
 
         public Command AddThoughtCommand { get; }
         
@@ -17,6 +23,23 @@ namespace Daily.ViewModels
         {
             _thoughtStorage = thoughtStorage;
 
+            ViewThoughtCommand = new Command<Thought>(
+            execute: async (thought) =>
+            {
+                if (SelectedThought == null || !CanInteractWithThought) return;
+
+                CanInteractWithThought = false;
+
+                var parameters = new ShellNavigationQueryParameters()
+                {
+                    [nameof(Thought)] = thought
+                };
+
+                await PageNavigator.GoToThoughtEditPageWithParametersAsync(parameters);
+
+                SelectedThought = null;
+            });
+            
             AddThoughtCommand = new Command(
             execute: async () =>
             {

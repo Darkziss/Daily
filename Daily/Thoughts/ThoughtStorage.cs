@@ -15,7 +15,8 @@ namespace Daily.Thoughts
         {
             _dataProvider = dataProvider;
 
-            Thoughts = new ObservableCollection<Thought>();
+            if (_dataProvider.Thoughts == null) Thoughts = new ObservableCollection<Thought>();
+            else Thoughts = Thoughts = new ObservableCollection<Thought>(_dataProvider.Thoughts);
         }
 
         public async Task<bool> TryCreateThoughtAsync(string name, string text)

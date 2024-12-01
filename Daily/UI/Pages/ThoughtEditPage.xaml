@@ -5,8 +5,7 @@
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.Pages.ThoughtEditPage"
-    x:DataType="viewmodels:ThoughtEditPageViewModel"
-    HideSoftInputOnTapped="True">
+    x:DataType="viewmodels:ThoughtEditPageViewModel">
 
     <ContentPage.Resources>
 
@@ -21,6 +20,7 @@
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
+                <Setter Property="MaxLength" Value="40"/>
                 <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
@@ -59,8 +59,7 @@
                 <toolkit:TextValidationBehavior
                     IsValid="{Binding IsNameValid, Mode=OneWayToSource}"
                     Flags="ValidateOnAttaching, ValidateOnValueChanged"
-                    MinimumLength="1"
-                    MaximumLength="40"/>
+                    MinimumLength="1"/>
             </Entry.Behaviors>
 
             <Entry.GestureRecognizers>

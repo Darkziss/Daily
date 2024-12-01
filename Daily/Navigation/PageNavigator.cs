@@ -23,6 +23,8 @@ namespace Daily.Navigation
 
         public static async Task GoToThoughtEditPageAsync() => await RouteToPage(nameof(ThoughtEditPage));
 
+        public static async Task GoToThoughtEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(ThoughtEditPage), parameters);
+
         public static async Task ReturnToPreviousPage() => await RouteToPage(backwards);
 
         private static async Task RouteToPage(string pageName)
