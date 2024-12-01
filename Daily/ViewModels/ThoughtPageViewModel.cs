@@ -38,6 +38,7 @@ namespace Daily.ViewModels
                 await PageNavigator.GoToThoughtEditPageWithParametersAsync(parameters);
 
                 SelectedThought = null;
+                CanInteractWithThought = true;
             });
             
             AddThoughtCommand = new Command(

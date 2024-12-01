@@ -31,16 +31,22 @@ namespace Daily.Thoughts
             return true;
         }
 
-        public async Task EditThoughtAsync(Thought thought, string name, string text)
+        public async Task<bool> TryEditThoughtAsync(Thought thought, string name, string text)
         {
             bool contains = Thoughts.Contains(thought);
 
             if (!contains) throw new Exception(thoughtIsNotOnListException);
 
+            bool isValid = ValidateThoughtValues(name, text);
+
+            if (!isValid) return false;
+
             thought.Name = name;
             thought.Text = text;
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
+
+            return true;
         }
 
         private bool ValidateThoughtValues(string name, string text)

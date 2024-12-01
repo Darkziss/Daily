@@ -14,6 +14,8 @@ namespace Daily.ViewModels
         [ObservableProperty] private string _text = string.Empty;
 
         [ObservableProperty] private bool _isNameEntryReadOnly = true;
+
+        private Thought? _currentThought = null;
         
         private readonly ThoughtStorage _thoughtStorage;
 
@@ -39,10 +41,8 @@ namespace Daily.ViewModels
             SaveThoughtCommand = new Command(
             execute: async () =>
             {
-                bool success = await _thoughtStorage.TryCreateThoughtAsync(Name, Text);
-
-                if (success) await ThoughtToastHandler.ShowThoughtCreatedToastAsync();
-                else await ThoughtToastHandler.ShowThoughtErrorToastAsync();
+                if (_currentThought == null) await CreateThoughtAsync();
+                else await EditThoughtAsync();
 
                 await PageNavigator.ReturnToPreviousPage();
             });
@@ -59,26 +59,44 @@ namespace Daily.ViewModels
 
         public void PrepareViewForView(Thought thought)
         {
+            _currentThought = thought;
+            
             IsEditMode = false;
+            CanSave = false;
 
             Name = thought.Name;
             Text = thought.Text;
-
-            CanSave = false;
 
             IsNameEntryReadOnly = true;
         }
 
         public void ResetView()
         {
+            _currentThought = null;
+            
             IsEditMode = true;
+            CanSave = false;
 
             Name = string.Empty;
             Text = string.Empty;
 
-            CanSave = false;
-
             IsNameEntryReadOnly = true;
+        }
+
+        private async Task CreateThoughtAsync()
+        {
+            bool success = await _thoughtStorage.TryCreateThoughtAsync(Name, Text);
+
+            if (success) await ThoughtToastHandler.ShowThoughtCreatedToastAsync();
+            else await ThoughtToastHandler.ShowThoughtErrorToastAsync();
+        }
+
+        private async Task EditThoughtAsync()
+        {
+            bool isEdited = await _thoughtStorage.TryEditThoughtAsync(_currentThought!, Name, Text);
+
+            if (isEdited) await ThoughtToastHandler.ShowThoughtEditedToastAsync();
+            else await ThoughtToastHandler.ShowThoughtErrorToastAsync();
         }
     }
 }
