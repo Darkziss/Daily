@@ -23,8 +23,8 @@ namespace Daily.Thoughts
         {
             if (!ValidateThoughtValues(name, text)) return false;
             
-            Thought thought = new Thought(0, name, text);
-            Thoughts.Add(thought);
+            Thought thought = new Thought(name, text);
+            Thoughts.Insert(0, thought);
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
 
