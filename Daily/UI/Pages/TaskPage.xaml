@@ -461,6 +461,8 @@
                     <ImageButton
                         IsEnabled="{Binding CanInteractWithTask}"
                         Style="{StaticResource ActionButton}"
+                        Padding="5, 5, 5, 5"
+                        Source="add.png"
                         Command="{Binding AddTaskCommand}"/>
 
                     <Label
@@ -472,7 +474,9 @@
                     <ImageButton
                         IsEnabled="{Binding CanInteractWithTask}"
                         Style="{StaticResource ActionButton}"
+                        Padding="5, 5, 5, 5"
                         BackgroundColor="{Binding CanEditTask, Converter={StaticResource CanEditTaskToColorConverter}}"
+                        Source="edit.png"
                         Command="{Binding SwitchCanEditTaskCommand}"/>
 
                     <Label
@@ -485,6 +489,8 @@
                         IsEnabled="{Binding CanInteractWithTask}"
                         Style="{StaticResource ActionButton}"
                         BackgroundColor="{Binding CanDeleteTask, Converter={StaticResource CanDeleteTaskToColorConverter}}"
+                        Padding="5, 5, 5, 5"
+                        Source="delete.png"
                         Command="{Binding SwitchCanDeleteTaskCommand}"/>
 
                     <Label
@@ -497,6 +503,8 @@
                         IsEnabled="{Binding CanInteractWithTask}"
                         Style="{StaticResource ActionButton}"
                         BackgroundColor="{Binding CanResetTask, Converter={StaticResource CanResetTaskToColorConverter}}"
+                        Padding="5, 5, 5, 5"
+                        Source="reset.png"
                         Command="{Binding SwitchCanResetTaskCommand}"/>
 
                     <Label

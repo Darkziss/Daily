@@ -67,6 +67,7 @@
 
     <Style TargetType="ImageButton" x:Key="ActionButton">
         <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+        <Setter Property="Aspect" Value="AspectFill"/>
         <Setter Property="WidthRequest" Value="50"/>
         <Setter Property="HeightRequest" Value="50"/>
         <Setter Property="VerticalOptions" Value="Start"/>

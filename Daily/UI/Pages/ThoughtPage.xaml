@@ -150,6 +150,8 @@
                     <ImageButton
                         Style="{StaticResource ActionButton}"
                         IsEnabled="{Binding CanInteractWithThought}"
+                        Padding="5, 5, 5, 5"
+                        Source="add.png"
                         Command="{Binding AddThoughtCommand}"/>
 
                     <Label
@@ -161,7 +163,9 @@
                     <ImageButton
                         Style="{StaticResource ActionButton}"
                         IsEnabled="{Binding CanInteractWithThought}"
+                        Padding="5, 5, 5, 5"
                         BackgroundColor="{Binding CanDeleteThought, Converter={StaticResource CanDeleteToColorConverter}}"
+                        Source="delete.png"
                         Command="{Binding SwitchCanDeleteCommand}"/>
 
                     <Label
