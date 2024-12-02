@@ -24,6 +24,18 @@
                 <Setter Property="BorderWidth" Value="0"/>
                 <Setter Property="FontFamily" Value="Nunito"/>
                 <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="WidthRequest" Value="330"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+
+                <Setter Property="ItemsSource">
+                    <Setter.Value>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Основная</x:String>
+                            <x:String>Условная</x:String>
+                        </x:Array>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <Style TargetType="Border" x:Key="PickerBorder">
@@ -50,7 +62,20 @@
 
             <Style TargetType="Label" x:Key="TaskFieldHeader">
                 <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="TaskFieldHeader">
+                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Stepper" x:Key="TargetRepeatCountStepper">
+                <Setter Property="Maximum" Value="10"/>
+                <Setter Property="Minimum" Value="1"/>
+                <Setter Property="WidthRequest" Value="130"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
@@ -61,6 +86,32 @@
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
+
+            <Style TargetType="Entry" x:Key="CompletionTimeEntry">
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="Placeholder" Value="0"/>
+                <Setter Property="Keyboard" Value="Numeric"/>
+                <Setter Property="MaxLength" Value="3"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
+
+            <Style TargetType="Label" x:Key="CompletionTimeUnitLabel">
+                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="Text" Value="минут"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Entry" x:Key="NoteEntry">
+                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="Placeholder" Value="Введите примечание"/>
+                <Setter Property="Keyboard" Value="Text"/>
+                <Setter Property="MaxLength" Value="15"/>
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
         </ResourceDictionary>
@@ -94,23 +145,11 @@
             </Label>
 
             <controls:SegmentedControl
-                IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
                 Style="{StaticResource TaskSegmentedControl}"
+                IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
                 AutoDisconnectHandler="False"
-                WidthRequest="330"
                 SelectedSegment="{Binding SelectedTaskSegmentIndex, Mode=TwoWay}"
-                SegmentSelectedCommand="{Binding ChangeViewCommand}"
-                VerticalOptions="Start"
-                HorizontalOptions="Center">
-
-                <controls:SegmentedControl.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>Основная</x:String>
-                        <x:String>Условная</x:String>
-                    </x:Array>
-                </controls:SegmentedControl.ItemsSource>
-                
-            </controls:SegmentedControl>
+                SegmentSelectedCommand="{Binding ChangeViewCommand}"/>
 
             <VerticalStackLayout
                 Style="{StaticResource TaskFieldStackLayout}">
@@ -135,9 +174,8 @@
                 IsVisible="{Binding IsConditionalTaskMode, Converter={toolkit:InvertedBoolConverter}}">
 
                 <Label
-                    FontSize="{StaticResource DefaultFontSize}"
-                    Text="Приоритет"
-                    HorizontalOptions="Start"/>
+                    Style="{StaticResource TaskFieldHeader}"
+                    Text="Приоритет"/>
 
                 <Border
                     Style="{StaticResource PickerBorder}">
@@ -164,9 +202,8 @@
                 IsVisible="{Binding IsConditionalTaskMode}">
 
                 <Label
-                    FontSize="{StaticResource DefaultFontSize}"
-                    Text="Промежуток времени"
-                    HorizontalOptions="Start"/>
+                    Style="{StaticResource TaskFieldHeader}"
+                    Text="Промежуток времени"/>
 
                 <Border
                     Style="{StaticResource PickerBorder}">
@@ -183,7 +220,6 @@
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
-                    
                 </Border>
 
             </VerticalStackLayout>
@@ -209,13 +245,9 @@
 
                 <Stepper
                     x:Name="RepeatCountStepper"
+                    Style="{StaticResource TargetRepeatCountStepper}"
                     IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
                     Value="{Binding TargetRepeatCount, Mode=TwoWay}"
-                    Maximum="10"
-                    Minimum="1"
-                    WidthRequest="130"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
                     Grid.Column="1"
                     Grid.Row="1"/>
             </Grid>
@@ -228,31 +260,21 @@
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
-                    Text="Длительность"
+                    Text="Длительность (необязат.)"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"/>
 
                 <Entry
                     IsReadOnly="{Binding IsCreatingNewTask}"
-                    FontSize="30"
-                    Placeholder="0"
+                    Style="{StaticResource CompletionTimeEntry}"
                     Text="{Binding CompletionTime, Mode=TwoWay, Converter={converters:CompletionTimeToStringConverter}}"
-                    Keyboard="Numeric"
-                    MaxLength="3"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="Fill"
-                    HorizontalOptions="Fill"
                     Grid.Column="0"
                     Grid.Row="1"/>
 
                 <Label
-                    FontSize="{StaticResource DefaultFontSize}"
-                    Text="минут"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"
+                    Style="{StaticResource CompletionTimeUnitLabel}"
                     Grid.Column="1"
                     Grid.Row="1"/>
-
             </Grid>
 
             <Grid
@@ -263,22 +285,16 @@
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
-                    Text="Примечание (необязательно)"
+                    Text="Примечание (необязат.)"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"/>
 
                 <Entry
+                    Style="{StaticResource NoteEntry}"
                     IsReadOnly="{Binding IsCreatingNewTask}"
-                    FontSize="{StaticResource DefaultFontSize}"
-                    Placeholder="Введите примечание"
                     Text="{Binding Note, Mode=TwoWay}"
-                    Keyboard="Text"
-                    MaxLength="15"
-                    WidthRequest="{StaticResource DefaultElementWidth}"
-                    HorizontalOptions="Start"
                     Grid.Column="0"
                     Grid.Row="1"/>
-
             </Grid>
         </VerticalStackLayout>
 
