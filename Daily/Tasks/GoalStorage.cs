@@ -4,27 +4,25 @@ namespace Daily.Tasks
 {
     public class GoalStorage
     {
-        private string _goal;
-
         private readonly DataProvider _dataProvider;
 
-        public string Goal => _goal;
+        public string Goal { get; set; }
 
         public GoalStorage(DataProvider dataProvider)
         {
-            _goal = dataProvider.Goal ?? string.Empty;
+            Goal = dataProvider.Goal ?? string.Empty;
 
             _dataProvider = dataProvider;
         }
 
         public bool IsSameGoal(string goal)
         {
-            return _goal.Equals(goal);
+            return Goal.Equals(goal);
         }
 
         public async Task SetGoalAsync(string goal)
         {
-            _goal = goal;
+            Goal = goal;
 
             await _dataProvider.SaveGoalAsync(goal);
         }

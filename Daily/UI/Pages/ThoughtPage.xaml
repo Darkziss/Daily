@@ -25,7 +25,7 @@
 
             <Style TargetType="CollectionView" x:Key="ThoughtCollectionView">
                 <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
-                <Setter Property="ItemsUpdatingScrollMode" Value="KeepScrollOffset"/>
+                <Setter Property="ItemsUpdatingScrollMode" Value="KeepItemsInView"/>
                 <Setter Property="SelectionMode" Value="Single"/>
                 <Setter Property="HeightRequest" Value="580"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
