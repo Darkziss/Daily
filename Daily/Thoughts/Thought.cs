@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Daily.Events;
 
 namespace Daily.Thoughts
 {
-    public class Thought : INotifyPropertyChanged
+    public class Thought : NotifyPropertyChanged
     {
         private string _name;
         private string _text;
@@ -31,17 +31,10 @@ namespace Daily.Thoughts
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public Thought(string name, string text)
         {
             _name = name;
             _text = text;
-        }
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

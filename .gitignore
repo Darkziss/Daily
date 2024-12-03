@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /Daily/Resources/Raw/AboutAssets.txt
+/Daily/DiaryRecords/DiaryRecord.cs

@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Daily.Events;
 
 namespace Daily.Tasks
 {
-    public abstract class TaskBase : INotifyPropertyChanged
+    public abstract class TaskBase : NotifyPropertyChanged
     {
         private string _actionName = string.Empty;
 
@@ -46,8 +46,6 @@ namespace Daily.Tasks
 
         public bool IsCompleted => RepeatCount == TargetRepeatCount;
         
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         public TaskBase(string actionName, int targetRepeatCount)
         {
             ActionName = actionName;
@@ -72,11 +70,6 @@ namespace Daily.Tasks
             RepeatCount = 0;
 
             if (wasCompleted) OnPropertyChanged(nameof(IsCompleted));
-        }
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
