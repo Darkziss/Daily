@@ -12,7 +12,6 @@ namespace Daily.ViewModels
         [ObservableProperty] private Thought? _selectedThought = null;
 
         [ObservableProperty] private bool _canInteractWithThought = true;
-
         [ObservableProperty] private bool _canDeleteThought = false;
         
         private readonly ThoughtStorage _thoughtStorage;

@@ -41,6 +41,8 @@ namespace Daily.ViewModels
             SaveThoughtCommand = new Command(
             execute: async () =>
             {
+                CanSave = false;
+                
                 if (_currentThought == null) await CreateThoughtAsync();
                 else await EditThoughtAsync();
 
