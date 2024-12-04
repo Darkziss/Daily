@@ -2,25 +2,38 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:thoughts="clr-namespace:Daily.Thoughts"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
-    xmlns:converters="clr-namespace:Daily.Converters"
-    x:Class="Daily.Pages.ThoughtPage"
-    x:DataType="viewmodels:ThoughtPageViewModel">
+    xmlns:diary="clr-namespace:Daily.Diary"
+    x:Class="Daily.Pages.DiaryRecordPage"
+    x:DataType="viewmodels:DiaryRecordPageViewModel"
+    BackgroundColor="{StaticResource DiaryBackground}">
 
     <ContentPage.Resources>
-        
+
         <ResourceDictionary>
 
-            <converters:BoolToColorConverter
-                x:Key="CanDeleteToColorConverter"
-                TrueColor="{StaticResource RedSelected}"
-                FalseColor="{StaticResource Hover}"/>
+            <Style TargetType="ImageButton" x:Key="DiaryActionButton" BasedOn="{StaticResource ActionButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DiaryHovers}"/>
+
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal"/>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource DiaryDisabled}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver"/>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
 
         </ResourceDictionary>
-
+        
     </ContentPage.Resources>
-    
+
     <Grid
         ColumnDefinitions="*"
         RowDefinitions="Auto, Auto, *"
@@ -30,17 +43,15 @@
 
         <Label
             Style="{StaticResource Headline}"
-            FontSize="35"
-            Text="Важные мысли"
+            Text="Дневник"
             Margin="20, 0, 0, 0"
             Grid.Column="0"
             Grid.Row="0"/>
 
         <CollectionView
             Style="{StaticResource RecordCollectionView}"
-            ItemsSource="{Binding Thoughts}"
-            SelectedItem="{Binding SelectedThought, Mode=TwoWay}"
-            SelectionChangedCommand="{Binding ThoughtInteractCommand}"
+            ItemsSource="{Binding DiaryRecords}"
+            SelectedItem="{Binding SelectedDiaryRecord, Mode=TwoWay}"
             SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
             Grid.Column="0"
             Grid.Row="1">
@@ -61,18 +72,20 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame
-                        x:DataType="thoughts:Thought"
-                        Style="{StaticResource RecordCard}">
+                        x:DataType="diary:DiaryRecord"
+                        Style="{StaticResource RecordCard}"
+                        BackgroundColor="{StaticResource DiaryHovers}">
 
                         <VerticalStackLayout
                             Padding="10, 0, 10, 0">
 
                             <Label
                                 Style="{StaticResource RecordHeaderLabel}"
-                                Text="{Binding Name}"/>
+                                Text="{Binding CreationTimeStamp, StringFormat='{0:d}'}"/>
 
                             <Label
                                 Style="{StaticResource RecordContentLabel}"
+                                TextColor="{StaticResource DiaryInputField}"
                                 Text="{Binding Text}"/>
                         </VerticalStackLayout>
                     </Frame>
@@ -82,6 +95,8 @@
 
         <Frame
             Style="{StaticResource BottomPanel}"
+            BackgroundColor="{StaticResource DiaryBackground}"
+            BorderColor="{StaticResource DiaryInputField}"
             Grid.Column="0"
             Grid.Row="2">
 
@@ -92,11 +107,11 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        Style="{StaticResource ActionButton}"
-                        IsEnabled="{Binding CanInteractWithThought}"
+                        Style="{StaticResource DiaryActionButton}"
+                        IsEnabled="{Binding CanInteractWithDiaryRecord}"
                         Padding="5, 5, 5, 5"
                         Source="add.png"
-                        Command="{Binding AddThoughtCommand}"/>
+                        Command="{Binding AddDiaryRecordCommand}"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
@@ -105,12 +120,10 @@
 
                 <VerticalStackLayout>
                     <ImageButton
-                        Style="{StaticResource ActionButton}"
-                        IsEnabled="{Binding CanInteractWithThought}"
+                        Style="{StaticResource DiaryActionButton}"
+                        IsEnabled="{Binding CanInteractWithDiaryRecord}"
                         Padding="5, 5, 5, 5"
-                        BackgroundColor="{Binding CanDeleteThought, Converter={StaticResource CanDeleteToColorConverter}}"
-                        Source="delete.png"
-                        Command="{Binding SwitchCanDeleteCommand}"/>
+                        Source="delete.png"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"

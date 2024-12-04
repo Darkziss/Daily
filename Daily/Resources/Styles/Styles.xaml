@@ -143,6 +143,48 @@
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
+    <Style TargetType="Frame" x:Key="RecordCard">
+        <Setter Property="InputTransparent" Value="True"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+        <Setter Property="WidthRequest" Value="170"/>
+        <Setter Property="HeightRequest" Value="200"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Selected">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="RecordHeaderLabel">
+        <Setter Property="FontFamily" Value="NunitoBold"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="LineBreakMode" Value="TailTruncation"/>
+        <Setter Property="WidthRequest" Value="150"/>
+        <Setter Property="HeightRequest" Value="30"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+        <Setter Property="Margin" Value="0, 5, 0, 0"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="RecordContentLabel">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextColor" Value="{StaticResource InputField}"/>
+        <Setter Property="WidthRequest" Value="150"/>
+        <Setter Property="HeightRequest" Value="170"/>
+        <Setter Property="LineBreakMode" Value="TailTruncation"/>
+        <Setter Property="MaxLines" Value="7"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+    </Style>
+    
     <Style TargetType="Frame" x:Key="BottomPanel">
         <Setter Property="BackgroundColor" Value="{StaticResource PanelBackground}"/>
         <Setter Property="BorderColor" Value="{StaticResource Gray}"/>
@@ -196,8 +238,23 @@
         <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="EmptyViewLabel">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Text" Value="Пока здесь пусто"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+
     <Style TargetType="CollectionView">
         <Setter Property="BackgroundColor" Value="Transparent"/>
+    </Style>
+
+    <Style TargetType="CollectionView" x:Key="RecordCollectionView">
+        <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
+        <Setter Property="ItemsUpdatingScrollMode" Value="KeepItemsInView"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="HeightRequest" Value="580"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="Margin" Value="20, 20, 20, 0"/>
     </Style>
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">

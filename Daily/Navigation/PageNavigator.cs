@@ -10,8 +10,9 @@ namespace Daily.Navigation
         private const bool animateRouting = true;
 
         private const string routingExceptionText = "Already routing to page";
-        private const string invalidPageNameExceptionText = "Page name is null or white space";
         private const string nullNavigationParameterExceptionText = "Navigation parameters are null";
+
+        #region Tasks
 
         public static async Task GoToTaskPageAsync() => await RouteToPage(nameof(TaskPage));
 
@@ -19,18 +20,33 @@ namespace Daily.Navigation
 
         public static async Task GoToTaskEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(TaskEditPage), parameters);
 
+        #endregion
+
+        #region Thoughts
+
         public static async Task GoToThoughtPageAsync() => await RouteToPage(nameof(ThoughtPage));
 
         public static async Task GoToThoughtEditPageAsync() => await RouteToPage(nameof(ThoughtEditPage));
 
         public static async Task GoToThoughtEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(ThoughtEditPage), parameters);
 
+        #endregion
+
+        #region Diary
+
+        public static async Task GoToDiaryRecordPageAsync() => await RouteToPage(nameof(DiaryRecordPage));
+
+        public static async Task GoToDiaryRecordEditPageAsync() => await RouteToPage(nameof(DiaryRecordEditPage));
+
+        public static async Task GoToDiaryRecordEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(DiaryRecordEditPage), parameters);
+
+        #endregion
+
         public static async Task ReturnToPreviousPage() => await RouteToPage(backwards);
 
         private static async Task RouteToPage(string pageName)
         {
             if (IsRouting) throw new Exception(routingExceptionText);
-            else if (string.IsNullOrWhiteSpace(pageName)) throw new ArgumentException(invalidPageNameExceptionText);
 
             IsRouting = true;
 
@@ -42,7 +58,6 @@ namespace Daily.Navigation
         private static async Task RouteToPageWithParameters(string pageName, ShellNavigationQueryParameters parameters)
         {
             if (IsRouting) throw new Exception(routingExceptionText);
-            else if (string.IsNullOrWhiteSpace(pageName)) throw new ArgumentException(invalidPageNameExceptionText);
             else if (parameters == null) throw new ArgumentNullException(nullNavigationParameterExceptionText);
 
             IsRouting = true;

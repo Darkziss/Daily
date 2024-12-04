@@ -233,7 +233,8 @@
                 IsEnabled="{Binding CanNavigate}"
                 Style="{StaticResource Card}"
                 BackgroundColor="{StaticResource Diary}"
-                Text="Дневник"/>
+                Text="Дневник"
+                Command="{Binding GoToDiaryRecordPage}"/>
 
             <Button
                 IsEnabled="{Binding CanNavigate}"
