@@ -5,9 +5,9 @@ namespace Daily.Diary
     public class DiaryRecord : NotifyPropertyChanged
     {
         private string _text;
-        private readonly DateTime _creationTimeStamp;
+        private readonly DateTime _creationDateTime;
 
-        public DateTime CreationTimeStamp => _creationTimeStamp;
+        public DateTime CreationDateTime => _creationDateTime;
 
         public string Text
         {
@@ -21,10 +21,10 @@ namespace Daily.Diary
             }
         }
 
-        public DiaryRecord(string text, DateTime creationTimeStamp)
+        public DiaryRecord(string text, DateTime creationDateTime)
         {
             _text = text;
-            _creationTimeStamp = creationTimeStamp;
+            _creationDateTime = creationDateTime;
         }
     }
 }
