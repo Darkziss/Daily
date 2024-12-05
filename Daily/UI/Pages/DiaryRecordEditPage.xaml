@@ -2,8 +2,97 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Daily.Pages.DiaryRecordEditPage">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    x:Class="Daily.Pages.DiaryRecordEditPage"
+    x:DataType="viewmodels:DiaryRecordEditPageViewModel"
+    BackgroundColor="{StaticResource DiaryBackground}">
 
-    <Label
-        Text="ada"/>
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <x:Int32 x:Key="DiaryRecordMinLength">1</x:Int32>
+            <x:Int32 x:Key="DiaryRecordMaxLength">1500</x:Int32>
+            
+            <Style TargetType="Label" x:Key="CreationTimeLabel">
+                <Setter Property="FontFamily" Value="NunitoBold"/>
+                <Setter Property="FontSize" Value="30"/>
+                <Setter Property="WidthRequest" Value="350"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="20, 0, 0, 0"/>
+            </Style>
+            
+            <Style TargetType="Editor" x:Key="DiaryRecordTextEditor" BasedOn="{StaticResource RecordTextEditor}">
+                <Setter Property="BackgroundColor" Value="{StaticResource DiaryFieldBackground}"/>
+                <Setter Property="PlaceholderColor" Value="{StaticResource DiaryInputField}"/>
+            </Style>
+
+            <Style TargetType="Button" x:Key="DiaryBottomButton" BasedOn="{StaticResource BottomButton}">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal"/>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource DiaryDisabled}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="PointerOver"/>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+            
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
+
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, 590, *"
+        Margin="0, 40, 0, 0">
+
+        <Label 
+            Style="{StaticResource CreationTimeLabel}"
+            Text="{Binding HeaderText}"
+            Grid.Column="0"
+            Grid.Row="0"/>
+
+        <Editor
+            Style="{StaticResource DiaryRecordTextEditor}"
+            IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
+            Text="{Binding Text, Mode=TwoWay}"
+            Grid.Column="0"
+            Grid.Row="1">
+
+            <Editor.Behaviors>
+                <toolkit:TextValidationBehavior
+                    IsValid="{Binding CanSave, Mode=OneWayToSource}"
+                    Flags="ValidateOnAttaching, ValidateOnValueChanged"
+                    MinimumLength="{StaticResource DiaryRecordMinLength}"
+                    MaximumLength="{StaticResource DiaryRecordMaxLength}"/>
+            </Editor.Behaviors>
+        </Editor>
+
+        <Button
+            Style="{StaticResource DiaryBottomButton}"
+            IsVisible="{Binding IsEditMode}"
+            IsEnabled="{Binding CanSave}"
+            BackgroundColor="{StaticResource Save}"
+            Text="Сохранить"
+            Command="{Binding SaveDiaryRecordCommand}"
+            Grid.Column="0"
+            Grid.Row="2"/>
+
+        <Button
+            Style="{StaticResource DiaryBottomButton}"
+            IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
+            BackgroundColor="{StaticResource Edit}"
+            Text="Изменить"
+            Command="{Binding ActivateEditMode}"
+            Grid.Column="0"
+            Grid.Row="2"/>
+    </Grid>
 </ContentPage>

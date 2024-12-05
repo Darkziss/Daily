@@ -12,6 +12,21 @@
 
         <ResourceDictionary>
 
+            <Style TargetType="Frame" x:Key="DiaryRecordCard" BasedOn="{StaticResource RecordCard}">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource DiaryHovers}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+            
             <Style TargetType="ImageButton" x:Key="DiaryActionButton" BasedOn="{StaticResource ActionButton}">
                 <Setter Property="BackgroundColor" Value="{StaticResource DiaryHovers}"/>
 
@@ -52,6 +67,7 @@
             Style="{StaticResource RecordCollectionView}"
             ItemsSource="{Binding DiaryRecords}"
             SelectedItem="{Binding SelectedDiaryRecord, Mode=TwoWay}"
+            SelectionChangedCommand="{Binding DiaryRecordInteractCommand}"
             SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
             Grid.Column="0"
             Grid.Row="1">
@@ -73,7 +89,7 @@
                 <DataTemplate>
                     <Frame
                         x:DataType="diary:DiaryRecord"
-                        Style="{StaticResource RecordCard}"
+                        Style="{StaticResource DiaryRecordCard}"
                         BackgroundColor="{StaticResource DiaryHovers}">
 
                         <VerticalStackLayout
@@ -81,7 +97,7 @@
 
                             <Label
                                 Style="{StaticResource RecordHeaderLabel}"
-                                Text="{Binding CreationTimeStamp, StringFormat='{0:d}'}"/>
+                                Text="{Binding CreationDateTime, StringFormat='{0:d}'}"/>
 
                             <Label
                                 Style="{StaticResource RecordContentLabel}"

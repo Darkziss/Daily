@@ -5,9 +5,19 @@ namespace Daily.Diary
     public class DiaryRecord : NotifyPropertyChanged
     {
         private string _text;
-        private readonly DateTime _creationDateTime;
+        private DateTime _creationDateTime;
 
-        public DateTime CreationDateTime => _creationDateTime;
+        public DateTime CreationDateTime
+        {
+            get => _creationDateTime;
+            set
+            {
+                if (value == _creationDateTime) return;
+
+                _creationDateTime = value;
+                OnPropertyChanged(nameof(CreationDateTime));
+            }
+        }
 
         public string Text
         {

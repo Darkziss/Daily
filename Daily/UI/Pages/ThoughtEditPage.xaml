@@ -14,9 +14,6 @@
             <x:Boolean x:Key="True">True</x:Boolean>
             <x:Boolean x:Key="False">False</x:Boolean>
 
-            <Color x:Key="Save">#86caf7</Color>
-            <Color x:Key="Edit">#86f7e8</Color>
-
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
@@ -27,16 +24,6 @@
                 <Setter Property="Margin" Value="20, 0, 0, 0"/>
             </Style>
 
-            <Style TargetType="Editor" x:Key="ThoughtTextEditor">
-                <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Placeholder" Value="Начните печатать"/>
-                <Setter Property="WidthRequest" Value="350"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-                <Setter Property="Margin" Value="20, 0, 0, 0"/>
-            </Style>
-            
         </ResourceDictionary>
         
     </ContentPage.Resources>
@@ -71,7 +58,7 @@
         </Entry>
 
         <Editor
-            Style="{StaticResource ThoughtTextEditor}"
+            Style="{StaticResource RecordTextEditor}"
             IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
             Text="{Binding Text, Mode=TwoWay}"
             Grid.Column="0"

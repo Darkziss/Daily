@@ -22,6 +22,9 @@
     <Color x:Key="Good">#aaf786</Color>
     <Color x:Key="Disabled">#c3c3c3</Color>
 
+    <Color x:Key="Save">#86caf7</Color>
+    <Color x:Key="Edit">#86f7e8</Color>
+
     <Color x:Key="RedSelected">#f78786</Color>
 
     <Color x:Key="Daily">#edd8c3</Color>
@@ -30,6 +33,7 @@
     <Color x:Key="Common">#c3edc4</Color>
 
     <Color x:Key="DiaryBackground">#f8f0cd</Color>
+    <Color x:Key="DiaryFieldBackground">#f0e8c7</Color>
     <Color x:Key="DiaryHovers">#edd9ab</Color>
     <Color x:Key="DiaryInputField">#85775d</Color>
     <Color x:Key="DiaryDisabled">#c29800</Color>
