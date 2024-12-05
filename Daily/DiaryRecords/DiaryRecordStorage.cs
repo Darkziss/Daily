@@ -23,12 +23,40 @@ namespace Daily.Diary
         {
             if (string.IsNullOrWhiteSpace(text)) return false;
 
-            DiaryRecord diaryRecord = new DiaryRecord(text, creationDateTime);
-            DiaryRecords.Insert(0, diaryRecord);
+            DiaryRecord record = new DiaryRecord(text, creationDateTime);
+            DiaryRecords.Insert(0, record);
 
             await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
 
             return true;
+        }
+
+        public async Task<bool> TryEditDiaryRecordAsync(DiaryRecord record, string text)
+        {
+            bool contains = DiaryRecords.Contains(record);
+
+            if (!contains) throw new Exception(diaryRecordIsNotOnListException);
+
+            if (string.IsNullOrWhiteSpace(text)) return false;
+
+            record.Text = text;
+
+            await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
+
+            return true;
+        }
+
+        public async Task DeleteDiaryRecordAsync(DiaryRecord record)
+        {
+            if (record == null) return;
+
+            int index = DiaryRecords.IndexOf(record);
+
+            if (index == -1) throw new Exception(diaryRecordIsNotOnListException);
+
+            DiaryRecords.RemoveAt(index);
+
+            await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
         }
     }
 }

@@ -34,19 +34,12 @@ namespace Daily.ViewModels
                 CanSave = false;
 
                 if (_currentDiaryRecord == null) await CreateDiaryRecordAsync();
+                else await EditDiaryRecordAsync();
 
                 await PageNavigator.ReturnToPreviousPage();
             });
 
             ActivateEditMode = new Command(() => IsEditMode = true);
-        }
-
-        private async Task CreateDiaryRecordAsync()
-        {
-            bool success = await _diaryRecordStorage.TryAddDiaryRecordAsync(Text, DateTime.Now);
-
-            if (success) await DiaryRecordToastHandler.ShowDiaryRecordCreatedToastAsync();
-            else await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
         }
 
         public void PrepareViewForView(DiaryRecord record)
@@ -70,6 +63,22 @@ namespace Daily.ViewModels
 
             HeaderText = defaultHeaderText;
             Text = string.Empty;
+        }
+
+        private async Task CreateDiaryRecordAsync()
+        {
+            bool success = await _diaryRecordStorage.TryAddDiaryRecordAsync(Text, DateTime.Now);
+
+            if (success) await DiaryRecordToastHandler.ShowDiaryRecordCreatedToastAsync();
+            else await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
+        }
+
+        private async Task EditDiaryRecordAsync()
+        {
+            bool success = await _diaryRecordStorage.TryEditDiaryRecordAsync(_currentDiaryRecord!, Text);
+
+            if (success) await DiaryRecordToastHandler.ShowDiaryRecordEditedToastAsync();
+            else await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
         }
     }
 }
