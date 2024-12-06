@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Diary;
 using Daily.Navigation;
+using Daily.Popups;
+using Daily.Toasts;
 
 namespace Daily.ViewModels
 {
@@ -19,6 +21,8 @@ namespace Daily.ViewModels
         public Command<DiaryRecord> DiaryRecordInteractCommand { get; }
 
         public Command AddDiaryRecordCommand { get; }
+
+        public Command SwitchCanDeleteCommand { get; }
             
         public DiaryRecordPageViewModel(DiaryRecordStorage diaryRecordStorage)
         {
@@ -31,7 +35,16 @@ namespace Daily.ViewModels
 
                 CanInteractWithDiaryRecord = false;
 
-                if (CanDeleteDiaryRecord) return;
+                if (CanDeleteDiaryRecord)
+                {
+                    bool shouldDelete = await PopupHandler.ShowDiaryRecordDeletePopupAsync();
+
+                    if (shouldDelete)
+                    {
+                        await _diaryRecordStorage.DeleteDiaryRecordAsync(record);
+                        await ThoughtToastHandler.ShowThoughtDeletedToastAsync();
+                    }
+                }
                 else
                 {
                     var parameters = new ShellNavigationQueryParameters()
@@ -55,6 +68,8 @@ namespace Daily.ViewModels
 
                 CanInteractWithDiaryRecord = true;
             });
+
+            SwitchCanDeleteCommand = new Command(() => CanDeleteDiaryRecord = !CanDeleteDiaryRecord);
         }
 
         public void ResetView()

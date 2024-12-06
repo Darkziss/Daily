@@ -2,8 +2,9 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     xmlns:diary="clr-namespace:Daily.Diary"
+    xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    xmlns:converters="clr-namespace:Daily.Converters"  
     x:Class="Daily.Pages.DiaryRecordPage"
     x:DataType="viewmodels:DiaryRecordPageViewModel"
     BackgroundColor="{StaticResource DiaryBackground}">
@@ -12,6 +13,11 @@
 
         <ResourceDictionary>
 
+            <converters:BoolToColorConverter
+                x:Key="CanDeleteToColorConverter"
+                TrueColor="{StaticResource RedSelected}"
+                FalseColor="{StaticResource DiaryHovers}"/>
+            
             <Style TargetType="Frame" x:Key="DiaryRecordCard" BasedOn="{StaticResource RecordCard}">
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
@@ -137,9 +143,11 @@
                 <VerticalStackLayout>
                     <ImageButton
                         Style="{StaticResource DiaryActionButton}"
+                        BackgroundColor="{Binding CanDeleteDiaryRecord, Converter={StaticResource CanDeleteToColorConverter}}"
                         IsEnabled="{Binding CanInteractWithDiaryRecord}"
                         Padding="5, 5, 5, 5"
-                        Source="delete.png"/>
+                        Source="delete.png"
+                        Command="{Binding SwitchCanDeleteCommand}"/>
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
