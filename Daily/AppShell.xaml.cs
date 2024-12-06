@@ -15,6 +15,9 @@ namespace Daily
 
             Routing.RegisterRoute(nameof(ThoughtPage), typeof(ThoughtPage));
             Routing.RegisterRoute(nameof(ThoughtEditPage), typeof(ThoughtEditPage));
+
+            Routing.RegisterRoute(nameof(DiaryRecordPage), typeof(DiaryRecordPage));
+            Routing.RegisterRoute(nameof(DiaryRecordEditPage), typeof(DiaryRecordEditPage));
         }
     }
 }

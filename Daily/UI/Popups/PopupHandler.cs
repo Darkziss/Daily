@@ -21,6 +21,14 @@ namespace Daily.Popups
 
             return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
         }
+
+        public static async Task<bool> ShowDiaryRecordDeletePopupAsync()
+        {
+            const string title = "Удаление записи";
+            const string message = "Вы хотите удалить запись?";
+
+            return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
+        }
         
         private static async Task<bool> ShowDialogPopupAtCurrentPageAsync(string title, string message, string accept, string cancel)
         {

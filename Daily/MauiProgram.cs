@@ -3,6 +3,7 @@ using CommunityToolkit.Maui;
 using Plugin.SegmentedControl.Maui;
 using Daily.Tasks;
 using Daily.Thoughts;
+using Daily.Diary;
 using Daily.Data;
 using Daily.ViewModels;
 using Daily.Pages;
@@ -43,7 +44,8 @@ namespace Daily
                 .AddSingleton<DataProvider>()
                 .AddSingleton<GoalStorage>()
                 .AddSingleton<TaskStorage>()
-                .AddSingleton<ThoughtStorage>();
+                .AddSingleton<ThoughtStorage>()
+                .AddSingleton<DiaryRecordStorage>();
         }
 
         private static void RegisterViewModels(MauiAppBuilder builder)
@@ -54,7 +56,9 @@ namespace Daily
                 .AddSingleton<TaskPageViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
                 .AddSingleton<ThoughtPageViewModel>()
-                .AddSingleton<ThoughtEditPageViewModel>();
+                .AddSingleton<ThoughtEditPageViewModel>()
+                .AddSingleton<DiaryRecordPageViewModel>()
+                .AddSingleton<DiaryRecordEditPageViewModel>();
         }
 
         private static void RegisterViews(MauiAppBuilder builder)
@@ -65,7 +69,9 @@ namespace Daily
                 .AddSingleton<TaskPage>()
                 .AddSingleton<TaskEditPage>()
                 .AddSingleton<ThoughtPage>()
-                .AddSingleton<ThoughtEditPage>();
+                .AddSingleton<ThoughtEditPage>()
+                .AddSingleton<DiaryRecordPage>()
+                .AddSingleton<DiaryRecordEditPage>();
         }
     }
 }

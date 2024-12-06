@@ -21,6 +21,7 @@ namespace Daily.ViewModels
 
         public Command GoToTaskPage { get; }
         public Command GoToThoughtPage { get; }
+        public Command GoToDiaryRecordPage { get; }
 
         private const string emptyStatusText = "Задач нет";
         private const string completedStatusText = "Все задачи выполнены!";
@@ -45,6 +46,16 @@ namespace Daily.ViewModels
                 CanNavigate = false;
 
                 await PageNavigator.GoToThoughtPageAsync();
+
+                CanNavigate = true;
+            });
+
+            GoToDiaryRecordPage = new Command(
+            execute: async () =>
+            {
+                CanNavigate = false;
+
+                await PageNavigator.GoToDiaryRecordPageAsync();
 
                 CanNavigate = true;
             });

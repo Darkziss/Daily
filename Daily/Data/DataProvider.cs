@@ -1,5 +1,6 @@
 ﻿using Daily.Tasks;
 using Daily.Thoughts;
+using Daily.Diary;
 using AndroidApplication = Android.App.Application;
 using AndroidEnvironment = Android.OS.Environment;
 
@@ -13,6 +14,7 @@ namespace Daily.Data
         public IReadOnlyList<СonditionalTask>? СonditionalTasks { get; private set; }
 
         public IReadOnlyList<Thought>? Thoughts { get; private set; }
+        public IReadOnlyList<DiaryRecord>? DiaryRecords { get; private set; }
 
         private readonly string _goalDataPath;
 
@@ -20,6 +22,7 @@ namespace Daily.Data
         private readonly string _conditionalTasksDataPath;
 
         private readonly string _thoughtsDataPath;
+        private readonly string _diaryRecordsDataPath;
 
         private readonly TextWriter _textWriter = new TextWriter();
         private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
@@ -30,6 +33,7 @@ namespace Daily.Data
         private const string conditionalTasksDataFileName = "conditionalTasks.json";
 
         private const string thoughtsDataFileName = "thoughts.json";
+        private const string diaryRecordsDataFileName = "diaryRecords.json";
 
         public DataProvider()
         {
@@ -42,6 +46,7 @@ namespace Daily.Data
             _conditionalTasksDataPath = Path.Combine(dataFolderPath, conditionalTasksDataFileName);
 
             _thoughtsDataPath = Path.Combine(dataFolderPath, thoughtsDataFileName);
+            _diaryRecordsDataPath = Path.Combine(dataFolderPath, diaryRecordsDataFileName);
 
             Goal = LoadGoal();
             
@@ -49,6 +54,7 @@ namespace Daily.Data
             СonditionalTasks = LoadСonditionalTasks();
 
             Thoughts = LoadThoughts();
+            DiaryRecords = LoadDiaryRecords();
         }
         
         public async Task SaveGoalAsync(string goal)
@@ -71,6 +77,11 @@ namespace Daily.Data
         public async Task SaveThoughtsAsync(IReadOnlyList<Thought> thoughts)
         {
             await _dataSerializer.SerializeAsync<IReadOnlyList<Thought>>(_thoughtsDataPath, thoughts);
+        }
+
+        public async Task SaveDiaryRecordsAsync(IReadOnlyList<DiaryRecord> diaryRecords)
+        {
+            await _dataSerializer.SerializeAsync<IReadOnlyList<DiaryRecord>>(_diaryRecordsDataPath, diaryRecords);
         }
 
         private string? LoadGoal()
@@ -110,6 +121,17 @@ namespace Daily.Data
             if (exists)
             {
                 return _dataSerializer.Deserialize<IReadOnlyList<Thought>>(_thoughtsDataPath);
+            }
+            else return null;
+        }
+
+        private IReadOnlyList<DiaryRecord>? LoadDiaryRecords()
+        {
+            bool exists = File.Exists(_diaryRecordsDataPath);
+
+            if (exists)
+            {
+                return _dataSerializer.Deserialize<IReadOnlyList<DiaryRecord>>(_diaryRecordsDataPath);
             }
             else return null;
         }
