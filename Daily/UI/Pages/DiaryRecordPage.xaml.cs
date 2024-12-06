@@ -13,5 +13,10 @@ namespace Daily.Pages
             _viewModel = viewModel;
             BindingContext = _viewModel;
         }
+
+        protected override void OnAppearing()
+        {
+            _viewModel.ResetView();
+        }
     }
 }
