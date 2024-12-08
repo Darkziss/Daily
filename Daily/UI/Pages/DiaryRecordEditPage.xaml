@@ -6,7 +6,7 @@
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     x:Class="Daily.Pages.DiaryRecordEditPage"
     x:DataType="viewmodels:DiaryRecordEditPageViewModel"
-    BackgroundColor="{StaticResource DiaryBackground}">
+    Style="{StaticResource DiaryPage}">
 
     <ContentPage.Resources>
 

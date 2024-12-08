@@ -271,11 +271,23 @@
         <Setter Property="HeightRequest" Value="580"/>
         <Setter Property="VerticalOptions" Value="Start"/>
         <Setter Property="Margin" Value="20, 20, 20, 0"/>
+
+        <Setter Property="ItemsLayout">
+            <GridItemsLayout
+                Span="2"
+                Orientation="Vertical"
+                VerticalItemSpacing="10"
+                HorizontalItemSpacing="10"/>
+        </Setter>
     </Style>
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BackgroundColor" Value="{StaticResource Background}"/>
+    </Style>
+
+    <Style TargetType="Page" x:Key="DiaryPage">
+        <Setter Property="BackgroundColor" Value="{StaticResource DiaryBackground}"/>
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">

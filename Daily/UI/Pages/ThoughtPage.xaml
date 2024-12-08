@@ -63,14 +63,6 @@
             Grid.Column="0"
             Grid.Row="1">
 
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout
-                    Span="2"
-                    Orientation="Vertical"
-                    VerticalItemSpacing="10"
-                    HorizontalItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-
             <CollectionView.EmptyView>
                 <Label
                     Style="{StaticResource EmptyViewLabel}"/>
