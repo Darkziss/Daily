@@ -2,6 +2,7 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:diary="clr-namespace:Daily.Diary"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     xmlns:converters="clr-namespace:Daily.Converters"  
@@ -69,8 +70,25 @@
             Grid.Column="0"
             Grid.Row="0"/>
 
+        <VerticalStackLayout
+            IsVisible="{Binding IsLoaded, Converter={toolkit:InvertedBoolConverter}}"
+            Margin="{StaticResource DummyLabelMargin}"
+            Grid.Column="0"
+            Grid.Row="1">
+
+            <ActivityIndicator
+                Style="{StaticResource DummyActivityIndicator}"
+                Color="{StaticResource DiaryInputField}"/>
+
+            <Label
+                TextColor="{StaticResource DiaryInputField}"
+                Text="Загружаем записи.."
+                HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
         <CollectionView
             Style="{StaticResource RecordCollectionView}"
+            IsVisible="{Binding IsLoaded}"
             ItemsSource="{Binding DiaryRecords}"
             SelectedItem="{Binding SelectedDiaryRecord, Mode=TwoWay}"
             SelectionChangedCommand="{Binding DiaryRecordInteractCommand}"

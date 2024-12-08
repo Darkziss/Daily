@@ -23,7 +23,6 @@
             <x:Double x:Key="TaskCardSpacing">7</x:Double>
 
             <Thickness x:Key="ModificatorMargin">0, 0, 0, 8</Thickness>
-            <Thickness x:Key="DummyLabelMargin">0, 30, 0, 0</Thickness>
 
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
@@ -98,11 +97,6 @@
                 <Setter Property="RowDefinitions" Value="Auto, *"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
-            </Style>
-
-            <Style TargetType="ActivityIndicator" x:Key="DummyActivityIndicator">
-                <Setter Property="WidthRequest" Value="30"/>
-                <Setter Property="HeightRequest" Value="30"/>
             </Style>
 
             <Style TargetType="CollectionView" x:Key="TasksCollectionView">

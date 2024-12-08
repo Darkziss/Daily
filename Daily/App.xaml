@@ -5,9 +5,12 @@
              x:Class="Daily.App">
     <Application.Resources>
         <ResourceDictionary>
+
+            <Thickness x:Key="DummyLabelMargin">0, 30, 0, 0</Thickness>
+
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

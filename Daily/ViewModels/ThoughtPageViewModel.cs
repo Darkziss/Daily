@@ -4,11 +4,14 @@ using Daily.Thoughts;
 using Daily.Navigation;
 using Daily.Toasts;
 using Daily.Popups;
+using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
 {
     public partial class ThoughtPageViewModel : ObservableObject, IResetView
     {
+        [ObservableProperty] private bool _isLoaded = false;
+        
         [ObservableProperty] private Thought? _selectedThought = null;
 
         [ObservableProperty] private bool _canInteractWithThought = true;
@@ -23,6 +26,8 @@ namespace Daily.ViewModels
         public Command AddThoughtCommand { get; }
 
         public Command SwitchCanDeleteCommand { get; }
+
+        private bool ShouldLoad => Thoughts.Count > 0;
         
         public ThoughtPageViewModel(ThoughtStorage thoughtStorage)
         {
@@ -75,6 +80,32 @@ namespace Daily.ViewModels
         public void ResetView()
         {
             CanDeleteThought = false;
+
+            if (ShouldLoad) ShowDummy();
+            else
+            {
+                IsLoaded = true;
+                CanInteractWithThought = true;
+            }
+        }
+
+        private void ShowDummy()
+        {
+            IsLoaded = false;
+            CanInteractWithThought = false;
+
+            const double delay = 800d;
+            AsyncTimer timer = new AsyncTimer(delay);
+
+            timer.Elapsed += (_, _) =>
+            {
+                timer.Stop();
+
+                IsLoaded = true;
+                CanInteractWithThought = true;
+            };
+
+            timer.Start();
         }
     }
 }
