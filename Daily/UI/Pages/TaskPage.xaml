@@ -18,6 +18,8 @@
             <x:Double x:Key="GoalElementWidth">330</x:Double>
             <x:Double x:Key="TaskLabelWidth">300</x:Double>
 
+            <Thickness x:Key="GeneralTaskCollectionViewMargin">0, 0, 0, 15</Thickness>
+
             <x:Double x:Key="RadialProgressBarSize">18</x:Double>
 
             <x:Double x:Key="TaskCardSpacing">7</x:Double>
@@ -376,6 +378,7 @@
                         SelectedItem="{Binding SelectedGeneralTask, Mode=TwoWay}"
                         SelectionChangedCommand="{Binding GeneralTaskInteractCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
+                        Margin="{StaticResource GeneralTaskCollectionViewMargin}"
                         Grid.Column="0"
                         Grid.Row="1">
 
