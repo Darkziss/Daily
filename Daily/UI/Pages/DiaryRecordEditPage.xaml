@@ -18,10 +18,10 @@
             <Style TargetType="Label" x:Key="CreationTimeLabel">
                 <Setter Property="FontFamily" Value="NunitoBold"/>
                 <Setter Property="FontSize" Value="30"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
-                <Setter Property="Margin" Value="{StaticResource HeadlineMargin}"/>
+                <Setter Property="Margin" Value="20, 0, 0, 0"/>
             </Style>
             
             <Style TargetType="Editor" x:Key="DiaryRecordTextEditor" BasedOn="{StaticResource RecordTextEditor}">
@@ -50,7 +50,9 @@
     </ContentPage.Resources>
 
     <Grid
-        Style="{StaticResource RecordPageRootGrid}">
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, 590, *"
+        Margin="0, 40, 0, 0">
 
         <Label 
             Style="{StaticResource CreationTimeLabel}"

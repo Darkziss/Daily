@@ -61,12 +61,12 @@
         RowDefinitions="Auto, Auto, *"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
-        Padding="{StaticResource RootPadding}">
+        Margin="0, 40, 0, 0">
 
         <Label
             Style="{StaticResource Headline}"
             Text="Дневник"
-            Margin="{StaticResource HeadlineMargin}"
+            Margin="20, 0, 0, 0"
             Grid.Column="0"
             Grid.Row="0"/>
 

@@ -13,6 +13,7 @@
         <ResourceDictionary>
 
             <x:Double x:Key="DefaultFontSize">20</x:Double>
+            <x:Double x:Key="DefaultElementWidth">350</x:Double>
 
             <Thickness x:Key="TaskFieldPadding">20, 0, 0, 0</Thickness>
             
@@ -23,7 +24,7 @@
                 <Setter Property="BorderWidth" Value="0"/>
                 <Setter Property="FontFamily" Value="Nunito"/>
                 <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-                <Setter Property="WidthRequest" Value="{StaticResource ShorterElementWidth}"/>
+                <Setter Property="WidthRequest" Value="330"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
 
@@ -117,14 +118,15 @@
 
         <VerticalStackLayout
             Spacing="15"
-            Padding="{StaticResource RootPadding}"
+            Padding="0, 40, 0, 0"
             Grid.Column="0"
             Grid.Row="0">
 
             <Label
-                Style="{StaticResource LongHeadline}"
+                Style="{StaticResource Headline}"
+                FontSize="30"
                 Text="Создание задачи"
-                Margin="{StaticResource HeadlineMargin}">
+                Margin="20, 0, 0, 0">
 
                 <Label.Triggers>
                     <DataTrigger
@@ -221,7 +223,8 @@
                 Style="{StaticResource TaskFieldGrid}"
                 BackgroundColor="{StaticResource FieldBackground}"
                 ColumnDefinitions="100, Auto"
-                RowDefinitions="Auto, Auto">
+                RowDefinitions="Auto, Auto"
+                Padding="20, 0, 0, 0">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"

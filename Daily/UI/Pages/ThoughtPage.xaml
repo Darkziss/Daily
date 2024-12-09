@@ -27,12 +27,13 @@
         RowDefinitions="Auto, Auto, *"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
-        Padding="{StaticResource RootPadding}">
+        Margin="0, 40, 0, 0">
 
         <Label
-            Style="{StaticResource LongHeadline}"
+            Style="{StaticResource Headline}"
+            FontSize="35"
             Text="Важные мысли"
-            Margin="{StaticResource HeadlineMargin}"
+            Margin="20, 0, 0, 0"
             Grid.Column="0"
             Grid.Row="0"/>
 

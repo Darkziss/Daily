@@ -18,10 +18,10 @@
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
                 <Setter Property="MaxLength" Value="40"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="WidthRequest" Value="350"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
-                <Setter Property="Margin" Value="{StaticResource HeadlineMargin}"/>
+                <Setter Property="Margin" Value="20, 0, 0, 0"/>
             </Style>
 
         </ResourceDictionary>
@@ -29,7 +29,9 @@
     </ContentPage.Resources>
 
     <Grid
-        Style="{StaticResource RecordPageRootGrid}">
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, 590, *"
+        Margin="0, 40, 0, 0">
 
         <Entry
             Style="{StaticResource ThoughtNameEntry}"
