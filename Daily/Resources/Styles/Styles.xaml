@@ -128,7 +128,7 @@
         <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Placeholder" Value="Начните печатать"/>
-        <Setter Property="WidthRequest" Value="350"/>
+        <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
         <Setter Property="VerticalOptions" Value="Fill"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
         <Setter Property="Margin" Value="20, 0, 0, 0"/>
@@ -236,6 +236,10 @@
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="LongHeadline" BasedOn="{StaticResource Headline}">
+        <Setter Property="FontSize" Value="30"/>
+    </Style>
+
     <Style TargetType="Label" x:Key="SubHeadline">
         <Setter Property="FontFamily" Value="NunitoBold"/>
         <Setter Property="FontSize" Value="23"/>
@@ -279,6 +283,12 @@
                 VerticalItemSpacing="10"
                 HorizontalItemSpacing="10"/>
         </Setter>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="RecordPageRootGrid">
+        <Setter Property="ColumnDefinitions" Value="*"/>
+        <Setter Property="RowDefinitions" Value="Auto, 590, *"/>
+        <Setter Property="Padding" Value="{StaticResource RootPadding}"/>
     </Style>
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">

@@ -19,7 +19,7 @@
 
             <Style TargetType="Frame" x:Key="TaskProgressStatus">
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                <Setter Property="WidthRequest" Value="330"/>
+                <Setter Property="WidthRequest" Value="{StaticResource ShorterElementWidth}"/>
                 <Setter Property="HeightRequest" Value="90"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
@@ -64,7 +64,7 @@
             <Style TargetType="Button" x:Key="Card">
                 <Setter Property="Padding" Value="0, -90, 0, 0"/>
                 <Setter Property="FontSize" Value="22"/>
-                <Setter Property="WidthRequest" Value="350"/> 
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/> 
                 <Setter Property="HeightRequest" Value="130"/>
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
@@ -111,12 +111,12 @@
         RowSpacing="20"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
-        Margin="0, 40, 0, 0">
+        Padding="{StaticResource RootPadding}">
 
         <Label 
             Style="{StaticResource Headline}"
             Text="Daily"
-            Margin="20, 0, 0, 0"
+            Margin="{StaticResource HeadlineMargin}"
             Grid.Column="0"
             Grid.Row="0"/>
 
