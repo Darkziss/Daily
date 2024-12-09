@@ -236,8 +236,11 @@
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
-    <Style TargetType="Label" x:Key="SubHeadline">
-        <Setter Property="FontFamily" Value="NunitoBold"/>
+    <Style TargetType="Label" x:Key="LongHeadline" BasedOn="{StaticResource Headline}">
+        <Setter Property="FontSize" Value="30"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="SubHeadline" BasedOn="{StaticResource Headline}">
         <Setter Property="FontSize" Value="23"/>
     </Style>
 
@@ -279,6 +282,12 @@
                 VerticalItemSpacing="10"
                 HorizontalItemSpacing="10"/>
         </Setter>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="RecordEditPageRootGrid">
+        <Setter Property="Padding" Value="0, 40, 0, 0"/>
+        <Setter Property="ColumnDefinitions" Value="*"/>
+        <Setter Property="RowDefinitions" Value="Auto, 590, *"/>
     </Style>
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">
