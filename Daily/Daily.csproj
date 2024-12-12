@@ -50,6 +50,7 @@
 	  <ApplicationId>org.darkziss.daily</ApplicationId>
 	  <ApplicationDisplayVersion>0.2</ApplicationDisplayVersion>
 	  <ApplicationVersion>2</ApplicationVersion>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
