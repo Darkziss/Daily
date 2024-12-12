@@ -2,6 +2,7 @@
 using Daily.Thoughts;
 using Daily.Navigation;
 using Daily.Toasts;
+using Daily.Popups;
 
 namespace Daily.ViewModels
 {
@@ -26,6 +27,8 @@ namespace Daily.ViewModels
 
         public Command SaveThoughtCommand { get; }
         public Command ActivateEditMode { get; }
+
+        private bool ShouldPreventExit => Name.Length > 0 || Text.Length > 0;
 
         public ThoughtEditPageViewModel(ThoughtStorage thoughtStorage)
         {
@@ -83,6 +86,19 @@ namespace Daily.ViewModels
             Text = string.Empty;
 
             IsNameEntryReadOnly = true;
+        }
+
+        public async Task PreventExitAsync()
+        {
+            if (!ShouldPreventExit)
+            {
+                await PageNavigator.ReturnToPreviousPage();
+                return;
+            }
+
+            bool shouldLeave = await PopupHandler.ShowRecordExitPopupAsync();
+
+            if (shouldLeave) await PageNavigator.ReturnToPreviousPage();
         }
 
         private async Task CreateThoughtAsync()
