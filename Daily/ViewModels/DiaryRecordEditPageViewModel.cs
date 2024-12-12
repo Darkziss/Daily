@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Diary;
 using Daily.Navigation;
+using Daily.Popups;
 using Daily.Toasts;
 
 namespace Daily.ViewModels
@@ -19,6 +20,8 @@ namespace Daily.ViewModels
 
         public Command SaveDiaryRecordCommand { get; }
         public Command ActivateEditMode { get; }
+
+        private bool ShouldPreventExit => Text.Length > 0;
 
         private const string defaultHeaderText = "Новая запись";
 
@@ -40,6 +43,19 @@ namespace Daily.ViewModels
             });
 
             ActivateEditMode = new Command(() => IsEditMode = true);
+        }
+
+        public async Task PreventExitAsync()
+        {
+            if (!ShouldPreventExit)
+            {
+                await PageNavigator.ReturnToPreviousPage();
+                return;
+            }
+
+            bool shouldLeave = await PopupHandler.ShowRecordExitPopupAsync();
+
+            if (shouldLeave) await PageNavigator.ReturnToPreviousPage();
         }
 
         public void PrepareViewForView(DiaryRecord record)

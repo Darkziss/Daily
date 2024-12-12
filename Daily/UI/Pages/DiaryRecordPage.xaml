@@ -2,12 +2,13 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:diary="clr-namespace:Daily.Diary"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
     xmlns:converters="clr-namespace:Daily.Converters"  
     x:Class="Daily.Pages.DiaryRecordPage"
     x:DataType="viewmodels:DiaryRecordPageViewModel"
-    BackgroundColor="{StaticResource DiaryBackground}">
+    Style="{StaticResource DiaryPage}">
 
     <ContentPage.Resources>
 
@@ -60,31 +61,40 @@
         RowDefinitions="Auto, Auto, *"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
-        Margin="0, 40, 0, 0">
+        Padding="{StaticResource RootPadding}">
 
         <Label
             Style="{StaticResource Headline}"
             Text="Дневник"
-            Margin="20, 0, 0, 0"
+            Margin="{StaticResource HeadlineMargin}"
             Grid.Column="0"
             Grid.Row="0"/>
 
+        <VerticalStackLayout
+            IsVisible="{Binding IsLoaded, Converter={toolkit:InvertedBoolConverter}}"
+            Margin="{StaticResource DummyLabelMargin}"
+            Grid.Column="0"
+            Grid.Row="1">
+
+            <ActivityIndicator
+                Style="{StaticResource DummyActivityIndicator}"
+                Color="{StaticResource DiaryInputField}"/>
+
+            <Label
+                TextColor="{StaticResource DiaryInputField}"
+                Text="Загружаем записи.."
+                HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
         <CollectionView
             Style="{StaticResource RecordCollectionView}"
+            IsVisible="{Binding IsLoaded}"
             ItemsSource="{Binding DiaryRecords}"
             SelectedItem="{Binding SelectedDiaryRecord, Mode=TwoWay}"
             SelectionChangedCommand="{Binding DiaryRecordInteractCommand}"
             SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
             Grid.Column="0"
             Grid.Row="1">
-
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout
-                    Span="2"
-                    Orientation="Vertical"
-                    VerticalItemSpacing="10"
-                    HorizontalItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
 
             <CollectionView.EmptyView>
                 <Label

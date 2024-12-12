@@ -28,5 +28,12 @@ namespace Daily.Pages
             }
             else _viewModel.ResetView();
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Dispatcher.DispatchAsync(async () => await _viewModel.PreventExitAsync());
+
+            return true;
+        }
     }
 }

@@ -30,6 +30,14 @@ namespace Daily.Popups
             return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
         }
         
+        public static async Task<bool> ShowRecordExitPopupAsync()
+        {
+            const string title = "Выход";
+            const string message = "Вы уверены, что хотите выйти?";
+
+            return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
+        }
+
         private static async Task<bool> ShowDialogPopupAtCurrentPageAsync(string title, string message, string accept, string cancel)
         {
             Page page = Shell.Current.CurrentPage;
