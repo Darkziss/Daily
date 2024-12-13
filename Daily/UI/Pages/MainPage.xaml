@@ -253,7 +253,7 @@
 
         <Label
             Style="{StaticResource VersionTextLabel}"
-            Text="v0.2a"
+            Text="v0.2"
             Grid.Column="0"
             Grid.Row="3"/>
     </Grid>
