@@ -28,7 +28,7 @@ namespace Daily.ViewModels
         public Command SaveThoughtCommand { get; }
         public Command ActivateEditMode { get; }
 
-        private bool ShouldPreventExit => Name.Length > 0 || Text.Length > 0;
+        private bool ShouldPreventExit => (Name.Length > 0 || Text.Length > 0) && IsEditMode;
 
         public ThoughtEditPageViewModel(ThoughtStorage thoughtStorage)
         {

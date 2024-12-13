@@ -21,7 +21,7 @@ namespace Daily.ViewModels
         public Command SaveDiaryRecordCommand { get; }
         public Command ActivateEditMode { get; }
 
-        private bool ShouldPreventExit => Text.Length > 0;
+        private bool ShouldPreventExit => Text.Length > 0 && IsEditMode;
 
         private const string defaultHeaderText = "Новая запись";
 
