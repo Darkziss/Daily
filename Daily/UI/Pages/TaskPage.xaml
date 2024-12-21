@@ -40,7 +40,15 @@
 
             <Color x:Key="GreenSelected">#aaf786</Color>
             <Color x:Key="BlueSelected">#86f7ea</Color>
-            
+
+            <converters:TaskCountToStringConverter
+                x:Key="GeneralTaskCountToStringConverter"
+                TaskName="Основные задачи"/>
+
+            <converters:TaskCountToStringConverter
+                x:Key="ConditionalTaskCountToStringConverter"
+                TaskName="Условные задачи"/>
+
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
                 DailyColor="{StaticResource Daily}"
@@ -245,7 +253,9 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource CondTask}"
-                        Text="Условные задачи"
+                        Text="{Binding СonditionalTasks.Count, 
+                            Converter={StaticResource ConditionalTaskCountToStringConverter},
+                            ConverterParameter={x:Static tasks:TaskStorage.maxConditionalTaskCount}}"
                         Grid.Column="0"
                         Grid.Row="0"/>
 
@@ -343,7 +353,9 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource GeneralTask}"
-                        Text="Основные задачи"
+                        Text="{Binding GeneralTasks.Count, 
+                            Converter={StaticResource GeneralTaskCountToStringConverter},
+                            ConverterParameter={x:Static tasks:TaskStorage.maxGeneralTaskCount}}"
                         Grid.Column="0"
                         Grid.Row="0"/>
 

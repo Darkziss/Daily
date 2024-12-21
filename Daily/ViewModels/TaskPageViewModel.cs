@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
@@ -28,8 +29,8 @@ namespace Daily.ViewModels
         private readonly GoalStorage _goalStorage;
         private readonly TaskStorage _taskStorage;
 
-        public IReadOnlyList<GeneralTask> GeneralTasks => _taskStorage.GeneralTasks;
-        public IReadOnlyList<СonditionalTask> СonditionalTasks => _taskStorage.СonditionalTasks;
+        public ObservableCollection<GeneralTask> GeneralTasks => _taskStorage.GeneralTasks;
+        public ObservableCollection<СonditionalTask> СonditionalTasks => _taskStorage.СonditionalTasks;
 
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
