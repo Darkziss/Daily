@@ -37,6 +37,14 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="Entry" x:Key="ActionNameEntry">
+                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="Placeholder" Value="Введите действие"/>
+                <Setter Property="MaxLength" Value="50"/>
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
             <Style TargetType="Border" x:Key="PickerBorder">
                 <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
@@ -162,13 +170,9 @@
                     HorizontalOptions="Start"/>
 
                 <Entry
+                    Style="{StaticResource ActionNameEntry}"
                     IsReadOnly="{Binding IsCreatingNewTask}"
-                    FontSize="{StaticResource DefaultFontSize}"
-                    Placeholder="Введите действие"
-                    Text="{Binding ActionName, Mode=TwoWay}"
-                    MaxLength="40"
-                    WidthRequest="{StaticResource DefaultElementWidth}"
-                    HorizontalOptions="Start"/>
+                    Text="{Binding ActionName, Mode=TwoWay}"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout
