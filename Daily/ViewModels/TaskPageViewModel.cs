@@ -111,10 +111,9 @@ namespace Daily.ViewModels
                     {
                         await _taskStorage.DeleteGeneralTaskAsync(task);
                         await TaskToastHandler.ShowTaskDeletedToastAsync();
-
-                        ShowDummy();
                     }
-                    else CanInteractWithTask = true;
+
+                    CanInteractWithTask = true;
                 }
                 else if (CanResetTask) await ResetGeneralTaskAsync(task);
                 else await PerformGeneralTaskAsync(task);
@@ -148,10 +147,9 @@ namespace Daily.ViewModels
                     {
                         await _taskStorage.DeleteConditionalTaskAsync(task);
                         await TaskToastHandler.ShowTaskDeletedToastAsync();
-
-                        ShowDummy();
                     }
-                    else CanInteractWithTask = true;
+                    
+                    CanInteractWithTask = true;
                 }
                 else if (CanResetTask) await ResetConditionalTaskAsync(task);
                 else await PerformСonditionalTaskAsync(task);
