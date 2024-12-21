@@ -49,7 +49,7 @@ namespace Daily.ViewModels
                 if (_currentThought == null) await CreateThoughtAsync();
                 else await EditThoughtAsync();
 
-                await PageNavigator.ReturnToPreviousPage();
+                IsEditMode = false;
             });
 
             ActivateEditMode = new Command(() => IsEditMode = true);

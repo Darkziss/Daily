@@ -39,7 +39,7 @@ namespace Daily.ViewModels
                 if (_currentDiaryRecord == null) await CreateDiaryRecordAsync();
                 else await EditDiaryRecordAsync();
 
-                await PageNavigator.ReturnToPreviousPage();
+                IsEditMode = false;
             });
 
             ActivateEditMode = new Command(() => IsEditMode = true);
