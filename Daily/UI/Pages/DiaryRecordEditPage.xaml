@@ -17,10 +17,8 @@
             <x:Int32 x:Key="DiaryRecordMaxLength">2000</x:Int32>
             
             <Style TargetType="Label" x:Key="CreationTimeLabel" BasedOn="{StaticResource LongHeadline}">
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-                <Setter Property="Margin" Value="{StaticResource HeadlineMargin}"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
             </Style>
 
             <Style TargetType="Editor" x:Key="DiaryRecordTextEditor" BasedOn="{StaticResource RecordTextEditor}">

@@ -148,10 +148,10 @@
         <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Placeholder" Value="Начните печатать"/>
-        <Setter Property="WidthRequest" Value="350"/>
+        
         <Setter Property="VerticalOptions" Value="Fill"/>
-        <Setter Property="HorizontalOptions" Value="Start"/>
-        <Setter Property="Margin" Value="20, 0, 0, 0"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="Margin" Value="5, 0, 5, 0"/>
     </Style>
 
     <Style TargetType="Entry">
