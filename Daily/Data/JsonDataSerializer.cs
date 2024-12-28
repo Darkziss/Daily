@@ -1,4 +1,6 @@
 ﻿using System.Text.Json;
+using System.Text.Unicode;
+using System.Text.Encodings.Web;
 
 namespace Daily.Data
 {
@@ -8,7 +10,8 @@ namespace Daily.Data
         {
             IncludeFields = false,
             IgnoreReadOnlyProperties = true,
-            WriteIndented = true
+            WriteIndented = true,
+            Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic)
         };
 
         public override void Serialize<T>(string path, T value)
