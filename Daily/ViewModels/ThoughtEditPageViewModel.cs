@@ -89,24 +89,23 @@ namespace Daily.ViewModels
         private async Task CreateThoughtAsync()
         {
             Thought? thought = await _thoughtStorage.TryCreateThoughtAsync(Name, Text);
-            bool success = thought != null;
             
-            if (!success)
+            if (thought == null)
             {
                 await ThoughtToastHandler.ShowThoughtErrorToastAsync();
                 return;
             }
 
-            if (thought != _currentThought) _currentThought = thought;
+            _currentThought = thought;
 
             await ThoughtToastHandler.ShowThoughtCreatedToastAsync();
         }
 
         private async Task EditThoughtAsync()
         {
-            bool isSameText = _currentThought!.Name == Name && _currentThought!.Text == Text;
+            bool isSame = _currentThought!.Name == Name && _currentThought!.Text == Text;
 
-            if (isSameText) return;
+            if (isSame) return;
             
             bool success = await _thoughtStorage.TryEditThoughtAsync(_currentThought!, Name, Text);
 

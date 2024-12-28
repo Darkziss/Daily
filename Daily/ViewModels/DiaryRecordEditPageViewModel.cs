@@ -65,8 +65,7 @@ namespace Daily.ViewModels
 
             IsEditMode = false;
 
-            string creationDateTime = record.CreationDateTime.ToString(creationDateTimeFormat);
-            HeaderText = $"Запись {creationDateTime}";
+            SetHeaderTextByDate(_currentDiaryRecord.CreationDateTime);
             Text = record.Text;
         }
 
@@ -83,29 +82,35 @@ namespace Daily.ViewModels
         private async Task CreateDiaryRecordAsync()
         {
             DiaryRecord? record = await _diaryRecordStorage.TryAddDiaryRecordAsync(Text, DateTime.Now);
-            bool success = record != null;
 
-            if (!success)
+            if (record == null)
             {
                 await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
                 return;
             }
 
-            if (record != _currentDiaryRecord) _currentDiaryRecord = record;
+            _currentDiaryRecord = record;
+            SetHeaderTextByDate(record.CreationDateTime);
 
             await DiaryRecordToastHandler.ShowDiaryRecordCreatedToastAsync();
         }
 
         private async Task EditDiaryRecordAsync()
         {
-            bool isSameText = _currentDiaryRecord!.Text == Text;
+            bool isSame = _currentDiaryRecord!.Text == Text;
 
-            if (isSameText) return;
+            if (isSame) return;
             
             bool success = await _diaryRecordStorage.TryEditDiaryRecordAsync(_currentDiaryRecord!, Text);
 
             if (success) await DiaryRecordToastHandler.ShowDiaryRecordEditedToastAsync();
             else await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
+        }
+
+        private void SetHeaderTextByDate(DateTime creationDateTime)
+        {
+            string date = creationDateTime.ToString(creationDateTimeFormat);
+            HeaderText = $"Запись {date}";
         }
     }
 }
