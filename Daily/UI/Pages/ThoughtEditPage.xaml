@@ -15,9 +15,6 @@
             <x:Int32 x:Key="ThoughtMinLength">1</x:Int32>
             <x:Int32 x:Key="ThoughtMaxLength">600</x:Int32>
             
-            <x:Boolean x:Key="True">True</x:Boolean>
-            <x:Boolean x:Key="False">False</x:Boolean>
-
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
@@ -38,10 +35,8 @@
 
         <Entry
             Style="{StaticResource ThoughtNameEntry}"
-            IsReadOnly="{Binding IsNameEntryReadOnly}"
+            IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
             Text="{Binding Name, Mode=TwoWay}"
-            ReturnCommand="{Binding ChangeNameReadOnlyCommand}"
-            ReturnCommandParameter="{StaticResource True}"
             Grid.Column="0"
             Grid.Row="0">
 
@@ -51,13 +46,6 @@
                     Flags="ValidateOnAttaching, ValidateOnValueChanged"
                     MinimumLength="1"/>
             </Entry.Behaviors>
-
-            <Entry.GestureRecognizers>
-                <TapGestureRecognizer
-                    Command="{Binding ChangeNameReadOnlyCommand}"
-                    CommandParameter="{StaticResource False}"
-                    NumberOfTapsRequired="1"/>
-            </Entry.GestureRecognizers>
         </Entry>
 
         <Editor

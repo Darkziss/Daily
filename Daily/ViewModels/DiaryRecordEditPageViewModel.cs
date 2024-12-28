@@ -40,6 +40,7 @@ namespace Daily.ViewModels
                 else await EditDiaryRecordAsync();
 
                 IsEditMode = false;
+                CanSave = true;
             });
 
             ActivateEditMode = new Command(() => IsEditMode = true);
@@ -63,7 +64,6 @@ namespace Daily.ViewModels
             _currentDiaryRecord = record;
 
             IsEditMode = false;
-            CanSave = true;
 
             string creationDateTime = record.CreationDateTime.ToString(creationDateTimeFormat);
             HeaderText = $"Запись {creationDateTime}";
@@ -75,7 +75,6 @@ namespace Daily.ViewModels
             _currentDiaryRecord = null;
 
             IsEditMode = true;
-            CanSave = false;
 
             HeaderText = defaultHeaderText;
             Text = string.Empty;
@@ -83,14 +82,26 @@ namespace Daily.ViewModels
 
         private async Task CreateDiaryRecordAsync()
         {
-            bool success = await _diaryRecordStorage.TryAddDiaryRecordAsync(Text, DateTime.Now);
+            DiaryRecord? record = await _diaryRecordStorage.TryAddDiaryRecordAsync(Text, DateTime.Now);
+            bool success = record != null;
 
-            if (success) await DiaryRecordToastHandler.ShowDiaryRecordCreatedToastAsync();
-            else await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
+            if (!success)
+            {
+                await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
+                return;
+            }
+
+            if (record != _currentDiaryRecord) _currentDiaryRecord = record;
+
+            await DiaryRecordToastHandler.ShowDiaryRecordCreatedToastAsync();
         }
 
         private async Task EditDiaryRecordAsync()
         {
+            bool isSameText = _currentDiaryRecord!.Text == Text;
+
+            if (isSameText) return;
+            
             bool success = await _diaryRecordStorage.TryEditDiaryRecordAsync(_currentDiaryRecord!, Text);
 
             if (success) await DiaryRecordToastHandler.ShowDiaryRecordEditedToastAsync();

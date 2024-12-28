@@ -26,7 +26,7 @@
 		<ApplicationId>org.darkziss.daily</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>3.0</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
 		<ApplicationVersion>3</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
