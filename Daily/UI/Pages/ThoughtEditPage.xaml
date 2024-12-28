@@ -85,7 +85,7 @@
         <Button
             Style="{StaticResource RecordBottomButton}"
             IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
-            BackgroundColor="{StaticResource Edit}"
+            BackgroundColor="{StaticResource Good}"
             Text="Изменить"
             Command="{Binding ActivateEditMode}"
             Grid.Column="0"

@@ -39,6 +39,7 @@ namespace Daily.ViewModels
                 else await EditThoughtAsync();
 
                 IsEditMode = false;
+                CanSave = true;
             });
 
             ActivateEditMode = new Command(() => IsEditMode = true);

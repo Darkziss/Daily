@@ -28,7 +28,7 @@
                 <Setter Property="PlaceholderColor" Value="{StaticResource DiaryInputField}"/>
             </Style>
 
-            <Style TargetType="Button" x:Key="DiaryBottomButton" BasedOn="{StaticResource RecordBottomButton}">
+            <!--<Style TargetType="Button" x:Key="DiaryBottomButton" BasedOn="{StaticResource RecordBottomButton}">
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -42,7 +42,7 @@
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
-            </Style>
+            </Style>-->
             
         </ResourceDictionary>
         
@@ -82,7 +82,7 @@
             Grid.Row="2"/>
 
         <Button
-            Style="{StaticResource DiaryBottomButton}"
+            Style="{StaticResource RecordBottomButton}"
             IsVisible="{Binding IsEditMode}"
             IsEnabled="{Binding CanSave}"
             BackgroundColor="{StaticResource Save}"
@@ -92,9 +92,9 @@
             Grid.Row="3"/>
 
         <Button
-            Style="{StaticResource DiaryBottomButton}"
+            Style="{StaticResource RecordBottomButton}"
             IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
-            BackgroundColor="{StaticResource Edit}"
+            BackgroundColor="{StaticResource Good}"
             Text="Изменить"
             Command="{Binding ActivateEditMode}"
             Grid.Column="0"
