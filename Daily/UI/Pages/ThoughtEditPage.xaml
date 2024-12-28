@@ -49,7 +49,6 @@
         </Entry>
 
         <Editor
-            x:Name="ThoughtTextEditor"
             Style="{StaticResource RecordTextEditor}"
             IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
             Text="{Binding Text, Mode=TwoWay}"

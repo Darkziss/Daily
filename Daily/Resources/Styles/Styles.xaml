@@ -147,7 +147,7 @@
     <Style TargetType="Editor" x:Key="RecordTextEditor">
         <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
         <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Placeholder" Value="Начните печатать"/>
+        <Setter Property="Placeholder" Value="Начните печатать.."/>
         
         <Setter Property="VerticalOptions" Value="Fill"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>

@@ -93,7 +93,7 @@
 
             <Style TargetType="Entry" x:Key="GoalEntry">
                 <Setter Property="PlaceholderColor" Value="Black"/>
-                <Setter Property="Placeholder" Value="Введите цель"/>
+                <Setter Property="Placeholder" Value="Напишите цель.."/>
                 <Setter Property="MaxLength" Value="70"/>
                 <Setter Property="WidthRequest" Value="{StaticResource ShorterElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
