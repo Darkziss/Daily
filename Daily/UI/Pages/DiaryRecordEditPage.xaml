@@ -14,7 +14,7 @@
         <ResourceDictionary>
 
             <x:Int32 x:Key="DiaryRecordMinLength">1</x:Int32>
-            <x:Int32 x:Key="DiaryRecordMaxLength">1700</x:Int32>
+            <x:Int32 x:Key="DiaryRecordMaxLength">2000</x:Int32>
             
             <Style TargetType="Label" x:Key="CreationTimeLabel" BasedOn="{StaticResource LongHeadline}">
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>

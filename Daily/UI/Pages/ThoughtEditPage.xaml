@@ -13,7 +13,7 @@
         <ResourceDictionary>
 
             <x:Int32 x:Key="ThoughtMinLength">1</x:Int32>
-            <x:Int32 x:Key="ThoughtMaxLength">600</x:Int32>
+            <x:Int32 x:Key="ThoughtMaxLength">1000</x:Int32>
             
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
