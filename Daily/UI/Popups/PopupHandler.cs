@@ -32,8 +32,8 @@ namespace Daily.Popups
         
         public static async Task<bool> ShowRecordExitPopupAsync()
         {
-            const string title = "Выход";
-            const string message = "У вас есть несохраненные изменения. Вы уверены, что хотите выйти?";
+            const string title = "Вы уверены, что хотите выйти?";
+            const string message = "У вас есть несохраненные изменения";
 
             return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
         }
