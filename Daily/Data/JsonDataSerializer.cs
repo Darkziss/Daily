@@ -10,7 +10,11 @@ namespace Daily.Data
         {
             IncludeFields = false,
             IgnoreReadOnlyProperties = true,
+#if DEBUG
             WriteIndented = true,
+#else
+            WriteIndented = false,
+#endif
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic)
         };
 
