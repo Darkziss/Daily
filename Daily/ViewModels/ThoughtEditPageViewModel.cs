@@ -14,16 +14,12 @@ namespace Daily.ViewModels
         [ObservableProperty] private string _name = string.Empty;
         [ObservableProperty] private string _text = string.Empty;
 
-        [ObservableProperty] private bool _isNameEntryReadOnly = true;
-
         private Thought? _currentThought = null;
         
         private readonly ThoughtStorage _thoughtStorage;
 
         public bool IsNameValid { get; set; }
         public bool IsTextValid { get; set; }
-
-        public Command<bool> ChangeNameReadOnlyCommand { get; }
 
         public Command SaveThoughtCommand { get; }
         public Command ActivateEditMode { get; }
@@ -34,13 +30,6 @@ namespace Daily.ViewModels
         {
             _thoughtStorage = thoughtStorage;
 
-            ChangeNameReadOnlyCommand = new Command<bool>((isReadOnly) =>
-            {
-                if (!IsEditMode) return;
-                
-                IsNameEntryReadOnly = isReadOnly;
-            });
-
             SaveThoughtCommand = new Command(
             execute: async () =>
             {
@@ -49,7 +38,8 @@ namespace Daily.ViewModels
                 if (_currentThought == null) await CreateThoughtAsync();
                 else await EditThoughtAsync();
 
-                await PageNavigator.ReturnToPreviousPage();
+                IsEditMode = false;
+                CanSave = true;
             });
 
             ActivateEditMode = new Command(() => IsEditMode = true);
@@ -71,8 +61,6 @@ namespace Daily.ViewModels
 
             Name = thought.Name;
             Text = thought.Text;
-
-            IsNameEntryReadOnly = true;
         }
 
         public void ResetView()
@@ -84,8 +72,6 @@ namespace Daily.ViewModels
 
             Name = string.Empty;
             Text = string.Empty;
-
-            IsNameEntryReadOnly = true;
         }
 
         public async Task PreventExitAsync()
@@ -103,17 +89,28 @@ namespace Daily.ViewModels
 
         private async Task CreateThoughtAsync()
         {
-            bool success = await _thoughtStorage.TryCreateThoughtAsync(Name, Text);
+            Thought? thought = await _thoughtStorage.TryCreateThoughtAsync(Name, Text);
+            
+            if (thought == null)
+            {
+                await ThoughtToastHandler.ShowThoughtErrorToastAsync();
+                return;
+            }
 
-            if (success) await ThoughtToastHandler.ShowThoughtCreatedToastAsync();
-            else await ThoughtToastHandler.ShowThoughtErrorToastAsync();
+            _currentThought = thought;
+
+            await ThoughtToastHandler.ShowThoughtCreatedToastAsync();
         }
 
         private async Task EditThoughtAsync()
         {
-            bool isEdited = await _thoughtStorage.TryEditThoughtAsync(_currentThought!, Name, Text);
+            bool isSame = _currentThought!.Name == Name && _currentThought!.Text == Text;
 
-            if (isEdited) await ThoughtToastHandler.ShowThoughtEditedToastAsync();
+            if (isSame) return;
+            
+            bool success = await _thoughtStorage.TryEditThoughtAsync(_currentThought!, Name, Text);
+
+            if (success) await ThoughtToastHandler.ShowThoughtEditedToastAsync();
             else await ThoughtToastHandler.ShowThoughtErrorToastAsync();
         }
     }

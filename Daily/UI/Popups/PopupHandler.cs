@@ -5,11 +5,11 @@ namespace Daily.Popups
     {
         private const string accept = "Да";
         private const string cancel = "Нет";
-        
-        public static async Task<bool> ShowTaskDeletePopupAsync()
+
+        public static async Task<bool> ShowTaskDeletePopupAsync(string actionName)
         {
-            const string title = "Удаление задачи";
-            const string message = "Вы хотите удалить задачу?";
+            const string title = "Удалить задачу?";
+            string message = $"Будет удалена задача: \"{actionName}\"";
 
             return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
         }
@@ -33,7 +33,7 @@ namespace Daily.Popups
         public static async Task<bool> ShowRecordExitPopupAsync()
         {
             const string title = "Выход";
-            const string message = "Вы уверены, что хотите выйти?";
+            const string message = "У вас есть несохраненные изменения. Вы уверены, что хотите выйти?";
 
             return await ShowDialogPopupAtCurrentPageAsync(title, message, accept, cancel);
         }

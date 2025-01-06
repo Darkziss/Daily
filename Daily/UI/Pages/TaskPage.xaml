@@ -14,7 +14,7 @@
 
         <ResourceDictionary>
 
-            <x:Double x:Key="TaskLabelWidth">300</x:Double>
+            <x:Double x:Key="TaskLabelWidth">290</x:Double>
 
             <Thickness x:Key="GeneralTaskCollectionViewMargin">0, 0, 0, 15</Thickness>
 
@@ -40,7 +40,15 @@
 
             <Color x:Key="GreenSelected">#aaf786</Color>
             <Color x:Key="BlueSelected">#86f7ea</Color>
-            
+
+            <converters:TaskCountToStringConverter
+                x:Key="GeneralTaskCountToStringConverter"
+                TaskName="Основные задачи"/>
+
+            <converters:TaskCountToStringConverter
+                x:Key="ConditionalTaskCountToStringConverter"
+                TaskName="Условные задачи"/>
+
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
                 DailyColor="{StaticResource Daily}"
@@ -66,7 +74,6 @@
             <Style TargetType="Frame" x:Key="GoalCard">
                 <Setter Property="BackgroundColor" Value="{StaticResource Goal}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
@@ -75,17 +82,19 @@
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="TextColor" Value="{StaticResource GoalText}"/>
                 <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                <Setter Property="MaxLines" Value="2"/>
                 <Setter Property="VerticalTextAlignment" Value="Center"/>
                 <Setter Property="HorizontalTextAlignment" Value="Start"/>
                 <Setter Property="WidthRequest" Value="{StaticResource ShorterElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="Margin" Value="0, 10, 10, 10"/>
             </Style>
 
             <Style TargetType="Entry" x:Key="GoalEntry">
                 <Setter Property="PlaceholderColor" Value="Black"/>
-                <Setter Property="Placeholder" Value="Введите цель"/>
-                <Setter Property="MaxLength" Value="50"/>
+                <Setter Property="Placeholder" Value="Напишите цель.."/>
+                <Setter Property="MaxLength" Value="70"/>
                 <Setter Property="WidthRequest" Value="{StaticResource ShorterElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
@@ -245,7 +254,9 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource CondTask}"
-                        Text="Условные задачи"
+                        Text="{Binding СonditionalTasks.Count, 
+                            Converter={StaticResource ConditionalTaskCountToStringConverter},
+                            ConverterParameter={x:Static tasks:TaskStorage.maxConditionalTaskCount}}"
                         Grid.Column="0"
                         Grid.Row="0"/>
 
@@ -343,7 +354,9 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource GeneralTask}"
-                        Text="Основные задачи"
+                        Text="{Binding GeneralTasks.Count, 
+                            Converter={StaticResource GeneralTaskCountToStringConverter},
+                            ConverterParameter={x:Static tasks:TaskStorage.maxGeneralTaskCount}}"
                         Grid.Column="0"
                         Grid.Row="0"/>
 
@@ -456,7 +469,7 @@
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
-                        Text="Добавить"/>
+                        Text="Создать"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout>

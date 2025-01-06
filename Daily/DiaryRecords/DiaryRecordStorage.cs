@@ -19,16 +19,16 @@ namespace Daily.Diary
             else DiaryRecords = new ObservableCollection<DiaryRecord>(_dataProvider.DiaryRecords);
         }
 
-        public async Task<bool> TryAddDiaryRecordAsync(string text, DateTime creationDateTime)
+        public async Task<DiaryRecord?> TryAddDiaryRecordAsync(string text, DateTime creationDateTime)
         {
-            if (string.IsNullOrWhiteSpace(text)) return false;
+            if (string.IsNullOrWhiteSpace(text)) return null;
 
             DiaryRecord record = new DiaryRecord(text, creationDateTime);
             DiaryRecords.Insert(0, record);
 
             await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
 
-            return true;
+            return record;
         }
 
         public async Task<bool> TryEditDiaryRecordAsync(DiaryRecord record, string text)

@@ -23,7 +23,6 @@
     <Color x:Key="Disabled">#c3c3c3</Color>
 
     <Color x:Key="Save">#86caf7</Color>
-    <Color x:Key="Edit">#86f7e8</Color>
 
     <Color x:Key="RedSelected">#f78786</Color>
 

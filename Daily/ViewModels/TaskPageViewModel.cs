@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
@@ -28,8 +29,8 @@ namespace Daily.ViewModels
         private readonly GoalStorage _goalStorage;
         private readonly TaskStorage _taskStorage;
 
-        public IReadOnlyList<GeneralTask> GeneralTasks => _taskStorage.GeneralTasks;
-        public IReadOnlyList<СonditionalTask> СonditionalTasks => _taskStorage.СonditionalTasks;
+        public ObservableCollection<GeneralTask> GeneralTasks => _taskStorage.GeneralTasks;
+        public ObservableCollection<СonditionalTask> СonditionalTasks => _taskStorage.СonditionalTasks;
 
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
@@ -105,16 +106,15 @@ namespace Daily.ViewModels
                 {
                     CanInteractWithTask = false;
 
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync();
+                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
 
                     if (shouldDelete)
                     {
                         await _taskStorage.DeleteGeneralTaskAsync(task);
                         await TaskToastHandler.ShowTaskDeletedToastAsync();
-
-                        ShowDummy();
                     }
-                    else CanInteractWithTask = true;
+
+                    CanInteractWithTask = true;
                 }
                 else if (CanResetTask) await ResetGeneralTaskAsync(task);
                 else await PerformGeneralTaskAsync(task);
@@ -142,16 +142,15 @@ namespace Daily.ViewModels
                 {
                     CanInteractWithTask = false;
 
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync();
+                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
 
                     if (shouldDelete)
                     {
                         await _taskStorage.DeleteConditionalTaskAsync(task);
                         await TaskToastHandler.ShowTaskDeletedToastAsync();
-
-                        ShowDummy();
                     }
-                    else CanInteractWithTask = true;
+                    
+                    CanInteractWithTask = true;
                 }
                 else if (CanResetTask) await ResetConditionalTaskAsync(task);
                 else await PerformСonditionalTaskAsync(task);

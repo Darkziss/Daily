@@ -13,19 +13,16 @@
         <ResourceDictionary>
 
             <x:Int32 x:Key="ThoughtMinLength">1</x:Int32>
-            <x:Int32 x:Key="ThoughtMaxLength">600</x:Int32>
+            <x:Int32 x:Key="ThoughtMaxLength">1000</x:Int32>
             
-            <x:Boolean x:Key="True">True</x:Boolean>
-            <x:Boolean x:Key="False">False</x:Boolean>
-
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
                 <Setter Property="MaxLength" Value="40"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-                <Setter Property="Margin" Value="{StaticResource HeadlineMargin}"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="Margin" Value="5, 0, 5, 0"/>
             </Style>
 
         </ResourceDictionary>
@@ -38,10 +35,8 @@
 
         <Entry
             Style="{StaticResource ThoughtNameEntry}"
-            IsReadOnly="{Binding IsNameEntryReadOnly}"
+            IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
             Text="{Binding Name, Mode=TwoWay}"
-            ReturnCommand="{Binding ChangeNameReadOnlyCommand}"
-            ReturnCommandParameter="{StaticResource True}"
             Grid.Column="0"
             Grid.Row="0">
 
@@ -51,17 +46,9 @@
                     Flags="ValidateOnAttaching, ValidateOnValueChanged"
                     MinimumLength="1"/>
             </Entry.Behaviors>
-
-            <Entry.GestureRecognizers>
-                <TapGestureRecognizer
-                    Command="{Binding ChangeNameReadOnlyCommand}"
-                    CommandParameter="{StaticResource False}"
-                    NumberOfTapsRequired="1"/>
-            </Entry.GestureRecognizers>
         </Entry>
 
         <Editor
-            x:Name="ThoughtTextEditor"
             Style="{StaticResource RecordTextEditor}"
             IsReadOnly="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
             Text="{Binding Text, Mode=TwoWay}"
@@ -97,7 +84,7 @@
         <Button
             Style="{StaticResource RecordBottomButton}"
             IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
-            BackgroundColor="{StaticResource Edit}"
+            BackgroundColor="{StaticResource Good}"
             Text="Изменить"
             Command="{Binding ActivateEditMode}"
             Grid.Column="0"

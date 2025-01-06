@@ -19,16 +19,16 @@ namespace Daily.Thoughts
             else Thoughts = Thoughts = new ObservableCollection<Thought>(_dataProvider.Thoughts);
         }
 
-        public async Task<bool> TryCreateThoughtAsync(string name, string text)
+        public async Task<Thought?> TryCreateThoughtAsync(string name, string text)
         {
-            if (!ValidateThoughtValues(name, text)) return false;
+            if (!ValidateThoughtValues(name, text)) return null;
             
             Thought thought = new Thought(name, text);
             Thoughts.Insert(0, thought);
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
 
-            return true;
+            return thought;
         }
 
         public async Task<bool> TryEditThoughtAsync(Thought thought, string name, string text)

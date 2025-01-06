@@ -47,7 +47,7 @@ namespace Daily.ViewModels
                     if (shouldDelete)
                     {
                         await _diaryRecordStorage.DeleteDiaryRecordAsync(record);
-                        await ThoughtToastHandler.ShowThoughtDeletedToastAsync();
+                        await DiaryRecordToastHandler.ShowDiaryRecordDeletedToastAsync();
                     }
                 }
                 else
