@@ -106,7 +106,7 @@ namespace Daily.ViewModels
                 {
                     CanInteractWithTask = false;
 
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync();
+                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
 
                     if (shouldDelete)
                     {
@@ -142,7 +142,7 @@ namespace Daily.ViewModels
                 {
                     CanInteractWithTask = false;
 
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync();
+                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
 
                     if (shouldDelete)
                     {

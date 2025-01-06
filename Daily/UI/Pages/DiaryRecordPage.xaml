@@ -147,7 +147,7 @@
 
                     <Label
                         Style="{StaticResource ActionButtonLabel}"
-                        Text="Добавить"/>
+                        Text="Создать"/>
                 </VerticalStackLayout>
 
                 <VerticalStackLayout>
