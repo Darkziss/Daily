@@ -23,6 +23,8 @@ namespace Daily.ViewModels
         public Command GoToThoughtPage { get; }
         public Command GoToDiaryRecordPage { get; }
 
+        public string CurrentVersion => $"v{AppInfo.VersionString}";
+
         private const string emptyStatusText = "Задач нет";
         private const string completedStatusText = "Все задачи выполнены!";
 

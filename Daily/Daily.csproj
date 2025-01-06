@@ -26,7 +26,7 @@
 		<ApplicationId>org.darkziss.daily</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
+		<ApplicationDisplayVersion>1.2.0</ApplicationDisplayVersion>
 		<ApplicationVersion>3</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
@@ -36,13 +36,13 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
 	  <ApplicationId>org.darkziss.daily</ApplicationId>
-	  <ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
+	  <ApplicationDisplayVersion>1.2.0</ApplicationDisplayVersion>
 	  <ApplicationVersion>3</ApplicationVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
 	  <ApplicationId>org.darkziss.daily</ApplicationId>
-	  <ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
+	  <ApplicationDisplayVersion>1.2.0</ApplicationDisplayVersion>
 	  <ApplicationVersion>3</ApplicationVersion>
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
 	</PropertyGroup>

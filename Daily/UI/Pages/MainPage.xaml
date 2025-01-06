@@ -253,7 +253,7 @@
 
         <Label
             Style="{StaticResource VersionTextLabel}"
-            Text="v1.2a"
+            Text="{Binding CurrentVersion, Mode=OneTime}"
             Grid.Column="0"
             Grid.Row="3"/>
     </Grid>
