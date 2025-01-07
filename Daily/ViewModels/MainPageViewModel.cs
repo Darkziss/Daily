@@ -23,7 +23,7 @@ namespace Daily.ViewModels
         public Command GoToThoughtPage { get; }
         public Command GoToDiaryRecordPage { get; }
 
-        public string CurrentVersion => $"v{AppInfo.VersionString}";
+        public string CurrentVersion => GetCurrentVersion();
 
         private const string emptyStatusText = "Задач нет";
         private const string completedStatusText = "Все задачи выполнены!";
@@ -106,6 +106,18 @@ namespace Daily.ViewModels
             CommonCounterText = priorityCounts[3].ToString();
 
             IsCounterVisible = true;
+        }
+
+        private string GetCurrentVersion()
+        {
+            string version = AppInfo.VersionString;
+
+#if DEBUG
+            return $"v{version} (debug)";
+#else
+
+            return $"v{version}";
+#endif
         }
     }
 }
