@@ -16,7 +16,7 @@ namespace Daily.Tasks
         private bool ShouldSortGeneralTasks => GeneralTasks.Count > 1;
         private bool ShouldSortСonditionalTasks => СonditionalTasks.Count > 1;
 
-        public const int maxGeneralTaskCount = 10;
+        public const int maxGeneralTaskCount = 15;
         public const int maxConditionalTaskCount = 10;
 
         private const string maxGeneralTasksExceptionText = "Already created max amount of general tasks";
