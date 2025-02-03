@@ -272,8 +272,10 @@
 
     <Style TargetType="Label" x:Key="ModificatorLabel">
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="VerticalOptions" Value="Center"/>
-        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
         <Setter Property="Margin" Value="7, 0, 7, 0"/>
     </Style>
 
