@@ -9,7 +9,7 @@ namespace Daily.ViewModels
     public partial class ThoughtEditPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isEditMode = false;
-        [ObservableProperty] private bool _canSave = false;
+        [ObservableProperty] private bool _canInteract = true;
 
         [ObservableProperty] private string _name = string.Empty;
         [ObservableProperty] private string _text = string.Empty;
@@ -21,8 +21,7 @@ namespace Daily.ViewModels
         public bool IsNameValid { get; set; }
         public bool IsTextValid { get; set; }
 
-        public Command SaveThoughtCommand { get; }
-        public Command ActivateEditMode { get; }
+        public Command InteractWithThoughtCommand { get; }
 
         private bool ShouldPreventExit => (Name.Length > 0 || Text.Length > 0) && IsEditMode;
 
@@ -30,25 +29,31 @@ namespace Daily.ViewModels
         {
             _thoughtStorage = thoughtStorage;
 
-            SaveThoughtCommand = new Command(
-            execute: async () =>
+            InteractWithThoughtCommand = new Command(async () =>
             {
-                CanSave = false;
-                
+                if (!IsEditMode)
+                {
+                    IsEditMode = true;
+                    return;
+                }
+
+                CanInteract = false;
+
                 if (_currentThought == null) await CreateThoughtAsync();
                 else await EditThoughtAsync();
 
                 IsEditMode = false;
-                CanSave = true;
+                CanInteract = true;
             });
-
-            ActivateEditMode = new Command(() => IsEditMode = true);
 
             PropertyChanged += (_, args) =>
             {
                 bool isThoughtProperty = args.PropertyName == nameof(Name) || args.PropertyName == nameof(Text);
 
-                if (isThoughtProperty) CanSave = IsNameValid && IsTextValid;
+                if (isThoughtProperty && IsEditMode)
+                {
+                    CanInteract = IsNameValid && IsTextValid;
+                }
             };
         }
 
@@ -57,7 +62,7 @@ namespace Daily.ViewModels
             _currentThought = thought;
             
             IsEditMode = false;
-            CanSave = false;
+            CanInteract = true;
 
             Name = thought.Name;
             Text = thought.Text;
@@ -68,7 +73,6 @@ namespace Daily.ViewModels
             _currentThought = null;
             
             IsEditMode = true;
-            CanSave = false;
 
             Name = string.Empty;
             Text = string.Empty;

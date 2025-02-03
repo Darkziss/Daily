@@ -9,7 +9,7 @@ namespace Daily.ViewModels
     public partial class DiaryRecordEditPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isEditMode = false;
-        [ObservableProperty] private bool _canSave = false;
+        [ObservableProperty] private bool _canInteract = false;
 
         [ObservableProperty] private string _headerText = defaultHeaderText;
         [ObservableProperty] private string _text = string.Empty;
@@ -18,8 +18,7 @@ namespace Daily.ViewModels
 
         private readonly DiaryRecordStorage _diaryRecordStorage;
 
-        public Command SaveDiaryRecordCommand { get; }
-        public Command ActivateEditMode { get; }
+        public Command InteractWithDiaryRecordCommand { get; }
 
         private bool ShouldPreventExit => Text.Length > 0 && IsEditMode;
 
@@ -31,19 +30,22 @@ namespace Daily.ViewModels
         {
             _diaryRecordStorage = diaryRecordStorage;
 
-            SaveDiaryRecordCommand = new Command(
-            execute: async () =>
+            InteractWithDiaryRecordCommand = new Command(async () =>
             {
-                CanSave = false;
+                if (!IsEditMode)
+                {
+                    IsEditMode = true;
+                    return;
+                }
+
+                CanInteract = false;
 
                 if (_currentDiaryRecord == null) await CreateDiaryRecordAsync();
                 else await EditDiaryRecordAsync();
 
                 IsEditMode = false;
-                CanSave = true;
+                CanInteract = true;
             });
-
-            ActivateEditMode = new Command(() => IsEditMode = true);
         }
 
         public async Task PreventExitAsync()

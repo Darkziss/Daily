@@ -14,7 +14,7 @@
 
             <x:Int32 x:Key="ThoughtMinLength">1</x:Int32>
             <x:Int32 x:Key="ThoughtMaxLength">1000</x:Int32>
-            
+
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
@@ -73,20 +73,10 @@
 
         <Button
             Style="{StaticResource RecordBottomButton}"
-            IsVisible="{Binding IsEditMode}"
-            IsEnabled="{Binding CanSave}"
-            BackgroundColor="{StaticResource Save}"
-            Text="Сохранить"
-            Command="{Binding SaveThoughtCommand}"
-            Grid.Column="0"
-            Grid.Row="3"/>
-
-        <Button
-            Style="{StaticResource RecordBottomButton}"
-            IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
-            BackgroundColor="{StaticResource Good}"
-            Text="Изменить"
-            Command="{Binding ActivateEditMode}"
+            IsEnabled="{Binding CanInteract}"
+            BackgroundColor="{Binding IsEditMode, Converter={StaticResource IsEditModeToColorConverter}}"
+            Text="{Binding IsEditMode, Converter={StaticResource IsEditModeToTextConverter}}"
+            Command="{Binding InteractWithThoughtCommand, Mode=OneTime}"
             Grid.Column="0"
             Grid.Row="3"/>
     </Grid>

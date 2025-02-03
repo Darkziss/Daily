@@ -354,7 +354,7 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource GeneralTask}"
-                        Text="{Binding GeneralTasks.Count, 
+                        Text="{Binding GeneralTasks.Count,
                             Converter={StaticResource GeneralTaskCountToStringConverter},
                             ConverterParameter={x:Static tasks:TaskStorage.maxGeneralTaskCount}}"
                         Grid.Column="0"
