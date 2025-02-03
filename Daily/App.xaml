@@ -29,6 +29,8 @@
                 TrueString="Сохранить"
                 FalseString="Изменить"/>
 
+            <converters:CharacterCountToStringConverter x:Key="CharacterCountToStringConverter"/>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>

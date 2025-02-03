@@ -14,7 +14,7 @@
 
             <x:Int32 x:Key="ThoughtMinLength">1</x:Int32>
             <x:Int32 x:Key="ThoughtMaxLength">1000</x:Int32>
-
+            
             <Style TargetType="Entry" x:Key="ThoughtNameEntry">
                 <Setter Property="FontSize" Value="30"/>
                 <Setter Property="Placeholder" Value="Заголовок"/>
@@ -66,7 +66,7 @@
 
         <Label
             Style="{StaticResource SymbolCounterLabel}"
-            Text="{Binding Text.Length, Converter={converters:SymbolCountToStringConverter}, 
+            Text="{Binding Text.Length, Converter={StaticResource CharacterCountToStringConverter}, 
                 ConverterParameter={StaticResource ThoughtMaxLength}}"
             Grid.Column="0"
             Grid.Row="2"/>

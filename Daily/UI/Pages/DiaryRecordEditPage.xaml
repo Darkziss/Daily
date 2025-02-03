@@ -58,7 +58,7 @@
 
         <Label
             Style="{StaticResource SymbolCounterLabel}"
-            Text="{Binding Text.Length, Converter={converters:SymbolCountToStringConverter}, 
+            Text="{Binding Text.Length, Converter={StaticResource CharacterCountToStringConverter}, 
                 ConverterParameter={StaticResource DiaryRecordMaxLength}}"
             Grid.Column="0"
             Grid.Row="2"/>

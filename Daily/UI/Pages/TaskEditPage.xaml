@@ -15,7 +15,9 @@
             <x:Double x:Key="DefaultFontSize">20</x:Double>
 
             <Thickness x:Key="TaskFieldPadding">20, 0, 0, 0</Thickness>
-            
+
+            <converters:CompletionTimeToStringConverter x:Key="CompletionTimeToStringConverter"/>
+
             <Style TargetType="controls:SegmentedControl" x:Key="TaskSegmentedControl">
                 <Setter Property="TintColor" Value="{StaticResource Gray}"/>
                 <Setter Property="SelectedTextColor" Value="Black"/>
@@ -272,7 +274,7 @@
                 <Entry
                     IsReadOnly="{Binding IsCreatingNewTask}"
                     Style="{StaticResource CompletionTimeEntry}"
-                    Text="{Binding CompletionTime, Mode=TwoWay, Converter={converters:CompletionTimeToStringConverter}}"
+                    Text="{Binding CompletionTime, Mode=TwoWay, Converter={StaticResource CompletionTimeToStringConverter}}"
                     Grid.Column="0"
                     Grid.Row="1"/>
 
