@@ -59,6 +59,10 @@
                 TrueColor="{StaticResource Completed}"
                 FalseColor="Transparent"/>
 
+            <converters:TaskProgressConverter x:Key="TaskProgressConverter"/>
+
+            <converters:RepeatTimePeriodConverter x:Key="RepeatTimePeriodConverter"/>
+
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
                 DailyColor="{StaticResource Daily}"
@@ -332,7 +336,7 @@
                                             Grid.RowSpan="2">
 
                                             <Label.Text>
-                                                <MultiBinding Converter="{converters:TaskProgressConverter}">
+                                                <MultiBinding Converter="{StaticResource TaskProgressConverter}">
                                                     <Binding Path="RepeatCount"/>
                                                     <Binding Path="TargetRepeatCount"/>
                                                 </MultiBinding>
@@ -352,7 +356,7 @@
                                             Grid.Row="1">
 
                                             <controls:СonditionalTaskModificatorsView.Frequency>
-                                                <MultiBinding Converter="{converters:RepeatTimePeriodConverter}">
+                                                <MultiBinding Converter="{StaticResource RepeatTimePeriodConverter}">
                                                     <Binding Path="TargetRepeatCount"/>
                                                     <Binding Path="RepeatTimePeriod"/>
                                                 </MultiBinding>
@@ -433,7 +437,7 @@
                                             Grid.RowSpan="2">
 
                                             <Label.Text>
-                                                <MultiBinding Converter="{converters:TaskProgressConverter}">
+                                                <MultiBinding Converter="{StaticResource TaskProgressConverter}">
                                                     <Binding Path="RepeatCount"/>
                                                     <Binding Path="TargetRepeatCount"/>
                                                 </MultiBinding>
