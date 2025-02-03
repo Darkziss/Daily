@@ -154,7 +154,7 @@ namespace Daily.ViewModels
             }
             
             TaskPriority priority = (TaskPriority)PriorityIndex;
-            GeneralTask task = new GeneralTask(ActionName, TargetRepeatCount, priority);
+            GeneralTask task = new GeneralTask(ActionName, 0, TargetRepeatCount, priority);
 
             bool isCreated = await _taskStorage.TryAddGeneralTaskAsync(task);
 
@@ -171,7 +171,7 @@ namespace Daily.ViewModels
             }
             
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            СonditionalTask task = new СonditionalTask(ActionName, TargetRepeatCount, repeatTimePeriod,
+            СonditionalTask task = new СonditionalTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod,
                 CompletionTime, Note);
 
             bool isCreated = await _taskStorage.TryAddСonditionalTaskAsync(task);
@@ -185,7 +185,7 @@ namespace Daily.ViewModels
             GeneralTask oldTask = (GeneralTask)_currentTask!;
 
             TaskPriority priority = (TaskPriority)PriorityIndex;
-            GeneralTask newTask = new GeneralTask(ActionName, TargetRepeatCount, priority);
+            GeneralTask newTask = new GeneralTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, priority);
 
             bool isEdited = await _taskStorage.TryEditGeneralTaskAsync(oldTask, newTask);
 
@@ -198,7 +198,7 @@ namespace Daily.ViewModels
             СonditionalTask oldTask = (СonditionalTask)_currentTask!;
 
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            СonditionalTask newTask = new СonditionalTask(ActionName, TargetRepeatCount, repeatTimePeriod,
+            СonditionalTask newTask = new СonditionalTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod,
                 CompletionTime, Note);
 
             bool isEdited = await _taskStorage.TryEditСonditionalTaskAsync(oldTask, newTask);

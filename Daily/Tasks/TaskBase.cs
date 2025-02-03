@@ -46,9 +46,10 @@ namespace Daily.Tasks
 
         public bool IsCompleted => RepeatCount == TargetRepeatCount;
         
-        public TaskBase(string actionName, int targetRepeatCount)
+        public TaskBase(string actionName, int repeatCount, int targetRepeatCount)
         {
             ActionName = actionName;
+            RepeatCount = repeatCount;
             TargetRepeatCount = targetRepeatCount;
         }
 
