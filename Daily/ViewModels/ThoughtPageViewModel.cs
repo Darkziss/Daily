@@ -16,6 +16,8 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private bool _canInteractWithThought = true;
         [ObservableProperty] private bool _canDeleteThought = false;
+
+        private bool _isThoughtOpened = false;
         
         private readonly ThoughtStorage _thoughtStorage;
 
@@ -27,7 +29,9 @@ namespace Daily.ViewModels
 
         public Command SwitchCanDeleteCommand { get; }
 
-        private bool ShouldLoad => Thoughts.Count > 0;
+        private bool ShouldLoad => Thoughts.Count > 0 && !_isThoughtOpened;
+
+        private const double dummyDelay = 800d;
         
         public ThoughtPageViewModel(ThoughtStorage thoughtStorage)
         {
@@ -56,6 +60,8 @@ namespace Daily.ViewModels
                     {
                         [nameof(Thought)] = thought
                     };
+
+                    _isThoughtOpened = true;
 
                     await PageNavigator.GoToThoughtEditPageWithParametersAsync(parameters);
                 }
@@ -87,6 +93,8 @@ namespace Daily.ViewModels
                 IsLoaded = true;
                 CanInteractWithThought = true;
             }
+
+            _isThoughtOpened = false;
         }
 
         private void ShowDummy()
@@ -94,8 +102,7 @@ namespace Daily.ViewModels
             IsLoaded = false;
             CanInteractWithThought = false;
 
-            const double delay = 800d;
-            AsyncTimer timer = new AsyncTimer(delay);
+            AsyncTimer timer = new AsyncTimer(dummyDelay);
 
             timer.Elapsed += (_, _) =>
             {

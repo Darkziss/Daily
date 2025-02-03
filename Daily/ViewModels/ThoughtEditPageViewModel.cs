@@ -9,7 +9,7 @@ namespace Daily.ViewModels
     public partial class ThoughtEditPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isEditMode = false;
-        [ObservableProperty] private bool _canInteract = true;
+        [ObservableProperty] private bool _canInteract = false;
 
         [ObservableProperty] private string _name = string.Empty;
         [ObservableProperty] private string _text = string.Empty;
@@ -73,6 +73,7 @@ namespace Daily.ViewModels
             _currentThought = null;
             
             IsEditMode = true;
+            CanInteract = false;
 
             Name = string.Empty;
             Text = string.Empty;
