@@ -40,7 +40,7 @@ namespace Daily.Converters
                 TaskRepeatTimePeriod.Day => dayRepeatTime,
                 TaskRepeatTimePeriod.Week => weekRepeatTime,
                 TaskRepeatTimePeriod.Month => monthRepeatTime,
-                _ => throw new NotImplementedException()
+                _ => string.Empty
             };
         }
     }

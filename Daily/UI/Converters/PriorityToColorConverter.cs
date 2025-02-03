@@ -5,10 +5,10 @@ namespace Daily.Converters
 {
     public class PriorityToColorConverter : IValueConverter
     {
-        public Color DailyColor { get; set; } = Colors.Orange;
-        public Color MandatoryColor { get; set; } = Colors.Red;
-        public Color ImportantColor { get; set; } = Colors.Yellow;
-        public Color CommonColor { get; set; } = Colors.Green;
+        public Color DailyColor { get; init; } = Colors.Orange;
+        public Color MandatoryColor { get; init; } = Colors.Red;
+        public Color ImportantColor { get; init; } = Colors.Yellow;
+        public Color CommonColor { get; init; } = Colors.Green;
  
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {

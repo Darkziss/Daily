@@ -3,10 +3,10 @@ using Daily.Tasks;
 
 namespace Daily.Converters
 {
-    public class IsCompletedToOpacityConverter : IValueConverter
+    public class BoolToOpacityConverter : IValueConverter
     {
-        private double incompletedOpacity = 1d;
-        private double completedOpacity = 0.5d;
+        public double TrueOpacity { get; init; } = 0.5d;
+        public double FalseOpacity { get; init; } = 1d;
         
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
@@ -14,7 +14,7 @@ namespace Daily.Converters
 
             bool isCompleted = (bool)value;
 
-            return isCompleted ? completedOpacity : incompletedOpacity;
+            return isCompleted ? TrueOpacity : FalseOpacity;
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

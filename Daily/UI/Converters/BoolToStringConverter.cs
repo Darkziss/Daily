@@ -4,8 +4,8 @@ namespace Daily.Converters
 {
     public class BoolToStringConverter : IValueConverter
     {
-        public string? TrueString { get; set; } = "True";
-        public string? FalseString { get; set; } = "False";
+        public string TrueString { get; init; } = "True";
+        public string FalseString { get; init; } = "False";
         
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {

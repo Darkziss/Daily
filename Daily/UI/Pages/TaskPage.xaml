@@ -49,12 +49,29 @@
                 x:Key="ConditionalTaskCountToStringConverter"
                 TaskName="Условные задачи"/>
 
+            <converters:BoolToOpacityConverter
+                x:Key="IsCompletedToOpacityConverter"
+                TrueOpacity="0.5"
+                FalseOpacity="1"/>
+
+            <converters:BoolToColorConverter
+                x:Key="IsCompletedToColorConverter"
+                TrueColor="{StaticResource Completed}"
+                FalseColor="Transparent"/>
+
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
                 DailyColor="{StaticResource Daily}"
                 MandatoryColor="{StaticResource Mandatory}"
                 ImportantColor="{StaticResource Important}"
                 CommonColor="{StaticResource Common}"/>
+
+            <converters:PriorityToStringConverter
+                x:Key="PriorityToTextConverter"
+                DailyTaskText="Ежедневная"
+                MandatoryTaskText="Обязательная"
+                ImportantTaskText="Важная"
+                CommonTaskText="Обычная"/>
 
             <converters:BoolToColorConverter
                 x:Key="CanEditTaskToColorConverter"
@@ -297,8 +314,8 @@
                                 <Frame
                                     x:DataType="tasks:СonditionalTask"
                                     Style="{StaticResource TaskCard}"
-                                    Opacity="{Binding IsCompleted, Converter={converters:IsCompletedToOpacityConverter}}"
-                                    BorderColor="{Binding IsCompleted, Converter={converters:IsCompletedToColorConverter}}">
+                                    Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
                                     <Grid
                                         Style="{StaticResource TaskCardGrid}">
@@ -398,8 +415,8 @@
                                 <Frame
                                     x:DataType="tasks:GeneralTask"
                                     Style="{StaticResource TaskCard}"
-                                    Opacity="{Binding IsCompleted, Converter={converters:IsCompletedToOpacityConverter}}"
-                                    BorderColor="{Binding IsCompleted, Converter={converters:IsCompletedToColorConverter}}">
+                                    Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
                                     <Grid
                                         Style="{StaticResource TaskCardGrid}">
@@ -438,7 +455,7 @@
 
                                             <Label
                                                 Style="{StaticResource ModificatorLabel}"
-                                                Text="{Binding Priority, Converter={converters:PriorityToTextConverter}}"/>
+                                                Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
                                         </Frame>
                                     </Grid>
                                 </Frame>
