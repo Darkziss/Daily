@@ -26,7 +26,8 @@ namespace Daily.ViewModels
 
         private TaskBase? _currentTask = null;
 
-        private readonly TaskStorage _taskStorage;
+        private readonly GeneralTaskStorage _generalTaskStorage;
+        private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
         public Command ChangeViewCommand { get; }
 
@@ -34,9 +35,11 @@ namespace Daily.ViewModels
 
         private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
 
-        public TaskEditPageViewModel(TaskStorage taskStorage)
+        public TaskEditPageViewModel(GeneralTaskStorage generalTaskStorage, 
+            ConditionalTaskStorage conditionalTaskStorage)
         {
-            _taskStorage = taskStorage;
+            _generalTaskStorage = generalTaskStorage;
+            _conditionalTaskStorage = conditionalTaskStorage;
 
             ChangeViewCommand = new Command(
             execute: () =>
@@ -147,7 +150,7 @@ namespace Daily.ViewModels
 
         private async Task CreateGeneralTaskAsync()
         {
-            if (_taskStorage.IsGeneralTasksFull)
+            if (_generalTaskStorage.IsTasksFull)
             {
                 await TaskToastHandler.ShowGeneralTasksFullToastAsync();
                 return;
@@ -156,7 +159,7 @@ namespace Daily.ViewModels
             TaskPriority priority = (TaskPriority)PriorityIndex;
             GeneralTask task = new GeneralTask(ActionName, 0, TargetRepeatCount, priority);
 
-            bool isCreated = await _taskStorage.TryAddGeneralTaskAsync(task);
+            bool isCreated = await _generalTaskStorage.TryAddTaskAsync(task);
 
             if (isCreated) await TaskToastHandler.ShowTaskCreatedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();
@@ -164,7 +167,7 @@ namespace Daily.ViewModels
 
         private async Task CreateConditionalTaskAsync()
         {
-            if (_taskStorage.IsConditionalTasksFull)
+            if (_conditionalTaskStorage.IsTasksFull)
             {
                 await TaskToastHandler.ShowConditionalTasksFullToastAsync();
                 return;
@@ -174,7 +177,7 @@ namespace Daily.ViewModels
             СonditionalTask task = new СonditionalTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod,
                 CompletionTime, Note);
 
-            bool isCreated = await _taskStorage.TryAddСonditionalTaskAsync(task);
+            bool isCreated = await _conditionalTaskStorage.TryAddTaskAsync(task);
 
             if (isCreated) await TaskToastHandler.ShowTaskCreatedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();
@@ -187,7 +190,7 @@ namespace Daily.ViewModels
             TaskPriority priority = (TaskPriority)PriorityIndex;
             GeneralTask newTask = new GeneralTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, priority);
 
-            bool isEdited = await _taskStorage.TryEditGeneralTaskAsync(oldTask, newTask);
+            bool isEdited = await _generalTaskStorage.TryEditTaskAsync(oldTask, newTask);
 
             if (isEdited) await TaskToastHandler.ShowTaskEditedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();
@@ -201,7 +204,7 @@ namespace Daily.ViewModels
             СonditionalTask newTask = new СonditionalTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod,
                 CompletionTime, Note);
 
-            bool isEdited = await _taskStorage.TryEditСonditionalTaskAsync(oldTask, newTask);
+            bool isEdited = await _conditionalTaskStorage.TryEditTaskAsync(oldTask, newTask);
 
             if (isEdited) await TaskToastHandler.ShowTaskEditedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();

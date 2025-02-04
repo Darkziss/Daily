@@ -27,10 +27,14 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _canResetTask = false;
 
         private readonly GoalStorage _goalStorage;
-        private readonly TaskStorage _taskStorage;
+        private readonly GeneralTaskStorage _generalTaskStorage;
+        private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
-        public ObservableCollection<GeneralTask> GeneralTasks => _taskStorage.GeneralTasks;
-        public ObservableCollection<СonditionalTask> СonditionalTasks => _taskStorage.СonditionalTasks;
+        public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
+        public ObservableCollection<СonditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
+
+        public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
+        public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
@@ -48,10 +52,13 @@ namespace Daily.ViewModels
 
         private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
 
-        public TaskPageViewModel(GoalStorage goalStorage, TaskStorage taskStorage)
+        public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
+            ConditionalTaskStorage conditionalTaskStorage)
         {
             _goalStorage = goalStorage;
-            _taskStorage = taskStorage;
+
+            _generalTaskStorage = generalTaskStorage;
+            _conditionalTaskStorage = conditionalTaskStorage;
 
             _goalLabelText = GetGoalOrDefaultText();
             _goalEntryText = goalStorage.Goal;
@@ -110,7 +117,7 @@ namespace Daily.ViewModels
 
                     if (shouldDelete)
                     {
-                        await _taskStorage.DeleteGeneralTaskAsync(task);
+                        await _generalTaskStorage.DeleteTaskAsync(task);
                         await TaskToastHandler.ShowTaskDeletedToastAsync();
                     }
 
@@ -146,7 +153,7 @@ namespace Daily.ViewModels
 
                     if (shouldDelete)
                     {
-                        await _taskStorage.DeleteConditionalTaskAsync(task);
+                        await _conditionalTaskStorage.DeleteTaskAsync(task);
                         await TaskToastHandler.ShowTaskDeletedToastAsync();
                     }
                     
@@ -221,28 +228,28 @@ namespace Daily.ViewModels
         {
             if (!CanPerformTask(task)) return;
 
-            await _taskStorage.PerformGeneralTaskAsync(task);
+            await _generalTaskStorage.PerformTaskAsync(task);
         }
 
         private async Task PerformСonditionalTaskAsync(СonditionalTask task)
         {
             if (!CanPerformTask(task)) return;
 
-            await _taskStorage.PerformСonditionalTaskAsync(task);
+            await _conditionalTaskStorage.PerformTaskAsync(task);
         }
 
         private async Task ResetGeneralTaskAsync(GeneralTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 
-            await _taskStorage.ResetGeneralTaskAsync(task);
+            await _generalTaskStorage.ResetTaskAsync(task);
         }
 
         private async Task ResetConditionalTaskAsync(СonditionalTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 
-            await _taskStorage.ResetСonditionalTaskAsync(task);
+            await _conditionalTaskStorage.ResetTaskAsync(task);
         }
 
         private bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;

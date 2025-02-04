@@ -277,7 +277,7 @@
                         TextColor="{StaticResource CondTask}"
                         Text="{Binding СonditionalTasks.Count, 
                             Converter={StaticResource ConditionalTaskCountToStringConverter},
-                            ConverterParameter={x:Static tasks:TaskStorage.maxConditionalTaskCount}}"
+                            ConverterParameter={Binding ConditionalTaskMaxCount, Mode=OneTime}}"
                         Grid.Column="0"
                         Grid.Row="0"/>
 
@@ -377,7 +377,7 @@
                         TextColor="{StaticResource GeneralTask}"
                         Text="{Binding GeneralTasks.Count,
                             Converter={StaticResource GeneralTaskCountToStringConverter},
-                            ConverterParameter={x:Static tasks:TaskStorage.maxGeneralTaskCount}}"
+                            ConverterParameter={Binding GeneralTaskMaxCount, Mode=OneTime}}"
                         Grid.Column="0"
                         Grid.Row="0"/>
 

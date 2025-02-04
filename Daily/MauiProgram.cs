@@ -43,7 +43,8 @@ namespace Daily
                 .Services
                 .AddSingleton<DataProvider>()
                 .AddSingleton<GoalStorage>()
-                .AddSingleton<TaskStorage>()
+                .AddSingleton<GeneralTaskStorage>()
+                .AddSingleton<ConditionalTaskStorage>()
                 .AddSingleton<ThoughtStorage>()
                 .AddSingleton<DiaryRecordStorage>();
         }
