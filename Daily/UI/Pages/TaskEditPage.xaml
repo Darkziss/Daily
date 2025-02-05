@@ -118,12 +118,9 @@
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
-            <Style TargetType="Button" x:Key="CreateButton">
-                <Setter Property="FontSize" Value="27"/>
-                <Setter Property="WidthRequest" Value="230"/>
-                <Setter Property="HeightRequest" Value="50"/>
+            <Style TargetType="Button" x:Key="TaskBottomButton" BasedOn="{StaticResource BottomButton}">
+                <Setter Property="BackgroundColor" Value="{StaticResource Good}"/>
                 <Setter Property="VerticalOptions" Value="End"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
                 <Setter Property="Margin" Value="0, 0, 0, 20"/>
             </Style>
 
@@ -306,8 +303,7 @@
         </VerticalStackLayout>
 
         <Button
-            Style="{StaticResource CreateButton}"
-            BackgroundColor="{StaticResource Good}"
+            Style="{StaticResource TaskBottomButton}"
             Text="Создать"
             Command="{Binding MakeTaskReady}"
             Grid.Column="0"

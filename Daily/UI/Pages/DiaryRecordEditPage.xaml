@@ -64,7 +64,7 @@
             Grid.Row="2"/>
 
         <Button
-            Style="{StaticResource RecordBottomButton}"
+            Style="{StaticResource BottomButton}"
             IsEnabled="{Binding CanInteract}"
             BackgroundColor="{Binding IsEditMode, Converter={StaticResource IsEditModeToColorConverter}}"
             Text="{Binding IsEditMode, Converter={StaticResource IsEditModeToTextConverter}}"
