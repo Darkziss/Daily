@@ -28,9 +28,9 @@ namespace Daily.ViewModels
         private const string emptyStatusText = "Задач нет";
         private const string completedStatusText = "Все задачи выполнены!";
 
-        public MainPageViewModel(TaskStorage taskStorage)
+        public MainPageViewModel(GeneralTaskStorage generalTaskStorage)
         {
-            _generalTasks = taskStorage.GeneralTasks;
+            _generalTasks = generalTaskStorage.Tasks;
             
             GoToTaskPage = new Command(
             execute: async () =>

@@ -42,12 +42,12 @@
             <Color x:Key="BlueSelected">#86f7ea</Color>
 
             <converters:TaskCountToStringConverter
-                x:Key="GeneralTaskCountToStringConverter"
-                TaskName="Основные задачи"/>
-
-            <converters:TaskCountToStringConverter
                 x:Key="ConditionalTaskCountToStringConverter"
                 TaskName="Условные задачи"/>
+
+            <converters:TaskCountToStringConverter
+                x:Key="GeneralTaskCountToStringConverter"
+                TaskName="Основные задачи"/>
 
             <converters:BoolToOpacityConverter
                 x:Key="IsCompletedToOpacityConverter"
@@ -275,11 +275,16 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource CondTask}"
-                        Text="{Binding СonditionalTasks.Count, 
-                            Converter={StaticResource ConditionalTaskCountToStringConverter},
-                            ConverterParameter={Binding ConditionalTaskMaxCount, Mode=OneTime}}"
                         Grid.Column="0"
-                        Grid.Row="0"/>
+                        Grid.Row="0">
+
+                        <Label.Text>
+                            <MultiBinding Converter="{StaticResource ConditionalTaskCountToStringConverter}">
+                                <Binding Path="СonditionalTasks.Count"/>
+                                <Binding Path="ConditionalTaskMaxCount"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
 
                     <VerticalStackLayout
                         IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
@@ -375,11 +380,16 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource GeneralTask}"
-                        Text="{Binding GeneralTasks.Count,
-                            Converter={StaticResource GeneralTaskCountToStringConverter},
-                            ConverterParameter={Binding GeneralTaskMaxCount, Mode=OneTime}}"
                         Grid.Column="0"
-                        Grid.Row="0"/>
+                        Grid.Row="0">
+
+                        <Label.Text>
+                            <MultiBinding Converter="{StaticResource GeneralTaskCountToStringConverter}">
+                                <Binding Path="GeneralTasks.Count"/>
+                                <Binding Path="GeneralTaskMaxCount"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
 
                     <VerticalStackLayout
                         IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
