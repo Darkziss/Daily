@@ -24,6 +24,8 @@ namespace Daily.Tasks
 
             if (!isValid || contains) return false;
 
+            task.ActionName = task.ActionName.Trim();
+
             Tasks.Add(task);
             if (ShouldSort) SortTasks();
 
@@ -41,6 +43,8 @@ namespace Daily.Tasks
             int index = Tasks.IndexOf(oldTask);
 
             if (index == -1) return false;
+
+            newTask.ActionName = newTask.ActionName.Trim();
 
             Tasks[index] = newTask;
             if (ShouldSort) SortTasks();

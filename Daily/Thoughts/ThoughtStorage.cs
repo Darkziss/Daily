@@ -22,7 +22,9 @@ namespace Daily.Thoughts
         public async Task<Thought?> TryCreateThoughtAsync(string name, string text)
         {
             if (!ValidateThoughtValues(name, text)) return null;
-            
+
+            name = name.Trim();
+            text = text.Trim();
             Thought thought = new Thought(name, text);
             Thoughts.Insert(0, thought);
 
@@ -41,8 +43,8 @@ namespace Daily.Thoughts
 
             if (!isValid) return false;
 
-            thought.Name = name;
-            thought.Text = text;
+            thought.Name = name.Trim();
+            thought.Text = text.Trim();
 
             await _dataProvider.SaveThoughtsAsync(Thoughts);
 

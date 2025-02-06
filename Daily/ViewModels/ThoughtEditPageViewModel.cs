@@ -103,6 +103,8 @@ namespace Daily.ViewModels
             }
 
             _currentThought = thought;
+            Name = _currentThought.Name;
+            Text = _currentThought.Text;
 
             await ThoughtToastHandler.ShowThoughtCreatedToastAsync();
         }
@@ -115,7 +117,13 @@ namespace Daily.ViewModels
             
             bool success = await _thoughtStorage.TryEditThoughtAsync(_currentThought!, Name, Text);
 
-            if (success) await ThoughtToastHandler.ShowThoughtEditedToastAsync();
+            if (success)
+            {
+                Name = _currentThought.Name;
+                Text = _currentThought.Text;
+                
+                await ThoughtToastHandler.ShowThoughtEditedToastAsync();
+            }
             else await ThoughtToastHandler.ShowThoughtErrorToastAsync();
         }
     }

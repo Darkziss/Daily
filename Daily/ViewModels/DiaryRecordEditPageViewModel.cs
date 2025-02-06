@@ -92,7 +92,8 @@ namespace Daily.ViewModels
             }
 
             _currentDiaryRecord = record;
-            SetHeaderTextByDate(record.CreationDateTime);
+            SetHeaderTextByDate(_currentDiaryRecord.CreationDateTime);
+            Text = _currentDiaryRecord.Text;
 
             await DiaryRecordToastHandler.ShowDiaryRecordCreatedToastAsync();
         }
@@ -105,7 +106,12 @@ namespace Daily.ViewModels
             
             bool success = await _diaryRecordStorage.TryEditDiaryRecordAsync(_currentDiaryRecord!, Text);
 
-            if (success) await DiaryRecordToastHandler.ShowDiaryRecordEditedToastAsync();
+            if (success)
+            {
+                Text = _currentDiaryRecord.Text;
+
+                await DiaryRecordToastHandler.ShowDiaryRecordEditedToastAsync();
+            }
             else await DiaryRecordToastHandler.ShowDiaryRecordErrorToastAsync();
         }
 

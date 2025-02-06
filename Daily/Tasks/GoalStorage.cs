@@ -22,7 +22,7 @@ namespace Daily.Tasks
 
         public async Task SetGoalAsync(string goal)
         {
-            Goal = goal;
+            Goal = goal.Trim();
 
             await _dataProvider.SaveGoalAsync(goal);
         }
