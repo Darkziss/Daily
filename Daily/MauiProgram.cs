@@ -22,7 +22,6 @@ namespace Daily
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Nunito-Bold.ttf", "Nunito");
-                    fonts.AddFont("Nunito-BoldItalic.ttf", "NunitoItalic");
                     fonts.AddFont("Nunito-ExtraBold.ttf", "NunitoBold");
                 });
 
