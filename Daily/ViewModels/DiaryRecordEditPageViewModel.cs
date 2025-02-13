@@ -52,13 +52,13 @@ namespace Daily.ViewModels
         {
             if (!ShouldPreventExit)
             {
-                await PageNavigator.ReturnToPreviousPage();
+                await PageNavigator.ReturnToPreviousPageAsync();
                 return;
             }
 
             bool shouldLeave = await PopupHandler.ShowRecordExitPopupAsync();
 
-            if (shouldLeave) await PageNavigator.ReturnToPreviousPage();
+            if (shouldLeave) await PageNavigator.ReturnToPreviousPageAsync();
         }
 
         public void PrepareViewForView(DiaryRecord record)

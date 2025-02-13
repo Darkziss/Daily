@@ -63,7 +63,7 @@ namespace Daily.ViewModels
 
                     _isThoughtOpened = true;
 
-                    await PageNavigator.GoToThoughtEditPageWithParametersAsync(parameters);
+                    await PageNavigator.GoToThoughtEditPageAsync(parameters);
                 }
 
                 SelectedThought = null;

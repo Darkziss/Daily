@@ -107,7 +107,7 @@ namespace Daily.ViewModels
                         [nameof(GeneralTask)] = task
                     };
 
-                    await PageNavigator.GoToTaskEditPageWithParametersAsync(parameters);
+                    await PageNavigator.GoToTaskEditPageAsync(parameters);
                 }
                 else if (CanDeleteTask)
                 {
@@ -143,7 +143,7 @@ namespace Daily.ViewModels
                         [nameof(СonditionalTask)] = task
                     };
 
-                    await PageNavigator.GoToTaskEditPageWithParametersAsync(parameters);
+                    await PageNavigator.GoToTaskEditPageAsync(parameters);
                 }
                 else if (CanDeleteTask)
                 {

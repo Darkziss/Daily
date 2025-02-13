@@ -7,62 +7,41 @@ namespace Daily.Navigation
         public static bool IsRouting { get; private set; }
 
         private const string backwards = "..";
-        private const bool animateRouting = true;
+        private const bool animate = true;
 
         private const string routingExceptionText = "Already routing to page";
-        private const string nullNavigationParameterExceptionText = "Navigation parameters are null";
 
-        #region Tasks
+        public static async Task GoToTaskPageAsync() => await GoToPageAsync(nameof(TaskPage));
 
-        public static async Task GoToTaskPageAsync() => await RouteToPage(nameof(TaskPage));
-
-        public static async Task GoToTaskEditPageAsync() => await RouteToPage(nameof(TaskEditPage));
-
-        public static async Task GoToTaskEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(TaskEditPage), parameters);
-
-        #endregion
-
-        #region Thoughts
-
-        public static async Task GoToThoughtPageAsync() => await RouteToPage(nameof(ThoughtPage));
-
-        public static async Task GoToThoughtEditPageAsync() => await RouteToPage(nameof(ThoughtEditPage));
-
-        public static async Task GoToThoughtEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(ThoughtEditPage), parameters);
-
-        #endregion
-
-        #region Diary
-
-        public static async Task GoToDiaryRecordPageAsync() => await RouteToPage(nameof(DiaryRecordPage));
-
-        public static async Task GoToDiaryRecordEditPageAsync() => await RouteToPage(nameof(DiaryRecordEditPage));
-
-        public static async Task GoToDiaryRecordEditPageWithParametersAsync(ShellNavigationQueryParameters parameters) => await RouteToPageWithParameters(nameof(DiaryRecordEditPage), parameters);
-
-        #endregion
-
-        public static async Task ReturnToPreviousPage() => await RouteToPage(backwards);
-
-        private static async Task RouteToPage(string pageName)
+        public static async Task GoToTaskEditPageAsync(ShellNavigationQueryParameters? parameters = null)
         {
-            if (IsRouting) throw new Exception(routingExceptionText);
-
-            IsRouting = true;
-
-            await Shell.Current.GoToAsync(pageName, animateRouting);
-
-            IsRouting = false;
+            await GoToPageAsync(nameof(TaskEditPage), parameters);
         }
 
-        private static async Task RouteToPageWithParameters(string pageName, ShellNavigationQueryParameters parameters)
+        public static async Task GoToThoughtPageAsync() => await GoToPageAsync(nameof(ThoughtPage));
+
+        public static async Task GoToThoughtEditPageAsync(ShellNavigationQueryParameters? parameters = null)
+        {
+            await GoToPageAsync(nameof(ThoughtEditPage), parameters);
+        }
+
+        public static async Task GoToDiaryRecordPageAsync() => await GoToPageAsync(nameof(DiaryRecordPage));
+
+        public static async Task GoToDiaryRecordEditPageAsync(ShellNavigationQueryParameters? parameters = null)
+        {
+            await GoToPageAsync(nameof(DiaryRecordEditPage), parameters);
+        }
+
+        public static async Task ReturnToPreviousPageAsync() => await GoToPageAsync(backwards);
+
+        private static async Task GoToPageAsync(string pageName, ShellNavigationQueryParameters? parameters = null)
         {
             if (IsRouting) throw new Exception(routingExceptionText);
-            else if (parameters == null) throw new ArgumentNullException(nullNavigationParameterExceptionText);
 
             IsRouting = true;
 
-            await Shell.Current.GoToAsync(pageName, animateRouting, parameters);
+            if (parameters == null) await Shell.Current.GoToAsync(pageName, animate);
+            else await Shell.Current.GoToAsync(pageName, animate, parameters);
 
             IsRouting = false;
         }

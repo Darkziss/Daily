@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using CommunityToolkit.Maui;
-using Plugin.SegmentedControl.Maui;
 using Daily.Tasks;
 using Daily.Thoughts;
 using Daily.Diary;
 using Daily.Data;
 using Daily.ViewModels;
 using Daily.Pages;
+using CommunityToolkit.Maui;
+using Plugin.SegmentedControl.Maui;
 
 namespace Daily
 {
@@ -26,22 +26,24 @@ namespace Daily
                     fonts.AddFont("Nunito-ExtraBold.ttf", "NunitoBold");
                 });
 
-            RegisterModels(builder);
-            RegisterViewModels(builder);
-            RegisterViews(builder);
-
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
 
+            IServiceCollection collection = builder.Services;
+
+            collection.AddSingleton<DataProvider>();
+
+            RegisterStorages(collection);
+            RegisterViewModels(collection);
+            RegisterViews(collection);
+
             return builder.Build();
         }
 
-        private static void RegisterModels(MauiAppBuilder builder)
+        private static void RegisterStorages(IServiceCollection collection)
         {
-            builder
-                .Services
-                .AddSingleton<DataProvider>()
+            collection
                 .AddSingleton<GoalStorage>()
                 .AddSingleton<GeneralTaskStorage>()
                 .AddSingleton<ConditionalTaskStorage>()
@@ -49,10 +51,9 @@ namespace Daily
                 .AddSingleton<DiaryRecordStorage>();
         }
 
-        private static void RegisterViewModels(MauiAppBuilder builder)
+        private static void RegisterViewModels(IServiceCollection collection)
         {
-            builder
-                .Services
+            collection
                 .AddSingleton<MainPageViewModel>()
                 .AddSingleton<TaskPageViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
@@ -62,10 +63,9 @@ namespace Daily
                 .AddSingleton<DiaryRecordEditPageViewModel>();
         }
 
-        private static void RegisterViews(MauiAppBuilder builder)
+        private static void RegisterViews(IServiceCollection collection)
         {
-            builder
-                .Services
+            collection
                 .AddSingleton<MainPage>()
                 .AddSingleton<TaskPage>()
                 .AddSingleton<TaskEditPage>()
