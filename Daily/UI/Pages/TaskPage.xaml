@@ -42,12 +42,26 @@
             <Color x:Key="BlueSelected">#86f7ea</Color>
 
             <converters:TaskCountToStringConverter
+                x:Key="ConditionalTaskCountToStringConverter"
+                TaskName="Условные задачи"/>
+
+            <converters:TaskCountToStringConverter
                 x:Key="GeneralTaskCountToStringConverter"
                 TaskName="Основные задачи"/>
 
-            <converters:TaskCountToStringConverter
-                x:Key="ConditionalTaskCountToStringConverter"
-                TaskName="Условные задачи"/>
+            <converters:BoolToOpacityConverter
+                x:Key="IsCompletedToOpacityConverter"
+                TrueOpacity="0.5"
+                FalseOpacity="1"/>
+
+            <converters:BoolToColorConverter
+                x:Key="IsCompletedToColorConverter"
+                TrueColor="{StaticResource Completed}"
+                FalseColor="Transparent"/>
+
+            <converters:TaskProgressConverter x:Key="TaskProgressConverter"/>
+
+            <converters:RepeatTimePeriodConverter x:Key="RepeatTimePeriodConverter"/>
 
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
@@ -55,6 +69,13 @@
                 MandatoryColor="{StaticResource Mandatory}"
                 ImportantColor="{StaticResource Important}"
                 CommonColor="{StaticResource Common}"/>
+
+            <converters:PriorityToStringConverter
+                x:Key="PriorityToTextConverter"
+                DailyTaskText="Ежедневная"
+                MandatoryTaskText="Обязательная"
+                ImportantTaskText="Важная"
+                CommonTaskText="Обычная"/>
 
             <converters:BoolToColorConverter
                 x:Key="CanEditTaskToColorConverter"
@@ -254,11 +275,16 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource CondTask}"
-                        Text="{Binding СonditionalTasks.Count, 
-                            Converter={StaticResource ConditionalTaskCountToStringConverter},
-                            ConverterParameter={x:Static tasks:TaskStorage.maxConditionalTaskCount}}"
                         Grid.Column="0"
-                        Grid.Row="0"/>
+                        Grid.Row="0">
+
+                        <Label.Text>
+                            <MultiBinding Converter="{StaticResource ConditionalTaskCountToStringConverter}">
+                                <Binding Path="СonditionalTasks.Count"/>
+                                <Binding Path="ConditionalTaskMaxCount"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
 
                     <VerticalStackLayout
                         IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
@@ -297,8 +323,8 @@
                                 <Frame
                                     x:DataType="tasks:СonditionalTask"
                                     Style="{StaticResource TaskCard}"
-                                    Opacity="{Binding IsCompleted, Converter={converters:IsCompletedToOpacityConverter}}"
-                                    BorderColor="{Binding IsCompleted, Converter={converters:IsCompletedToColorConverter}}">
+                                    Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
                                     <Grid
                                         Style="{StaticResource TaskCardGrid}">
@@ -315,7 +341,7 @@
                                             Grid.RowSpan="2">
 
                                             <Label.Text>
-                                                <MultiBinding Converter="{converters:TaskProgressConverter}">
+                                                <MultiBinding Converter="{StaticResource TaskProgressConverter}">
                                                     <Binding Path="RepeatCount"/>
                                                     <Binding Path="TargetRepeatCount"/>
                                                 </MultiBinding>
@@ -335,7 +361,7 @@
                                             Grid.Row="1">
 
                                             <controls:СonditionalTaskModificatorsView.Frequency>
-                                                <MultiBinding Converter="{converters:RepeatTimePeriodConverter}">
+                                                <MultiBinding Converter="{StaticResource RepeatTimePeriodConverter}">
                                                     <Binding Path="TargetRepeatCount"/>
                                                     <Binding Path="RepeatTimePeriod"/>
                                                 </MultiBinding>
@@ -354,11 +380,16 @@
                     <Label
                         Style="{StaticResource SubHeadline}"
                         TextColor="{StaticResource GeneralTask}"
-                        Text="{Binding GeneralTasks.Count, 
-                            Converter={StaticResource GeneralTaskCountToStringConverter},
-                            ConverterParameter={x:Static tasks:TaskStorage.maxGeneralTaskCount}}"
                         Grid.Column="0"
-                        Grid.Row="0"/>
+                        Grid.Row="0">
+
+                        <Label.Text>
+                            <MultiBinding Converter="{StaticResource GeneralTaskCountToStringConverter}">
+                                <Binding Path="GeneralTasks.Count"/>
+                                <Binding Path="GeneralTaskMaxCount"/>
+                            </MultiBinding>
+                        </Label.Text>
+                    </Label>
 
                     <VerticalStackLayout
                         IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
@@ -398,8 +429,8 @@
                                 <Frame
                                     x:DataType="tasks:GeneralTask"
                                     Style="{StaticResource TaskCard}"
-                                    Opacity="{Binding IsCompleted, Converter={converters:IsCompletedToOpacityConverter}}"
-                                    BorderColor="{Binding IsCompleted, Converter={converters:IsCompletedToColorConverter}}">
+                                    Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
                                     <Grid
                                         Style="{StaticResource TaskCardGrid}">
@@ -416,7 +447,7 @@
                                             Grid.RowSpan="2">
 
                                             <Label.Text>
-                                                <MultiBinding Converter="{converters:TaskProgressConverter}">
+                                                <MultiBinding Converter="{StaticResource TaskProgressConverter}">
                                                     <Binding Path="RepeatCount"/>
                                                     <Binding Path="TargetRepeatCount"/>
                                                 </MultiBinding>
@@ -438,7 +469,7 @@
 
                                             <Label
                                                 Style="{StaticResource ModificatorLabel}"
-                                                Text="{Binding Priority, Converter={converters:PriorityToTextConverter}}"/>
+                                                Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
                                         </Frame>
                                     </Grid>
                                 </Frame>

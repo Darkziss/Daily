@@ -15,7 +15,7 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private string _dummyText = string.Empty;
 
-        [ObservableProperty] private bool _canNavigate = false;
+        [ObservableProperty] private bool _canNavigate = true;
 
         private readonly IReadOnlyList<GeneralTask> _generalTasks;
 
@@ -28,9 +28,9 @@ namespace Daily.ViewModels
         private const string emptyStatusText = "Задач нет";
         private const string completedStatusText = "Все задачи выполнены!";
 
-        public MainPageViewModel(TaskStorage taskStorage)
+        public MainPageViewModel(GeneralTaskStorage generalTaskStorage)
         {
-            _generalTasks = taskStorage.GeneralTasks;
+            _generalTasks = generalTaskStorage.Tasks;
             
             GoToTaskPage = new Command(
             execute: async () =>
@@ -38,8 +38,6 @@ namespace Daily.ViewModels
                 CanNavigate = false;
 
                 await PageNavigator.GoToTaskPageAsync();
-
-                CanNavigate = true;
             });
 
             GoToThoughtPage = new Command(
@@ -48,8 +46,6 @@ namespace Daily.ViewModels
                 CanNavigate = false;
 
                 await PageNavigator.GoToThoughtPageAsync();
-
-                CanNavigate = true;
             });
 
             GoToDiaryRecordPage = new Command(
@@ -58,15 +54,16 @@ namespace Daily.ViewModels
                 CanNavigate = false;
 
                 await PageNavigator.GoToDiaryRecordPageAsync();
-
-                CanNavigate = true;
             });
+        }
+
+        public void MakeViewReady()
+        {
+            CanNavigate = true;
         }
 
         public void ResetView()
         {
-            CanNavigate = true;
-
             RefreshTaskProgressStatus();
         }
 

@@ -17,6 +17,8 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _canInteractWithDiaryRecord = true;
         [ObservableProperty] private bool _canDeleteDiaryRecord = false;
 
+        private bool _isDiaryRecordOpened = false;
+
         private readonly DiaryRecordStorage _diaryRecordStorage;
 
         public ObservableCollection<DiaryRecord> DiaryRecords => _diaryRecordStorage.DiaryRecords;
@@ -27,7 +29,7 @@ namespace Daily.ViewModels
 
         public Command SwitchCanDeleteCommand { get; }
 
-        private bool ShouldLoad => DiaryRecords.Count > 0;
+        private bool ShouldLoad => DiaryRecords.Count > 0 && !_isDiaryRecordOpened;
 
         public DiaryRecordPageViewModel(DiaryRecordStorage diaryRecordStorage)
         {
@@ -57,7 +59,9 @@ namespace Daily.ViewModels
                         [nameof(DiaryRecord)] = record
                     };
 
-                    await PageNavigator.GoToDiaryRecordEditPageWithParametersAsync(parameters);
+                    _isDiaryRecordOpened = true;
+
+                    await PageNavigator.GoToDiaryRecordEditPageAsync(parameters);
                 }
 
                 SelectedDiaryRecord = null;
@@ -87,6 +91,8 @@ namespace Daily.ViewModels
                 IsLoaded = true;
                 CanInteractWithDiaryRecord = true;
             }
+
+            _isDiaryRecordOpened = false;
         }
 
         private void ShowDummy()

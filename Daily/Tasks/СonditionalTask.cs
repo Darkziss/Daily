@@ -45,7 +45,9 @@ namespace Daily.Tasks
             }
         }
 
-        public СonditionalTask(string actionName, int targetRepeatCount, TaskRepeatTimePeriod repeatTimePeriod, int completionTime, string note) : base(actionName, targetRepeatCount)
+        public СonditionalTask(string actionName, int repeatCount, int targetRepeatCount, 
+            TaskRepeatTimePeriod repeatTimePeriod, int completionTime, string note) 
+            : base(actionName, repeatCount, targetRepeatCount)
         {
             RepeatTimePeriod = repeatTimePeriod;
             CompletionTime = completionTime;

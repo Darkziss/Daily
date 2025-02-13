@@ -23,6 +23,7 @@ namespace Daily.Diary
         {
             if (string.IsNullOrWhiteSpace(text)) return null;
 
+            text = text.Trim();
             DiaryRecord record = new DiaryRecord(text, creationDateTime);
             DiaryRecords.Insert(0, record);
 
@@ -39,7 +40,7 @@ namespace Daily.Diary
 
             if (string.IsNullOrWhiteSpace(text)) return false;
 
-            record.Text = text;
+            record.Text = text.Trim();
 
             await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
 

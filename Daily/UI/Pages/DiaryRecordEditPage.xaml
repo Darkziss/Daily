@@ -15,7 +15,7 @@
 
             <x:Int32 x:Key="DiaryRecordMinLength">1</x:Int32>
             <x:Int32 x:Key="DiaryRecordMaxLength">2000</x:Int32>
-            
+
             <Style TargetType="Label" x:Key="CreationTimeLabel" BasedOn="{StaticResource LongHeadline}">
                 <Setter Property="VerticalOptions" Value="Start"/>
                 <Setter Property="HorizontalOptions" Value="Center"/>
@@ -49,7 +49,7 @@
 
             <Editor.Behaviors>
                 <toolkit:TextValidationBehavior
-                    IsValid="{Binding CanSave, Mode=OneWayToSource}"
+                    IsValid="{Binding CanInteract, Mode=OneWayToSource}"
                     Flags="ValidateOnAttaching, ValidateOnValueChanged"
                     MinimumLength="{StaticResource DiaryRecordMinLength}"
                     MaximumLength="{StaticResource DiaryRecordMaxLength}"/>
@@ -58,27 +58,17 @@
 
         <Label
             Style="{StaticResource SymbolCounterLabel}"
-            Text="{Binding Text.Length, Converter={converters:SymbolCountToStringConverter}, 
+            Text="{Binding Text.Length, Converter={StaticResource CharacterCountToStringConverter}, 
                 ConverterParameter={StaticResource DiaryRecordMaxLength}}"
             Grid.Column="0"
             Grid.Row="2"/>
 
         <Button
-            Style="{StaticResource RecordBottomButton}"
-            IsVisible="{Binding IsEditMode}"
-            IsEnabled="{Binding CanSave}"
-            BackgroundColor="{StaticResource Save}"
-            Text="Сохранить"
-            Command="{Binding SaveDiaryRecordCommand}"
-            Grid.Column="0"
-            Grid.Row="3"/>
-
-        <Button
-            Style="{StaticResource RecordBottomButton}"
-            IsVisible="{Binding IsEditMode, Converter={toolkit:InvertedBoolConverter}}"
-            BackgroundColor="{StaticResource Good}"
-            Text="Изменить"
-            Command="{Binding ActivateEditMode}"
+            Style="{StaticResource BottomButton}"
+            IsEnabled="{Binding CanInteract}"
+            BackgroundColor="{Binding IsEditMode, Converter={StaticResource IsEditModeToColorConverter}}"
+            Text="{Binding IsEditMode, Converter={StaticResource IsEditModeToTextConverter}}"
+            Command="{Binding InteractWithDiaryRecordCommand, Mode=OneTime}"
             Grid.Column="0"
             Grid.Row="3"/>
     </Grid>

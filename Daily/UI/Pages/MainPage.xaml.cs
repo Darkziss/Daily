@@ -19,5 +19,10 @@ namespace Daily.Pages
         {
             _viewModel.ResetView();
         }
+
+        protected override void OnNavigatedTo(NavigatedToEventArgs args)
+        {
+            _viewModel.MakeViewReady();
+        }
     }
 }
