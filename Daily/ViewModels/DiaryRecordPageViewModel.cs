@@ -61,7 +61,7 @@ namespace Daily.ViewModels
 
                     _isDiaryRecordOpened = true;
 
-                    await PageNavigator.GoToDiaryRecordEditPageWithParametersAsync(parameters);
+                    await PageNavigator.GoToDiaryRecordEditPageAsync(parameters);
                 }
 
                 SelectedDiaryRecord = null;
