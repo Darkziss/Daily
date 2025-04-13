@@ -15,6 +15,13 @@
         <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
 
+    <Style TargetType="DatePicker">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="Nunito"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="TextColor" Value="Black"/>
+    </Style>
+
     <Style TargetType="Button">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BackgroundColor" Value="White"/>
@@ -130,6 +137,13 @@
         <Setter Property="MinimumWidthRequest" Value="44"/>
     </Style>
 
+    <Style TargetType="Border">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Stroke" Value="Transparent"/>
+        <Setter Property="StrokeThickness" Value="0"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 10, 10, 10, 10"/>
+    </Style>
+
     <Style TargetType="Frame">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BorderColor" Value="Transparent"/>
@@ -199,13 +213,6 @@
         <Setter Property="HeightRequest" Value="80"/>
         <Setter Property="VerticalOptions" Value="End"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
-    </Style>
-
-    <Style TargetType="Border">
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Stroke" Value="Transparent"/>
-        <Setter Property="StrokeThickness" Value="0"/>
-        <Setter Property="StrokeShape" Value="RoundRectangle 10, 10, 10, 10"/>
     </Style>
 
     <Style TargetType="Span">

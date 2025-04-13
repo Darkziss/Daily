@@ -10,6 +10,8 @@ namespace Daily.ViewModels
 {
     public partial class TaskPageViewModel : ObservableObject, IResetView
     {
+        [ObservableProperty] private bool _isGoalEmpty;
+        
         [ObservableProperty] private bool _isEditingGoal = false;
 
         [ObservableProperty] private string _goalLabelText;
@@ -29,6 +31,8 @@ namespace Daily.ViewModels
         private readonly GoalStorage _goalStorage;
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
+
+        public DateTime DeadlineMinimumDate => DateTime.Now.AddDays(1d);
 
         public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
         public ObservableCollection<СonditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
@@ -199,6 +203,16 @@ namespace Daily.ViewModels
                 CanEditTask = false;
                 CanDeleteTask = false;
             });
+
+            PropertyChanged += (_, args) =>
+            {
+                string? name = args.PropertyName;
+                
+                if (name == nameof(GoalEntryText))
+                {
+                    IsGoalEmpty = GoalEntryText.Length == 0;
+                }
+            };
         }
 
         public void ResetView()
