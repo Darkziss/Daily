@@ -7,6 +7,7 @@ using Daily.ViewModels;
 using Daily.Pages;
 using CommunityToolkit.Maui;
 using Plugin.SegmentedControl.Maui;
+using The49.Maui.BottomSheet;
 
 namespace Daily
 {
@@ -19,6 +20,7 @@ namespace Daily
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseSegmentedControl()
+                .UseBottomSheet()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("Nunito-Bold.ttf", "Nunito");

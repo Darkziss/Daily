@@ -32,8 +32,6 @@ namespace Daily.ViewModels
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
-        public DateTime DeadlineMinimumDate => DateTime.Now.AddDays(1d);
-
         public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
         public ObservableCollection<СonditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
 
