@@ -39,6 +39,7 @@ namespace Daily.ViewModels
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
+        public Command Test_EditGoalCommand { get; }
         public Command SaveGoalCommand { get; }
 
         public Command<GeneralTask> GeneralTaskInteractCommand { get; }
@@ -73,6 +74,11 @@ namespace Daily.ViewModels
             canExecute: () =>
             {
                 return !IsEditingGoal;
+            });
+
+            Test_EditGoalCommand = new Command(async () =>
+            {
+                await SheetNavigator.ShowGoalSheetAsync();
             });
 
             SaveGoalCommand = new Command(

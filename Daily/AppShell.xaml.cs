@@ -1,4 +1,6 @@
-﻿using Daily.Pages;
+﻿using Daily.Navigation;
+using Daily.Pages;
+using Daily.Sheets;
 
 namespace Daily
 {
@@ -16,6 +18,8 @@ namespace Daily
 
             Routing.RegisterRoute(nameof(DiaryRecordPage), typeof(DiaryRecordPage));
             Routing.RegisterRoute(nameof(DiaryRecordEditPage), typeof(DiaryRecordEditPage));
+
+            SheetShell.RegisterRoute(nameof(GoalBottomSheet), typeof(GoalBottomSheet));
         }
     }
 }

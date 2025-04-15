@@ -8,6 +8,7 @@ using Daily.Pages;
 using CommunityToolkit.Maui;
 using Plugin.SegmentedControl.Maui;
 using The49.Maui.BottomSheet;
+using Daily.Sheets;
 
 namespace Daily
 {

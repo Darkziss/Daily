@@ -1,10 +1,13 @@
 ﻿using Daily.Pages;
+using Daily.Sheets;
 
 namespace Daily.Navigation
 {
     public static class PageNavigator
     {
         public static bool IsRouting { get; private set; }
+
+        private static readonly GoalBottomSheet _goalSheet = new GoalBottomSheet();
 
         private const string backwards = "..";
         private const bool animate = true;

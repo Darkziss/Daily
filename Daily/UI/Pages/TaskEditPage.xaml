@@ -12,8 +12,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <x:Double x:Key="DefaultFontSize">20</x:Double>
-
             <Thickness x:Key="TaskFieldPadding">20, 0, 0, 0</Thickness>
 
             <converters:CompletionTimeToStringConverter x:Key="CompletionTimeToStringConverter"/>

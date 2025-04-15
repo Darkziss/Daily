@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<the49:BottomSheet
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:the49="https://schemas.the49.com/dotnet/2023/maui"
+    xmlns:sheets="clr-namespace:Daily.Sheets"
+    x:Class="Daily.Sheets.GoalBottomSheet"
+    x:DataType="sheets:GoalBottomSheet"
+    BackgroundColor="{StaticResource Background}"
+    HasBackdrop="True"
+    IsCancelable="False"
+    CornerRadius="20">
+
+    <the49:BottomSheet.Detents>
+        <the49:ContentDetent/>
+    </the49:BottomSheet.Detents>
+
+    <the49:BottomSheet.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="Label" x:Key="FieldHeader">
+                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="Entry" x:Key="FieldEntry">
+                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+                <Setter Property="Placeholder" Value="Напишите цель"/>
+                <Setter Property="MaxLength" Value="70"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
+            
+        </ResourceDictionary>
+    </the49:BottomSheet.Resources>
+    
+    <Grid
+        ColumnDefinitions="*"
+        RowDefinitions="Auto, Auto, *"
+        RowSpacing="15"
+        VerticalOptions="Fill"
+        HorizontalOptions="Fill"
+        Margin="0, 10, 0, 0">
+
+        <VerticalStackLayout
+            Margin="10, 0, 0, 0"
+            Grid.Column="0"
+            Grid.Row="0">
+
+            <Label
+                Style="{StaticResource FieldHeader}"
+                Text="Цель"/>
+
+            <Entry
+                Style="{StaticResource FieldEntry}"
+                Margin="0, 0, 10, 0"/>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout
+            Margin="10, 0, 0, 0"
+            Grid.Column="0"
+            Grid.Row="1">
+
+            <Label
+                Style="{StaticResource FieldHeader}"
+                Text="Дедлайн (необязательно)"/>
+
+            <DatePicker
+                Format="d"
+                MinimumDate="{x:Static system:DateTime.Now}"
+                FontSize="{StaticResource DefaultFontSize}"
+                HorizontalOptions="Start"/>
+
+            <Label
+                FontSize="11"
+                Text="Оставьте сегодняшний день, если дедлайн не нужен"/>
+        </VerticalStackLayout>
+
+        <Button
+            x:Name="SaveButton"
+            BackgroundColor="{StaticResource Good}"
+            FontSize="{StaticResource DefaultFontSize}"
+            Text="Сохранить"
+            WidthRequest="150"
+            HeightRequest="40"
+            VerticalOptions="End"
+            HorizontalOptions="Center"
+            Clicked="Button_Clicked"
+            Grid.Column="0"
+            Grid.Row="2"/>
+    </Grid>
+</the49:BottomSheet>
