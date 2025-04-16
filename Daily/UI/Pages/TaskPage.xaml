@@ -98,6 +98,7 @@
                 FalseColor="{StaticResource Hover}"/>
 
             <Style TargetType="Frame" x:Key="GoalCard">
+                <Setter Property="Padding" Value="10, 0, 0, 0"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="BorderColor" Value="{StaticResource InputField}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
@@ -115,14 +116,6 @@
                 <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
                 <Setter Property="Margin" Value="0, 10, 10, 10"/>
-            </Style>
-
-            <Style TargetType="Entry" x:Key="GoalEntry">
-                <Setter Property="Placeholder" Value="Напишите цель.."/>
-                <Setter Property="MaxLength" Value="70"/>
-                <Setter Property="WidthRequest" Value="{StaticResource ShorterElementWidth}"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
             <Style TargetType="Grid" x:Key="TasksCollectionGrid">
@@ -257,32 +250,20 @@
                         Grid.ColumnSpan="2"
                         Grid.Row="1">
 
-                        <VerticalStackLayout
-                            Padding="10, 0, 0, 0">
+                        <Label
+                            Style="{StaticResource GoalLabel}"
+                            TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
+                            Text="{Binding GoalLabelText}">
 
-                            <Label
-                                Style="{StaticResource GoalLabel}"
-                                IsVisible="{Binding IsEditingGoal, Converter={toolkit:InvertedBoolConverter}}"
-                                TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
-                                Text="{Binding GoalLabelText}">
-
-                                <Label.Behaviors>
-                                    <toolkit:TouchBehavior
+                            <Label.Behaviors>
+                                <toolkit:TouchBehavior
                                         LongPressDuration="500"
-                                        LongPressCommand="{Binding Test_EditGoalCommand}"/>
-                                </Label.Behaviors>
-                            </Label>
-
-                            <Entry
-                                Style="{StaticResource GoalEntry}"
-                                IsVisible="{Binding IsEditingGoal}"
-                                Text="{Binding GoalEntryText, Mode=TwoWay}"
-                                ReturnCommand="{Binding SaveGoalCommand, Mode=OneTime}"/>
-                        </VerticalStackLayout>
+                                        LongPressCommand="{Binding EditGoalCommand}"/>
+                            </Label.Behaviors>
+                        </Label>
                     </Frame>
 
                     <Border
-                        IsVisible="{Binding IsEditingGoal, Converter={toolkit:InvertedBoolConverter}}"
                         BackgroundColor="{StaticResource Hover}"
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 0, 0, 20, 20"

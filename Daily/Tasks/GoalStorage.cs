@@ -1,4 +1,5 @@
 ﻿using Daily.Data;
+using System.Diagnostics;
 
 namespace Daily.Tasks
 {
@@ -22,7 +23,11 @@ namespace Daily.Tasks
 
         public async Task SetGoalAsync(string goal)
         {
-            Goal = goal.Trim();
+            //Goal = goal.Trim();
+            Goal = goal;
+
+            Debug.WriteLine($"Goal parameter: {goal}");
+            Debug.WriteLine($"Writed goal: {Goal}");
 
             await _dataProvider.SaveGoalAsync(goal);
         }

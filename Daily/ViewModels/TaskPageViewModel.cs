@@ -1,10 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
 using Daily.Popups;
+using Daily.Messages;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using AsyncTimer = System.Timers.Timer;
+using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -15,7 +18,6 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _isEditingGoal = false;
 
         [ObservableProperty] private string _goalLabelText;
-        [ObservableProperty] private string _goalEntryText;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
@@ -39,8 +41,6 @@ namespace Daily.ViewModels
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
-        public Command Test_EditGoalCommand { get; }
-        public Command SaveGoalCommand { get; }
 
         public Command<GeneralTask> GeneralTaskInteractCommand { get; }
         public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
@@ -64,41 +64,12 @@ namespace Daily.ViewModels
             _conditionalTaskStorage = conditionalTaskStorage;
 
             _goalLabelText = GetGoalOrDefaultText();
-            _goalEntryText = goalStorage.Goal;
 
-            EditGoalCommand = new Command(
-            execute: () =>
+            EditGoalCommand = new Command(async () =>
             {
                 IsEditingGoal = true;
-            }, 
-            canExecute: () =>
-            {
-                return !IsEditingGoal;
-            });
-
-            Test_EditGoalCommand = new Command(async () =>
-            {
+                
                 await SheetNavigator.ShowGoalSheetAsync();
-            });
-
-            SaveGoalCommand = new Command(
-            execute: async () =>
-            {
-                string newGoal = GoalEntryText;
-                bool isSameGoal = _goalStorage.IsSameGoal(newGoal);
-
-                if (!isSameGoal)
-                {
-                    await _goalStorage.SetGoalAsync(newGoal);
-
-                    GoalLabelText = GetGoalOrDefaultText();
-                }
-
-                IsEditingGoal = false;
-            },
-            canExecute: () =>
-            {
-                return IsEditingGoal;
             });
 
             GeneralTaskInteractCommand = new Command<GeneralTask>(
@@ -208,15 +179,15 @@ namespace Daily.ViewModels
                 CanDeleteTask = false;
             });
 
-            PropertyChanged += (_, args) =>
+            WeakReferenceMessenger.Default.Register<GoalSaveMessage>(this, (_, _) =>
             {
-                string? name = args.PropertyName;
+                GoalLabelText = _goalStorage.Goal;
+                Debug.WriteLine($"Goal: {_goalStorage.Goal}");
+
+                IsGoalEmpty = _goalStorage.Goal == string.Empty;
                 
-                if (name == nameof(GoalEntryText))
-                {
-                    IsGoalEmpty = GoalEntryText.Length == 0;
-                }
-            };
+                IsEditingGoal = false;
+            });
         }
 
         public void ResetView()

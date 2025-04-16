@@ -5,10 +5,11 @@ using Daily.Diary;
 using Daily.Data;
 using Daily.ViewModels;
 using Daily.Pages;
+using Daily.Sheets;
+using Daily.Navigation;
 using CommunityToolkit.Maui;
 using Plugin.SegmentedControl.Maui;
 using The49.Maui.BottomSheet;
-using Daily.Sheets;
 
 namespace Daily
 {
@@ -39,6 +40,10 @@ namespace Daily
             RegisterStorages(collection);
             RegisterViewModels(collection);
             RegisterViews(collection);
+            RegisterSheets(collection);
+
+            ServiceProvider serviceProvider = collection.BuildServiceProvider();
+            SheetShell.Init(serviceProvider);
 
             return builder.Build();
         }
@@ -58,6 +63,7 @@ namespace Daily
             collection
                 .AddSingleton<MainPageViewModel>()
                 .AddSingleton<TaskPageViewModel>()
+                .AddSingleton<GoalBottomSheetViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
                 .AddSingleton<ThoughtPageViewModel>()
                 .AddSingleton<ThoughtEditPageViewModel>()
@@ -75,6 +81,12 @@ namespace Daily
                 .AddSingleton<ThoughtEditPage>()
                 .AddSingleton<DiaryRecordPage>()
                 .AddSingleton<DiaryRecordEditPage>();
+        }
+
+        private static void RegisterSheets(IServiceCollection collection)
+        {
+            collection
+                .AddSingleton<GoalBottomSheet>();
         }
     }
 }

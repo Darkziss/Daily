@@ -1,5 +1,4 @@
-﻿using The49.Maui.BottomSheet;
-using Daily.Sheets;
+﻿using Daily.Sheets;
 
 namespace Daily.Navigation
 {
@@ -31,7 +30,7 @@ namespace Daily.Navigation
             if (IsShowing) throw new Exception(exceptionText);
 
             IsShowing = true;
-            
+
             await SheetShell.ShowSheetAsync(sheetName, animate);
 
             IsShowing = false;
