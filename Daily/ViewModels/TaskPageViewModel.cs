@@ -3,11 +3,8 @@ using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
 using Daily.Popups;
-using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using AsyncTimer = System.Timers.Timer;
-using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -68,8 +65,6 @@ namespace Daily.ViewModels
             EditGoalCommand = new Command(async () =>
             {
                 IsEditingGoal = true;
-                
-                await SheetNavigator.ShowGoalSheetAsync();
             });
 
             GeneralTaskInteractCommand = new Command<GeneralTask>(
@@ -177,16 +172,6 @@ namespace Daily.ViewModels
 
                 CanEditTask = false;
                 CanDeleteTask = false;
-            });
-
-            WeakReferenceMessenger.Default.Register<GoalSaveMessage>(this, (_, _) =>
-            {
-                GoalLabelText = _goalStorage.Goal;
-                Debug.WriteLine($"Goal: {_goalStorage.Goal}");
-
-                IsGoalEmpty = _goalStorage.Goal == string.Empty;
-                
-                IsEditingGoal = false;
             });
         }
 
