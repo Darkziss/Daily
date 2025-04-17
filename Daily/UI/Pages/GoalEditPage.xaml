@@ -2,8 +2,7 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Daily.UI.Pages.GoalEditPage"
-    >
+    x:Class="Daily.Pages.GoalEditPage">
     
     <Grid
         ColumnDefinitions="*"
@@ -19,8 +18,36 @@
                 Style="{StaticResource LongHeadline}"
                 Text="Изменение цели"
                 Margin="{StaticResource HeadlineMargin}"/>
-            
-            
+
+            <VerticalStackLayout
+                Style="{StaticResource TaskFieldStackLayout}">
+
+                <Label
+                    Style="{StaticResource TaskFieldHeader}"
+                    Text="Цель"/>
+
+                <Entry
+                    Style="{StaticResource FieldEntry}"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout
+                Style="{StaticResource TaskFieldStackLayout}">
+
+                <Label
+                    Style="{StaticResource TaskFieldHeader}"
+                    Text="Дедлайн (необязательно)"/>
+
+                <DatePicker
+                    Format="d"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+
+                <Label
+                    FontSize="10"
+                    Text="Оставьте сегодняшний день, если дедлайн не нужен"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"/>
+            </VerticalStackLayout>
         </VerticalStackLayout>
 
     </Grid>

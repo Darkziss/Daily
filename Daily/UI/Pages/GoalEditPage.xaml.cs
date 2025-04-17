@@ -1,9 +1,11 @@
-namespace Daily.UI.Pages;
 
-public partial class GoalEditPage : ContentPage
+namespace Daily.Pages
 {
-	public GoalEditPage()
-	{
-		InitializeComponent();
-	}
+    public partial class GoalEditPage : ContentPage
+    {
+        public GoalEditPage()
+        {
+            InitializeComponent();
+        }
+    }
 }

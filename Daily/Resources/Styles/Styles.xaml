@@ -137,6 +137,14 @@
         <Setter Property="MinimumWidthRequest" Value="44"/>
     </Style>
 
+    <Style TargetType="Entry" x:Key="FieldEntry">
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="Placeholder" Value="Введите действие"/>
+        <Setter Property="MaxLength" Value="50"/>
+        <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+    </Style>
+
     <Style TargetType="Border">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Stroke" Value="Transparent"/>
@@ -178,6 +186,13 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="TaskFieldHeader">
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
     <Style TargetType="Label" x:Key="RecordHeaderLabel">
@@ -282,6 +297,13 @@
                 VerticalItemSpacing="10"
                 HorizontalItemSpacing="10"/>
         </Setter>
+    </Style>
+
+    <Style TargetType="VerticalStackLayout" x:Key="TaskFieldStackLayout">
+        <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="Padding" Value="{StaticResource TaskFieldPadding}"/>
     </Style>
 
     <Style TargetType="Grid" x:Key="RecordEditPageRootGrid">
