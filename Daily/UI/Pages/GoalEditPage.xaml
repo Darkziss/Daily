@@ -39,7 +39,7 @@
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
-                    Text="Дедлайн (необязательно)"/>
+                    Text="Дедлайн (необязат.)"/>
 
                 <DatePicker
                     Format="d"
@@ -58,6 +58,7 @@
         </VerticalStackLayout>
 
         <Button
+            IsEnabled="{Binding CanSave}"
             Style="{StaticResource TaskBottomButton}"
             Text="Сохранить"
             Command="{Binding SaveCommand, Mode=OneTime}"

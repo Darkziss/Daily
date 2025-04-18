@@ -3,7 +3,9 @@ using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
 using Daily.Popups;
+using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -170,6 +172,13 @@ namespace Daily.ViewModels
 
                 CanEditTask = false;
                 CanDeleteTask = false;
+            });
+
+            WeakReferenceMessenger.Default.Register<GoalChangedMessage>(this, (_, _) =>
+            {
+                GoalLabelText = _goalStorage.Goal;
+
+                IsGoalEmpty = _goalStorage.Goal == string.Empty;
             });
         }
 

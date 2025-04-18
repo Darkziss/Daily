@@ -7,6 +7,7 @@ using Daily.ViewModels;
 using Daily.Pages;
 using Daily.Navigation;
 using CommunityToolkit.Maui;
+using CommunityToolkit.Mvvm.Messaging;
 using Plugin.SegmentedControl.Maui;
 
 namespace Daily

@@ -1,5 +1,8 @@
 ﻿using Daily.Tasks;
+using Daily.Navigation;
+using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Daily.ViewModels
 {
@@ -27,8 +30,18 @@ namespace Daily.ViewModels
 
                 await _goalStorage.SetGoalAsync(Goal);
 
+                WeakReferenceMessenger.Default.Send<GoalChangedMessage>();
+
+                await PageNavigator.ReturnToPreviousPageAsync();
+
                 CanSave = true;
             });
+        }
+
+        public void PrepareView()
+        {
+            Goal = _goalStorage.Goal;
+            Deadline = DateTime.Now;
         }
     }
 }

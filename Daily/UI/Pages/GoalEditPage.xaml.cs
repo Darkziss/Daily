@@ -14,5 +14,10 @@ namespace Daily.Pages
 
             BindingContext = viewModel;
         }
+
+        protected override void OnAppearing()
+        {
+            _viewModel.PrepareView();
+        }
     }
 }
