@@ -1,11 +1,18 @@
+using Daily.ViewModels;
 
 namespace Daily.Pages
 {
     public partial class GoalEditPage : ContentPage
     {
-        public GoalEditPage()
+        private readonly GoalEditPageViewModel _viewModel;
+
+        public GoalEditPage(GoalEditPageViewModel viewModel)
         {
             InitializeComponent();
+
+            _viewModel = viewModel;
+
+            BindingContext = viewModel;
         }
     }
 }

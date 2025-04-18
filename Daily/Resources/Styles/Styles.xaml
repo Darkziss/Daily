@@ -55,6 +55,12 @@
         <Setter Property="HorizontalOptions" Value="Center"/>
     </Style>
 
+    <Style TargetType="Button" x:Key="TaskBottomButton" BasedOn="{StaticResource BottomButton}">
+        <Setter Property="BackgroundColor" Value="{StaticResource Good}"/>
+        <Setter Property="VerticalOptions" Value="End"/>
+        <Setter Property="Margin" Value="0, 0, 0, 20"/>
+    </Style>
+
     <Style TargetType="ImageButton">
         <Setter Property="Opacity" Value="1"/>
         <Setter Property="BorderColor" Value="Transparent"/>
@@ -138,10 +144,10 @@
     </Style>
 
     <Style TargetType="Entry" x:Key="FieldEntry">
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+        <Setter Property="FontSize" Value="20"/>
         <Setter Property="Placeholder" Value="Введите действие"/>
         <Setter Property="MaxLength" Value="50"/>
-        <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+        <Setter Property="WidthRequest" Value="350"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
@@ -189,8 +195,8 @@
     </Style>
 
     <Style TargetType="Label" x:Key="TaskFieldHeader">
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-        <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="WidthRequest" Value="350"/>
         <Setter Property="VerticalOptions" Value="Center"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
@@ -303,7 +309,7 @@
         <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
         <Setter Property="VerticalOptions" Value="Fill"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
-        <Setter Property="Padding" Value="{StaticResource TaskFieldPadding}"/>
+        <Setter Property="Padding" Value="20, 0, 0, 0"/>
     </Style>
 
     <Style TargetType="Grid" x:Key="RecordEditPageRootGrid">

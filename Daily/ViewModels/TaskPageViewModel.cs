@@ -64,7 +64,7 @@ namespace Daily.ViewModels
 
             EditGoalCommand = new Command(async () =>
             {
-                IsEditingGoal = true;
+                await PageNavigator.GoToGoalEditPageAsync();
             });
 
             GeneralTaskInteractCommand = new Command<GeneralTask>(
@@ -177,8 +177,6 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
-            IsEditingGoal = false;
-
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;

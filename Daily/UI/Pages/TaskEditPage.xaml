@@ -94,12 +94,6 @@
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
-            <Style TargetType="Button" x:Key="TaskBottomButton" BasedOn="{StaticResource BottomButton}">
-                <Setter Property="BackgroundColor" Value="{StaticResource Good}"/>
-                <Setter Property="VerticalOptions" Value="End"/>
-                <Setter Property="Margin" Value="0, 0, 0, 20"/>
-            </Style>
-
         </ResourceDictionary>
     </ContentPage.Resources>
 

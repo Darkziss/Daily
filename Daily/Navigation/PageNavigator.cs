@@ -18,6 +18,8 @@ namespace Daily.Navigation
             await GoToPageAsync(nameof(TaskEditPage), parameters);
         }
 
+        public static async Task GoToGoalEditPageAsync() => await GoToPageAsync(nameof(GoalEditPage));
+
         public static async Task GoToThoughtPageAsync() => await GoToPageAsync(nameof(ThoughtPage));
 
         public static async Task GoToThoughtEditPageAsync(ShellNavigationQueryParameters? parameters = null)

@@ -2,6 +2,9 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    x:DataType="viewmodels:GoalEditPageViewModel"
     x:Class="Daily.Pages.GoalEditPage">
     
     <Grid
@@ -27,7 +30,8 @@
                     Text="Цель"/>
 
                 <Entry
-                    Style="{StaticResource FieldEntry}"/>
+                    Style="{StaticResource FieldEntry}"
+                    Text="{Binding Goal, Mode=TwoWay}"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout
@@ -39,6 +43,9 @@
 
                 <DatePicker
                     Format="d"
+                    FontSize="20"
+                    MinimumDate="{x:Static system:DateTime.Now}"
+                    Date="{Binding Deadline, Mode=TwoWay}"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"/>
 
@@ -50,5 +57,11 @@
             </VerticalStackLayout>
         </VerticalStackLayout>
 
+        <Button
+            Style="{StaticResource TaskBottomButton}"
+            Text="Сохранить"
+            Command="{Binding SaveCommand, Mode=OneTime}"
+            Grid.Column="0"
+            Grid.Row="1"/>
     </Grid>
 </ContentPage>
