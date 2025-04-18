@@ -4,13 +4,16 @@ namespace Daily.Tasks
 {
     public class GoalStorage
     {
+        private readonly Goal _goal;
+
         private readonly DataProvider _dataProvider;
 
-        public string Goal { get; set; }
+        public string Goal => _goal.Text;
+        public DateOnly? Deadline => _goal.Deadline;
 
         public GoalStorage(DataProvider dataProvider)
         {
-            Goal = dataProvider.Goal ?? string.Empty;
+            _goal = dataProvider.Goal ?? new Goal();
 
             _dataProvider = dataProvider;
         }
@@ -20,11 +23,12 @@ namespace Daily.Tasks
             return Goal.Equals(goal);
         }
 
-        public async Task SetGoalAsync(string goal)
+        public async Task SetGoalAsync(string goal, DateOnly deadline)
         {
-            Goal = goal.Trim();
+            _goal.Text = goal.Trim();
+            _goal.Deadline = deadline;
 
-            await _dataProvider.SaveGoalAsync(goal);
+            await _dataProvider.SaveGoalAsync(_goal);
         }
     }
 }
