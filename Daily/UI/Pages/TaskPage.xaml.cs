@@ -20,10 +20,5 @@ namespace Daily.Pages
         {
             _viewModel.ResetView();
         }
-
-        protected override bool OnBackButtonPressed()
-        {
-            return _viewModel.IsEditingGoal;
-        }
     }
 }

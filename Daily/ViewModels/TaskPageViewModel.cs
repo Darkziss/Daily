@@ -12,8 +12,6 @@ namespace Daily.ViewModels
     {
         [ObservableProperty] private bool _isGoalEmpty;
         
-        [ObservableProperty] private bool _isEditingGoal = false;
-
         [ObservableProperty] private string _goalLabelText;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
