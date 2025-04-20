@@ -10,13 +10,14 @@ namespace Daily.ViewModels
     {
         [ObservableProperty] private bool _canSave = true;
 
-        [ObservableProperty] private string _goal;
+        [ObservableProperty] private string? _goal;
         [ObservableProperty] private DateOnly _deadline;
 
         private readonly GoalStorage _goalStorage;
 
         public Command SaveCommand { get; }
 
+        private bool IsGoalFilled => !string.IsNullOrWhiteSpace(_goal);
         private bool NeedDeadline => _deadline > CurrentDate;
 
         private static DateOnly CurrentDate => DateOnly.FromDateTime(DateTime.Now);
@@ -32,9 +33,10 @@ namespace Daily.ViewModels
             {
                 CanSave = false;
 
-                DateOnly? deadline = NeedDeadline ? Deadline : null;
+                string? goal = IsGoalFilled ? Goal : null;
+                DateOnly? deadline = IsGoalFilled && NeedDeadline ? Deadline : null;
 
-                await _goalStorage.SetGoalAsync(Goal, deadline);
+                await _goalStorage.SetGoalAsync(goal, deadline);
 
                 WeakReferenceMessenger.Default.Send<GoalChangedMessage>();
 

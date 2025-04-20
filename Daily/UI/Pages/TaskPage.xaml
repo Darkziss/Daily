@@ -260,7 +260,7 @@
                         <Label
                             Style="{StaticResource GoalLabel}"
                             TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
-                            Text="{Binding GoalLabelText}">
+                            Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}">
                             
                             <Label.Behaviors>
                                 <toolkit:TouchBehavior

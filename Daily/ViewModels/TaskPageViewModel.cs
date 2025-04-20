@@ -16,7 +16,7 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _isGoalEmpty;
         [ObservableProperty] private bool _hasDeadline;
         
-        [ObservableProperty] private string _goalLabelText;
+        [ObservableProperty] private string? _goalLabelText;
         [ObservableProperty] private DateOnly? _deadline;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
@@ -54,7 +54,7 @@ namespace Daily.ViewModels
 
         private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
 
-        private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
+        private const string goalLabelDefaultText = "Здесь пока пусто..";
 
         public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
@@ -64,7 +64,7 @@ namespace Daily.ViewModels
             _generalTaskStorage = generalTaskStorage;
             _conditionalTaskStorage = conditionalTaskStorage;
 
-            _goalLabelText = GetGoalOrDefaultText();
+            _goalLabelText = _goalStorage.Goal;
             _deadline = _goalStorage.Deadline;
 
             EditGoalCommand = new Command(async () =>
@@ -213,13 +213,6 @@ namespace Daily.ViewModels
         {
             IsGoalEmpty = string.IsNullOrEmpty(_goalStorage.Goal);
             HasDeadline = _goalStorage.Deadline.HasValue;
-        }
-
-        private string GetGoalOrDefaultText()
-        {
-            bool isNullOrWhiteSpace = string.IsNullOrWhiteSpace(_goalStorage.Goal);
-
-            return isNullOrWhiteSpace ? goalLabelDefaultText : _goalStorage.Goal;
         }
 
         private async Task PerformGeneralTaskAsync(GeneralTask task)
