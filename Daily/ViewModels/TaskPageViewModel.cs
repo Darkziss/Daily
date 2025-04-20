@@ -54,8 +54,6 @@ namespace Daily.ViewModels
 
         private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
 
-        private const string goalLabelDefaultText = "Здесь пока пусто..";
-
         public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
         {
