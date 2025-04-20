@@ -23,7 +23,7 @@ namespace Daily.Tasks
             return Goal.Equals(goal);
         }
 
-        public async Task SetGoalAsync(string goal, DateOnly deadline)
+        public async Task SetGoalAsync(string goal, DateOnly? deadline)
         {
             _goal.Text = goal.Trim();
             _goal.Deadline = deadline;

@@ -11,24 +11,30 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _canSave = true;
 
         [ObservableProperty] private string _goal;
-        [ObservableProperty] private DateTime _deadline;
+        [ObservableProperty] private DateOnly _deadline;
 
         private readonly GoalStorage _goalStorage;
 
         public Command SaveCommand { get; }
+
+        private bool NeedDeadline => _deadline > CurrentDate;
+
+        private static DateOnly CurrentDate => DateOnly.FromDateTime(DateTime.Now);
 
         public GoalEditPageViewModel(GoalStorage goalStorage)
         {
             _goalStorage = goalStorage;
 
             _goal = goalStorage.Goal;
-            _deadline = DateTime.Now;
+            _deadline = _goalStorage.Deadline ?? CurrentDate;
 
             SaveCommand = new Command(async () =>
             {
                 CanSave = false;
 
-                await _goalStorage.SetGoalAsync(Goal);
+                DateOnly? deadline = NeedDeadline ? Deadline : null;
+
+                await _goalStorage.SetGoalAsync(Goal, deadline);
 
                 WeakReferenceMessenger.Default.Send<GoalChangedMessage>();
 
@@ -41,7 +47,7 @@ namespace Daily.ViewModels
         public void PrepareView()
         {
             Goal = _goalStorage.Goal;
-            Deadline = DateTime.Now;
+            Deadline = _goalStorage.Deadline ?? CurrentDate;
         }
     }
 }

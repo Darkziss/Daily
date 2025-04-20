@@ -264,6 +264,7 @@
                     </Frame>
 
                     <Border
+                        IsVisible="{Binding HasDeadline}"
                         BackgroundColor="{StaticResource Hover}"
                         StrokeThickness="0"
                         StrokeShape="RoundRectangle 0, 0, 20, 20"
@@ -275,7 +276,7 @@
                         Grid.Row="2">
 
                         <Label
-                            Text="до 15.04.2025"
+                            Text="{Binding Deadline, StringFormat='до {0:d}'}"
                             VerticalOptions="Center"
                             HorizontalOptions="Start"
                             Margin="10, 0, 10, 0"/>

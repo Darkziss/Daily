@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:viewmodels="clr-namespace:Daily.ViewModels"
+    xmlns:converters="clr-namespace:Daily.Converters"
     x:DataType="viewmodels:GoalEditPageViewModel"
     x:Class="Daily.Pages.GoalEditPage">
     
@@ -45,7 +46,7 @@
                     Format="d"
                     FontSize="20"
                     MinimumDate="{x:Static system:DateTime.Now}"
-                    Date="{Binding Deadline, Mode=TwoWay}"
+                    Date="{Binding Deadline, Mode=TwoWay, Converter={converters:DateOnlyToDateTime}}"
                     VerticalOptions="Center"
                     HorizontalOptions="Start"/>
 

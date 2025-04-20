@@ -13,8 +13,10 @@ namespace Daily.ViewModels
     public partial class TaskPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isGoalEmpty;
+        [ObservableProperty] private bool _hasDeadline;
         
         [ObservableProperty] private string _goalLabelText;
+        [ObservableProperty] private DateOnly? _deadline;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
@@ -61,6 +63,7 @@ namespace Daily.ViewModels
             _conditionalTaskStorage = conditionalTaskStorage;
 
             _goalLabelText = GetGoalOrDefaultText();
+            _deadline = _goalStorage.Deadline;
 
             EditGoalCommand = new Command(async () =>
             {
@@ -177,13 +180,16 @@ namespace Daily.ViewModels
             WeakReferenceMessenger.Default.Register<GoalChangedMessage>(this, (_, _) =>
             {
                 GoalLabelText = _goalStorage.Goal;
+                Deadline = _goalStorage.Deadline;
 
-                IsGoalEmpty = _goalStorage.Goal == string.Empty;
+                UpdateGoalAndDeadlineStatus();
             });
         }
 
         public void ResetView()
         {
+            UpdateGoalAndDeadlineStatus();
+            
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
@@ -194,6 +200,12 @@ namespace Daily.ViewModels
                 IsTasksLoaded = true;
                 CanInteractWithTask = true;
             }
+        }
+
+        private void UpdateGoalAndDeadlineStatus()
+        {
+            IsGoalEmpty = string.IsNullOrEmpty(_goalStorage.Goal);
+            HasDeadline = _goalStorage.Deadline.HasValue;
         }
 
         private string GetGoalOrDefaultText()
