@@ -7,6 +7,7 @@ using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using AsyncTimer = System.Timers.Timer;
+using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -40,6 +41,7 @@ namespace Daily.ViewModels
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
+        public Command CompleteGoalCommand { get; }
 
         public Command<GeneralTask> GeneralTaskInteractCommand { get; }
         public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
@@ -68,6 +70,11 @@ namespace Daily.ViewModels
             EditGoalCommand = new Command(async () =>
             {
                 await PageNavigator.GoToGoalEditPageAsync();
+            });
+
+            CompleteGoalCommand = new Command(() =>
+            {
+                Debug.WriteLine(nameof(CompleteGoalCommand));
             });
 
             GeneralTaskInteractCommand = new Command<GeneralTask>(
