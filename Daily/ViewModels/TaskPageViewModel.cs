@@ -43,7 +43,7 @@ namespace Daily.ViewModels
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
-        public Command CompleteGoalCommand { get; }
+        public Command InvertGoalStatusCommand { get; }
 
         public Command<GeneralTask> GeneralTaskInteractCommand { get; }
         public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
@@ -73,13 +73,12 @@ namespace Daily.ViewModels
                 await PageNavigator.GoToGoalEditPageAsync();
             });
 
-            CompleteGoalCommand = new Command(async () =>
+            InvertGoalStatusCommand = new Command(async () =>
             {
-                if (IsGoalCompleted) return;
+                IsGoalCompleted = !IsGoalCompleted;
 
-                IsGoalCompleted = true;
-
-                await _goalStorage.CompleteGoalAsync();
+                if (IsGoalCompleted) await _goalStorage.CompleteGoalAsync();
+                else await _goalStorage.ResetGoalStatusAsync();
             });
 
             GeneralTaskInteractCommand = new Command<GeneralTask>(
