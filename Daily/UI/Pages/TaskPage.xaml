@@ -59,6 +59,11 @@
                 TrueColor="{StaticResource InputField}"
                 FalseColor="Black"/>
 
+            <converters:BoolToTextDecorationsConverter
+                x:Key="IsGoalCompletedToTextDecorationsConverter"
+                TrueTextDecorations="Strikethrough"
+                FalseTextDecorations="None"/>
+
             <converters:TaskCountToStringConverter
                 x:Key="ConditionalTaskCountToStringConverter"
                 TaskName="Условные задачи"/>
@@ -285,7 +290,8 @@
 
                         <Label
                             Style="{StaticResource GoalLabel}"
-                            TextDecorations="Strikethrough"
+                            TextDecorations="{Binding IsGoalCompleted, 
+                                Converter={StaticResource IsGoalCompletedToTextDecorationsConverter}}"
                             TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
                             Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}"/>
                     </Border>
