@@ -27,6 +27,8 @@
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
 
+            <Color x:Key="GoalCompleted">#a1edbc</Color>
+
             <Color x:Key="GeneralTask">#858585</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
 
@@ -40,6 +42,11 @@
 
             <Color x:Key="GreenSelected">#aaf786</Color>
             <Color x:Key="BlueSelected">#86f7ea</Color>
+
+            <converters:BoolToColorConverter
+                x:Key="IsGoalCompletedToColorConverter"
+                TrueColor="{StaticResource GoalCompleted}"
+                FalseColor="{StaticResource Hover}"/>
 
             <converters:BoolToColorConverter
                 x:Key="IsGoalEmptyToColorConverter"
@@ -254,6 +261,7 @@
 
                     <Frame
                         Style="{StaticResource GoalCard}"
+                        BackgroundColor="{StaticResource Hover}"
                         Grid.ColumnSpan="2"
                         Grid.Row="1">
 
@@ -272,6 +280,8 @@
                     <Border
                         IsVisible="{Binding HasDeadline}"
                         Style="{StaticResource GoalSign}"
+                        BackgroundColor="{Binding IsGoalCompleted, 
+                            Converter={StaticResource IsGoalCompletedToColorConverter}}"
                         Margin="10, 0, 0, 0"
                         HorizontalOptions="Start"
                         Grid.ColumnSpan="2"

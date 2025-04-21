@@ -19,6 +19,8 @@ namespace Daily.ViewModels
         [ObservableProperty] private string? _goalLabelText;
         [ObservableProperty] private DateOnly? _deadline;
 
+        [ObservableProperty] private bool _isGoalCompleted;
+
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
 
@@ -64,15 +66,20 @@ namespace Daily.ViewModels
 
             _goalLabelText = _goalStorage.Goal;
             _deadline = _goalStorage.Deadline;
+            _isGoalCompleted = _goalStorage.IsCompleted;
 
             EditGoalCommand = new Command(async () =>
             {
                 await PageNavigator.GoToGoalEditPageAsync();
             });
 
-            CompleteGoalCommand = new Command(() =>
+            CompleteGoalCommand = new Command(async () =>
             {
-                Debug.WriteLine(nameof(CompleteGoalCommand));
+                if (IsGoalCompleted) return;
+
+                IsGoalCompleted = true;
+
+                await _goalStorage.CompleteGoalAsync();
             });
 
             GeneralTaskInteractCommand = new Command<GeneralTask>(
@@ -186,6 +193,7 @@ namespace Daily.ViewModels
             {
                 GoalLabelText = _goalStorage.Goal;
                 Deadline = _goalStorage.Deadline;
+                IsGoalCompleted = false;
 
                 UpdateGoalAndDeadlineStatus();
             });

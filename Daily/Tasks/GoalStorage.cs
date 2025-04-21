@@ -11,6 +11,8 @@ namespace Daily.Tasks
         public string? Goal => _goal.Text;
         public DateOnly? Deadline => _goal.Deadline;
 
+        public bool IsCompleted => _goal.IsCompleted;
+
         public GoalStorage(DataProvider dataProvider)
         {
             _goal = dataProvider.Goal ?? new Goal();
@@ -22,6 +24,24 @@ namespace Daily.Tasks
         {
             _goal.Text = goal?.Trim();
             _goal.Deadline = deadline;
+
+            await _dataProvider.SaveGoalAsync(_goal);
+        }
+
+        public async Task CompleteGoalAsync()
+        {
+            if (IsCompleted) throw new InvalidOperationException(nameof(IsCompleted));
+
+            _goal.IsCompleted = true;
+
+            await _dataProvider.SaveGoalAsync(_goal);
+        }
+
+        public async Task ResetGoalStatusAsync()
+        {
+            if (!IsCompleted) return;
+
+            _goal.IsCompleted = false;
 
             await _dataProvider.SaveGoalAsync(_goal);
         }
