@@ -11,11 +11,16 @@ namespace Daily.Tasks
         public string? Goal => _goal.Text;
         public DateOnly? Deadline => _goal.Deadline;
 
-        public bool IsCompleted => _goal.IsCompleted;
+        public GoalStatus Status => _goal.Status;
+
+        public bool IsCompleted => _goal.Status == GoalStatus.Completed;
+        private bool IsOverdue => _goal.Deadline <= DateOnly.FromDateTime(DateTime.Now);
 
         public GoalStorage(DataProvider dataProvider)
         {
             _goal = dataProvider.Goal ?? new Goal();
+
+            if (IsOverdue) _goal.Status = GoalStatus.Overdue;
 
             _dataProvider = dataProvider;
         }
@@ -25,6 +30,8 @@ namespace Daily.Tasks
             _goal.Text = goal?.Trim();
             _goal.Deadline = deadline;
 
+            _goal.Status = IsOverdue ? GoalStatus.Overdue : GoalStatus.Incompleted;
+
             await _dataProvider.SaveGoalAsync(_goal);
         }
 
@@ -32,7 +39,7 @@ namespace Daily.Tasks
         {
             if (IsCompleted) throw new InvalidOperationException(nameof(IsCompleted));
 
-            _goal.IsCompleted = true;
+            _goal.Status = GoalStatus.Completed;
 
             await _dataProvider.SaveGoalAsync(_goal);
         }
@@ -41,7 +48,7 @@ namespace Daily.Tasks
         {
             if (!IsCompleted) return;
 
-            _goal.IsCompleted = false;
+            _goal.Status = IsOverdue ? GoalStatus.Overdue : GoalStatus.Incompleted;
 
             await _dataProvider.SaveGoalAsync(_goal);
         }

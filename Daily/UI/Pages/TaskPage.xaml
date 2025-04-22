@@ -30,6 +30,9 @@
             <Color x:Key="GoalCompleted">#a1edbc</Color>
             <Color x:Key="GoalCompletedStroke">#008526</Color>
 
+            <Color x:Key="GoalOverdue">#f38f86</Color>
+            <Color x:Key="GoalOverdueStroke">#b86c65</Color>
+
             <Color x:Key="GeneralTask">#858585</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
 
@@ -44,25 +47,28 @@
             <Color x:Key="GreenSelected">#aaf786</Color>
             <Color x:Key="BlueSelected">#86f7ea</Color>
 
-            <converters:BoolToColorConverter
-                x:Key="IsGoalCompletedToColorConverter"
-                TrueColor="{StaticResource GoalCompleted}"
-                FalseColor="{StaticResource Hover}"/>
+            <converters:GoalStatusToColorConverter
+                x:Key="GoalStatusToColorConverter"
+                IncompletedColor="{StaticResource Hover}"
+                CompletedColor="{StaticResource GoalCompleted}"
+                OverdueColor="{StaticResource GoalOverdue}"/>
 
-            <converters:BoolToColorConverter
-                x:Key="IsGoalCompletedToBorderColorConverter"
-                TrueColor="{StaticResource GoalCompletedStroke}"
-                FalseColor="{StaticResource InputField}"/>
+            <converters:GoalStatusToColorConverter
+                x:Key="GoalStatusToBorderColorConverter"
+                IncompletedColor="{StaticResource InputField}"
+                CompletedColor="{StaticResource GoalCompletedStroke}"
+                OverdueColor="{StaticResource GoalOverdueStroke}"/>
 
             <converters:BoolToColorConverter
                 x:Key="IsGoalEmptyToColorConverter"
                 TrueColor="{StaticResource InputField}"
                 FalseColor="Black"/>
 
-            <converters:BoolToTextDecorationsConverter
-                x:Key="IsGoalCompletedToTextDecorationsConverter"
-                TrueTextDecorations="Strikethrough"
-                FalseTextDecorations="None"/>
+            <converters:GoalStatusToTextDecorationsConverter
+                x:Key="GoalStatusToTextDecorationsConverter"
+                IncompletedTextDecorations="None"
+                CompletedTextDecorations="Strikethrough"
+                OverdueTextDecorations="None"/>
 
             <converters:TaskCountToStringConverter
                 x:Key="ConditionalTaskCountToStringConverter"
@@ -274,8 +280,8 @@
 
                     <Border
                         Style="{StaticResource GoalCard}"
-                        Stroke="{Binding IsGoalCompleted,
-                            Converter={StaticResource IsGoalCompletedToBorderColorConverter}}"
+                        Stroke="{Binding GoalStatus,
+                            Converter={StaticResource GoalStatusToBorderColorConverter}}"
                         Grid.ColumnSpan="2"
                         Grid.Row="1">
 
@@ -290,8 +296,8 @@
 
                         <Label
                             Style="{StaticResource GoalLabel}"
-                            TextDecorations="{Binding IsGoalCompleted,
-                                Converter={StaticResource IsGoalCompletedToTextDecorationsConverter}}"
+                            TextDecorations="{Binding GoalStatus,
+                                Converter={StaticResource GoalStatusToTextDecorationsConverter}}"
                             TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
                             Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}"/>
                     </Border>
@@ -299,8 +305,8 @@
                     <Border
                         IsVisible="{Binding HasDeadline}"
                         Style="{StaticResource GoalSign}"
-                        BackgroundColor="{Binding IsGoalCompleted,
-                            Converter={StaticResource IsGoalCompletedToColorConverter}}"
+                        BackgroundColor="{Binding GoalStatus,
+                            Converter={StaticResource GoalStatusToColorConverter}}"
                         Margin="10, 0, 0, 0"
                         HorizontalOptions="Start"
                         Grid.ColumnSpan="2"

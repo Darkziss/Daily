@@ -6,6 +6,6 @@ namespace Daily.Tasks
         public string? Text { get; set; } = null;
         public DateOnly? Deadline { get; set; } = null;
 
-        public bool IsCompleted { get; set; } = false;
+        public GoalStatus Status { get; set; } = GoalStatus.Incompleted;
     }
 }

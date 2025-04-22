@@ -7,7 +7,6 @@ using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using AsyncTimer = System.Timers.Timer;
-using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -19,7 +18,7 @@ namespace Daily.ViewModels
         [ObservableProperty] private string? _goalLabelText;
         [ObservableProperty] private DateOnly? _deadline;
 
-        [ObservableProperty] private bool _isGoalCompleted;
+        [ObservableProperty] private GoalStatus _goalStatus;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
@@ -66,7 +65,8 @@ namespace Daily.ViewModels
 
             _goalLabelText = _goalStorage.Goal;
             _deadline = _goalStorage.Deadline;
-            _isGoalCompleted = _goalStorage.IsCompleted;
+
+            _goalStatus = _goalStorage.Status;
 
             EditGoalCommand = new Command(async () =>
             {
@@ -75,10 +75,10 @@ namespace Daily.ViewModels
 
             InvertGoalStatusCommand = new Command(async () =>
             {
-                IsGoalCompleted = !IsGoalCompleted;
+                if (_goalStorage.IsCompleted) await _goalStorage.ResetGoalStatusAsync();
+                else await _goalStorage.CompleteGoalAsync();
 
-                if (IsGoalCompleted) await _goalStorage.CompleteGoalAsync();
-                else await _goalStorage.ResetGoalStatusAsync();
+                GoalStatus = _goalStorage.Status;
             });
 
             GeneralTaskInteractCommand = new Command<GeneralTask>(
@@ -192,7 +192,7 @@ namespace Daily.ViewModels
             {
                 GoalLabelText = _goalStorage.Goal;
                 Deadline = _goalStorage.Deadline;
-                IsGoalCompleted = false;
+                GoalStatus = _goalStorage.Status;
 
                 UpdateGoalAndDeadlineStatus();
             });
