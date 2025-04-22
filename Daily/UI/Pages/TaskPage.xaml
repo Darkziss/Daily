@@ -290,7 +290,7 @@
 
                         <Label
                             Style="{StaticResource GoalLabel}"
-                            TextDecorations="{Binding IsGoalCompleted, 
+                            TextDecorations="{Binding IsGoalCompleted,
                                 Converter={StaticResource IsGoalCompletedToTextDecorationsConverter}}"
                             TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
                             Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}"/>

@@ -8,17 +8,18 @@ namespace Daily.ViewModels
 {
     public partial class GoalEditPageViewModel : ObservableObject
     {
-        [ObservableProperty] private bool _canSave = true;
-
         [ObservableProperty] private string? _goal;
         [ObservableProperty] private DateOnly _deadline;
+
+        [ObservableProperty] private bool _needDeadline = false;
+
+        [ObservableProperty] private bool _canSave = true;
 
         private readonly GoalStorage _goalStorage;
 
         public Command SaveCommand { get; }
 
         private bool IsGoalFilled => !string.IsNullOrWhiteSpace(_goal);
-        private bool NeedDeadline => _deadline > CurrentDate;
 
         private static DateOnly CurrentDate => DateOnly.FromDateTime(DateTime.Now);
 
@@ -49,7 +50,9 @@ namespace Daily.ViewModels
         public void PrepareView()
         {
             Goal = _goalStorage.Goal;
+
             Deadline = _goalStorage.Deadline ?? CurrentDate;
+            NeedDeadline = _goalStorage.Deadline.HasValue;
         }
     }
 }

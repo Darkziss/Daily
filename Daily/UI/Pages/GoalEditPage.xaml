@@ -43,18 +43,43 @@
                     Text="Дедлайн (необязат.)"/>
 
                 <DatePicker
+                    IsEnabled="{Binding NeedDeadline}"
                     Format="d"
                     FontSize="20"
                     MinimumDate="{x:Static system:DateTime.Now}"
                     Date="{Binding Deadline, Mode=TwoWay, Converter={converters:DateOnlyToDateTime}}"
                     VerticalOptions="Center"
-                    HorizontalOptions="Start"/>
+                    HorizontalOptions="Start">
 
-                <Label
-                    FontSize="10"
-                    Text="Оставьте сегодняшний день, если дедлайн не нужен"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start"/>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </DatePicker>
+
+                <HorizontalStackLayout
+                    Spacing="5">
+
+                    <Label
+                        FontSize="14"
+                        Text="Дедлайн нужен"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"/>
+
+                    <CheckBox
+                        IsChecked="{Binding NeedDeadline, Mode=TwoWay}"
+                        Color="Black"
+                        Scale="1.2"
+                        VerticalOptions="Center"/>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>
 
