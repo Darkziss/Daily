@@ -14,23 +14,26 @@ namespace Daily.Tasks
         public GoalStatus Status => _goal.Status;
 
         public bool IsCompleted => _goal.Status == GoalStatus.Completed;
-        private bool IsOverdue => _goal.Deadline <= DateOnly.FromDateTime(DateTime.Now);
+
+        public DateOnly MinimumDeadlineDate => DateOnly.FromDateTime(DateTime.Now).AddDays(1);
 
         public GoalStorage(DataProvider dataProvider)
         {
             _goal = dataProvider.Goal ?? new Goal();
 
-            if (IsOverdue) _goal.Status = GoalStatus.Overdue;
+            if (!IsCompleted) RefreshOverdueStatus();
 
             _dataProvider = dataProvider;
         }
 
         public async Task SetGoalAsync(string? goal, DateOnly? deadline)
         {
+            if (deadline < MinimumDeadlineDate) throw new ArgumentException(nameof(deadline));
+            
             _goal.Text = goal?.Trim();
             _goal.Deadline = deadline;
 
-            _goal.Status = IsOverdue ? GoalStatus.Overdue : GoalStatus.Incompleted;
+            _goal.Status = GoalStatus.Incompleted;
 
             await _dataProvider.SaveGoalAsync(_goal);
         }
@@ -48,9 +51,18 @@ namespace Daily.Tasks
         {
             if (!IsCompleted) return;
 
-            _goal.Status = IsOverdue ? GoalStatus.Overdue : GoalStatus.Incompleted;
+            _goal.Status = CheckForOverdueNow() ? GoalStatus.Overdue : GoalStatus.Incompleted;
 
             await _dataProvider.SaveGoalAsync(_goal);
         }
+
+        public void RefreshOverdueStatus()
+        {
+            if (IsCompleted) throw new InvalidOperationException(nameof(IsCompleted));
+
+            if (CheckForOverdueNow()) _goal.Status = GoalStatus.Overdue;
+        }
+
+        private bool CheckForOverdueNow() => _goal.Deadline <= DateOnly.FromDateTime(DateTime.Now);
     }
 }

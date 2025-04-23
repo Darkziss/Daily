@@ -200,8 +200,15 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
+            if (!_goalStorage.IsCompleted)
+            {
+                _goalStorage.RefreshOverdueStatus();
+                
+                GoalStatus = _goalStorage.Status;
+            }
+
             UpdateGoalAndDeadlineStatus();
-            
+
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
