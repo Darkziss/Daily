@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Diagnostics;
 using System;
 
 namespace Daily.Converters
@@ -10,8 +9,6 @@ namespace Daily.Converters
         {
             DateOnly? dateOnly = (DateOnly?)value;
 
-            Debug.WriteLine($"DATEONLY: {dateOnly:d}");
-
             if (dateOnly.HasValue) return dateOnly.Value.ToDateTime(TimeOnly.MinValue);
             else return null;
         }
@@ -19,8 +16,6 @@ namespace Daily.Converters
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             DateTime? dateTime = (DateTime?)value;
-
-            Debug.WriteLine($"DATETIME: {dateTime:d}");
 
             if (dateTime.HasValue) return DateOnly.FromDateTime(dateTime.Value);
             else return null;
