@@ -46,8 +46,8 @@
                     IsEnabled="{Binding NeedDeadline}"
                     Format="d"
                     FontSize="20"
-                    MinimumDate="{Binding MinimumDeadlineDate, Converter={converters:DateOnlyToDateTime}}"
-                    Date="{Binding Deadline, Mode=TwoWay, Converter={converters:DateOnlyToDateTime}}"
+                    MinimumDate="{Binding MinimumDeadlineDate, Converter={converters:DateOnlyToDateTimeConverter}}"
+                    Date="{Binding Deadline, Mode=TwoWay, Converter={converters:DateOnlyToDateTimeConverter}}"
                     VerticalOptions="Center"
                     HorizontalOptions="Start">
 

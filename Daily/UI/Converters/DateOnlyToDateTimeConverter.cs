@@ -3,7 +3,7 @@ using System;
 
 namespace Daily.Converters
 {
-    public class DateOnlyToDateTime : IValueConverter
+    public class DateOnlyToDateTimeConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
