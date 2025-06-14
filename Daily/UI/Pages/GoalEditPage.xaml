@@ -7,6 +7,17 @@
     xmlns:converters="clr-namespace:Daily.Converters"
     x:DataType="viewmodels:GoalEditPageViewModel"
     x:Class="Daily.Pages.GoalEditPage">
+
+    <ContentPage.Resources>
+
+        <ResourceDictionary>
+
+            <converters:DateOnlyToDateTimeConverter
+                x:Key="DateOnlyToDateTimeConverter"/>
+
+        </ResourceDictionary>
+        
+    </ContentPage.Resources>
     
     <Grid
         ColumnDefinitions="*"
@@ -46,8 +57,8 @@
                     IsEnabled="{Binding NeedDeadline}"
                     Format="d"
                     FontSize="20"
-                    MinimumDate="{x:Static system:DateTime.Now}"
-                    Date="{Binding Deadline, Mode=TwoWay, Converter={converters:DateOnlyToDateTime}}"
+                    MinimumDate="{Binding MinimumDeadlineDate, Converter={StaticResource DateOnlyToDateTimeConverter}}"
+                    Date="{Binding Deadline, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"
                     VerticalOptions="Center"
                     HorizontalOptions="Start">
 
