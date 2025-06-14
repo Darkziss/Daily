@@ -33,7 +33,7 @@ namespace Daily.Tasks
             _goal.Text = goal?.Trim();
             _goal.Deadline = deadline;
 
-            _goal.Status = GoalStatus.Incompleted;
+            _goal.Status = _goal.Text == null ? GoalStatus.None : GoalStatus.Incompleted;
 
             await _dataProvider.SaveGoalAsync(_goal);
         }
