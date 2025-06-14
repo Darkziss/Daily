@@ -31,6 +31,12 @@ namespace Daily.Diary
             }
         }
 
+        public DiaryRecord()
+        {
+            _text = string.Empty;
+            _creationDateTime = DateTime.MinValue;
+        }
+
         public DiaryRecord(string text, DateTime creationDateTime)
         {
             _text = text;

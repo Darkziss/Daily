@@ -31,6 +31,12 @@ namespace Daily.Thoughts
             }
         }
 
+        public Thought()
+        {
+            _name = string.Empty;
+            _text = string.Empty;
+        }
+
         public Thought(string name, string text)
         {
             _name = name;
