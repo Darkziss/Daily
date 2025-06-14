@@ -17,6 +17,7 @@ namespace Daily.Converters
 
             return status switch
             {
+                GoalStatus.None => IncompletedColor,
                 GoalStatus.Incompleted => IncompletedColor,
                 GoalStatus.Completed => CompletedColor,
                 GoalStatus.Overdue => OverdueColor,
