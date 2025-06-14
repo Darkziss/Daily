@@ -64,6 +64,9 @@
                 TrueColor="{StaticResource InputField}"
                 FalseColor="Black"/>
 
+            <converters:GoalStatusToIsEnabledConverter
+                x:Key="GoalStatusToIsEnabledConverter"/>
+
             <converters:GoalStatusToTextDecorationsConverter
                 x:Key="GoalStatusToTextDecorationsConverter"
                 IncompletedTextDecorations="None"
@@ -287,6 +290,8 @@
 
                         <Border.Behaviors>
                             <toolkit:TouchBehavior
+                                IsEnabled="{Binding GoalStatus,
+                                    Converter={StaticResource GoalStatusToIsEnabledConverter}}"
                                 DefaultAnimationDuration="100"
                                 PressedAnimationDuration="100"
                                 PressedAnimationEasing="{x:Static Easing.Linear}"
