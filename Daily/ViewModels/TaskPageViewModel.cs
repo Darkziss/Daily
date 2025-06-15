@@ -36,7 +36,7 @@ namespace Daily.ViewModels
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
         public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
-        public ObservableCollection<СonditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
+        public ObservableCollection<ConditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
 
         public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
@@ -45,7 +45,7 @@ namespace Daily.ViewModels
         public Command InvertGoalStatusCommand { get; }
 
         public Command<GeneralTask> GeneralTaskInteractCommand { get; }
-        public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
+        public Command<ConditionalTask> СonditionalTaskInteractCommand { get; }
 
         public Command AddTaskCommand { get; }
 
@@ -117,7 +117,7 @@ namespace Daily.ViewModels
                 SelectedGeneralTask = null;
             });
 
-            СonditionalTaskInteractCommand = new Command<СonditionalTask>(
+            СonditionalTaskInteractCommand = new Command<ConditionalTask>(
             execute: async (task) =>
             {
                 if (SelectedСonditionalTask == null || !CanInteractWithTask) return;
@@ -128,7 +128,7 @@ namespace Daily.ViewModels
 
                     var parameters = new ShellNavigationQueryParameters()
                     {
-                        [nameof(СonditionalTask)] = task
+                        [nameof(ConditionalTask)] = task
                     };
 
                     await PageNavigator.GoToTaskEditPageAsync(parameters);
@@ -234,7 +234,7 @@ namespace Daily.ViewModels
             await _generalTaskStorage.PerformTaskAsync(task);
         }
 
-        private async Task PerformСonditionalTaskAsync(СonditionalTask task)
+        private async Task PerformСonditionalTaskAsync(ConditionalTask task)
         {
             if (!CanPerformTask(task)) return;
 
@@ -248,7 +248,7 @@ namespace Daily.ViewModels
             await _generalTaskStorage.ResetTaskAsync(task);
         }
 
-        private async Task ResetConditionalTaskAsync(СonditionalTask task)
+        private async Task ResetConditionalTaskAsync(ConditionalTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 

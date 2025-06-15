@@ -3,19 +3,19 @@ using Daily.Data;
 
 namespace Daily.Tasks
 {
-    public class ConditionalTaskStorage : TaskStorage<СonditionalTask>
+    public class ConditionalTaskStorage : TaskStorage<ConditionalTask>
     {
-        public override ObservableCollection<СonditionalTask> Tasks { get; protected set; }
+        public override ObservableCollection<ConditionalTask> Tasks { get; protected set; }
 
         public override int MaxTaskCount { get; } = 10;
 
         public ConditionalTaskStorage(DataProvider dataProvider) : base(dataProvider)
         {
-            if (_dataProvider.СonditionalTasks == null) Tasks = new ObservableCollection<СonditionalTask>();
-            else Tasks = new ObservableCollection<СonditionalTask>(_dataProvider.СonditionalTasks);
+            if (_dataProvider.СonditionalTasks == null) Tasks = new ObservableCollection<ConditionalTask>();
+            else Tasks = new ObservableCollection<ConditionalTask>(_dataProvider.СonditionalTasks);
         }
 
-        public override async Task<bool> TryAddTaskAsync(СonditionalTask task)
+        public override async Task<bool> TryAddTaskAsync(ConditionalTask task)
         {
             if (IsTasksFull) return false;
 
@@ -34,7 +34,7 @@ namespace Daily.Tasks
             return true;
         }
 
-        public override async Task<bool> TryEditTaskAsync(СonditionalTask oldTask, СonditionalTask newTask)
+        public override async Task<bool> TryEditTaskAsync(ConditionalTask oldTask, ConditionalTask newTask)
         {
             bool isValid = TaskValidator.ValidateСonditionalTask(newTask);
 
@@ -54,7 +54,7 @@ namespace Daily.Tasks
             return true;
         }
 
-        public override async Task PerformTaskAsync(СonditionalTask task)
+        public override async Task PerformTaskAsync(ConditionalTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
@@ -63,7 +63,7 @@ namespace Daily.Tasks
             await _dataProvider.SaveConditionalTasksAsync(Tasks);
         }
 
-        public override async Task ResetTaskAsync(СonditionalTask task)
+        public override async Task ResetTaskAsync(ConditionalTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
@@ -72,7 +72,7 @@ namespace Daily.Tasks
             await _dataProvider.SaveConditionalTasksAsync(Tasks);
         }
 
-        public override async Task DeleteTaskAsync(СonditionalTask task)
+        public override async Task DeleteTaskAsync(ConditionalTask task)
         {
             if (IsNullOrUnknownTask(task, out int index)) return;
 
@@ -89,7 +89,7 @@ namespace Daily.Tasks
 
             Tasks.Clear();
 
-            foreach (СonditionalTask task in sorted)
+            foreach (ConditionalTask task in sorted)
             {
                 Tasks.Add(task);
             }

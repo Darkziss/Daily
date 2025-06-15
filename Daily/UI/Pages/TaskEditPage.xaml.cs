@@ -19,7 +19,7 @@ namespace Daily.Pages
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             bool isGeneralTask = query.ContainsKey(nameof(GeneralTask));
-            bool isConditionalTask = query.ContainsKey(nameof(ÑonditionalTask));
+            bool isConditionalTask = query.ContainsKey(nameof(ConditionalTask));
 
             if (isGeneralTask)
             {
@@ -29,7 +29,7 @@ namespace Daily.Pages
             }
             else if (isConditionalTask)
             {
-                ÑonditionalTask task = (ÑonditionalTask)query[nameof(ÑonditionalTask)];
+                ConditionalTask task = (ConditionalTask)query[nameof(ConditionalTask)];
                 _viewModel.PrepareViewForEdit(task);
             }
             else _viewModel.ResetView();

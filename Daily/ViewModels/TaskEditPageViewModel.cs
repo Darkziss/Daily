@@ -109,7 +109,7 @@ namespace Daily.ViewModels
             Note = string.Empty;
         }
 
-        public void PrepareViewForEdit(СonditionalTask task)
+        public void PrepareViewForEdit(ConditionalTask task)
         {
             _currentTask = task;
             
@@ -174,7 +174,7 @@ namespace Daily.ViewModels
             }
             
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            СonditionalTask task = new СonditionalTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod,
+            ConditionalTask task = new ConditionalTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod,
                 CompletionTime, Note);
 
             bool isCreated = await _conditionalTaskStorage.TryAddTaskAsync(task);
@@ -198,10 +198,10 @@ namespace Daily.ViewModels
 
         private async Task EditConditionalTaskAsync()
         {
-            СonditionalTask oldTask = (СonditionalTask)_currentTask!;
+            ConditionalTask oldTask = (ConditionalTask)_currentTask!;
 
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            СonditionalTask newTask = new СonditionalTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod,
+            ConditionalTask newTask = new ConditionalTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod,
                 CompletionTime, Note);
 
             bool isEdited = await _conditionalTaskStorage.TryEditTaskAsync(oldTask, newTask);
