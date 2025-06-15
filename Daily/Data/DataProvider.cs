@@ -1,4 +1,4 @@
-﻿using Daily.Tasks;
+using Daily.Tasks;
 using Daily.Thoughts;
 using Daily.Diary;
 using AndroidApplication = Android.App.Application;
@@ -11,7 +11,7 @@ namespace Daily.Data
         public Goal? Goal { get; private set; }
 
         public IReadOnlyList<GeneralTask>? GeneralTasks { get; private set; }
-        public IReadOnlyList<СonditionalTask>? СonditionalTasks { get; private set; }
+        public IReadOnlyList<ConditionalTask>? СonditionalTasks { get; private set; }
 
         public IReadOnlyList<Thought>? Thoughts { get; private set; }
         public IReadOnlyList<DiaryRecord>? DiaryRecords { get; private set; }
@@ -71,7 +71,7 @@ namespace Daily.Data
 
         public async Task SaveConditionalTasksAsync(IReadOnlyList<СonditionalTask> сonditionalTasks)
         {
-            await _dataSerializer.SerializeAsync<IReadOnlyList<СonditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
+            await _dataSerializer.SerializeAsync<IReadOnlyList<ConditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
         }
 
         public async Task SaveThoughtsAsync(IReadOnlyList<Thought> thoughts)
@@ -103,13 +103,13 @@ namespace Daily.Data
             else return null;
         }
 
-        private IReadOnlyList<СonditionalTask>? LoadСonditionalTasks()
+        private IReadOnlyList<ConditionalTask>? LoadСonditionalTasks()
         {
             bool exists = File.Exists(_conditionalTasksDataPath);
 
             if (exists)
             {
-                return _dataSerializer.Deserialize<IReadOnlyList<СonditionalTask>>(_conditionalTasksDataPath);
+                return _dataSerializer.Deserialize<IReadOnlyList<ConditionalTask>>(_conditionalTasksDataPath);
             }
             else return null;
         }

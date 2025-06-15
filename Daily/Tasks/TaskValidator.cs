@@ -15,7 +15,7 @@ namespace Daily.Tasks
             else return true;
         }
 
-        public static bool ValidateСonditionalTask(СonditionalTask task)
+        public static bool ValidateСonditionalTask(ConditionalTask task)
         {
             return ValidateTask(task) && task.CompletionTime >= minCompletionTime;
         }
