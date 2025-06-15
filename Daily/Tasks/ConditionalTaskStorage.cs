@@ -15,7 +15,7 @@ namespace Daily.Tasks
             else Tasks = new ObservableCollection<СonditionalTask>(_dataProvider.СonditionalTasks);
         }
 
-        public override async Task<bool> TryAddTaskAsync(СonditionalTask task)
+        public override async Task<bool> TryAddTaskAsync(ConditionalTask task)
         {
             if (IsTasksFull) return false;
 

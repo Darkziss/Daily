@@ -69,7 +69,7 @@ namespace Daily.Data
             await _dataSerializer.SerializeAsync<IReadOnlyList<GeneralTask>>(_generalTasksDataPath, generalTasks);
         }
 
-        public async Task SaveConditionalTasksAsync(IReadOnlyList<СonditionalTask> сonditionalTasks)
+        public async Task SaveConditionalTasksAsync(IReadOnlyList<ConditionalTask> сonditionalTasks)
         {
             await _dataSerializer.SerializeAsync<IReadOnlyList<ConditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
         }
