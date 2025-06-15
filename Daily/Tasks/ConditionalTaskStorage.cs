@@ -9,10 +9,16 @@ namespace Daily.Tasks
 
         public override int MaxTaskCount { get; } = 10;
 
-        public ConditionalTaskStorage(DataProvider dataProvider) : base(dataProvider)
+        public ConditionalTaskStorage(DataProvider dataProvider) : base(dataProvider) { }
+
+        public override async Task<ICollection<ConditionalTask>> LoadTasks()
         {
-            if (_dataProvider.СonditionalTasks == null) Tasks = new ObservableCollection<СonditionalTask>();
-            else Tasks = new ObservableCollection<СonditionalTask>(_dataProvider.СonditionalTasks);
+            ICollection<ConditionalTask>? tasks = await _dataProvider.LoadConditionalTasksAsync();
+
+            Tasks = tasks == null ? new ObservableCollection<ConditionalTask>() 
+                : (ObservableCollection<ConditionalTask>)tasks;
+
+            return Tasks;
         }
 
         public override async Task<bool> TryAddTaskAsync(ConditionalTask task)

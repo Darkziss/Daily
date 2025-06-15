@@ -38,6 +38,7 @@
 	  <ApplicationId>me.darkziss.daily</ApplicationId>
 	  <ApplicationDisplayVersion>1.3.0</ApplicationDisplayVersion>
 	  <ApplicationVersion>5</ApplicationVersion>
+	<EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
@@ -76,6 +77,8 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 		<PackageReference Include="Plugin.SegmentedControl.Maui" Version="1.4.4" />
+		<PackageReference Include="Sharpnado.Maui.TaskLoaderView" Version="2.5.1" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -6,6 +6,7 @@ using Daily.Popups;
 using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Sharpnado.TaskLoaderView;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -35,8 +36,12 @@ namespace Daily.ViewModels
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
+        private TaskLoaderNotifier<ICollection<ConditionalTask>> _loader = new();
+
         public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
         public ObservableCollection<ConditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
+
+        public TaskLoaderNotifier<ICollection<ConditionalTask>> Loader => _loader;
 
         public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
@@ -200,6 +205,11 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
+            if (ShouldLoadTask)
+            {
+                _loader.Load(isRefreshing => _conditionalTaskStorage.LoadTasks());
+            }
+            
             if (!_goalStorage.IsCompleted)
             {
                 _goalStorage.RefreshOverdueStatus();
@@ -212,13 +222,6 @@ namespace Daily.ViewModels
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
-
-            if (ShouldLoadTask) ShowDummy();
-            else
-            {
-                IsTasksLoaded = true;
-                CanInteractWithTask = true;
-            }
         }
 
         private void UpdateGoalAndDeadlineStatus()

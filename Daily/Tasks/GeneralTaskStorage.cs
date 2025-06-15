@@ -5,7 +5,7 @@ namespace Daily.Tasks
 {
     public class GeneralTaskStorage : TaskStorage<GeneralTask>
     {
-        public override ObservableCollection<GeneralTask> Tasks { get; protected set; }
+        public override ObservableCollection<GeneralTask>? Tasks { get; protected set; }
 
         public override int MaxTaskCount { get; } = 15;
 
@@ -13,6 +13,11 @@ namespace Daily.Tasks
         {
             if (_dataProvider.GeneralTasks == null) Tasks = new ObservableCollection<GeneralTask>();
             else Tasks = new ObservableCollection<GeneralTask>(_dataProvider.GeneralTasks);
+        }
+
+        public override Task LoadTasks()
+        {
+            throw new NotImplementedException();
         }
 
         public override async Task<bool> TryAddTaskAsync(GeneralTask task)

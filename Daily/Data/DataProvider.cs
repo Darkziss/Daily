@@ -1,4 +1,4 @@
-using Daily.Tasks;
+﻿using Daily.Tasks;
 using Daily.Thoughts;
 using Daily.Diary;
 using AndroidApplication = Android.App.Application;
@@ -112,6 +112,16 @@ namespace Daily.Data
                 return _dataSerializer.Deserialize<IReadOnlyList<ConditionalTask>>(_conditionalTasksDataPath);
             }
             else return null;
+        }
+
+        public async Task<ICollection<ConditionalTask>?> LoadConditionalTasksAsync()
+        {
+            bool exists = File.Exists(_conditionalTasksDataPath);
+
+            if (exists)
+                return await _dataSerializer.DeserializeAsync<ICollection<ConditionalTask>>(_conditionalTasksDataPath);
+            else
+                return null;
         }
 
         private IReadOnlyList<Thought>? LoadThoughts()
