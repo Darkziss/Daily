@@ -10,9 +10,6 @@ namespace Daily.Data
     {
         public Goal? Goal { get; private set; }
 
-        public IReadOnlyList<GeneralTask>? GeneralTasks { get; private set; }
-        public IReadOnlyList<ConditionalTask>? СonditionalTasks { get; private set; }
-
         public IReadOnlyList<Thought>? Thoughts { get; private set; }
         public IReadOnlyList<DiaryRecord>? DiaryRecords { get; private set; }
 
@@ -26,6 +23,8 @@ namespace Daily.Data
 
         private readonly TextWriter _textWriter = new TextWriter();
         private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
+
+        private bool IsGeneralTasksFileExist => File.Exists(_generalTasksDataPath);
 
         private const string goalDataFileName = "goal.json";
 
@@ -50,9 +49,6 @@ namespace Daily.Data
 
             Goal = LoadGoal();
             
-            GeneralTasks = LoadGeneralTasks();
-            СonditionalTasks = LoadСonditionalTasks();
-
             Thoughts = LoadThoughts();
             DiaryRecords = LoadDiaryRecords();
         }
@@ -103,15 +99,12 @@ namespace Daily.Data
             else return null;
         }
 
-        private IReadOnlyList<ConditionalTask>? LoadСonditionalTasks()
+        public async Task<IEnumerable<GeneralTask>?> LoadGeneralTasksAsync()
         {
-            bool exists = File.Exists(_conditionalTasksDataPath);
-
-            if (exists)
-            {
-                return _dataSerializer.Deserialize<IReadOnlyList<ConditionalTask>>(_conditionalTasksDataPath);
-            }
-            else return null;
+            if (IsGeneralTasksFileExist)
+                return await _dataSerializer.DeserializeAsync<IEnumerable<GeneralTask>>(_generalTasksDataPath);
+            else 
+                return null;
         }
 
         public async Task<IEnumerable<ConditionalTask>?> LoadConditionalTasksAsync()

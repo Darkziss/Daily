@@ -164,7 +164,7 @@
             </Style>
 
             <Style TargetType="CollectionView" x:Key="TasksCollectionView">
-                <Setter Property="ItemSizingStrategy" Value="MeasureAllItems"/>
+                <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
                 <Setter Property="SelectionMode" Value="Single"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
@@ -257,8 +257,6 @@
         HorizontalOptions="Fill">
 
         <ScrollView
-            VerticalOptions="Fill"
-            HorizontalOptions="Fill"
             Grid.Column="0"
             Grid.Row="0">
             
@@ -362,100 +360,82 @@
 
                         <Label.Text>
                             <MultiBinding Converter="{StaticResource ConditionalTaskCountToStringConverter}">
-                                <Binding Path="Loader.Result.Count"/>
+                                <Binding Path="ConditionalTasksLoader.Result.Count"/>
                                 <Binding Path="ConditionalTaskMaxCount"/>
                             </MultiBinding>
                         </Label.Text>
                     </Label>
 
-                    <taskLoaderView:TemplatedTaskLoader
-                        TaskLoaderNotifier="{Binding Loader, Mode=OneTime}"
+                    <CollectionView
+                        Style="{StaticResource TasksCollectionView}"
+                        IsVisible="{Binding ConditionalTasksLoader.IsSuccessfullyCompleted}"
+                        ItemsSource="{Binding ConditionalTasksLoader.Result}"
+                        SelectedItem="{Binding SelectedСonditionalTask, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding СonditionalTaskInteractCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                         Grid.Column="0"
                         Grid.Row="1">
 
-                        <taskLoaderView:TemplatedTaskLoader.LoadingControlTemplate>
-                            <ControlTemplate>
-                                <ActivityIndicator
-                                    Style="{StaticResource DummyActivityIndicator}"
-                                    Color="Black"/>
-                            </ControlTemplate>
-                        </taskLoaderView:TemplatedTaskLoader.LoadingControlTemplate>
+                        <CollectionView.EmptyView>
+                            <Label
+                                Style="{StaticResource EmptyViewLabel}"
+                                TextColor="{StaticResource CondTask}"/>
+                        </CollectionView.EmptyView>
 
-                        <taskLoaderView:TemplatedTaskLoader.ResultControlTemplate>
-                            <ControlTemplate>
-                                <CollectionView
-                                    Style="{StaticResource TasksCollectionView}"
-                                    ItemsSource="{Binding Loader.Result}"
-                                    SelectedItem="{Binding SelectedСonditionalTask, Mode=TwoWay}"
-                                    SelectionChangedCommand="{Binding СonditionalTaskInteractCommand}"
-                                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
-                                    Grid.Column="0"
-                                    Grid.Row="1">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame
+                                    x:DataType="tasks:ConditionalTask"
+                                    Style="{StaticResource TaskCard}"
+                                    Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                    BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
-                                    <CollectionView.EmptyView>
+                                    <Grid
+                                        Style="{StaticResource TaskCardGrid}">
+
+                                        <controls:TaskProgressIndicator
+                                            RepeatCount="{Binding RepeatCount}"
+                                            TargetRepeatCount="{Binding TargetRepeatCount}"
+                                            Grid.Column="0"
+                                            Grid.RowSpan="2"/>
+
                                         <Label
-                                            Style="{StaticResource EmptyViewLabel}"
-                                            TextColor="{StaticResource CondTask}"
-                                            Margin="{StaticResource DummyLabelMargin}"/>
-                                    </CollectionView.EmptyView>
+                                            Style="{StaticResource TaskProgressLabel}"
+                                            Grid.Column="0"
+                                            Grid.RowSpan="2">
 
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate>
-                                            <Frame
-                                                x:DataType="tasks:ConditionalTask"
-                                                Style="{StaticResource TaskCard}"
-                                                Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
-                                                BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
+                                            <Label.Text>
+                                                <MultiBinding Converter="{StaticResource TaskProgressConverter}">
+                                                    <Binding Path="RepeatCount"/>
+                                                    <Binding Path="TargetRepeatCount"/>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
 
-                                                <Grid
-                                                    Style="{StaticResource TaskCardGrid}">
+                                        <Label
+                                            Style="{StaticResource TaskLabel}"
+                                            Text="{Binding ActionName}"
+                                            Grid.Column="1"
+                                            Grid.Row="0"/>
 
-                                                    <controls:TaskProgressIndicator
-                                                        RepeatCount="{Binding RepeatCount}"
-                                                        TargetRepeatCount="{Binding TargetRepeatCount}"
-                                                        Grid.Column="0"
-                                                        Grid.RowSpan="2"/>
+                                        <controls:СonditionalTaskModificatorsView
+                                            CompletionTime="{Binding CompletionTime}"
+                                            Note="{Binding Note}"
+                                            Grid.Column="1"
+                                            Grid.Row="1">
 
-                                                    <Label
-                                                        Style="{StaticResource TaskProgressLabel}"
-                                                        Grid.Column="0"
-                                                        Grid.RowSpan="2">
-
-                                                        <Label.Text>
-                                                            <MultiBinding Converter="{StaticResource TaskProgressConverter}">
-                                                                <Binding Path="RepeatCount"/>
-                                                                <Binding Path="TargetRepeatCount"/>
-                                                            </MultiBinding>
-                                                        </Label.Text>
-                                                    </Label>
-
-                                                    <Label
-                                                        Style="{StaticResource TaskLabel}"
-                                                        Text="{Binding ActionName}"
-                                                        Grid.Column="1"
-                                                        Grid.Row="0"/>
-
-                                                    <controls:СonditionalTaskModificatorsView
-                                                        CompletionTime="{Binding CompletionTime}"
-                                                        Note="{Binding Note}"
-                                                        Grid.Column="1"
-                                                        Grid.Row="1">
-
-                                                        <controls:СonditionalTaskModificatorsView.Frequency>
-                                                            <MultiBinding Converter="{StaticResource RepeatTimePeriodConverter}">
-                                                                <Binding Path="TargetRepeatCount"/>
-                                                                <Binding Path="RepeatTimePeriod"/>
-                                                            </MultiBinding>
-                                                        </controls:СonditionalTaskModificatorsView.Frequency>
-                                                    </controls:СonditionalTaskModificatorsView>
-                                                </Grid>
-                                            </Frame>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
-                            </ControlTemplate>
-                        </taskLoaderView:TemplatedTaskLoader.ResultControlTemplate>
-                    </taskLoaderView:TemplatedTaskLoader>
+                                            <controls:СonditionalTaskModificatorsView.Frequency>
+                                                <MultiBinding Converter="{StaticResource RepeatTimePeriodConverter}">
+                                                    <Binding Path="TargetRepeatCount"/>
+                                                    <Binding Path="RepeatTimePeriod"/>
+                                                </MultiBinding>
+                                            </controls:СonditionalTaskModificatorsView.Frequency>
+                                        </controls:СonditionalTaskModificatorsView>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </Grid>
 
                 <Grid
@@ -469,31 +449,16 @@
 
                         <Label.Text>
                             <MultiBinding Converter="{StaticResource GeneralTaskCountToStringConverter}">
-                                <Binding Path="GeneralTasks.Count"/>
+                                <Binding Path="GeneralTasksLoader.Result.Count"/>
                                 <Binding Path="GeneralTaskMaxCount"/>
                             </MultiBinding>
                         </Label.Text>
                     </Label>
 
-                    <VerticalStackLayout
-                        IsVisible="{Binding IsTasksLoaded, Converter={toolkit:InvertedBoolConverter}}"
-                        Margin="{StaticResource DummyLabelMargin}"
-                        Grid.Column="0"
-                        Grid.Row="1">
-
-                        <ActivityIndicator
-                            Style="{StaticResource DummyActivityIndicator}"
-                            Color="{StaticResource GeneralTask}"/>
-
-                        <Label
-                            TextColor="{StaticResource GeneralTask}"
-                            Text="Загружаем основные задачи.."
-                            HorizontalOptions="Center"/>
-                    </VerticalStackLayout>
-
                     <CollectionView
                         Style="{StaticResource TasksCollectionView}"
-                        IsVisible="False"
+                        IsVisible="{Binding GeneralTasksLoader.IsSuccessfullyCompleted}"
+                        ItemsSource="{Binding GeneralTasksLoader.Result}"
                         SelectedItem="{Binding SelectedGeneralTask, Mode=TwoWay}"
                         SelectionChangedCommand="{Binding GeneralTaskInteractCommand}"
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"

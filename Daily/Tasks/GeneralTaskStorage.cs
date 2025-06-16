@@ -9,15 +9,15 @@ namespace Daily.Tasks
 
         public override int MaxTaskCount { get; } = 15;
 
-        public GeneralTaskStorage(DataProvider dataProvider) : base(dataProvider)
-        {
-            if (_dataProvider.GeneralTasks == null) Tasks = new ObservableCollection<GeneralTask>();
-            else Tasks = new ObservableCollection<GeneralTask>(_dataProvider.GeneralTasks);
-        }
+        public GeneralTaskStorage(DataProvider dataProvider) : base(dataProvider) { }
 
-        public override Task LoadTasks()
+        public override async Task<ObservableCollection<GeneralTask>> LoadTasks()
         {
-            throw new NotImplementedException();
+            IEnumerable<GeneralTask>? tasks = await _dataProvider.LoadGeneralTasksAsync();
+
+            Tasks = tasks == null ? new() : new(tasks);
+
+            return Tasks;
         }
 
         public override async Task<bool> TryAddTaskAsync(GeneralTask task)

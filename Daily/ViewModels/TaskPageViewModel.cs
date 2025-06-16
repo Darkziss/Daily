@@ -36,12 +36,8 @@ namespace Daily.ViewModels
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
-        private TaskLoaderNotifier<ICollection<ConditionalTask>> _loader = new();
-
-        public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
-        public ObservableCollection<ConditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
-
-        public TaskLoaderNotifier<ICollection<ConditionalTask>> Loader => _loader;
+        public TaskLoaderNotifier<ObservableCollection<GeneralTask>> GeneralTasksLoader { get; }
+        public TaskLoaderNotifier<ObservableCollection<ConditionalTask>> ConditionalTasksLoader { get; }
 
         public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
@@ -58,8 +54,6 @@ namespace Daily.ViewModels
         public Command SwitchCanDeleteTaskCommand { get; }
         public Command SwitchCanResetTaskCommand { get; }
 
-        private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
-
         public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
         {
@@ -72,6 +66,9 @@ namespace Daily.ViewModels
             _deadline = _goalStorage.Deadline;
 
             _goalStatus = _goalStorage.Status;
+
+            GeneralTasksLoader = new(true);
+            ConditionalTasksLoader = new(true);
 
             EditGoalCommand = new Command(async () =>
             {
@@ -205,10 +202,7 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
-            if (ShouldLoadTask)
-            {
-                _loader.Load(isRefreshing => _conditionalTaskStorage.LoadTasks());
-            }
+            LoadTasksIfNotLoaded();
             
             if (!_goalStorage.IsCompleted)
             {
@@ -219,9 +213,20 @@ namespace Daily.ViewModels
 
             UpdateGoalAndDeadlineStatus();
 
+            ShowDummy();
+
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
+        }
+
+        private void LoadTasksIfNotLoaded()
+        {
+            if (GeneralTasksLoader.IsNotStarted)
+                GeneralTasksLoader.Load(_ => _generalTaskStorage.LoadTasks());
+
+            if (ConditionalTasksLoader.IsNotStarted)
+                ConditionalTasksLoader.Load(_ => _conditionalTaskStorage.LoadTasks());
         }
 
         private void UpdateGoalAndDeadlineStatus()
