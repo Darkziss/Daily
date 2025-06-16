@@ -11,12 +11,11 @@ namespace Daily.Tasks
 
         public ConditionalTaskStorage(DataProvider dataProvider) : base(dataProvider) { }
 
-        public override async Task<ICollection<ConditionalTask>> LoadTasks()
+        public override async Task<ObservableCollection<ConditionalTask>> LoadTasks()
         {
-            ICollection<ConditionalTask>? tasks = await _dataProvider.LoadConditionalTasksAsync();
+            IEnumerable<ConditionalTask>? tasks = await _dataProvider.LoadConditionalTasksAsync();
 
-            Tasks = tasks == null ? new ObservableCollection<ConditionalTask>() 
-                : (ObservableCollection<ConditionalTask>)tasks;
+            Tasks = tasks == null ? new() : new(tasks);
 
             return Tasks;
         }
