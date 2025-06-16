@@ -114,12 +114,12 @@ namespace Daily.Data
             else return null;
         }
 
-        public async Task<ICollection<ConditionalTask>?> LoadConditionalTasksAsync()
+        public async Task<IEnumerable<ConditionalTask>?> LoadConditionalTasksAsync()
         {
             bool exists = File.Exists(_conditionalTasksDataPath);
 
             if (exists)
-                return await _dataSerializer.DeserializeAsync<ICollection<ConditionalTask>>(_conditionalTasksDataPath);
+                return await _dataSerializer.DeserializeAsync<IEnumerable<ConditionalTask>>(_conditionalTasksDataPath);
             else
                 return null;
         }
