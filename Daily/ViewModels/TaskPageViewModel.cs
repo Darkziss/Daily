@@ -21,6 +21,8 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private GoalStatus _goalStatus;
 
+        [ObservableProperty] private ObservableCollection<ConditionalTask> _conditionalTasks;
+
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
 
