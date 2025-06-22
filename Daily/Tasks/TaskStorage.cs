@@ -7,18 +7,20 @@ namespace Daily.Tasks
     {
         protected readonly DataProvider _dataProvider;
 
-        public abstract ObservableCollection<T> Tasks { get; protected set; }
+        public abstract ObservableCollection<T>? Tasks { get; protected set; }
 
         public abstract int MaxTaskCount { get; }
 
-        public bool IsTasksFull => Tasks.Count == MaxTaskCount;
+        public bool IsTasksFull => Tasks?.Count == MaxTaskCount;
 
-        public bool ShouldSort => Tasks.Count > 1;
+        public bool ShouldSort => Tasks?.Count > 1;
 
         public TaskStorage(DataProvider dataProvider)
         {
             _dataProvider = dataProvider;
         }
+
+        public abstract Task LoadTasks();
 
         public abstract Task<bool> TryAddTaskAsync(T task);
 

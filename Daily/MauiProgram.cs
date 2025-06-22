@@ -7,6 +7,7 @@ using Daily.ViewModels;
 using Daily.Pages;
 using CommunityToolkit.Maui;
 using Plugin.SegmentedControl.Maui;
+using Sharpnado.TaskLoaderView;
 
 namespace Daily
 {
@@ -27,6 +28,9 @@ namespace Daily
 
 #if DEBUG
             builder.Logging.AddDebug();
+            Initializer.Initialize(true);
+#else
+            Initializer.Initialize(false);
 #endif
 
             IServiceCollection collection = builder.Services;

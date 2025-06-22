@@ -6,6 +6,7 @@ using Daily.Popups;
 using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Sharpnado.TaskLoaderView;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -19,6 +20,8 @@ namespace Daily.ViewModels
         [ObservableProperty] private DateOnly? _deadline;
 
         [ObservableProperty] private GoalStatus _goalStatus;
+
+        [ObservableProperty] private ObservableCollection<ConditionalTask> _conditionalTasks;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
@@ -35,8 +38,8 @@ namespace Daily.ViewModels
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
-        public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
-        public ObservableCollection<СonditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
+        public TaskLoaderNotifier<ObservableCollection<GeneralTask>> GeneralTasksLoader { get; }
+        public TaskLoaderNotifier<ObservableCollection<ConditionalTask>> ConditionalTasksLoader { get; }
 
         public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
@@ -45,15 +48,13 @@ namespace Daily.ViewModels
         public Command InvertGoalStatusCommand { get; }
 
         public Command<GeneralTask> GeneralTaskInteractCommand { get; }
-        public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
+        public Command<ConditionalTask> СonditionalTaskInteractCommand { get; }
 
         public Command AddTaskCommand { get; }
 
         public Command SwitchCanEditTaskCommand { get; }
         public Command SwitchCanDeleteTaskCommand { get; }
         public Command SwitchCanResetTaskCommand { get; }
-
-        private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
 
         public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
@@ -68,6 +69,9 @@ namespace Daily.ViewModels
 
             _goalStatus = _goalStorage.Status;
 
+            GeneralTasksLoader = new(true);
+            ConditionalTasksLoader = new(true);
+
             EditGoalCommand = new Command(async () =>
             {
                 await PageNavigator.GoToGoalEditPageAsync();
@@ -75,6 +79,9 @@ namespace Daily.ViewModels
 
             InvertGoalStatusCommand = new Command(async () =>
             {
+                if (_goalStorage.IsNone)
+                    return;
+                
                 if (_goalStorage.IsCompleted) await _goalStorage.ResetGoalStatusAsync();
                 else await _goalStorage.CompleteGoalAsync();
 
@@ -117,7 +124,7 @@ namespace Daily.ViewModels
                 SelectedGeneralTask = null;
             });
 
-            СonditionalTaskInteractCommand = new Command<СonditionalTask>(
+            СonditionalTaskInteractCommand = new Command<ConditionalTask>(
             execute: async (task) =>
             {
                 if (SelectedСonditionalTask == null || !CanInteractWithTask) return;
@@ -128,7 +135,7 @@ namespace Daily.ViewModels
 
                     var parameters = new ShellNavigationQueryParameters()
                     {
-                        [nameof(СonditionalTask)] = task
+                        [nameof(ConditionalTask)] = task
                     };
 
                     await PageNavigator.GoToTaskEditPageAsync(parameters);
@@ -200,6 +207,8 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
+            LoadTasksIfNotLoaded();
+            
             if (!_goalStorage.IsCompleted)
             {
                 _goalStorage.RefreshOverdueStatus();
@@ -209,16 +218,20 @@ namespace Daily.ViewModels
 
             UpdateGoalAndDeadlineStatus();
 
+            ShowDummy();
+
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
+        }
 
-            if (ShouldLoadTask) ShowDummy();
-            else
-            {
-                IsTasksLoaded = true;
-                CanInteractWithTask = true;
-            }
+        private void LoadTasksIfNotLoaded()
+        {
+            if (GeneralTasksLoader.IsNotStarted)
+                GeneralTasksLoader.Load(_ => _generalTaskStorage.LoadTasks());
+
+            if (ConditionalTasksLoader.IsNotStarted)
+                ConditionalTasksLoader.Load(_ => _conditionalTaskStorage.LoadTasks());
         }
 
         private void UpdateGoalAndDeadlineStatus()
@@ -234,7 +247,7 @@ namespace Daily.ViewModels
             await _generalTaskStorage.PerformTaskAsync(task);
         }
 
-        private async Task PerformСonditionalTaskAsync(СonditionalTask task)
+        private async Task PerformСonditionalTaskAsync(ConditionalTask task)
         {
             if (!CanPerformTask(task)) return;
 
@@ -248,7 +261,7 @@ namespace Daily.ViewModels
             await _generalTaskStorage.ResetTaskAsync(task);
         }
 
-        private async Task ResetConditionalTaskAsync(СonditionalTask task)
+        private async Task ResetConditionalTaskAsync(ConditionalTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 

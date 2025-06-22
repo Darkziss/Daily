@@ -5,14 +5,19 @@ namespace Daily.Tasks
 {
     public class GeneralTaskStorage : TaskStorage<GeneralTask>
     {
-        public override ObservableCollection<GeneralTask> Tasks { get; protected set; }
+        public override ObservableCollection<GeneralTask>? Tasks { get; protected set; }
 
         public override int MaxTaskCount { get; } = 15;
 
-        public GeneralTaskStorage(DataProvider dataProvider) : base(dataProvider)
+        public GeneralTaskStorage(DataProvider dataProvider) : base(dataProvider) { }
+
+        public override async Task<ObservableCollection<GeneralTask>> LoadTasks()
         {
-            if (_dataProvider.GeneralTasks == null) Tasks = new ObservableCollection<GeneralTask>();
-            else Tasks = new ObservableCollection<GeneralTask>(_dataProvider.GeneralTasks);
+            IEnumerable<GeneralTask>? tasks = await _dataProvider.LoadGeneralTasksAsync();
+
+            Tasks = tasks == null ? new() : new(tasks);
+
+            return Tasks;
         }
 
         public override async Task<bool> TryAddTaskAsync(GeneralTask task)
