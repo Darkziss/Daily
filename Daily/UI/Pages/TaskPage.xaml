@@ -65,9 +65,6 @@
                 TrueColor="{StaticResource InputField}"
                 FalseColor="Black"/>
 
-            <converters:GoalStatusToIsEnabledConverter
-                x:Key="GoalStatusToIsEnabledConverter"/>
-
             <converters:GoalStatusToTextDecorationsConverter
                 x:Key="GoalStatusToTextDecorationsConverter"
                 IncompletedTextDecorations="None"
