@@ -13,6 +13,8 @@ namespace Daily.Tasks
 
         public GoalStatus Status => _goal.Status;
 
+        public bool IsNone => _goal.Status == GoalStatus.None;
+
         public bool IsCompleted => _goal.Status == GoalStatus.Completed;
 
         public DateOnly MinimumDeadlineDate => DateOnly.FromDateTime(DateTime.Now).AddDays(1);
