@@ -79,6 +79,9 @@ namespace Daily.ViewModels
 
             InvertGoalStatusCommand = new Command(async () =>
             {
+                if (_goalStorage.IsNone)
+                    return;
+                
                 if (_goalStorage.IsCompleted) await _goalStorage.ResetGoalStatusAsync();
                 else await _goalStorage.CompleteGoalAsync();
 

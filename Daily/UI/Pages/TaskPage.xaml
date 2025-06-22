@@ -288,16 +288,11 @@
                         Grid.ColumnSpan="2"
                         Grid.Row="1">
 
-                        <Border.Behaviors>
-                            <toolkit:TouchBehavior
-                                IsEnabled="{Binding GoalStatus,
-                                    Converter={StaticResource GoalStatusToIsEnabledConverter}}"
-                                DefaultAnimationDuration="100"
-                                PressedAnimationDuration="100"
-                                PressedAnimationEasing="{x:Static Easing.Linear}"
-                                PressedOpacity="0.5"
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                NumberOfTapsRequired="1"
                                 Command="{Binding InvertGoalStatusCommand, Mode=OneTime}"/>
-                        </Border.Behaviors>
+                        </Border.GestureRecognizers>
 
                         <Label
                             Style="{StaticResource GoalLabel}"
@@ -331,15 +326,12 @@
                         HorizontalOptions="End"
                         Grid.ColumnSpan="2"
                         Grid.Row="2">
-
-                        <Border.Behaviors>
-                            <toolkit:TouchBehavior
-                                DefaultAnimationDuration="100"
-                                PressedAnimationDuration="100"
-                                PressedAnimationEasing="{x:Static Easing.Linear}"
-                                PressedBackgroundColor="{StaticResource Hover}"
+                        
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer
+                                NumberOfTapsRequired="1"
                                 Command="{Binding EditGoalCommand, Mode=OneTime}"/>
-                        </Border.Behaviors>
+                        </Border.GestureRecognizers>
 
                         <Label
                             InputTransparent="True"
