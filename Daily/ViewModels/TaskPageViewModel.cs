@@ -74,7 +74,8 @@ namespace Daily.ViewModels
 
             EditGoalCommand = new Command(async () =>
             {
-                await PageNavigator.GoToGoalEditPageAsync();
+                if (!PageNavigator.IsRouting)
+                    await PageNavigator.GoToGoalEditPageAsync();
             });
 
             InvertGoalStatusCommand = new Command(async () =>
