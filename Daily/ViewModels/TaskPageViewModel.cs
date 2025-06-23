@@ -26,7 +26,7 @@ namespace Daily.ViewModels
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
 
-        [ObservableProperty] private bool _isTasksLoaded = false;
+        [ObservableProperty] private bool _isTasksVisible = false;
 
         [ObservableProperty] private bool _canInteractWithTask = true;
 
@@ -278,7 +278,7 @@ namespace Daily.ViewModels
 
         private void ShowDummy()
         {
-            IsTasksLoaded = false;
+            IsTasksVisible = false;
             CanInteractWithTask = false;
 
             const double delay = 800d;
@@ -287,8 +287,9 @@ namespace Daily.ViewModels
             timer.Elapsed += (_, _) =>
             {
                 timer.Stop();
+                timer.Dispose();
 
-                IsTasksLoaded = true;
+                IsTasksVisible = true;
                 CanInteractWithTask = true;
             };
 
