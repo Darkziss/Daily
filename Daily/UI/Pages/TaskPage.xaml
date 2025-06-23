@@ -157,7 +157,6 @@
                 <Setter Property="ColumnDefinitions" Value="*"/>
                 <Setter Property="RowDefinitions" Value="Auto, *"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
