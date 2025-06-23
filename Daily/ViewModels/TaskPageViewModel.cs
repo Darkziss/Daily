@@ -209,13 +209,8 @@ namespace Daily.ViewModels
         public void ResetView()
         {
             LoadTasksIfNotLoaded();
-            
-            if (!_goalStorage.IsCompleted)
-            {
-                _goalStorage.RefreshOverdueStatus();
-                
-                GoalStatus = _goalStorage.Status;
-            }
+
+            RefreshOverdueStatusIfGoalNotCompleted();
 
             UpdateGoalAndDeadlineStatus();
 
@@ -233,6 +228,16 @@ namespace Daily.ViewModels
 
             if (ConditionalTasksLoader.IsNotStarted)
                 ConditionalTasksLoader.Load(_ => _conditionalTaskStorage.LoadTasks());
+        }
+
+        private void RefreshOverdueStatusIfGoalNotCompleted()
+        {
+            if (!_goalStorage.IsCompleted)
+            {
+                _goalStorage.RefreshOverdueStatus();
+
+                GoalStatus = _goalStorage.Status;
+            }
         }
 
         private void UpdateGoalAndDeadlineStatus()
