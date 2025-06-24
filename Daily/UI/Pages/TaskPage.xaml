@@ -66,12 +66,17 @@
                 x:Key="IsGoalEmptyToColorConverter"
                 TrueColor="{StaticResource InputField}"
                 FalseColor="Black"/>
-
+            
             <converters:GoalStatusToTextDecorationsConverter
                 x:Key="GoalStatusToTextDecorationsConverter"
                 IncompletedTextDecorations="None"
                 CompletedTextDecorations="Strikethrough"
                 OverdueTextDecorations="None"/>
+
+            <toolkit:VariableMultiValueConverter
+                x:Key="AllTrueMultiConverter"
+                ConditionType="All"
+                Count="2"/>
 
             <converters:TaskCountToStringConverter
                 x:Key="ConditionalTaskCountToStringConverter"
@@ -288,6 +293,7 @@
 
                         <Border.Behaviors>
                             <toolkit:TouchBehavior
+                                IsEnabled="{Binding GoalLoader.IsSuccessfullyCompleted}"
                                 DefaultAnimationDuration="{StaticResource DefaultAnimationDuration}"
                                 DefaultAnimationEasing="{x:Static Easing.Linear}"
                                 PressedAnimationDuration="{StaticResource DefaultAnimationDuration}"
@@ -295,16 +301,23 @@
                                 Command="{Binding InvertGoalStatusCommand, Mode=OneTime}"/>
                         </Border.Behaviors>
 
-                        <Label
-                            Style="{StaticResource GoalLabel}"
-                            TextDecorations="{Binding GoalStatus,
-                                Converter={StaticResource GoalStatusToTextDecorationsConverter}}"
-                            TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
-                            Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}"/>
+                        <VerticalStackLayout>
+                            <ActivityIndicator
+                                Style="{StaticResource DummyActivityIndicator}"
+                                IsVisible="{Binding GoalLoader.IsSuccessfullyCompleted, Converter={toolkit:InvertedBoolConverter}}"
+                                VerticalOptions="Center"/>
+
+                            <Label
+                                Style="{StaticResource GoalLabel}"
+                                IsVisible="{Binding GoalLoader.IsSuccessfullyCompleted}"
+                                TextDecorations="{Binding GoalStatus,
+                                    Converter={StaticResource GoalStatusToTextDecorationsConverter}}"
+                                TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
+                                Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}"/>
+                        </VerticalStackLayout>
                     </Border>
 
                     <Border
-                        IsVisible="{Binding HasDeadline}"
                         Style="{StaticResource GoalSign}"
                         BackgroundColor="{Binding GoalStatus,
                             Converter={StaticResource GoalStatusToColorConverter}}"
@@ -312,6 +325,13 @@
                         HorizontalOptions="Start"
                         Grid.ColumnSpan="2"
                         Grid.Row="2">
+
+                        <Border.IsVisible>
+                            <MultiBinding Converter="{StaticResource AllTrueMultiConverter}">
+                                <Binding Path="GoalLoader.IsSuccessfullyCompleted"/>
+                                <Binding Path="HasDeadline"/>
+                            </MultiBinding>
+                        </Border.IsVisible>
 
                         <Label
                             Text="{Binding Deadline, StringFormat='до {0:d}'}"
@@ -322,6 +342,7 @@
 
                     <Border
                         Style="{StaticResource GoalSign}"
+                        IsEnabled="{Binding GoalLoader.IsSuccessfullyCompleted}"
                         BackgroundColor="{StaticResource Good}"
                         Margin="0, 0, 10, 0"
                         HorizontalOptions="End"

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.ComponentModel;
+using System.Collections.ObjectModel;
 using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
@@ -8,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Sharpnado.TaskLoaderView;
 using AsyncTimer = System.Timers.Timer;
+using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
@@ -19,7 +21,7 @@ namespace Daily.ViewModels
         [ObservableProperty] private string? _goalLabelText;
         [ObservableProperty] private DateOnly? _deadline;
 
-        [ObservableProperty] private GoalStatus _goalStatus;
+        [ObservableProperty] private GoalStatus? _goalStatus;
 
         [ObservableProperty] private ObservableCollection<ConditionalTask> _conditionalTasks;
 
@@ -37,6 +39,8 @@ namespace Daily.ViewModels
         private readonly GoalStorage _goalStorage;
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
+
+        public TaskLoaderNotifier<Goal> GoalLoader { get; }
 
         public TaskLoaderNotifier<ObservableCollection<GeneralTask>> GeneralTasksLoader { get; }
         public TaskLoaderNotifier<ObservableCollection<ConditionalTask>> ConditionalTasksLoader { get; }
@@ -64,10 +68,7 @@ namespace Daily.ViewModels
             _generalTaskStorage = generalTaskStorage;
             _conditionalTaskStorage = conditionalTaskStorage;
 
-            _goalLabelText = _goalStorage.Goal;
-            _deadline = _goalStorage.Deadline;
-
-            _goalStatus = _goalStorage.Status;
+            GoalLoader = new(true);
 
             GeneralTasksLoader = new(true);
             ConditionalTasksLoader = new(true);
@@ -208,17 +209,49 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
+            LoadGoalIfNotLoaded();
             LoadTasksIfNotLoaded();
 
-            RefreshOverdueStatusIfGoalNotCompleted();
+            if (GoalLoader.IsSuccessfullyCompleted)
+            {
+                RefreshOverdueStatusIfGoalNotCompleted();
 
-            UpdateGoalAndDeadlineStatus();
+                UpdateGoalAndDeadlineStatus();
+            }
 
             ShowDummy();
 
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
+        }
+
+        private void LoadGoalIfNotLoaded()
+        {
+            if (GoalLoader.IsNotStarted)
+            {
+                GoalLoader.PropertyChanged += GoalLoader_PropertyChanged;
+                GoalLoader.Load(_ => _goalStorage.LoadGoalAsync());
+            }
+        }
+
+        private void GoalLoader_PropertyChanged(object? sender, PropertyChangedEventArgs args)
+        {
+            const string ResultPropertyName = "Result";
+
+            if (GoalLoader.IsSuccessfullyCompleted && args.PropertyName == ResultPropertyName)
+            {
+                GoalLabelText = _goalStorage.Goal;
+                Deadline = _goalStorage.Deadline;
+
+                GoalStatus = _goalStorage.Status;
+
+                RefreshOverdueStatusIfGoalNotCompleted();
+
+                UpdateGoalAndDeadlineStatus();
+
+                GoalLoader.PropertyChanged -= GoalLoader_PropertyChanged;
+            }
         }
 
         private void LoadTasksIfNotLoaded()

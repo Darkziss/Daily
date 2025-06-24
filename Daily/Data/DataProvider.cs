@@ -8,11 +8,6 @@ namespace Daily.Data
 {
     public class DataProvider
     {
-        public Goal? Goal { get; private set; }
-
-        public IReadOnlyList<Thought>? Thoughts { get; private set; }
-        public IReadOnlyList<DiaryRecord>? DiaryRecords { get; private set; }
-
         private readonly string _goalDataPath;
 
         private readonly string _generalTasksDataPath;
@@ -23,6 +18,8 @@ namespace Daily.Data
 
         private readonly TextWriter _textWriter = new TextWriter();
         private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
+
+        private bool IsGoalFileExist => File.Exists(_goalDataPath);
 
         private bool IsGeneralTasksFileExist => File.Exists(_generalTasksDataPath);
 
@@ -50,14 +47,10 @@ namespace Daily.Data
 
             _thoughtsDataPath = Path.Combine(dataFolderPath, thoughtsDataFileName);
             _diaryRecordsDataPath = Path.Combine(dataFolderPath, diaryRecordsDataFileName);
-
-            Goal = LoadGoal();
         }
         
         public async Task SaveGoalAsync(Goal goal)
         {
-            Goal = goal;
-
             await _dataSerializer.SerializeAsync(_goalDataPath, goal);
         }
 
@@ -81,12 +74,21 @@ namespace Daily.Data
             await _dataSerializer.SerializeAsync<IReadOnlyList<DiaryRecord>>(_diaryRecordsDataPath, diaryRecords);
         }
 
+        [Obsolete]
         private Goal? LoadGoal()
         {
             bool exists = File.Exists(_goalDataPath);
 
             if (exists) return _dataSerializer.Deserialize<Goal>(_goalDataPath);
             else return null;
+        }
+
+        public async Task<Goal?> LoadGoalAsync()
+        {
+            if (IsGoalFileExist)
+                return await _dataSerializer.DeserializeAsync<Goal>(_goalDataPath);
+            else
+                return null;
         }
 
         private IReadOnlyList<GeneralTask>? LoadGeneralTasks()
