@@ -52,7 +52,6 @@ namespace Daily.Data
             Goal = LoadGoal();
             
             Thoughts = LoadThoughts();
-            DiaryRecords = LoadDiaryRecords();
         }
         
         public async Task SaveGoalAsync(Goal goal)
@@ -130,6 +129,7 @@ namespace Daily.Data
             else return null;
         }
 
+        [Obsolete]
         private IReadOnlyList<DiaryRecord>? LoadDiaryRecords()
         {
             bool exists = File.Exists(_diaryRecordsDataPath);
