@@ -4,6 +4,7 @@ using Daily.Diary;
 using Daily.Navigation;
 using Daily.Popups;
 using Daily.Toasts;
+using Sharpnado.TaskLoaderView;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -21,7 +22,7 @@ namespace Daily.ViewModels
 
         private readonly DiaryRecordStorage _diaryRecordStorage;
 
-        public ObservableCollection<DiaryRecord> DiaryRecords => _diaryRecordStorage.DiaryRecords;
+        public TaskLoaderNotifier<ObservableCollection<DiaryRecord>> Loader { get; }
 
         public Command<DiaryRecord> DiaryRecordInteractCommand { get; }
 
@@ -29,11 +30,11 @@ namespace Daily.ViewModels
 
         public Command SwitchCanDeleteCommand { get; }
 
-        private bool ShouldLoad => DiaryRecords.Count > 0 && !_isDiaryRecordOpened;
-
         public DiaryRecordPageViewModel(DiaryRecordStorage diaryRecordStorage)
         {
             _diaryRecordStorage = diaryRecordStorage;
+
+            Loader = new(true);
 
             DiaryRecordInteractCommand = new Command<DiaryRecord>(
             execute: async (record) =>
@@ -85,7 +86,13 @@ namespace Daily.ViewModels
         {
             CanDeleteDiaryRecord = false;
 
-            if (ShouldLoad) ShowDummy();
+            if (Loader.IsNotStarted)
+                Loader.Load(_ => _diaryRecordStorage.LoadDiaryRecords());
+
+            if (!_isDiaryRecordOpened)
+            {
+                ShowDummy();
+            }
             else
             {
                 IsLoaded = true;
@@ -106,6 +113,7 @@ namespace Daily.ViewModels
             timer.Elapsed += (_, _) =>
             {
                 timer.Stop();
+                timer.Dispose();
 
                 IsLoaded = true;
                 CanInteractWithDiaryRecord = true;

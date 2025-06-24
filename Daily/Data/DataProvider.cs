@@ -26,6 +26,8 @@ namespace Daily.Data
 
         private bool IsGeneralTasksFileExist => File.Exists(_generalTasksDataPath);
 
+        private bool IsDiaryRecordsFileExist => File.Exists(_diaryRecordsDataPath);
+
         private const string goalDataFileName = "goal.json";
 
         private const string generalTasksDataFileName = "generalTasks.json";
@@ -137,6 +139,14 @@ namespace Daily.Data
                 return _dataSerializer.Deserialize<IReadOnlyList<DiaryRecord>>(_diaryRecordsDataPath);
             }
             else return null;
+        }
+
+        public async Task<IEnumerable<DiaryRecord>?> LoadDiaryRecordsAsync()
+        {
+            if (IsDiaryRecordsFileExist)
+                return await _dataSerializer.DeserializeAsync<IEnumerable<DiaryRecord>>(_diaryRecordsDataPath);
+            else
+                return null;
         }
     }
 }
