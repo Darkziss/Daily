@@ -26,6 +26,8 @@ namespace Daily.Data
 
         private bool IsGeneralTasksFileExist => File.Exists(_generalTasksDataPath);
 
+        private bool IsThoughtsFileExist => File.Exists(_thoughtsDataPath);
+
         private bool IsDiaryRecordsFileExist => File.Exists(_diaryRecordsDataPath);
 
         private const string goalDataFileName = "goal.json";
@@ -50,8 +52,6 @@ namespace Daily.Data
             _diaryRecordsDataPath = Path.Combine(dataFolderPath, diaryRecordsDataFileName);
 
             Goal = LoadGoal();
-            
-            Thoughts = LoadThoughts();
         }
         
         public async Task SaveGoalAsync(Goal goal)
@@ -118,6 +118,7 @@ namespace Daily.Data
                 return null;
         }
 
+        [Obsolete]
         private IReadOnlyList<Thought>? LoadThoughts()
         {
             bool exists = File.Exists(_thoughtsDataPath);
@@ -127,6 +128,14 @@ namespace Daily.Data
                 return _dataSerializer.Deserialize<IReadOnlyList<Thought>>(_thoughtsDataPath);
             }
             else return null;
+        }
+
+        public async Task<IEnumerable<Thought>?> LoadThoughtsAsync()
+        {
+            if (IsThoughtsFileExist)
+                return await _dataSerializer.DeserializeAsync<IEnumerable<Thought>>(_thoughtsDataPath);
+            else
+                return null;
         }
 
         [Obsolete]
