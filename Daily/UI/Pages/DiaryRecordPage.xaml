@@ -56,13 +56,21 @@
             Grid.Column="0"
             Grid.Row="0"/>
 
-        <ActivityIndicator
-            Style="{StaticResource DummyActivityIndicator}"
+        <VerticalStackLayout
             IsVisible="{Binding IsLoaded, Converter={toolkit:InvertedBoolConverter}}"
-            Color="{StaticResource DiaryInputField}"
             Margin="{StaticResource DummyLabelMargin}"
             Grid.Column="0"
-            Grid.Row="1"/>
+            Grid.Row="1">
+
+            <ActivityIndicator
+                Style="{StaticResource DummyActivityIndicator}"
+                Color="{StaticResource DiaryInputField}"/>
+
+            <Label
+                TextColor="{StaticResource DiaryInputField}"
+                Text="Загружаем записи.."
+                HorizontalOptions="Center"/>
+        </VerticalStackLayout>
 
         <CollectionView
             Style="{StaticResource RecordCollectionView}"
