@@ -17,6 +17,7 @@ namespace Daily.Data
         private readonly string _diaryRecordsDataPath;
 
         private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
+        private readonly IRepository _recordsRepository;
 
         private bool IsGoalFileExist => File.Exists(_goalDataPath);
 
@@ -46,6 +47,8 @@ namespace Daily.Data
 
             _thoughtsDataPath = Path.Combine(dataFolderPath, thoughtsDataFileName);
             _diaryRecordsDataPath = Path.Combine(dataFolderPath, diaryRecordsDataFileName);
+
+            _recordsRepository = new SQLiteRecordsRepository(dataFolderPath);
         }
         
         public async Task SaveGoalAsync(Goal goal)
