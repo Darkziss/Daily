@@ -16,7 +16,6 @@ namespace Daily.Data
         private readonly string _thoughtsDataPath;
         private readonly string _diaryRecordsDataPath;
 
-        private readonly TextWriter _textWriter = new TextWriter();
         private readonly DataSerializer _dataSerializer = new JsonDataSerializer();
 
         private bool IsGoalFileExist => File.Exists(_goalDataPath);
