@@ -56,7 +56,7 @@
         <CollectionView
             Style="{StaticResource RecordCollectionView}"
             IsVisible="{Binding IsLoaded}"
-            ItemsSource="{Binding Thoughts}"
+            ItemsSource="{Binding Loader.Result}"
             SelectedItem="{Binding SelectedThought, Mode=TwoWay}"
             SelectionChangedCommand="{Binding ThoughtInteractCommand}"
             SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"

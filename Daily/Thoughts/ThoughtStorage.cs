@@ -7,16 +7,22 @@ namespace Daily.Thoughts
     {
         private readonly DataProvider _dataProvider;
         
-        public ObservableCollection<Thought> Thoughts { get; }
+        public ObservableCollection<Thought>? Thoughts { get; private set; }
 
         private const string thoughtIsNotOnListException = "Thought is not on list";
 
         public ThoughtStorage(DataProvider dataProvider)
         {
             _dataProvider = dataProvider;
+        }
 
-            if (_dataProvider.Thoughts == null) Thoughts = new ObservableCollection<Thought>();
-            else Thoughts = Thoughts = new ObservableCollection<Thought>(_dataProvider.Thoughts);
+        public async Task<ObservableCollection<Thought>> LoadThoughts()
+        {
+            IEnumerable<Thought>? thoughts = await _dataProvider.LoadThoughtsAsync();
+
+            Thoughts = thoughts == null ? new() : new(thoughts);
+
+            return Thoughts;
         }
 
         public async Task<Thought?> TryCreateThoughtAsync(string name, string text)

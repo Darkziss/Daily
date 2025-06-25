@@ -5,6 +5,7 @@ using Daily.Navigation;
 using Daily.Toasts;
 using Daily.Popups;
 using AsyncTimer = System.Timers.Timer;
+using Sharpnado.TaskLoaderView;
 
 namespace Daily.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Daily.ViewModels
         
         private readonly ThoughtStorage _thoughtStorage;
 
-        public ObservableCollection<Thought> Thoughts => _thoughtStorage.Thoughts;
+        public TaskLoaderNotifier<ObservableCollection<Thought>> Loader { get; }
 
         public Command<Thought> ThoughtInteractCommand { get; }
 
@@ -29,13 +30,13 @@ namespace Daily.ViewModels
 
         public Command SwitchCanDeleteCommand { get; }
 
-        private bool ShouldLoad => Thoughts.Count > 0 && !_isThoughtOpened;
-
         private const double dummyDelay = 800d;
         
         public ThoughtPageViewModel(ThoughtStorage thoughtStorage)
         {
             _thoughtStorage = thoughtStorage;
+
+            Loader = new(true);
 
             ThoughtInteractCommand = new Command<Thought>(
             execute: async (thought) =>
@@ -87,7 +88,13 @@ namespace Daily.ViewModels
         {
             CanDeleteThought = false;
 
-            if (ShouldLoad) ShowDummy();
+            if (Loader.IsNotStarted)
+                Loader.Load(_ => _thoughtStorage.LoadThoughts());
+
+            if (!_isThoughtOpened)
+            {
+                ShowDummy();
+            }
             else
             {
                 IsLoaded = true;

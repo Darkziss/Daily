@@ -7,16 +7,22 @@ namespace Daily.Diary
     {
         private readonly DataProvider _dataProvider;
 
-        public ObservableCollection<DiaryRecord> DiaryRecords { get; }
+        public ObservableCollection<DiaryRecord>? DiaryRecords { get; private set; }
 
         private const string diaryRecordIsNotOnListException = "Diary record is not on list";
 
         public DiaryRecordStorage(DataProvider dataProvider)
         {
             _dataProvider = dataProvider;
+        }
 
-            if (_dataProvider.DiaryRecords == null) DiaryRecords = new ObservableCollection<DiaryRecord>();
-            else DiaryRecords = new ObservableCollection<DiaryRecord>(_dataProvider.DiaryRecords);
+        public async Task<ObservableCollection<DiaryRecord>> LoadDiaryRecords()
+        {
+            IEnumerable<DiaryRecord>? diaryRecords = await _dataProvider.LoadDiaryRecordsAsync();
+
+            DiaryRecords = diaryRecords == null ? new() : new(diaryRecords);
+
+            return DiaryRecords;
         }
 
         public async Task<DiaryRecord?> TryAddDiaryRecordAsync(string text, DateTime creationDateTime)

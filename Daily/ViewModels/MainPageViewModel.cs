@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Daily.Tasks;
 using Daily.Navigation;
-using Microsoft.Maui.ApplicationModel;
 
 namespace Daily.ViewModels
 {

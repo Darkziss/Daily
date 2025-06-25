@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.ComponentModel;
+using System.Collections.ObjectModel;
 using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
@@ -19,14 +20,14 @@ namespace Daily.ViewModels
         [ObservableProperty] private string? _goalLabelText;
         [ObservableProperty] private DateOnly? _deadline;
 
-        [ObservableProperty] private GoalStatus _goalStatus;
+        [ObservableProperty] private GoalStatus? _goalStatus;
 
         [ObservableProperty] private ObservableCollection<ConditionalTask> _conditionalTasks;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
 
-        [ObservableProperty] private bool _isTasksLoaded = false;
+        [ObservableProperty] private bool _isTasksVisible = false;
 
         [ObservableProperty] private bool _canInteractWithTask = true;
 
@@ -37,6 +38,8 @@ namespace Daily.ViewModels
         private readonly GoalStorage _goalStorage;
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
+
+        public TaskLoaderNotifier<Goal> GoalLoader { get; }
 
         public TaskLoaderNotifier<ObservableCollection<GeneralTask>> GeneralTasksLoader { get; }
         public TaskLoaderNotifier<ObservableCollection<ConditionalTask>> ConditionalTasksLoader { get; }
@@ -64,17 +67,15 @@ namespace Daily.ViewModels
             _generalTaskStorage = generalTaskStorage;
             _conditionalTaskStorage = conditionalTaskStorage;
 
-            _goalLabelText = _goalStorage.Goal;
-            _deadline = _goalStorage.Deadline;
-
-            _goalStatus = _goalStorage.Status;
+            GoalLoader = new(true);
 
             GeneralTasksLoader = new(true);
             ConditionalTasksLoader = new(true);
 
             EditGoalCommand = new Command(async () =>
             {
-                await PageNavigator.GoToGoalEditPageAsync();
+                if (!PageNavigator.IsRouting)
+                    await PageNavigator.GoToGoalEditPageAsync();
             });
 
             InvertGoalStatusCommand = new Command(async () =>
@@ -207,22 +208,49 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
+            LoadGoalIfNotLoaded();
             LoadTasksIfNotLoaded();
-            
-            if (!_goalStorage.IsCompleted)
-            {
-                _goalStorage.RefreshOverdueStatus();
-                
-                GoalStatus = _goalStorage.Status;
-            }
 
-            UpdateGoalAndDeadlineStatus();
+            if (GoalLoader.IsSuccessfullyCompleted)
+            {
+                RefreshOverdueStatusIfGoalNotCompleted();
+
+                UpdateGoalAndDeadlineStatus();
+            }
 
             ShowDummy();
 
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
+        }
+
+        private void LoadGoalIfNotLoaded()
+        {
+            if (GoalLoader.IsNotStarted)
+            {
+                GoalLoader.PropertyChanged += GoalLoader_PropertyChanged;
+                GoalLoader.Load(_ => _goalStorage.LoadGoalAsync());
+            }
+        }
+
+        private void GoalLoader_PropertyChanged(object? sender, PropertyChangedEventArgs args)
+        {
+            const string ResultPropertyName = "Result";
+
+            if (GoalLoader.IsSuccessfullyCompleted && args.PropertyName == ResultPropertyName)
+            {
+                GoalLabelText = _goalStorage.Goal;
+                Deadline = _goalStorage.Deadline;
+
+                GoalStatus = _goalStorage.Status;
+
+                RefreshOverdueStatusIfGoalNotCompleted();
+
+                UpdateGoalAndDeadlineStatus();
+
+                GoalLoader.PropertyChanged -= GoalLoader_PropertyChanged;
+            }
         }
 
         private void LoadTasksIfNotLoaded()
@@ -232,6 +260,16 @@ namespace Daily.ViewModels
 
             if (ConditionalTasksLoader.IsNotStarted)
                 ConditionalTasksLoader.Load(_ => _conditionalTaskStorage.LoadTasks());
+        }
+
+        private void RefreshOverdueStatusIfGoalNotCompleted()
+        {
+            if (!_goalStorage.IsCompleted)
+            {
+                _goalStorage.RefreshOverdueStatus();
+
+                GoalStatus = _goalStorage.Status;
+            }
         }
 
         private void UpdateGoalAndDeadlineStatus()
@@ -272,7 +310,7 @@ namespace Daily.ViewModels
 
         private void ShowDummy()
         {
-            IsTasksLoaded = false;
+            IsTasksVisible = false;
             CanInteractWithTask = false;
 
             const double delay = 800d;
@@ -281,8 +319,9 @@ namespace Daily.ViewModels
             timer.Elapsed += (_, _) =>
             {
                 timer.Stop();
+                timer.Dispose();
 
-                IsTasksLoaded = true;
+                IsTasksVisible = true;
                 CanInteractWithTask = true;
             };
 
