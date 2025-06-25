@@ -74,32 +74,12 @@ namespace Daily.Data
             await _dataSerializer.SerializeAsync<IReadOnlyList<DiaryRecord>>(_diaryRecordsDataPath, diaryRecords);
         }
 
-        [Obsolete]
-        private Goal? LoadGoal()
-        {
-            bool exists = File.Exists(_goalDataPath);
-
-            if (exists) return _dataSerializer.Deserialize<Goal>(_goalDataPath);
-            else return null;
-        }
-
         public async Task<Goal?> LoadGoalAsync()
         {
             if (IsGoalFileExist)
                 return await _dataSerializer.DeserializeAsync<Goal>(_goalDataPath);
             else
                 return null;
-        }
-
-        private IReadOnlyList<GeneralTask>? LoadGeneralTasks()
-        {
-            bool exists = File.Exists(_generalTasksDataPath);
-
-            if (exists)
-            {
-                return _dataSerializer.Deserialize<IReadOnlyList<GeneralTask>>(_generalTasksDataPath);
-            }
-            else return null;
         }
 
         public async Task<IEnumerable<GeneralTask>?> LoadGeneralTasksAsync()
@@ -120,36 +100,12 @@ namespace Daily.Data
                 return null;
         }
 
-        [Obsolete]
-        private IReadOnlyList<Thought>? LoadThoughts()
-        {
-            bool exists = File.Exists(_thoughtsDataPath);
-
-            if (exists)
-            {
-                return _dataSerializer.Deserialize<IReadOnlyList<Thought>>(_thoughtsDataPath);
-            }
-            else return null;
-        }
-
         public async Task<IEnumerable<Thought>?> LoadThoughtsAsync()
         {
             if (IsThoughtsFileExist)
                 return await _dataSerializer.DeserializeAsync<IEnumerable<Thought>>(_thoughtsDataPath);
             else
                 return null;
-        }
-
-        [Obsolete]
-        private IReadOnlyList<DiaryRecord>? LoadDiaryRecords()
-        {
-            bool exists = File.Exists(_diaryRecordsDataPath);
-
-            if (exists)
-            {
-                return _dataSerializer.Deserialize<IReadOnlyList<DiaryRecord>>(_diaryRecordsDataPath);
-            }
-            else return null;
         }
 
         public async Task<IEnumerable<DiaryRecord>?> LoadDiaryRecordsAsync()
