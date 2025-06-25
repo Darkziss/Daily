@@ -301,20 +301,13 @@
                                 Command="{Binding InvertGoalStatusCommand, Mode=OneTime}"/>
                         </Border.Behaviors>
 
-                        <VerticalStackLayout>
-                            <ActivityIndicator
-                                Style="{StaticResource DummyActivityIndicator}"
-                                IsVisible="{Binding GoalLoader.IsSuccessfullyCompleted, Converter={toolkit:InvertedBoolConverter}}"
-                                VerticalOptions="Center"/>
-
-                            <Label
-                                Style="{StaticResource GoalLabel}"
-                                IsVisible="{Binding GoalLoader.IsSuccessfullyCompleted}"
-                                TextDecorations="{Binding GoalStatus,
-                                    Converter={StaticResource GoalStatusToTextDecorationsConverter}}"
-                                TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
-                                Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}"/>
-                        </VerticalStackLayout>
+                        <Label
+                            Style="{StaticResource GoalLabel}"
+                            IsVisible="{Binding GoalLoader.IsSuccessfullyCompleted}"
+                            TextDecorations="{Binding GoalStatus,
+                                Converter={StaticResource GoalStatusToTextDecorationsConverter}}"
+                            TextColor="{Binding IsGoalEmpty, Converter={StaticResource IsGoalEmptyToColorConverter}}"
+                            Text="{Binding GoalLabelText, TargetNullValue='Здесь пока пусто..'}"/>
                     </Border>
 
                     <Border
