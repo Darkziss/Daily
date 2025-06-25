@@ -9,7 +9,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Sharpnado.TaskLoaderView;
 using AsyncTimer = System.Timers.Timer;
-using System.Diagnostics;
 
 namespace Daily.ViewModels
 {
