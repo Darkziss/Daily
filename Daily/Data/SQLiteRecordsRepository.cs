@@ -41,7 +41,7 @@ namespace Daily.Data
             return await _database.Table<DiaryRecord>().ToListAsync();
         }
 
-        public async Task<IReadOnlyList<Thought>> GetThoughtsAsync()
+        public async Task<IEnumerable<Thought>> GetThoughtsAsync()
         {
             if (_database == null)
                 throw new InvalidOperationException(nameof(IsInitialized));
