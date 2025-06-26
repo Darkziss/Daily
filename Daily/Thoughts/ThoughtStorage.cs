@@ -52,7 +52,7 @@ namespace Daily.Thoughts
             thought.Name = name.Trim();
             thought.Text = text.Trim();
 
-            await _dataProvider.SaveThoughtsAsync(Thoughts);
+            await _dataProvider.UpdateSavedThoughtAsync(thought);
 
             return true;
         }

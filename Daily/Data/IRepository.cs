@@ -9,6 +9,8 @@ namespace Daily.Data
 
         public Task InsertThoughtAsync(Thought thought);
 
+        public Task UpdateThoughtAsync(Thought thought);
+
         public Task<IEnumerable<Thought>> GetThoughtsAsync();
     }
 }

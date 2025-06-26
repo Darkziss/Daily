@@ -71,6 +71,11 @@ namespace Daily.Data
             await _recordsRepository.InsertThoughtAsync(thought);
         }
 
+        public async Task UpdateSavedThoughtAsync(Thought thought)
+        {
+            await _recordsRepository.UpdateThoughtAsync(thought);
+        }
+
         [Obsolete]
         public async Task SaveThoughtsAsync(IReadOnlyList<Thought> thoughts)
         {
