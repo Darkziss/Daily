@@ -35,14 +35,16 @@ namespace Daily.Data
 
         public async Task<IReadOnlyList<DiaryRecord>> GetDiaryRecordsAsync()
         {
-            if (_database == null) throw new InvalidOperationException(nameof(IsInitialized));
+            if (_database == null)
+                throw new InvalidOperationException(nameof(IsInitialized));
             
             return await _database.Table<DiaryRecord>().ToListAsync();
         }
 
         public async Task<IReadOnlyList<Thought>> GetThoughtsAsync()
         {
-            if (_database == null) throw new InvalidOperationException(nameof(IsInitialized));
+            if (_database == null)
+                throw new InvalidOperationException(nameof(IsInitialized));
 
             return await _database.Table<Thought>().ToListAsync();
         }
