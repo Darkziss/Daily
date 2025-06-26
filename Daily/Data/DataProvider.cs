@@ -81,12 +81,6 @@ namespace Daily.Data
             await _recordsRepository.DeleteThoughtAsync(thought);
         }
 
-        [Obsolete]
-        public async Task SaveThoughtsAsync(IReadOnlyList<Thought> thoughts)
-        {
-            await _dataSerializer.SerializeAsync<IReadOnlyList<Thought>>(_thoughtsDataPath, thoughts);
-        }
-
         public async Task SaveDiaryRecordsAsync(IReadOnlyList<DiaryRecord> diaryRecords)
         {
             await _dataSerializer.SerializeAsync<IReadOnlyList<DiaryRecord>>(_diaryRecordsDataPath, diaryRecords);
