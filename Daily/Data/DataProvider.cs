@@ -76,6 +76,11 @@ namespace Daily.Data
             await _recordsRepository.UpdateThoughtAsync(thought);
         }
 
+        public async Task DeleteSavedThoughtAsync(Thought thought)
+        {
+            await _recordsRepository.DeleteThoughtAsync(thought);
+        }
+
         [Obsolete]
         public async Task SaveThoughtsAsync(IReadOnlyList<Thought> thoughts)
         {

@@ -11,6 +11,8 @@ namespace Daily.Data
 
         public Task UpdateThoughtAsync(Thought thought);
 
+        public Task DeleteThoughtAsync(Thought thought);
+
         public Task<IEnumerable<Thought>> GetThoughtsAsync();
     }
 }

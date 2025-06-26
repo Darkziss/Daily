@@ -67,7 +67,7 @@ namespace Daily.Thoughts
 
             Thoughts.RemoveAt(index);
 
-            await _dataProvider.SaveThoughtsAsync(Thoughts);
+            await _dataProvider.DeleteSavedThoughtAsync(thought);
         }
 
         private bool ValidateThoughtValues(string name, string text)

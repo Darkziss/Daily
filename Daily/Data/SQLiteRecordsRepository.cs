@@ -57,6 +57,14 @@ namespace Daily.Data
             await _database.UpdateAsync(thought);
         }
 
+        public async Task DeleteThoughtAsync(Thought thought)
+        {
+            if (_database == null)
+                throw new InvalidOperationException(nameof(IsInitialized));
+
+            await _database.DeleteAsync(thought);
+        }
+
         public async Task<IEnumerable<Thought>> GetThoughtsAsync()
         {
             if (_database == null)
