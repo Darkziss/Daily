@@ -7,6 +7,8 @@ namespace Daily.Data
     {
         public Task<IReadOnlyList<DiaryRecord>> GetDiaryRecordsAsync();
 
+        public Task InsertThoughtAsync(Thought thought);
+
         public Task<IEnumerable<Thought>> GetThoughtsAsync();
     }
 }

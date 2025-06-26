@@ -66,6 +66,12 @@ namespace Daily.Data
             await _dataSerializer.SerializeAsync<IReadOnlyList<ConditionalTask>>(_conditionalTasksDataPath, сonditionalTasks);
         }
 
+        public async Task SaveThoughtAsync(Thought thought)
+        {
+            await _recordsRepository.InsertThoughtAsync(thought);
+        }
+
+        [Obsolete]
         public async Task SaveThoughtsAsync(IReadOnlyList<Thought> thoughts)
         {
             await _dataSerializer.SerializeAsync<IReadOnlyList<Thought>>(_thoughtsDataPath, thoughts);

@@ -34,7 +34,7 @@ namespace Daily.Thoughts
             Thought thought = new Thought(name, text);
             Thoughts.Insert(0, thought);
 
-            await _dataProvider.SaveThoughtsAsync(Thoughts);
+            await _dataProvider.SaveThoughtAsync(thought);
 
             return thought;
         }
