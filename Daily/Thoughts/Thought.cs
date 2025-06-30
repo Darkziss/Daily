@@ -8,7 +8,7 @@ namespace Daily.Thoughts
         private string _name;
         private string _text;
 
-        [PrimaryKey, AutoIncrement] public int? Id { get; set; }
+        [PrimaryKey, AutoIncrement] public int Id { get; set; }
 
         public string Name
         {
