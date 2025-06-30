@@ -1,4 +1,5 @@
 ﻿using Daily.Events;
+using SQLite;
 
 namespace Daily.Diary
 {
@@ -6,6 +7,8 @@ namespace Daily.Diary
     {
         private string _text;
         private DateTime _creationDateTime;
+
+        [PrimaryKey, AutoIncrement] public int Id { get; set; }
 
         public DateTime CreationDateTime
         {
