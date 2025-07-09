@@ -35,7 +35,7 @@ namespace Daily
 
             IServiceCollection collection = builder.Services;
 
-            collection.AddSingleton<UnitOfWork>();
+            collection.AddSingleton<IUnitOfWork, UnitOfWork>();
 
             RegisterStorages(collection);
             RegisterViewModels(collection);
