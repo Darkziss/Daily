@@ -9,11 +9,11 @@ namespace Daily.Tasks
 
         public override int MaxTaskCount { get; } = 10;
 
-        public ConditionalTaskStorage(DataProvider dataProvider) : base(dataProvider) { }
+        public ConditionalTaskStorage(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
         public override async Task<ObservableCollection<ConditionalTask>> LoadTasks()
         {
-            IEnumerable<ConditionalTask>? tasks = await _dataProvider.LoadConditionalTasksAsync();
+            IEnumerable<ConditionalTask>? tasks = await _unitOfWork.ConditionalTaskRepository.LoadAsync();
 
             Tasks = tasks == null ? new() : new(tasks);
 
@@ -34,7 +34,7 @@ namespace Daily.Tasks
             Tasks.Add(task);
             if (ShouldSort) SortTasks();
 
-            await _dataProvider.SaveConditionalTasksAsync(Tasks);
+            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
 
             return true;
         }
@@ -54,7 +54,7 @@ namespace Daily.Tasks
             Tasks[index] = newTask;
             if (ShouldSort) SortTasks();
 
-            await _dataProvider.SaveConditionalTasksAsync(Tasks);
+            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
 
             return true;
         }
@@ -65,7 +65,8 @@ namespace Daily.Tasks
 
             task.Perform();
 
-            await _dataProvider.SaveConditionalTasksAsync(Tasks);
+            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
+
         }
 
         public override async Task ResetTaskAsync(ConditionalTask task)
@@ -74,7 +75,7 @@ namespace Daily.Tasks
 
             task.Reset();
 
-            await _dataProvider.SaveConditionalTasksAsync(Tasks);
+            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
         }
 
         public override async Task DeleteTaskAsync(ConditionalTask task)
@@ -83,7 +84,7 @@ namespace Daily.Tasks
 
             Tasks.RemoveAt(index);
 
-            await _dataProvider.SaveConditionalTasksAsync(Tasks);
+            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
         }
 
         protected override void SortTasks()

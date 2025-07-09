@@ -5,27 +5,22 @@ namespace Daily.Thoughts
 {
     public class ThoughtStorage
     {
-        private readonly DataProvider _dataProvider;
+        private readonly IUnitOfWork _unitOfWork;
         
-        public ObservableCollection<Thought>? Thoughts { get; private set; }
+        public ObservableCollection<Thought> Thoughts { get; }
 
         private const string thoughtIsNotOnListException = "Thought is not on list";
 
-        public ThoughtStorage(DataProvider dataProvider)
+        public ThoughtStorage(IUnitOfWork unitOfWork)
         {
-            _dataProvider = dataProvider;
+            _unitOfWork = unitOfWork;
+
+            IEnumerable<Thought> thoughts = _unitOfWork.ThoughtRepository.GetAll();
+
+            Thoughts = new(thoughts);
         }
 
-        public async Task<ObservableCollection<Thought>> LoadThoughts()
-        {
-            IEnumerable<Thought>? thoughts = await _dataProvider.LoadThoughtsAsync();
-
-            Thoughts = thoughts == null ? new() : new(thoughts);
-
-            return Thoughts;
-        }
-
-        public async Task<Thought?> TryCreateThoughtAsync(string name, string text)
+        public Thought? TryCreateThoughtAsync(string name, string text)
         {
             if (!ValidateThoughtValues(name, text)) return null;
 
@@ -34,12 +29,12 @@ namespace Daily.Thoughts
             Thought thought = new Thought(name, text);
             Thoughts.Insert(0, thought);
 
-            await _dataProvider.SaveThoughtAsync(thought);
+            _unitOfWork.ThoughtRepository.Insert(thought);
 
             return thought;
         }
 
-        public async Task<bool> TryEditThoughtAsync(Thought thought, string name, string text)
+        public bool TryEditThoughtAsync(Thought thought, string name, string text)
         {
             bool contains = Thoughts.Contains(thought);
 
@@ -52,12 +47,12 @@ namespace Daily.Thoughts
             thought.Name = name.Trim();
             thought.Text = text.Trim();
 
-            await _dataProvider.UpdateSavedThoughtAsync(thought);
+            _unitOfWork.ThoughtRepository.Update(thought);
 
             return true;
         }
 
-        public async Task DeleteThoughtAsync(Thought thought)
+        public void DeleteThoughtAsync(Thought thought)
         {
             if (thought == null) return;
 
@@ -67,7 +62,7 @@ namespace Daily.Thoughts
 
             Thoughts.RemoveAt(index);
 
-            await _dataProvider.DeleteSavedThoughtAsync(thought);
+            _unitOfWork.ThoughtRepository.Delete(thought);
         }
 
         private bool ValidateThoughtValues(string name, string text)

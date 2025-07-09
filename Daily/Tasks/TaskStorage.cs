@@ -5,7 +5,7 @@ namespace Daily.Tasks
 {
     public abstract class TaskStorage<T>
     {
-        protected readonly DataProvider _dataProvider;
+        protected readonly IUnitOfWork _unitOfWork;
 
         public abstract ObservableCollection<T>? Tasks { get; protected set; }
 
@@ -15,9 +15,9 @@ namespace Daily.Tasks
 
         public bool ShouldSort => Tasks?.Count > 1;
 
-        public TaskStorage(DataProvider dataProvider)
+        public TaskStorage(IUnitOfWork unitOfWork)
         {
-            _dataProvider = dataProvider;
+            _unitOfWork = unitOfWork;
         }
 
         public abstract Task LoadTasks();
