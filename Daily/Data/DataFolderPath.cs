@@ -8,6 +8,6 @@ namespace Daily.Data
         private static readonly string _path = AndroidApplication.Context.
                 GetExternalFilesDir(AndroidEnvironment.DirectoryDocuments)!.AbsolutePath;
 
-        public static string Path => _path;
+        public static string CombineWith(string fileName) => Path.Combine(_path, fileName);
     }
 }
