@@ -83,7 +83,7 @@ namespace Daily.ViewModels
 
         private async Task CreateDiaryRecordAsync()
         {
-            DiaryRecord? record = await _diaryRecordStorage.TryAddDiaryRecordAsync(Text, DateTime.Now);
+            DiaryRecord? record = _diaryRecordStorage.TryAddDiaryRecord(Text, DateTime.Now);
 
             if (record == null)
             {
@@ -104,7 +104,7 @@ namespace Daily.ViewModels
 
             if (isSame) return;
             
-            bool success = await _diaryRecordStorage.TryEditDiaryRecordAsync(_currentDiaryRecord!, Text);
+            bool success = _diaryRecordStorage.TryEditDiaryRecord(_currentDiaryRecord!, Text);
 
             if (success)
             {

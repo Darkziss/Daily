@@ -22,7 +22,7 @@ namespace Daily.ViewModels
 
         private readonly DiaryRecordStorage _diaryRecordStorage;
 
-        public TaskLoaderNotifier<ObservableCollection<DiaryRecord>> Loader { get; }
+        public ObservableCollection<DiaryRecord> DiaryRecords { get; }
 
         public Command<DiaryRecord> DiaryRecordInteractCommand { get; }
 
@@ -34,7 +34,7 @@ namespace Daily.ViewModels
         {
             _diaryRecordStorage = diaryRecordStorage;
 
-            Loader = new(true);
+            DiaryRecords = _diaryRecordStorage.DiaryRecords;
 
             DiaryRecordInteractCommand = new Command<DiaryRecord>(
             execute: async (record) =>
@@ -49,7 +49,7 @@ namespace Daily.ViewModels
 
                     if (shouldDelete)
                     {
-                        await _diaryRecordStorage.DeleteDiaryRecordAsync(record);
+                        _diaryRecordStorage.DeleteDiaryRecord(record);
                         await DiaryRecordToastHandler.ShowDiaryRecordDeletedToastAsync();
                     }
                 }
@@ -85,9 +85,6 @@ namespace Daily.ViewModels
         public void ResetView()
         {
             CanDeleteDiaryRecord = false;
-
-            if (Loader.IsNotStarted)
-                Loader.Load(_ => _diaryRecordStorage.LoadDiaryRecords());
 
             if (!_isDiaryRecordOpened)
             {
