@@ -12,7 +12,7 @@ namespace Daily.ViewModels
     public partial class ThoughtPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isLoaded = false;
-        
+
         [ObservableProperty] private Thought? _selectedThought = null;
 
         [ObservableProperty] private bool _canInteractWithThought = true;
@@ -22,7 +22,7 @@ namespace Daily.ViewModels
         
         private readonly ThoughtStorage _thoughtStorage;
 
-        public TaskLoaderNotifier<ObservableCollection<Thought>> Loader { get; }
+        public ObservableCollection<Thought> Thoughts { get; }
 
         public Command<Thought> ThoughtInteractCommand { get; }
 
@@ -36,7 +36,7 @@ namespace Daily.ViewModels
         {
             _thoughtStorage = thoughtStorage;
 
-            Loader = new(true);
+            Thoughts = _thoughtStorage.Thoughts;
 
             ThoughtInteractCommand = new Command<Thought>(
             execute: async (thought) =>
@@ -51,7 +51,7 @@ namespace Daily.ViewModels
 
                     if (shouldDelete)
                     {
-                        await _thoughtStorage.DeleteThoughtAsync(thought);
+                        _thoughtStorage.DeleteThoughtAsync(thought);
                         await ThoughtToastHandler.ShowThoughtDeletedToastAsync();
                     }
                 }
@@ -88,10 +88,7 @@ namespace Daily.ViewModels
         {
             CanDeleteThought = false;
 
-            if (Loader.IsNotStarted)
-                Loader.Load(_ => _thoughtStorage.LoadThoughts());
-
-            if (!_isThoughtOpened)
+            if (!_isThoughtOpened && Thoughts.Count > 0)
             {
                 ShowDummy();
             }

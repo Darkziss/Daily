@@ -94,7 +94,7 @@ namespace Daily.ViewModels
 
         private async Task CreateThoughtAsync()
         {
-            Thought? thought = await _thoughtStorage.TryCreateThoughtAsync(Name, Text);
+            Thought? thought = _thoughtStorage.TryCreateThoughtAsync(Name, Text);
             
             if (thought == null)
             {
@@ -115,7 +115,7 @@ namespace Daily.ViewModels
 
             if (isSame) return;
             
-            bool success = await _thoughtStorage.TryEditThoughtAsync(_currentThought!, Name, Text);
+            bool success = _thoughtStorage.TryEditThoughtAsync(_currentThought!, Name, Text);
 
             if (success)
             {
