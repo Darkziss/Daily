@@ -3,16 +3,14 @@ using Daily.Thoughts;
 
 namespace Daily.Data
 {
-    public interface IRepository
+    public interface IRepository<T> where T : class, new()
     {
-        public Task<IReadOnlyList<DiaryRecord>> GetDiaryRecordsAsync();
+        public void Insert(T item);
 
-        public Task InsertThoughtAsync(Thought thought);
+        public void Update(T item);
 
-        public Task UpdateThoughtAsync(Thought thought);
+        public void Delete(T item);
 
-        public Task DeleteThoughtAsync(Thought thought);
-
-        public Task<IEnumerable<Thought>> GetThoughtsAsync();
+        public IEnumerable<T> GetAll();
     }
 }
