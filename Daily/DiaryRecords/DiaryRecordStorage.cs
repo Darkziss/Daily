@@ -11,7 +11,7 @@ namespace Daily.Diary
 
         private const string diaryRecordIsNotOnListException = "Diary record is not on list";
 
-        public DiaryRecordStorage(UnitOfWork unitOfWork)
+        public DiaryRecordStorage(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             
