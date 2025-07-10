@@ -15,7 +15,8 @@ namespace Daily.Diary
         {
             _unitOfWork = unitOfWork;
             
-            IEnumerable<DiaryRecord> diaryRecords = unitOfWork.DiaryRecordRepository.GetAll();
+            IEnumerable<DiaryRecord> diaryRecords = unitOfWork.DiaryRecordRepository.GetAll()
+                .Reverse();
 
             DiaryRecords = new(diaryRecords);
         }
