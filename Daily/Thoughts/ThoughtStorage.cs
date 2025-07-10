@@ -15,7 +15,8 @@ namespace Daily.Thoughts
         {
             _unitOfWork = unitOfWork;
 
-            IEnumerable<Thought> thoughts = _unitOfWork.ThoughtRepository.GetAll();
+            IEnumerable<Thought> thoughts = _unitOfWork.ThoughtRepository.GetAll()
+                .Reverse();
 
             Thoughts = new(thoughts);
         }
