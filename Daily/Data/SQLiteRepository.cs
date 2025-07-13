@@ -29,7 +29,8 @@ namespace Daily.Data
 
         public IEnumerable<T> GetAll()
         {
-            return _connectionProvider.Connection.Table<T>().ToList();
+            return _connectionProvider.Connection.Table<T>()
+                .ToList();
         }
     }
 }
