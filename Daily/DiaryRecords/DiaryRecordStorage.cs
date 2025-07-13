@@ -14,9 +14,9 @@ namespace Daily.Diary
         public DiaryRecordStorage(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            
-            IEnumerable<DiaryRecord> diaryRecords = unitOfWork.DiaryRecordRepository.GetAll()
-                .Reverse();
+
+            IEnumerable<DiaryRecord> diaryRecords = unitOfWork.DiaryRecordRepository.GetAll().
+                OrderByDescending((record) => record.CreationDateTime);
 
             DiaryRecords = new(diaryRecords);
         }
