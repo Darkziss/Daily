@@ -5,21 +5,23 @@ namespace Daily.Diary
 {
     public class DiaryRecordStorage
     {
-        private readonly DataProvider _dataProvider;
+        private readonly IUnitOfWork _unitOfWork;
 
         public ObservableCollection<DiaryRecord> DiaryRecords { get; }
 
         private const string diaryRecordIsNotOnListException = "Diary record is not on list";
 
-        public DiaryRecordStorage(DataProvider dataProvider)
+        public DiaryRecordStorage(IUnitOfWork unitOfWork)
         {
-            _dataProvider = dataProvider;
+            _unitOfWork = unitOfWork;
 
-            if (_dataProvider.DiaryRecords == null) DiaryRecords = new ObservableCollection<DiaryRecord>();
-            else DiaryRecords = new ObservableCollection<DiaryRecord>(_dataProvider.DiaryRecords);
+            IEnumerable<DiaryRecord> diaryRecords = unitOfWork.DiaryRecordRepository.GetAll().
+                OrderByDescending((record) => record.CreationDateTime);
+
+            DiaryRecords = new(diaryRecords);
         }
 
-        public async Task<DiaryRecord?> TryAddDiaryRecordAsync(string text, DateTime creationDateTime)
+        public DiaryRecord? TryAddDiaryRecord(string text, DateTime creationDateTime)
         {
             if (string.IsNullOrWhiteSpace(text)) return null;
 
@@ -27,12 +29,12 @@ namespace Daily.Diary
             DiaryRecord record = new DiaryRecord(text, creationDateTime);
             DiaryRecords.Insert(0, record);
 
-            await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
-
+            _unitOfWork.DiaryRecordRepository.Insert(record);
+            
             return record;
         }
 
-        public async Task<bool> TryEditDiaryRecordAsync(DiaryRecord record, string text)
+        public bool TryEditDiaryRecord(DiaryRecord record, string text)
         {
             bool contains = DiaryRecords.Contains(record);
 
@@ -42,12 +44,12 @@ namespace Daily.Diary
 
             record.Text = text.Trim();
 
-            await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
+            _unitOfWork.DiaryRecordRepository.Update(record);
 
             return true;
         }
 
-        public async Task DeleteDiaryRecordAsync(DiaryRecord record)
+        public void DeleteDiaryRecord(DiaryRecord record)
         {
             if (record == null) return;
 
@@ -57,7 +59,7 @@ namespace Daily.Diary
 
             DiaryRecords.RemoveAt(index);
 
-            await _dataProvider.SaveDiaryRecordsAsync(DiaryRecords);
+            _unitOfWork.DiaryRecordRepository.Delete(record);
         }
     }
 }

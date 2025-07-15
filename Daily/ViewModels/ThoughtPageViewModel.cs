@@ -5,13 +5,14 @@ using Daily.Navigation;
 using Daily.Toasts;
 using Daily.Popups;
 using AsyncTimer = System.Timers.Timer;
+using Sharpnado.TaskLoaderView;
 
 namespace Daily.ViewModels
 {
     public partial class ThoughtPageViewModel : ObservableObject, IResetView
     {
         [ObservableProperty] private bool _isLoaded = false;
-        
+
         [ObservableProperty] private Thought? _selectedThought = null;
 
         [ObservableProperty] private bool _canInteractWithThought = true;
@@ -21,7 +22,7 @@ namespace Daily.ViewModels
         
         private readonly ThoughtStorage _thoughtStorage;
 
-        public ObservableCollection<Thought> Thoughts => _thoughtStorage.Thoughts;
+        public ObservableCollection<Thought> Thoughts { get; }
 
         public Command<Thought> ThoughtInteractCommand { get; }
 
@@ -29,13 +30,13 @@ namespace Daily.ViewModels
 
         public Command SwitchCanDeleteCommand { get; }
 
-        private bool ShouldLoad => Thoughts.Count > 0 && !_isThoughtOpened;
-
         private const double dummyDelay = 800d;
         
         public ThoughtPageViewModel(ThoughtStorage thoughtStorage)
         {
             _thoughtStorage = thoughtStorage;
+
+            Thoughts = _thoughtStorage.Thoughts;
 
             ThoughtInteractCommand = new Command<Thought>(
             execute: async (thought) =>
@@ -50,7 +51,7 @@ namespace Daily.ViewModels
 
                     if (shouldDelete)
                     {
-                        await _thoughtStorage.DeleteThoughtAsync(thought);
+                        _thoughtStorage.DeleteThoughtAsync(thought);
                         await ThoughtToastHandler.ShowThoughtDeletedToastAsync();
                     }
                 }
@@ -87,7 +88,10 @@ namespace Daily.ViewModels
         {
             CanDeleteThought = false;
 
-            if (ShouldLoad) ShowDummy();
+            if (!_isThoughtOpened && Thoughts.Count > 0)
+            {
+                ShowDummy();
+            }
             else
             {
                 IsLoaded = true;

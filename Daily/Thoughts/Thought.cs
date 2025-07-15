@@ -1,4 +1,5 @@
 ﻿using Daily.Events;
+using SQLite;
 
 namespace Daily.Thoughts
 {
@@ -6,6 +7,8 @@ namespace Daily.Thoughts
     {
         private string _name;
         private string _text;
+
+        [PrimaryKey, AutoIncrement] public int Id { get; set; }
 
         public string Name
         {
@@ -29,6 +32,12 @@ namespace Daily.Thoughts
                 _text = value;
                 OnPropertyChanged(nameof(Text));
             }
+        }
+
+        public Thought()
+        {
+            _name = string.Empty;
+            _text = string.Empty;
         }
 
         public Thought(string name, string text)

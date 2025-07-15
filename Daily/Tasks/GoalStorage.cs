@@ -4,26 +4,35 @@ namespace Daily.Tasks
 {
     public class GoalStorage
     {
-        private readonly Goal _goal;
+        private Goal? _goal;
 
-        private readonly DataProvider _dataProvider;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public string? Goal => _goal.Text;
-        public DateOnly? Deadline => _goal.Deadline;
+        public string? Goal => _goal?.Text;
+        public DateOnly? Deadline => _goal?.Deadline;
 
-        public GoalStatus Status => _goal.Status;
+        public GoalStatus? Status => _goal?.Status;
 
-        public bool IsCompleted => _goal.Status == GoalStatus.Completed;
+        public bool IsNone => _goal?.Status == GoalStatus.None;
+
+        public bool IsCompleted => _goal?.Status == GoalStatus.Completed;
 
         public DateOnly MinimumDeadlineDate => DateOnly.FromDateTime(DateTime.Now).AddDays(1);
 
-        public GoalStorage(DataProvider dataProvider)
+        public GoalStorage(IUnitOfWork unitOfWork)
         {
-            _goal = dataProvider.Goal ?? new Goal();
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<Goal> LoadGoalAsync()
+        {
+            Goal? goal = await _unitOfWork.GoalRepository.LoadAsync();
+
+            _goal = goal ?? new();
 
             if (!IsCompleted) RefreshOverdueStatus();
 
-            _dataProvider = dataProvider;
+            return _goal;
         }
 
         public async Task SetGoalAsync(string? goal, DateOnly? deadline)
@@ -35,7 +44,7 @@ namespace Daily.Tasks
 
             _goal.Status = _goal.Text == null ? GoalStatus.None : GoalStatus.Incompleted;
 
-            await _dataProvider.SaveGoalAsync(_goal);
+            await _unitOfWork.GoalRepository.SaveAsync(_goal);
         }
 
         public async Task CompleteGoalAsync()
@@ -44,7 +53,7 @@ namespace Daily.Tasks
 
             _goal.Status = GoalStatus.Completed;
 
-            await _dataProvider.SaveGoalAsync(_goal);
+            await _unitOfWork.GoalRepository.SaveAsync(_goal);
         }
 
         public async Task ResetGoalStatusAsync()
@@ -53,7 +62,7 @@ namespace Daily.Tasks
 
             _goal.Status = CheckForOverdueNow() ? GoalStatus.Overdue : GoalStatus.Incompleted;
 
-            await _dataProvider.SaveGoalAsync(_goal);
+            await _unitOfWork.GoalRepository.SaveAsync(_goal);
         }
 
         public void RefreshOverdueStatus()

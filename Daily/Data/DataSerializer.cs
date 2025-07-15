@@ -8,8 +8,10 @@ namespace Daily.Data
 
         public abstract void Serialize<T>(string path, T value);
 
+        public abstract Task SerializeAsync<T>(string path, T value);
+
         public abstract T Deserialize<T>(string path);
 
-        public abstract Task SerializeAsync<T>(string path, T value);
+        public abstract Task<T?> DeserializeAsync<T>(string path);
     }
 }

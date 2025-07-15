@@ -75,7 +75,7 @@
         <CollectionView
             Style="{StaticResource RecordCollectionView}"
             IsVisible="{Binding IsLoaded}"
-            ItemsSource="{Binding DiaryRecords}"
+            ItemsSource="{Binding DiaryRecords, Mode=OneTime}"
             SelectedItem="{Binding SelectedDiaryRecord, Mode=TwoWay}"
             SelectionChangedCommand="{Binding DiaryRecordInteractCommand}"
             SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"

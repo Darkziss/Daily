@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.ComponentModel;
+using System.Collections.ObjectModel;
 using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
@@ -6,6 +7,7 @@ using Daily.Popups;
 using Daily.Messages;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Sharpnado.TaskLoaderView;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
@@ -18,12 +20,14 @@ namespace Daily.ViewModels
         [ObservableProperty] private string? _goalLabelText;
         [ObservableProperty] private DateOnly? _deadline;
 
-        [ObservableProperty] private GoalStatus _goalStatus;
+        [ObservableProperty] private GoalStatus? _goalStatus;
+
+        [ObservableProperty] private ObservableCollection<ConditionalTask> _conditionalTasks;
 
         [ObservableProperty] private object? _selectedGeneralTask = null;
         [ObservableProperty] private object? _selectedСonditionalTask = null;
 
-        [ObservableProperty] private bool _isTasksLoaded = false;
+        [ObservableProperty] private bool _isTasksVisible = false;
 
         [ObservableProperty] private bool _canInteractWithTask = true;
 
@@ -35,8 +39,10 @@ namespace Daily.ViewModels
         private readonly GeneralTaskStorage _generalTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
-        public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
-        public ObservableCollection<ConditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
+        public TaskLoaderNotifier<Goal> GoalLoader { get; }
+
+        public TaskLoaderNotifier<ObservableCollection<GeneralTask>> GeneralTasksLoader { get; }
+        public TaskLoaderNotifier<ObservableCollection<ConditionalTask>> ConditionalTasksLoader { get; }
 
         public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
@@ -53,8 +59,6 @@ namespace Daily.ViewModels
         public Command SwitchCanDeleteTaskCommand { get; }
         public Command SwitchCanResetTaskCommand { get; }
 
-        private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
-
         public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
         {
@@ -63,18 +67,22 @@ namespace Daily.ViewModels
             _generalTaskStorage = generalTaskStorage;
             _conditionalTaskStorage = conditionalTaskStorage;
 
-            _goalLabelText = _goalStorage.Goal;
-            _deadline = _goalStorage.Deadline;
+            GoalLoader = new(true);
 
-            _goalStatus = _goalStorage.Status;
+            GeneralTasksLoader = new(true);
+            ConditionalTasksLoader = new(true);
 
             EditGoalCommand = new Command(async () =>
             {
-                await PageNavigator.GoToGoalEditPageAsync();
+                if (!PageNavigator.IsRouting)
+                    await PageNavigator.GoToGoalEditPageAsync();
             });
 
             InvertGoalStatusCommand = new Command(async () =>
             {
+                if (_goalStorage.IsNone)
+                    return;
+                
                 if (_goalStorage.IsCompleted) await _goalStorage.ResetGoalStatusAsync();
                 else await _goalStorage.CompleteGoalAsync();
 
@@ -200,24 +208,67 @@ namespace Daily.ViewModels
 
         public void ResetView()
         {
-            if (!_goalStorage.IsCompleted)
+            LoadGoalIfNotLoaded();
+            LoadTasksIfNotLoaded();
+
+            if (GoalLoader.IsSuccessfullyCompleted)
             {
-                _goalStorage.RefreshOverdueStatus();
-                
-                GoalStatus = _goalStorage.Status;
+                RefreshOverdueStatusIfGoalNotCompleted();
+
+                UpdateGoalAndDeadlineStatus();
             }
 
-            UpdateGoalAndDeadlineStatus();
+            ShowDummy();
 
             CanEditTask = false;
             CanDeleteTask = false;
             CanResetTask = false;
+        }
 
-            if (ShouldLoadTask) ShowDummy();
-            else
+        private void LoadGoalIfNotLoaded()
+        {
+            if (GoalLoader.IsNotStarted)
             {
-                IsTasksLoaded = true;
-                CanInteractWithTask = true;
+                GoalLoader.PropertyChanged += GoalLoader_PropertyChanged;
+                GoalLoader.Load(_ => _goalStorage.LoadGoalAsync());
+            }
+        }
+
+        private void GoalLoader_PropertyChanged(object? sender, PropertyChangedEventArgs args)
+        {
+            const string ResultPropertyName = "Result";
+
+            if (GoalLoader.IsSuccessfullyCompleted && args.PropertyName == ResultPropertyName)
+            {
+                GoalLabelText = _goalStorage.Goal;
+                Deadline = _goalStorage.Deadline;
+
+                GoalStatus = _goalStorage.Status;
+
+                RefreshOverdueStatusIfGoalNotCompleted();
+
+                UpdateGoalAndDeadlineStatus();
+
+                GoalLoader.PropertyChanged -= GoalLoader_PropertyChanged;
+            }
+        }
+
+        private void LoadTasksIfNotLoaded()
+        {
+            if (GeneralTasksLoader.IsNotStarted)
+                GeneralTasksLoader.Load(_ => _generalTaskStorage.LoadTasks());
+
+            if (ConditionalTasksLoader.IsNotStarted)
+                ConditionalTasksLoader.Load(_ => _conditionalTaskStorage.LoadTasks());
+        }
+
+        private void RefreshOverdueStatusIfGoalNotCompleted()
+        {
+            if (!_goalStorage.IsCompleted)
+            {
+                _goalStorage.RefreshOverdueStatus();
+
+                GoalStatus = _goalStorage.Status;
             }
         }
 
@@ -259,7 +310,7 @@ namespace Daily.ViewModels
 
         private void ShowDummy()
         {
-            IsTasksLoaded = false;
+            IsTasksVisible = false;
             CanInteractWithTask = false;
 
             const double delay = 800d;
@@ -268,8 +319,9 @@ namespace Daily.ViewModels
             timer.Elapsed += (_, _) =>
             {
                 timer.Stop();
+                timer.Dispose();
 
-                IsTasksLoaded = true;
+                IsTasksVisible = true;
                 CanInteractWithTask = true;
             };
 

@@ -5,14 +5,19 @@ namespace Daily.Tasks
 {
     public class GeneralTaskStorage : TaskStorage<GeneralTask>
     {
-        public override ObservableCollection<GeneralTask> Tasks { get; protected set; }
+        public override ObservableCollection<GeneralTask>? Tasks { get; protected set; }
 
         public override int MaxTaskCount { get; } = 15;
 
-        public GeneralTaskStorage(DataProvider dataProvider) : base(dataProvider)
+        public GeneralTaskStorage(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+
+        public override async Task<ObservableCollection<GeneralTask>> LoadTasks()
         {
-            if (_dataProvider.GeneralTasks == null) Tasks = new ObservableCollection<GeneralTask>();
-            else Tasks = new ObservableCollection<GeneralTask>(_dataProvider.GeneralTasks);
+            IEnumerable<GeneralTask>? tasks = await _unitOfWork.GeneralTaskRepository.LoadAsync();
+
+            Tasks = tasks == null ? new() : new(tasks);
+
+            return Tasks;
         }
 
         public override async Task<bool> TryAddTaskAsync(GeneralTask task)
@@ -29,7 +34,7 @@ namespace Daily.Tasks
             Tasks.Add(task);
             if (ShouldSort) SortTasks();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
 
             return true;
         }
@@ -49,7 +54,7 @@ namespace Daily.Tasks
             Tasks[index] = newTask;
             if (ShouldSort) SortTasks();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
             return true;
         }
 
@@ -59,7 +64,7 @@ namespace Daily.Tasks
 
             task.Perform();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
         }
 
         public override async Task ResetTaskAsync(GeneralTask task)
@@ -68,7 +73,7 @@ namespace Daily.Tasks
 
             task.Reset();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
         }
 
         public override async Task DeleteTaskAsync(GeneralTask task)
@@ -77,7 +82,7 @@ namespace Daily.Tasks
 
             Tasks.RemoveAt(index);
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
         }
 
         protected override void SortTasks()
