@@ -256,14 +256,14 @@
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="*, 80"
+        RowDefinitions="*"
         VerticalOptions="Fill"
         HorizontalOptions="Fill">
 
         <ScrollView
             Grid.Column="0"
             Grid.Row="0">
-            
+
             <VerticalStackLayout
                 Spacing="20"
                 Padding="20, 40, 0, 0">
@@ -341,7 +341,7 @@
                         HorizontalOptions="End"
                         Grid.ColumnSpan="2"
                         Grid.Row="2">
-                        
+
                         <Border.Behaviors>
                             <toolkit:TouchBehavior
                                 DefaultAnimationDuration="{StaticResource DefaultAnimationDuration}"
@@ -561,72 +561,5 @@
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
-
-        <Frame
-            Style="{StaticResource BottomPanel}"
-            Grid.Column="0"
-            Grid.Row="1">
-
-            <HorizontalStackLayout
-                Spacing="20"
-                VerticalOptions="Center"
-                HorizontalOptions="Center">
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        Padding="5, 5, 5, 5"
-                        Source="add.png"
-                        Command="{Binding AddTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Создать"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        Padding="5, 5, 5, 5"
-                        BackgroundColor="{Binding CanEditTask, Converter={StaticResource CanEditTaskToColorConverter}}"
-                        Source="edit.png"
-                        Command="{Binding SwitchCanEditTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Изменить"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        BackgroundColor="{Binding CanDeleteTask, Converter={StaticResource CanDeleteTaskToColorConverter}}"
-                        Padding="5, 5, 5, 5"
-                        Source="delete.png"
-                        Command="{Binding SwitchCanDeleteTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Удалить"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        BackgroundColor="{Binding CanResetTask, Converter={StaticResource CanResetTaskToColorConverter}}"
-                        Padding="5, 5, 5, 5"
-                        Source="reset.png"
-                        Command="{Binding SwitchCanResetTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Сбросить"/>
-                </VerticalStackLayout>
-            </HorizontalStackLayout>
-        </Frame>
     </Grid>
 </ContentPage>
