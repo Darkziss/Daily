@@ -422,7 +422,10 @@
 
                                                 <SwipeItemView
                                                     BackgroundColor="Transparent"
-                                                    WidthRequest="50">
+                                                    WidthRequest="50"
+                                                    Command="{Binding ResetConditionalTaskCommand, Mode=OneTime,
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
                                                     <ImageButton
                                                         BackgroundColor="{StaticResource BlueSelected}"
@@ -434,7 +437,10 @@
 
                                                 <SwipeItemView
                                                     BackgroundColor="Transparent"
-                                                    WidthRequest="50">
+                                                    WidthRequest="50"
+                                                    Command="{Binding DeleteConditionalTaskCommand, Mode=OneTime,
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
                                                     <ImageButton
                                                         BackgroundColor="{StaticResource RedSelected}"

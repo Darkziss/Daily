@@ -55,6 +55,8 @@ namespace Daily.ViewModels
 
         public Command<ConditionalTask> PerformConditionalTaskCommand { get; }
         public Command<ConditionalTask> EditConditionalTaskCommand { get; }
+        public Command<ConditionalTask> ResetConditionalTaskCommand { get; }
+        public Command<ConditionalTask> DeleteConditionalTaskCommand { get; }
 
         public Command AddTaskCommand { get; }
 
@@ -183,6 +185,28 @@ namespace Daily.ViewModels
                 };
 
                 await PageNavigator.GoToTaskEditPageAsync(parameters);
+            });
+
+            ResetConditionalTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await ResetConditionalTaskAsync(task);
+            });
+
+            DeleteConditionalTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
+
+                if (shouldDelete)
+                {
+                    await _conditionalTaskStorage.DeleteTaskAsync(task);
+                    await TaskToastHandler.ShowTaskDeletedToastAsync();
+                }
             });
 
             AddTaskCommand = new Command(
