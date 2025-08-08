@@ -53,6 +53,9 @@ namespace Daily.ViewModels
         public Command<GeneralTask> GeneralTaskInteractCommand { get; }
         public Command<ConditionalTask> СonditionalTaskInteractCommand { get; }
 
+        public Command<ConditionalTask> PerformConditionalTaskCommand { get; }
+        public Command<ConditionalTask> EditConditionalTaskCommand { get; }
+
         public Command AddTaskCommand { get; }
 
         public Command SwitchCanEditTaskCommand { get; }
@@ -159,6 +162,29 @@ namespace Daily.ViewModels
                 else await PerformСonditionalTaskAsync(task);
 
                 SelectedСonditionalTask = null;
+            });
+
+            PerformConditionalTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await PerformСonditionalTaskAsync(task);
+            });
+
+            EditConditionalTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                CanInteractWithTask = false;
+
+                var parameters = new ShellNavigationQueryParameters()
+                {
+                    [nameof(ConditionalTask)] = task
+                };
+
+                await PageNavigator.GoToTaskEditPageAsync(parameters);
             });
 
             AddTaskCommand = new Command(
