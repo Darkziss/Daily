@@ -177,8 +177,6 @@ namespace Daily.ViewModels
                 if (!CanInteractWithTask)
                     return;
 
-                CanInteractWithTask = false;
-
                 var parameters = new ShellNavigationQueryParameters()
                 {
                     [nameof(ConditionalTask)] = task
