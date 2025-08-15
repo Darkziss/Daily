@@ -32,6 +32,9 @@
             <x:Double x:Key="FloatingActionButtonSize">60</x:Double>
 
             <x:String x:Key="AddIconName">add.png</x:String>
+            <x:String x:Key="EditIconName">edit.png</x:String>
+            <x:String x:Key="ResetIconName">reset.png</x:String>
+            <x:String x:Key="DeleteIconName">delete.png</x:String>
 
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
@@ -429,11 +432,11 @@
 
                                                     <ImageButton
                                                         BackgroundColor="{StaticResource GreenSelected}"
-                                                        Source="edit.png"
                                                         Padding="5"
                                                         VerticalOptions="Fill"
                                                         HorizontalOptions="Fill"/>
                                                         BackgroundColor="{StaticResource Good}"
+                                                        Source="{StaticResource EditIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
@@ -444,11 +447,11 @@
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
-                                                        Source="reset.png"
                                                         Padding="5"
                                                         VerticalOptions="Fill"
                                                         HorizontalOptions="Fill"/>
                                                         BackgroundColor="{StaticResource Reset}"
+                                                        Source="{StaticResource ResetIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
@@ -460,10 +463,10 @@
 
                                                     <ImageButton
                                                         BackgroundColor="{StaticResource RedSelected}"
-                                                        Source="delete.png"
                                                         Padding="5"
                                                         VerticalOptions="Fill"
                                                         HorizontalOptions="Fill"/>
+                                                        Source="{StaticResource DeleteIconName}"/>
                                                 </SwipeItemView>
                                             </SwipeItems>
                                         </SwipeView.RightItems>
@@ -591,10 +594,10 @@
                                                     <ImageButton
                                                         BackgroundColor="{StaticResource GreenSelected}"
                                                         BackgroundColor="{StaticResource Good}"
-                                                        Source="edit.png"
                                                         Padding="5"
                                                         VerticalOptions="Fill"
                                                         HorizontalOptions="Fill"/>
+                                                        Source="{StaticResource EditIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
@@ -605,11 +608,11 @@
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
-                                                        Source="reset.png"
                                                         Padding="5"
                                                         VerticalOptions="Fill"
                                                         HorizontalOptions="Fill"/>
                                                         BackgroundColor="{StaticResource Reset}"
+                                                        Source="{StaticResource ResetIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
@@ -621,10 +624,10 @@
 
                                                     <ImageButton
                                                         BackgroundColor="{StaticResource RedSelected}"
-                                                        Source="delete.png"
                                                         Padding="5"
                                                         VerticalOptions="Fill"
                                                         HorizontalOptions="Fill"/>
+                                                        Source="{StaticResource DeleteIconName}"/>
                                                 </SwipeItemView>
                                             </SwipeItems>
                                         </SwipeView.RightItems>
