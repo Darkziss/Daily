@@ -188,6 +188,7 @@
             
             <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="InputTransparent" Value="False"/>
+                <Setter Property="CascadeInputTransparent" Value="False"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
@@ -208,6 +209,8 @@
             </Style>
 
             <Style TargetType="Grid" x:Key="TaskCardGrid">
+                <Setter Property="InputTransparent" Value="True"/>
+                <Setter Property="CascadeInputTransparent" Value="True"/>
                 <Setter Property="ColumnDefinitions" Value="50, *"/>
                 <Setter Property="RowDefinitions" Value="Auto, Auto"/>
             </Style>
