@@ -124,7 +124,7 @@
 
             <converters:BoolToColorConverter
                 x:Key="CanEditTaskToColorConverter"
-                TrueColor="{StaticResource GreenSelected}"
+                TrueColor="{StaticResource Good}"
                 FalseColor="{StaticResource Hover}"/>
 
             <converters:BoolToColorConverter
