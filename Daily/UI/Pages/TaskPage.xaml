@@ -565,9 +565,6 @@
                             Style="{StaticResource TasksCollectionView}"
                             IsVisible="{Binding GeneralTasksLoader.IsSuccessfullyCompleted}"
                             ItemsSource="{Binding GeneralTasksLoader.Result}"
-                            SelectedItem="{Binding SelectedGeneralTask, Mode=TwoWay}"
-                            SelectionChangedCommand="{Binding GeneralTaskInteractCommand}"
-                            SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                             Margin="{StaticResource GeneralTaskCollectionViewMargin}"
                             Grid.Column="0"
                             Grid.Row="1">
