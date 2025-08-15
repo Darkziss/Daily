@@ -58,6 +58,11 @@ namespace Daily.ViewModels
         public Command<ConditionalTask> ResetConditionalTaskCommand { get; }
         public Command<ConditionalTask> DeleteConditionalTaskCommand { get; }
 
+        public Command<GeneralTask> PerformGeneralTaskCommand { get; }
+        public Command<GeneralTask> EditGeneralTaskCommand { get; }
+        public Command<GeneralTask> ResetGeneralTaskCommand { get; }
+        public Command<GeneralTask> DeleteGeneralTaskCommand { get; }
+
         public Command AddTaskCommand { get; }
 
         public Command SwitchCanEditTaskCommand { get; }
@@ -205,6 +210,49 @@ namespace Daily.ViewModels
                 if (shouldDelete)
                 {
                     await _conditionalTaskStorage.DeleteTaskAsync(task);
+                    await TaskToastHandler.ShowTaskDeletedToastAsync();
+                }
+            });
+
+            PerformGeneralTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await PerformGeneralTaskAsync(task);
+            });
+
+            EditGeneralTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                var parameters = new ShellNavigationQueryParameters()
+                {
+                    [nameof(GeneralTask)] = task
+                };
+
+                await PageNavigator.GoToTaskEditPageAsync(parameters);
+            });
+
+            ResetGeneralTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await ResetGeneralTaskAsync(task);
+            });
+
+            DeleteGeneralTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
+
+                if (shouldDelete)
+                {
+                    await _generalTaskStorage.DeleteTaskAsync(task);
                     await TaskToastHandler.ShowTaskDeletedToastAsync();
                 }
             });
