@@ -589,6 +589,7 @@
 
                                                     <ImageButton
                                                         BackgroundColor="{StaticResource GreenSelected}"
+                                                        BackgroundColor="{StaticResource Good}"
                                                         Source="edit.png"
                                                         Padding="5"
                                                         VerticalOptions="Fill"
