@@ -51,7 +51,6 @@
             <Color x:Key="ProgressBackgroundFill">#a4a4a4</Color>
             <Color x:Key="Completed">#71b866</Color>
 
-            <Color x:Key="GreenSelected">#aaf786</Color>
             <Color x:Key="BlueSelected">#86f7ea</Color>
 
             <converters:GoalStatusToColorConverter
@@ -255,7 +254,7 @@
             </Style>
 
             <Style TargetType="ImageButton" x:Key="AddTaskButton">
-                <Setter Property="BackgroundColor" Value="{StaticResource GreenSelected}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Good}"/>
                 <Setter Property="Source" Value="{StaticResource AddIconName}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource FloatingActionButtonSize}"/>
                 <Setter Property="HeightRequest" Value="{StaticResource FloatingActionButtonSize}"/>
