@@ -189,6 +189,17 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style TargetType="SwipeItemView">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="WidthRequest" Value="50"/>
+            </Style>
+
+            <Style TargetType="ImageButton" x:Key="TaskCardSwipeItemViewButton">
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
             
             <Style TargetType="Frame" x:Key="TaskCard">
                 <Setter Property="InputTransparent" Value="False"/>
@@ -424,48 +435,35 @@
                                         <SwipeView.RightItems>
                                             <SwipeItems>
                                                 <SwipeItemView
-                                                    BackgroundColor="Transparent"
-                                                    WidthRequest="50"
                                                     Command="{Binding EditConditionalTaskCommand, Mode=OneTime, 
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
-                                                        BackgroundColor="{StaticResource GreenSelected}"
-                                                        Padding="5"
-                                                        VerticalOptions="Fill"
-                                                        HorizontalOptions="Fill"/>
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
                                                         BackgroundColor="{StaticResource Good}"
                                                         Source="{StaticResource EditIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    BackgroundColor="Transparent"
-                                                    WidthRequest="50"
                                                     Command="{Binding ResetConditionalTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
-                                                        Padding="5"
-                                                        VerticalOptions="Fill"
-                                                        HorizontalOptions="Fill"/>
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
                                                         BackgroundColor="{StaticResource Reset}"
                                                         Source="{StaticResource ResetIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    BackgroundColor="Transparent"
-                                                    WidthRequest="50"
                                                     Command="{Binding DeleteConditionalTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
                                                         BackgroundColor="{StaticResource RedSelected}"
-                                                        Padding="5"
-                                                        VerticalOptions="Fill"
-                                                        HorizontalOptions="Fill"/>
                                                         Source="{StaticResource DeleteIconName}"/>
                                                 </SwipeItemView>
                                             </SwipeItems>
@@ -585,48 +583,35 @@
                                         <SwipeView.RightItems>
                                             <SwipeItems>
                                                 <SwipeItemView
-                                                    BackgroundColor="Transparent"
-                                                    WidthRequest="50"
                                                     Command="{Binding EditGeneralTaskCommand, Mode=OneTime, 
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
-                                                        BackgroundColor="{StaticResource GreenSelected}"
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
                                                         BackgroundColor="{StaticResource Good}"
-                                                        Padding="5"
-                                                        VerticalOptions="Fill"
-                                                        HorizontalOptions="Fill"/>
                                                         Source="{StaticResource EditIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    BackgroundColor="Transparent"
-                                                    WidthRequest="50"
                                                     Command="{Binding ResetGeneralTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
-                                                        Padding="5"
-                                                        VerticalOptions="Fill"
-                                                        HorizontalOptions="Fill"/>
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
                                                         BackgroundColor="{StaticResource Reset}"
                                                         Source="{StaticResource ResetIconName}"/>
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    BackgroundColor="Transparent"
-                                                    WidthRequest="50"
                                                     Command="{Binding DeleteGeneralTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
                                                     <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
                                                         BackgroundColor="{StaticResource RedSelected}"
-                                                        Padding="5"
-                                                        VerticalOptions="Fill"
-                                                        HorizontalOptions="Fill"/>
                                                         Source="{StaticResource DeleteIconName}"/>
                                                 </SwipeItemView>
                                             </SwipeItems>
