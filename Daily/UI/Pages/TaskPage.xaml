@@ -27,6 +27,8 @@
 
             <Thickness x:Key="ModificatorMargin">0, 0, 0, 8</Thickness>
 
+            <Thickness x:Key="OneTimeTaskCollectionGridMargin">0, 0, 0, 75</Thickness>
+
             <x:Double x:Key="FloatingActionButtonSize">60</x:Double>
 
             <x:String x:Key="AddIconName">add.png</x:String>
@@ -531,7 +533,8 @@
                 </Grid>
 
                 <Grid
-                    Style="{StaticResource TasksCollectionGrid}">
+                    Style="{StaticResource TasksCollectionGrid}"
+                    Margin="{StaticResource OneTimeTaskCollectionGridMargin}">
 
                     <Label
                         Style="{StaticResource SubHeadline}"
