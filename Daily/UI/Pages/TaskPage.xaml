@@ -122,21 +122,6 @@
                 ImportantTaskText="Важная"
                 CommonTaskText="Обычная"/>
 
-            <converters:BoolToColorConverter
-                x:Key="CanEditTaskToColorConverter"
-                TrueColor="{StaticResource Good}"
-                FalseColor="{StaticResource Hover}"/>
-
-            <converters:BoolToColorConverter
-                x:Key="CanDeleteTaskToColorConverter"
-                TrueColor="{StaticResource RedSelected}"
-                FalseColor="{StaticResource Hover}"/>
-
-            <converters:BoolToColorConverter
-                x:Key="CanResetTaskToColorConverter"
-                TrueColor="{StaticResource Reset}"
-                FalseColor="{StaticResource Hover}"/>
-
             <Style TargetType="Border" x:Key="GoalCard">
                 <Setter Property="Padding" Value="10, 0, 0, 0"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
