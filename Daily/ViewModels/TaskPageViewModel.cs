@@ -24,16 +24,9 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private ObservableCollection<ConditionalTask> _conditionalTasks;
 
-        [ObservableProperty] private object? _selectedGeneralTask = null;
-        [ObservableProperty] private object? _selectedСonditionalTask = null;
-
         [ObservableProperty] private bool _isTasksVisible = false;
 
         [ObservableProperty] private bool _canInteractWithTask = true;
-
-        [ObservableProperty] private bool _canEditTask = false;
-        [ObservableProperty] private bool _canDeleteTask = false;
-        [ObservableProperty] private bool _canResetTask = false;
 
         private readonly GoalStorage _goalStorage;
         private readonly GeneralTaskStorage _generalTaskStorage;
@@ -50,9 +43,6 @@ namespace Daily.ViewModels
         public Command EditGoalCommand { get; }
         public Command InvertGoalStatusCommand { get; }
 
-        public Command<GeneralTask> GeneralTaskInteractCommand { get; }
-        public Command<ConditionalTask> СonditionalTaskInteractCommand { get; }
-
         public Command<ConditionalTask> PerformConditionalTaskCommand { get; }
         public Command<ConditionalTask> EditConditionalTaskCommand { get; }
         public Command<ConditionalTask> ResetConditionalTaskCommand { get; }
@@ -64,10 +54,6 @@ namespace Daily.ViewModels
         public Command<GeneralTask> DeleteGeneralTaskCommand { get; }
 
         public Command AddTaskCommand { get; }
-
-        public Command SwitchCanEditTaskCommand { get; }
-        public Command SwitchCanDeleteTaskCommand { get; }
-        public Command SwitchCanResetTaskCommand { get; }
 
         public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
@@ -97,78 +83,6 @@ namespace Daily.ViewModels
                 else await _goalStorage.CompleteGoalAsync();
 
                 GoalStatus = _goalStorage.Status;
-            });
-
-            GeneralTaskInteractCommand = new Command<GeneralTask>(
-            execute: async (task) =>
-            {
-                if (SelectedGeneralTask == null || !CanInteractWithTask) return;
-
-                if (CanEditTask)
-                {
-                    CanInteractWithTask = false;
-
-                    var parameters = new ShellNavigationQueryParameters()
-                    {
-                        [nameof(GeneralTask)] = task
-                    };
-
-                    await PageNavigator.GoToTaskEditPageAsync(parameters);
-                }
-                else if (CanDeleteTask)
-                {
-                    CanInteractWithTask = false;
-
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
-
-                    if (shouldDelete)
-                    {
-                        await _generalTaskStorage.DeleteTaskAsync(task);
-                        await TaskToastHandler.ShowTaskDeletedToastAsync();
-                    }
-
-                    CanInteractWithTask = true;
-                }
-                else if (CanResetTask) await ResetGeneralTaskAsync(task);
-                else await PerformGeneralTaskAsync(task);
-
-                SelectedGeneralTask = null;
-            });
-
-            СonditionalTaskInteractCommand = new Command<ConditionalTask>(
-            execute: async (task) =>
-            {
-                if (SelectedСonditionalTask == null || !CanInteractWithTask) return;
-                
-                if (CanEditTask)
-                {
-                    CanInteractWithTask = false;
-
-                    var parameters = new ShellNavigationQueryParameters()
-                    {
-                        [nameof(ConditionalTask)] = task
-                    };
-
-                    await PageNavigator.GoToTaskEditPageAsync(parameters);
-                }
-                else if (CanDeleteTask)
-                {
-                    CanInteractWithTask = false;
-
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
-
-                    if (shouldDelete)
-                    {
-                        await _conditionalTaskStorage.DeleteTaskAsync(task);
-                        await TaskToastHandler.ShowTaskDeletedToastAsync();
-                    }
-                    
-                    CanInteractWithTask = true;
-                }
-                else if (CanResetTask) await ResetConditionalTaskAsync(task);
-                else await PerformСonditionalTaskAsync(task);
-
-                SelectedСonditionalTask = null;
             });
 
             PerformConditionalTaskCommand = new(async (task) =>
@@ -263,33 +177,6 @@ namespace Daily.ViewModels
                 CanInteractWithTask = false;
 
                 await PageNavigator.GoToTaskEditPageAsync();
-            });
-
-            SwitchCanEditTaskCommand = new Command(
-            execute: () =>
-            {
-                CanEditTask = !CanEditTask;
-
-                CanDeleteTask = false;
-                CanResetTask = false;
-            });
-
-            SwitchCanDeleteTaskCommand = new Command(
-            execute: () =>
-            {
-                CanDeleteTask = !CanDeleteTask;
-
-                CanEditTask = false;
-                CanResetTask = false;
-            });
-
-            SwitchCanResetTaskCommand = new Command(
-            execute: () =>
-            {
-                CanResetTask = !CanResetTask;
-
-                CanEditTask = false;
-                CanDeleteTask = false;
             });
 
             WeakReferenceMessenger.Default.Register<GoalChangedMessage>(this, (_, _) =>
