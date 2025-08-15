@@ -202,10 +202,6 @@ namespace Daily.ViewModels
             }
 
             ShowDummy();
-
-            CanEditTask = false;
-            CanDeleteTask = false;
-            CanResetTask = false;
         }
 
         private void LoadGoalIfNotLoaded()
