@@ -27,6 +27,15 @@
 
             <Thickness x:Key="ModificatorMargin">0, 0, 0, 8</Thickness>
 
+            <Thickness x:Key="OneTimeTaskCollectionGridMargin">0, 0, 0, 75</Thickness>
+
+            <x:Double x:Key="FloatingActionButtonSize">60</x:Double>
+
+            <x:String x:Key="AddIconName">add.png</x:String>
+            <x:String x:Key="EditIconName">edit.png</x:String>
+            <x:String x:Key="ResetIconName">reset.png</x:String>
+            <x:String x:Key="DeleteIconName">delete.png</x:String>
+
             <Color x:Key="Goal">#eda5a2</Color>
             <Color x:Key="GoalText">#850000</Color>
 
@@ -47,8 +56,7 @@
             <Color x:Key="ProgressBackgroundFill">#a4a4a4</Color>
             <Color x:Key="Completed">#71b866</Color>
 
-            <Color x:Key="GreenSelected">#aaf786</Color>
-            <Color x:Key="BlueSelected">#86f7ea</Color>
+            <Color x:Key="Reset">#86f7ea</Color>
 
             <converters:GoalStatusToColorConverter
                 x:Key="GoalStatusToColorConverter"
@@ -114,21 +122,6 @@
                 ImportantTaskText="Важная"
                 CommonTaskText="Обычная"/>
 
-            <converters:BoolToColorConverter
-                x:Key="CanEditTaskToColorConverter"
-                TrueColor="{StaticResource GreenSelected}"
-                FalseColor="{StaticResource Hover}"/>
-
-            <converters:BoolToColorConverter
-                x:Key="CanDeleteTaskToColorConverter"
-                TrueColor="{StaticResource RedSelected}"
-                FalseColor="{StaticResource Hover}"/>
-
-            <converters:BoolToColorConverter
-                x:Key="CanResetTaskToColorConverter"
-                TrueColor="{StaticResource BlueSelected}"
-                FalseColor="{StaticResource Hover}"/>
-
             <Style TargetType="Border" x:Key="GoalCard">
                 <Setter Property="Padding" Value="10, 0, 0, 0"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
@@ -169,7 +162,7 @@
 
             <Style TargetType="CollectionView" x:Key="TasksCollectionView">
                 <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
-                <Setter Property="SelectionMode" Value="Single"/>
+                <Setter Property="SelectionMode" Value="None"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
 
@@ -181,9 +174,21 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <Style TargetType="SwipeItemView">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="WidthRequest" Value="50"/>
+            </Style>
+
+            <Style TargetType="ImageButton" x:Key="TaskCardSwipeItemViewButton">
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="VerticalOptions" Value="Fill"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+            </Style>
             
             <Style TargetType="Frame" x:Key="TaskCard">
-                <Setter Property="InputTransparent" Value="True"/>
+                <Setter Property="InputTransparent" Value="False"/>
+                <Setter Property="CascadeInputTransparent" Value="False"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
@@ -204,6 +209,8 @@
             </Style>
 
             <Style TargetType="Grid" x:Key="TaskCardGrid">
+                <Setter Property="InputTransparent" Value="True"/>
+                <Setter Property="CascadeInputTransparent" Value="True"/>
                 <Setter Property="ColumnDefinitions" Value="50, *"/>
                 <Setter Property="RowDefinitions" Value="Auto, Auto"/>
             </Style>
@@ -250,20 +257,30 @@
                 <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
+            <Style TargetType="ImageButton" x:Key="AddTaskButton">
+                <Setter Property="BackgroundColor" Value="{StaticResource Good}"/>
+                <Setter Property="Source" Value="{StaticResource AddIconName}"/>
+                <Setter Property="WidthRequest" Value="{StaticResource FloatingActionButtonSize}"/>
+                <Setter Property="HeightRequest" Value="{StaticResource FloatingActionButtonSize}"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="HorizontalOptions" Value="End"/>
+                <Setter Property="Margin" Value="0, 0, 20, 20"/>
+            </Style>
+
         </ResourceDictionary>
 
     </ContentPage.Resources>
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="*, 80"
+        RowDefinitions="*"
         VerticalOptions="Fill"
         HorizontalOptions="Fill">
 
         <ScrollView
             Grid.Column="0"
             Grid.Row="0">
-            
+
             <VerticalStackLayout
                 Spacing="20"
                 Padding="20, 40, 0, 0">
@@ -341,7 +358,7 @@
                         HorizontalOptions="End"
                         Grid.ColumnSpan="2"
                         Grid.Row="2">
-                        
+
                         <Border.Behaviors>
                             <toolkit:TouchBehavior
                                 DefaultAnimationDuration="{StaticResource DefaultAnimationDuration}"
@@ -391,9 +408,6 @@
                             Style="{StaticResource TasksCollectionView}"
                             IsVisible="{Binding ConditionalTasksLoader.IsSuccessfullyCompleted}"
                             ItemsSource="{Binding ConditionalTasksLoader.Result}"
-                            SelectedItem="{Binding SelectedСonditionalTask, Mode=TwoWay}"
-                            SelectionChangedCommand="{Binding СonditionalTaskInteractCommand}"
-                            SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                             Grid.Column="0"
                             Grid.Row="1">
 
@@ -405,55 +419,103 @@
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Frame
-                                        x:DataType="tasks:ConditionalTask"
-                                        Style="{StaticResource TaskCard}"
-                                        Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
-                                        BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
+                                    <SwipeView>
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItemView
+                                                    Command="{Binding EditConditionalTaskCommand, Mode=OneTime, 
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
-                                        <Grid
-                                            Style="{StaticResource TaskCardGrid}">
+                                                    <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                        BackgroundColor="{StaticResource Good}"
+                                                        Source="{StaticResource EditIconName}"/>
+                                                </SwipeItemView>
 
-                                            <controls:TaskProgressIndicator
-                                                RepeatCount="{Binding RepeatCount}"
-                                                TargetRepeatCount="{Binding TargetRepeatCount}"
-                                                Grid.Column="0"
-                                                Grid.RowSpan="2"/>
+                                                <SwipeItemView
+                                                    Command="{Binding ResetConditionalTaskCommand, Mode=OneTime,
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
-                                            <Label
-                                                Style="{StaticResource TaskProgressLabel}"
-                                                Grid.Column="0"
-                                                Grid.RowSpan="2">
+                                                    <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                        BackgroundColor="{StaticResource Reset}"
+                                                        Source="{StaticResource ResetIconName}"/>
+                                                </SwipeItemView>
 
-                                                <Label.Text>
-                                                    <MultiBinding Converter="{StaticResource TaskProgressConverter}">
-                                                        <Binding Path="RepeatCount"/>
-                                                        <Binding Path="TargetRepeatCount"/>
-                                                    </MultiBinding>
-                                                </Label.Text>
-                                            </Label>
+                                                <SwipeItemView
+                                                    Command="{Binding DeleteConditionalTaskCommand, Mode=OneTime,
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
-                                            <Label
-                                                Style="{StaticResource TaskLabel}"
-                                                Text="{Binding ActionName}"
-                                                Grid.Column="1"
-                                                Grid.Row="0"/>
+                                                    <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                        BackgroundColor="{StaticResource RedSelected}"
+                                                        Source="{StaticResource DeleteIconName}"/>
+                                                </SwipeItemView>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
 
-                                            <controls:СonditionalTaskModificatorsView
-                                                CompletionTime="{Binding CompletionTime}"
-                                                Note="{Binding Note}"
-                                                Grid.Column="1"
-                                                Grid.Row="1">
+                                        <Frame
+                                            x:DataType="tasks:ConditionalTask"
+                                            Style="{StaticResource TaskCard}"
+                                            Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                            BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
-                                                <controls:СonditionalTaskModificatorsView.Frequency>
-                                                    <MultiBinding Converter="{StaticResource RepeatTimePeriodConverter}">
-                                                        <Binding Path="TargetRepeatCount"/>
-                                                        <Binding Path="RepeatTimePeriod"/>
-                                                    </MultiBinding>
-                                                </controls:СonditionalTaskModificatorsView.Frequency>
-                                            </controls:СonditionalTaskModificatorsView>
-                                        </Grid>
-                                    </Frame>
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    NumberOfTapsRequired="1"
+                                                    Command="{Binding PerformConditionalTaskCommand, Mode=OneTime, 
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
+                                                        Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Frame.GestureRecognizers>
+
+                                            <Grid
+                                                Style="{StaticResource TaskCardGrid}">
+
+                                                <controls:TaskProgressIndicator
+                                                    RepeatCount="{Binding RepeatCount}"
+                                                    TargetRepeatCount="{Binding TargetRepeatCount}"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"/>
+
+                                                <Label
+                                                    Style="{StaticResource TaskProgressLabel}"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2">
+
+                                                    <Label.Text>
+                                                        <MultiBinding Converter="{StaticResource TaskProgressConverter}">
+                                                            <Binding Path="RepeatCount"/>
+                                                            <Binding Path="TargetRepeatCount"/>
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
+
+                                                <Label
+                                                    Style="{StaticResource TaskLabel}"
+                                                    Text="{Binding ActionName}"
+                                                    Grid.Column="1"
+                                                    Grid.Row="0"/>
+
+                                                <controls:СonditionalTaskModificatorsView
+                                                    CompletionTime="{Binding CompletionTime}"
+                                                    Note="{Binding Note}"
+                                                    Grid.Column="1"
+                                                    Grid.Row="1">
+
+                                                    <controls:СonditionalTaskModificatorsView.Frequency>
+                                                        <MultiBinding Converter="{StaticResource RepeatTimePeriodConverter}">
+                                                            <Binding Path="TargetRepeatCount"/>
+                                                            <Binding Path="RepeatTimePeriod"/>
+                                                        </MultiBinding>
+                                                    </controls:СonditionalTaskModificatorsView.Frequency>
+                                                </controls:СonditionalTaskModificatorsView>
+                                            </Grid>
+                                        </Frame>
+                                    </SwipeView>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
@@ -461,7 +523,8 @@
                 </Grid>
 
                 <Grid
-                    Style="{StaticResource TasksCollectionGrid}">
+                    Style="{StaticResource TasksCollectionGrid}"
+                    Margin="{StaticResource OneTimeTaskCollectionGridMargin}">
 
                     <Label
                         Style="{StaticResource SubHeadline}"
@@ -492,9 +555,6 @@
                             Style="{StaticResource TasksCollectionView}"
                             IsVisible="{Binding GeneralTasksLoader.IsSuccessfullyCompleted}"
                             ItemsSource="{Binding GeneralTasksLoader.Result}"
-                            SelectedItem="{Binding SelectedGeneralTask, Mode=TwoWay}"
-                            SelectionChangedCommand="{Binding GeneralTaskInteractCommand}"
-                            SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Mode=Self}}"
                             Margin="{StaticResource GeneralTaskCollectionViewMargin}"
                             Grid.Column="0"
                             Grid.Row="1">
@@ -507,53 +567,101 @@
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Frame
-                                        x:DataType="tasks:GeneralTask"
-                                        Style="{StaticResource TaskCard}"
-                                        Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
-                                        BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
+                                    <SwipeView>
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItemView
+                                                    Command="{Binding EditGeneralTaskCommand, Mode=OneTime, 
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
-                                        <Grid
-                                            Style="{StaticResource TaskCardGrid}">
+                                                    <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                        BackgroundColor="{StaticResource Good}"
+                                                        Source="{StaticResource EditIconName}"/>
+                                                </SwipeItemView>
 
-                                            <controls:TaskProgressIndicator
-                                                RepeatCount="{Binding RepeatCount}"
-                                                TargetRepeatCount="{Binding TargetRepeatCount}"
-                                                Grid.Column="0"
-                                                Grid.RowSpan="2"/>
+                                                <SwipeItemView
+                                                    Command="{Binding ResetGeneralTaskCommand, Mode=OneTime,
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
-                                            <Label
-                                                Style="{StaticResource TaskProgressLabel}"
-                                                Grid.Column="0"
-                                                Grid.RowSpan="2">
+                                                    <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                        BackgroundColor="{StaticResource Reset}"
+                                                        Source="{StaticResource ResetIconName}"/>
+                                                </SwipeItemView>
 
-                                                <Label.Text>
-                                                    <MultiBinding Converter="{StaticResource TaskProgressConverter}">
-                                                        <Binding Path="RepeatCount"/>
-                                                        <Binding Path="TargetRepeatCount"/>
-                                                    </MultiBinding>
-                                                </Label.Text>
-                                            </Label>
+                                                <SwipeItemView
+                                                    Command="{Binding DeleteGeneralTaskCommand, Mode=OneTime,
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}">
 
-                                            <Label
-                                                Style="{StaticResource TaskLabel}"
-                                                Text="{Binding ActionName}"
-                                                Grid.Column="1"
-                                                Grid.Row="0"/>
+                                                    <ImageButton
+                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                        BackgroundColor="{StaticResource RedSelected}"
+                                                        Source="{StaticResource DeleteIconName}"/>
+                                                </SwipeItemView>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
 
-                                            <Frame
-                                                Style="{StaticResource ModificatorCard}"
-                                                BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
-                                                Grid.Column="1"
-                                                Grid.Row="1"
-                                                Margin="{StaticResource ModificatorMargin}">
+                                        <Frame
+                                            x:DataType="tasks:GeneralTask"
+                                            Style="{StaticResource TaskCard}"
+                                            Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                            BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
+
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    NumberOfTapsRequired="1"
+                                                    Command="{Binding PerformGeneralTaskCommand, Mode=OneTime, 
+                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
+                                                        Mode=FindAncestorBindingContext}}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Frame.GestureRecognizers>
+
+                                            <Grid
+                                                Style="{StaticResource TaskCardGrid}">
+
+                                                <controls:TaskProgressIndicator
+                                                    RepeatCount="{Binding RepeatCount}"
+                                                    TargetRepeatCount="{Binding TargetRepeatCount}"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2"/>
 
                                                 <Label
-                                                    Style="{StaticResource ModificatorLabel}"
-                                                    Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
-                                            </Frame>
-                                        </Grid>
-                                    </Frame>
+                                                    Style="{StaticResource TaskProgressLabel}"
+                                                    Grid.Column="0"
+                                                    Grid.RowSpan="2">
+
+                                                    <Label.Text>
+                                                        <MultiBinding Converter="{StaticResource TaskProgressConverter}">
+                                                            <Binding Path="RepeatCount"/>
+                                                            <Binding Path="TargetRepeatCount"/>
+                                                        </MultiBinding>
+                                                    </Label.Text>
+                                                </Label>
+
+                                                <Label
+                                                    Style="{StaticResource TaskLabel}"
+                                                    Text="{Binding ActionName}"
+                                                    Grid.Column="1"
+                                                    Grid.Row="0"/>
+
+                                                <Frame
+                                                    Style="{StaticResource ModificatorCard}"
+                                                    BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
+                                                    Grid.Column="1"
+                                                    Grid.Row="1"
+                                                    Margin="{StaticResource ModificatorMargin}">
+
+                                                    <Label
+                                                        Style="{StaticResource ModificatorLabel}"
+                                                        Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
+                                                </Frame>
+                                            </Grid>
+                                        </Frame>
+                                    </SwipeView>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
@@ -562,71 +670,10 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <Frame
-            Style="{StaticResource BottomPanel}"
+        <ImageButton
+            Style="{StaticResource AddTaskButton}"
+            Command="{Binding AddTaskCommand}"
             Grid.Column="0"
-            Grid.Row="1">
-
-            <HorizontalStackLayout
-                Spacing="20"
-                VerticalOptions="Center"
-                HorizontalOptions="Center">
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        Padding="5, 5, 5, 5"
-                        Source="add.png"
-                        Command="{Binding AddTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Создать"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        Padding="5, 5, 5, 5"
-                        BackgroundColor="{Binding CanEditTask, Converter={StaticResource CanEditTaskToColorConverter}}"
-                        Source="edit.png"
-                        Command="{Binding SwitchCanEditTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Изменить"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        BackgroundColor="{Binding CanDeleteTask, Converter={StaticResource CanDeleteTaskToColorConverter}}"
-                        Padding="5, 5, 5, 5"
-                        Source="delete.png"
-                        Command="{Binding SwitchCanDeleteTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Удалить"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout>
-                    <ImageButton
-                        IsEnabled="{Binding CanInteractWithTask}"
-                        Style="{StaticResource ActionButton}"
-                        BackgroundColor="{Binding CanResetTask, Converter={StaticResource CanResetTaskToColorConverter}}"
-                        Padding="5, 5, 5, 5"
-                        Source="reset.png"
-                        Command="{Binding SwitchCanResetTaskCommand}"/>
-
-                    <Label
-                        Style="{StaticResource ActionButtonLabel}"
-                        Text="Сбросить"/>
-                </VerticalStackLayout>
-            </HorizontalStackLayout>
-        </Frame>
+            Grid.Row="0"/>
     </Grid>
 </ContentPage>
