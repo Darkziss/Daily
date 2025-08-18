@@ -10,6 +10,16 @@
     <ContentView.Resources>
         <ResourceDictionary>
 
+            <Style TargetType="Border" x:Key="NoteModificatorCard">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Stroke" Value="Black"/>
+                <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
+                <Setter Property="StrokeThickness" Value="1"/>
+                <Setter Property="HeightRequest" Value="25"/>
+                <Setter Property="VerticalOptions" Value="End"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
             <Style TargetType="HorizontalStackLayout" x:Key="ModificatorCardStackLayout">
                 <Setter Property="Spacing" Value="5"/>
                 <Setter Property="Margin" Value="0, 0, 0, 8"/>
@@ -50,23 +60,22 @@
                 Text="{Binding CompletionTime, StringFormat='{0} мин'}"/>
         </Frame>
 
-        <Frame
-            Style="{StaticResource ModificatorCard}"
-            BackgroundColor="{Binding NoteCardColor}">
+        <Border
+            Style="{StaticResource NoteModificatorCard}">
 
-            <Frame.Triggers>
+            <Border.Triggers>
                 <DataTrigger
-                    TargetType="Frame"
+                    TargetType="Border"
                     Binding="{Binding Note}"
                     Value="">
 
                     <Setter Property="IsVisible" Value="False"/>
                 </DataTrigger>
-            </Frame.Triggers>
+            </Border.Triggers>
 
             <Label
                 Style="{StaticResource ModificatorLabel}"
                 Text="{Binding Note}"/>
-        </Frame>
+        </Border>
     </HorizontalStackLayout>
 </ContentView>
