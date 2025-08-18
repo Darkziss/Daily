@@ -106,7 +106,7 @@ namespace Daily.ViewModels
             TargetRepeatCount = task.TargetRepeatCount;
 
             CompletionTime = 0;
-            Note = string.Empty;
+            Note = task.Note;
         }
 
         public void PrepareViewForEdit(ConditionalTask task)
