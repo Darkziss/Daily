@@ -161,7 +161,7 @@
             </Style>
 
             <Style TargetType="CollectionView" x:Key="TasksCollectionView">
-                <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
+                <Setter Property="ItemSizingStrategy" Value="MeasureAllItems"/>
                 <Setter Property="SelectionMode" Value="None"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
