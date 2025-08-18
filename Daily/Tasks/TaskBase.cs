@@ -9,6 +9,8 @@ namespace Daily.Tasks
         private int _repeatCount = 0;
         private int _targetRepeatCount;
 
+        private string _note = string.Empty;
+
         public string ActionName
         {
             get => _actionName;
@@ -44,13 +46,26 @@ namespace Daily.Tasks
             }
         }
 
+        public string Note
+        {
+            get => _note;
+            set
+            {
+                if (value.Equals(_note)) return;
+
+                _note = value;
+                OnPropertyChanged(nameof(Note));
+            }
+        }
+
         public bool IsCompleted => RepeatCount == TargetRepeatCount;
         
-        public TaskBase(string actionName, int repeatCount, int targetRepeatCount)
+        public TaskBase(string actionName, int repeatCount, int targetRepeatCount, string note)
         {
             ActionName = actionName;
             RepeatCount = repeatCount;
             TargetRepeatCount = targetRepeatCount;
+            Note = note;
         }
 
         public void Perform()
