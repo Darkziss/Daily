@@ -51,7 +51,7 @@ namespace Daily.Tasks
             get => _note;
             set
             {
-                if (string.Equals(value, _note)) return;
+                if (string.Equals(value, _note) || value == null) return;
 
                 _note = value;
                 OnPropertyChanged(nameof(Note));
