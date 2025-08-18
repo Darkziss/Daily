@@ -157,7 +157,7 @@ namespace Daily.ViewModels
             }
             
             TaskPriority priority = (TaskPriority)PriorityIndex;
-            GeneralTask task = new GeneralTask(ActionName, 0, TargetRepeatCount, priority);
+            GeneralTask task = new GeneralTask(ActionName, 0, TargetRepeatCount, priority, Note);
 
             bool isCreated = await _generalTaskStorage.TryAddTaskAsync(task);
 
@@ -188,7 +188,7 @@ namespace Daily.ViewModels
             GeneralTask oldTask = (GeneralTask)_currentTask!;
 
             TaskPriority priority = (TaskPriority)PriorityIndex;
-            GeneralTask newTask = new GeneralTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, priority);
+            GeneralTask newTask = new GeneralTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, priority, Note);
 
             bool isEdited = await _generalTaskStorage.TryEditTaskAsync(oldTask, newTask);
 

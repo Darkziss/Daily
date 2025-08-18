@@ -253,7 +253,6 @@
 
             <Grid
                 Style="{StaticResource TaskFieldGrid}"
-                IsVisible="{Binding IsConditionalTaskMode}"
                 ColumnDefinitions="100, Auto"
                 RowDefinitions="Auto, Auto">
 
