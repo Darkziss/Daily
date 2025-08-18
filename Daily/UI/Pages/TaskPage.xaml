@@ -48,7 +48,7 @@
             <Color x:Key="GeneralTask">#858585</Color>
             <Color x:Key="CondTask">#ed7f3d</Color>
 
-            <Color x:Key="Frequency">#c8edc3</Color>
+            <Color x:Key="Period">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
             <Color x:Key="Note">#edc2df</Color>
 
@@ -250,7 +250,7 @@
             </Style>
 
             <Style TargetType="controls:СonditionalTaskModificatorsView">
-                <Setter Property="FrequencyCardColor" Value="{StaticResource Frequency}"/>
+                <Setter Property="FrequencyCardColor" Value="{StaticResource Period}"/>
                 <Setter Property="CompletionTimeCardColor" Value="{StaticResource Time}"/>
                 <Setter Property="NoteCardColor" Value="{StaticResource Note}"/>
                 <Setter Property="VerticalOptions" Value="Fill"/>
