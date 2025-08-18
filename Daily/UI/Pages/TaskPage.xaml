@@ -249,6 +249,12 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="Border" x:Key="NoteModificatorCard" BasedOn="{StaticResource BorderModificatorCard}">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Stroke" Value="Black"/>
+                <Setter Property="StrokeThickness" Value="1"/>
+            </Style>
+
             <Style TargetType="controls:СonditionalTaskModificatorsView">
                 <Setter Property="FrequencyCardColor" Value="{StaticResource Period}"/>
                 <Setter Property="CompletionTimeCardColor" Value="{StaticResource Time}"/>
@@ -500,19 +506,39 @@
                                                     Grid.Column="1"
                                                     Grid.Row="0"/>
 
-                                                <controls:СonditionalTaskModificatorsView
-                                                    CompletionTime="{Binding CompletionTime}"
-                                                    Note="{Binding Note}"
+                                                <HorizontalStackLayout
+                                                    Spacing="8"
+                                                    Padding="0, 0, 0, 8"
                                                     Grid.Column="1"
                                                     Grid.Row="1">
 
-                                                    <controls:СonditionalTaskModificatorsView.Frequency>
-                                                        <MultiBinding Converter="{StaticResource RepeatTimePeriodConverter}">
-                                                            <Binding Path="TargetRepeatCount"/>
-                                                            <Binding Path="RepeatTimePeriod"/>
-                                                        </MultiBinding>
-                                                    </controls:СonditionalTaskModificatorsView.Frequency>
-                                                </controls:СonditionalTaskModificatorsView>
+                                                    <Border
+                                                        Style="{StaticResource BorderModificatorCard}"
+                                                        BackgroundColor="{StaticResource Period}">
+
+                                                        <Label
+                                                            Style="{StaticResource ModificatorLabel}"
+                                                            Text="{Binding RepeatTimePeriod}"/>
+                                                    </Border>
+
+                                                    <Border
+                                                        Style="{StaticResource NoteModificatorCard}">
+
+                                                        <Border.Triggers>
+                                                            <DataTrigger
+                                                                TargetType="Border"
+                                                                Binding="{Binding Note}"
+                                                                Value="">
+
+                                                                <Setter Property="IsVisible" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Border.Triggers>
+                                                        
+                                                        <Label
+                                                            Style="{StaticResource ModificatorLabel}"
+                                                            Text="{Binding Note}"/>
+                                                    </Border>
+                                                </HorizontalStackLayout>
                                             </Grid>
                                         </Frame>
                                     </SwipeView>
@@ -648,17 +674,38 @@
                                                     Grid.Column="1"
                                                     Grid.Row="0"/>
 
-                                                <Frame
-                                                    Style="{StaticResource ModificatorCard}"
-                                                    BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
+                                                <HorizontalStackLayout
+                                                    Spacing="8"
                                                     Grid.Column="1"
-                                                    Grid.Row="1"
-                                                    Margin="{StaticResource ModificatorMargin}">
+                                                    Grid.Row="1">
 
-                                                    <Label
-                                                        Style="{StaticResource ModificatorLabel}"
-                                                        Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
-                                                </Frame>
+                                                    <Border
+                                                        Style="{StaticResource BorderModificatorCard}"
+                                                        BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}">
+
+                                                        <Label
+                                                            Style="{StaticResource ModificatorLabel}"
+                                                            Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
+                                                    </Border>
+
+                                                    <Border
+                                                        Style="{StaticResource NoteModificatorCard}">
+
+                                                        <Border.Triggers>
+                                                            <DataTrigger
+                                                                TargetType="Border"
+                                                                Binding="{Binding Note}"
+                                                                Value="">
+
+                                                                <Setter Property="IsVisible" Value="False"/>
+                                                            </DataTrigger>
+                                                        </Border.Triggers>
+
+                                                        <Label
+                                                            Style="{StaticResource ModificatorLabel}"
+                                                            Text="{Binding Note}"/>
+                                                    </Border>
+                                                </HorizontalStackLayout>
                                             </Grid>
                                         </Frame>
                                     </SwipeView>

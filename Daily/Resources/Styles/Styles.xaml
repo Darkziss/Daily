@@ -159,6 +159,13 @@
         <Setter Property="StrokeShape" Value="RoundRectangle 10, 10, 10, 10"/>
     </Style>
 
+    <Style TargetType="Border" x:Key="BorderModificatorCard">
+        <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
+        <Setter Property="HeightRequest" Value="25"/>
+        <Setter Property="VerticalOptions" Value="End"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+    </Style>
+
     <Style TargetType="Frame">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BorderColor" Value="Transparent"/>

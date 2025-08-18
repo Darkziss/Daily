@@ -10,14 +10,10 @@
     <ContentView.Resources>
         <ResourceDictionary>
 
-            <Style TargetType="Border" x:Key="NoteModificatorCard">
+            <Style TargetType="Border" x:Key="NoteModificatorCard" BasedOn="{StaticResource BorderModificatorCard}">
                 <Setter Property="BackgroundColor" Value="Transparent"/>
                 <Setter Property="Stroke" Value="Black"/>
-                <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
                 <Setter Property="StrokeThickness" Value="1"/>
-                <Setter Property="HeightRequest" Value="25"/>
-                <Setter Property="VerticalOptions" Value="End"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
             <Style TargetType="HorizontalStackLayout" x:Key="ModificatorCardStackLayout">
