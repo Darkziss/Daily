@@ -249,6 +249,11 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="HorizontalStackLayout" x:Key="ModificatorStackLayout">
+                <Setter Property="Spacing" Value="5"/>
+                <Setter Property="Margin" Value="{StaticResource ModificatorMargin}"/>
+            </Style>
+
             <Style TargetType="Border" x:Key="NoteModificatorCard" BasedOn="{StaticResource BorderModificatorCard}">
                 <Setter Property="BackgroundColor" Value="Transparent"/>
                 <Setter Property="Stroke" Value="Black"/>
@@ -507,8 +512,7 @@
                                                     Grid.Row="0"/>
 
                                                 <HorizontalStackLayout
-                                                    Spacing="8"
-                                                    Padding="0, 0, 0, 8"
+                                                    Style="{StaticResource ModificatorStackLayout}"
                                                     Grid.Column="1"
                                                     Grid.Row="1">
 
@@ -675,7 +679,7 @@
                                                     Grid.Row="0"/>
 
                                                 <HorizontalStackLayout
-                                                    Spacing="8"
+                                                    Style="{StaticResource ModificatorStackLayout}"
                                                     Grid.Column="1"
                                                     Grid.Row="1">
 
