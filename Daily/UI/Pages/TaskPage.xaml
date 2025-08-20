@@ -106,7 +106,11 @@
 
             <converters:TaskProgressConverter x:Key="TaskProgressConverter"/>
 
-            <converters:RepeatTimePeriodConverter x:Key="RepeatTimePeriodConverter"/>
+            <converters:RepeatTimePeriodToStringConverter
+                x:Key="RepeatTimePeriodToStringConverter"
+                DayRepeatTimeText="День"
+                WeekRepeatTimeText="Неделя"
+                MonthRepeatTimeText="Месяц"/>
 
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
@@ -522,7 +526,7 @@
 
                                                         <Label
                                                             Style="{StaticResource ModificatorLabel}"
-                                                            Text="{Binding RepeatTimePeriod}"/>
+                                                            Text="{Binding RepeatTimePeriod, Converter={StaticResource RepeatTimePeriodToStringConverter}}"/>
                                                     </Border>
 
                                                     <Border
