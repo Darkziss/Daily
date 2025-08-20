@@ -16,7 +16,6 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private int _targetRepeatCount = 1;
 
-        [ObservableProperty] private int _completionTime = 0;
         [ObservableProperty] private string _note = string.Empty;
 
         [ObservableProperty] private bool _isEditMode = false;
@@ -105,7 +104,6 @@ namespace Daily.ViewModels
 
             TargetRepeatCount = task.TargetRepeatCount;
 
-            CompletionTime = 0;
             Note = task.Note;
         }
 
@@ -143,7 +141,6 @@ namespace Daily.ViewModels
 
             TargetRepeatCount = 1;
 
-            CompletionTime = 0;
             Note = string.Empty;
         }
 
