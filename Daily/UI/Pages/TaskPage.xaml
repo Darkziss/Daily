@@ -264,14 +264,6 @@
                 <Setter Property="StrokeThickness" Value="1"/>
             </Style>
 
-            <Style TargetType="controls:СonditionalTaskModificatorsView">
-                <Setter Property="FrequencyCardColor" Value="{StaticResource Period}"/>
-                <Setter Property="CompletionTimeCardColor" Value="{StaticResource Time}"/>
-                <Setter Property="NoteCardColor" Value="{StaticResource Note}"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-            </Style>
-
             <Style TargetType="ImageButton" x:Key="AddTaskButton">
                 <Setter Property="BackgroundColor" Value="{StaticResource Good}"/>
                 <Setter Property="Source" Value="{StaticResource AddIconName}"/>
