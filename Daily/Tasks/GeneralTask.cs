@@ -18,8 +18,8 @@ namespace Daily.Tasks
             }
         }
 
-        public GeneralTask(string actionName, int repeatCount, int targetRepeatCount, TaskPriority priority) 
-            : base(actionName, repeatCount, targetRepeatCount)
+        public GeneralTask(string actionName, int repeatCount, int targetRepeatCount, TaskPriority priority, string note) 
+            : base(actionName, repeatCount, targetRepeatCount, note)
         {
             Priority = priority;
         }
