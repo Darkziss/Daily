@@ -24,7 +24,7 @@ namespace Daily.Tasks
         {
             if (IsTasksFull) return false;
 
-            bool isValid = TaskValidator.ValidateСonditionalTask(task);
+            bool isValid = TaskValidator.ValidateTask(task);
             bool contains = Tasks.Contains(task);
 
             if (!isValid || contains) return false;
@@ -41,7 +41,7 @@ namespace Daily.Tasks
 
         public override async Task<bool> TryEditTaskAsync(ConditionalTask oldTask, ConditionalTask newTask)
         {
-            bool isValid = TaskValidator.ValidateСonditionalTask(newTask);
+            bool isValid = TaskValidator.ValidateTask(newTask);
 
             if (!isValid) return false;
 

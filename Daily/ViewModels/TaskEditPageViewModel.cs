@@ -16,7 +16,6 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private int _targetRepeatCount = 1;
 
-        [ObservableProperty] private int _completionTime = 0;
         [ObservableProperty] private string _note = string.Empty;
 
         [ObservableProperty] private bool _isEditMode = false;
@@ -105,7 +104,6 @@ namespace Daily.ViewModels
 
             TargetRepeatCount = task.TargetRepeatCount;
 
-            CompletionTime = 0;
             Note = task.Note;
         }
 
@@ -125,7 +123,6 @@ namespace Daily.ViewModels
 
             TargetRepeatCount = task.TargetRepeatCount;
 
-            CompletionTime = task.CompletionTime;
             Note = task.Note;
         }
 
@@ -144,7 +141,6 @@ namespace Daily.ViewModels
 
             TargetRepeatCount = 1;
 
-            CompletionTime = 0;
             Note = string.Empty;
         }
 
@@ -174,8 +170,7 @@ namespace Daily.ViewModels
             }
             
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            ConditionalTask task = new ConditionalTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod,
-                CompletionTime, Note);
+            ConditionalTask task = new ConditionalTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod, Note);
 
             bool isCreated = await _conditionalTaskStorage.TryAddTaskAsync(task);
 
@@ -201,8 +196,7 @@ namespace Daily.ViewModels
             ConditionalTask oldTask = (ConditionalTask)_currentTask!;
 
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            ConditionalTask newTask = new ConditionalTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod,
-                CompletionTime, Note);
+            ConditionalTask newTask = new ConditionalTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod, Note);
 
             bool isEdited = await _conditionalTaskStorage.TryEditTaskAsync(oldTask, newTask);
 
