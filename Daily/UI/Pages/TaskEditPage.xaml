@@ -68,23 +68,6 @@
                 <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
-            <Style TargetType="Entry" x:Key="CompletionTimeEntry">
-                <Setter Property="FontSize" Value="30"/>
-                <Setter Property="Placeholder" Value="0"/>
-                <Setter Property="Keyboard" Value="Numeric"/>
-                <Setter Property="MaxLength" Value="3"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-            </Style>
-
-            <Style TargetType="Label" x:Key="CompletionTimeUnitLabel">
-                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-                <Setter Property="Text" Value="минут"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-            </Style>
-
             <Style TargetType="Entry" x:Key="NoteEntry">
                 <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
                 <Setter Property="Placeholder" Value="Введите примечание"/>
@@ -222,31 +205,6 @@
                     Style="{StaticResource TargetRepeatCountStepper}"
                     IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
                     Value="{Binding TargetRepeatCount, Mode=TwoWay}"
-                    Grid.Column="1"
-                    Grid.Row="1"/>
-            </Grid>
-
-            <Grid
-                Style="{StaticResource TaskFieldGrid}"
-                IsVisible="{Binding IsConditionalTaskMode}"
-                ColumnDefinitions="100, Auto"
-                RowDefinitions="Auto, Auto">
-
-                <Label
-                    Style="{StaticResource TaskFieldHeader}"
-                    Text="Длительность (необязат.)"
-                    Grid.ColumnSpan="2"
-                    Grid.Row="0"/>
-
-                <Entry
-                    IsReadOnly="{Binding IsCreatingNewTask}"
-                    Style="{StaticResource CompletionTimeEntry}"
-                    Text="{Binding CompletionTime, Mode=TwoWay, Converter={StaticResource CompletionTimeToStringConverter}}"
-                    Grid.Column="0"
-                    Grid.Row="1"/>
-
-                <Label
-                    Style="{StaticResource CompletionTimeUnitLabel}"
                     Grid.Column="1"
                     Grid.Row="1"/>
             </Grid>
