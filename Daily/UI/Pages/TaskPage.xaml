@@ -45,9 +45,6 @@
             <Color x:Key="GoalOverdue">#f38f86</Color>
             <Color x:Key="GoalOverdueStroke">#b86c65</Color>
 
-            <Color x:Key="GeneralTask">#858585</Color>
-            <Color x:Key="CondTask">#ed7f3d</Color>
-
             <Color x:Key="Period">#c8edc3</Color>
             <Color x:Key="Time">#c3eced</Color>
             <Color x:Key="Note">#edc2df</Color>
@@ -388,7 +385,6 @@
 
                     <Label
                         Style="{StaticResource SubHeadline}"
-                        TextColor="{StaticResource CondTask}"
                         Grid.Column="0"
                         Grid.Row="0">
 
@@ -420,8 +416,7 @@
 
                             <CollectionView.EmptyView>
                                 <Label
-                                    Style="{StaticResource EmptyViewLabel}"
-                                    TextColor="{StaticResource CondTask}"/>
+                                    Style="{StaticResource EmptyViewLabel}"/>
                             </CollectionView.EmptyView>
 
                             <CollectionView.ItemTemplate>
@@ -554,7 +549,6 @@
 
                     <Label
                         Style="{StaticResource SubHeadline}"
-                        TextColor="{StaticResource GeneralTask}"
                         Grid.Column="0"
                         Grid.Row="0">
 
@@ -587,8 +581,7 @@
 
                             <CollectionView.EmptyView>
                                 <Label
-                                    Style="{StaticResource EmptyViewLabel}"
-                                    TextColor="{StaticResource GeneralTask}"/>
+                                    Style="{StaticResource EmptyViewLabel}"/>
                             </CollectionView.EmptyView>
 
                             <CollectionView.ItemTemplate>
