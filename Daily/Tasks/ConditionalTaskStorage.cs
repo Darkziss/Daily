@@ -89,7 +89,7 @@ namespace Daily.Tasks
 
         protected override void SortTasks()
         {
-            var sorted = Tasks.OrderByDescending(task => task.RepeatTimePeriod)
+            var sorted = Tasks.OrderBy(task => task.RepeatTimePeriod)
                 .ThenBy(task => task.ActionName.Length)
                 .ToList();
 
