@@ -85,11 +85,11 @@
 
             <converters:TaskCountToStringConverter
                 x:Key="ConditionalTaskCountToStringConverter"
-                TaskName="Условные задачи"/>
+                TaskName="Цикличные задачи"/>
 
             <converters:TaskCountToStringConverter
                 x:Key="GeneralTaskCountToStringConverter"
-                TaskName="Основные задачи"/>
+                TaskName="Разовые задачи"/>
 
             <converters:BoolToOpacityConverter
                 x:Key="IsCompletedToOpacityConverter"
