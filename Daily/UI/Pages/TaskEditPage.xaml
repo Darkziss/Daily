@@ -28,8 +28,8 @@
                 <Setter Property="ItemsSource">
                     <Setter.Value>
                         <x:Array Type="{x:Type x:String}">
-                            <x:String>Основная</x:String>
-                            <x:String>Условная</x:String>
+                            <x:String>Разовая</x:String>
+                            <x:String>Цикличная</x:String>
                         </x:Array>
                     </Setter.Value>
                 </Setter>
