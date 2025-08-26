@@ -29,15 +29,15 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _canInteractWithTask = true;
 
         private readonly GoalStorage _goalStorage;
-        private readonly GeneralTaskStorage _generalTaskStorage;
+        private readonly OneTimeTaskStorage _oneTimeTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
         public TaskLoaderNotifier<Goal> GoalLoader { get; }
 
-        public TaskLoaderNotifier<ObservableCollection<GeneralTask>> GeneralTasksLoader { get; }
+        public TaskLoaderNotifier<ObservableCollection<OneTimeTask>> OneTimeTasksLoader { get; }
         public TaskLoaderNotifier<ObservableCollection<ConditionalTask>> ConditionalTasksLoader { get; }
 
-        public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
+        public int OneTimeTaskMaxCount => _oneTimeTaskStorage.MaxTaskCount;
         public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
@@ -48,24 +48,24 @@ namespace Daily.ViewModels
         public Command<ConditionalTask> ResetConditionalTaskCommand { get; }
         public Command<ConditionalTask> DeleteConditionalTaskCommand { get; }
 
-        public Command<GeneralTask> PerformGeneralTaskCommand { get; }
-        public Command<GeneralTask> EditGeneralTaskCommand { get; }
-        public Command<GeneralTask> ResetGeneralTaskCommand { get; }
-        public Command<GeneralTask> DeleteGeneralTaskCommand { get; }
+        public Command<OneTimeTask> PerformOneTimeTaskCommand { get; }
+        public Command<OneTimeTask> EditOneTimeTaskCommand { get; }
+        public Command<OneTimeTask> ResetOneTimeTaskCommand { get; }
+        public Command<OneTimeTask> DeleteOneTimeTaskCommand { get; }
 
         public Command AddTaskCommand { get; }
 
-        public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
+        public TaskPageViewModel(GoalStorage goalStorage, OneTimeTaskStorage oneTimeTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
         {
             _goalStorage = goalStorage;
 
-            _generalTaskStorage = generalTaskStorage;
+            _oneTimeTaskStorage = oneTimeTaskStorage;
             _conditionalTaskStorage = conditionalTaskStorage;
 
             GoalLoader = new(true);
 
-            GeneralTasksLoader = new(true);
+            OneTimeTasksLoader = new(true);
             ConditionalTasksLoader = new(true);
 
             EditGoalCommand = new Command(async () =>
@@ -128,36 +128,36 @@ namespace Daily.ViewModels
                 }
             });
 
-            PerformGeneralTaskCommand = new(async (task) =>
+            PerformOneTimeTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
 
-                await PerformGeneralTaskAsync(task);
+                await PerformOneTimeTaskAsync(task);
             });
 
-            EditGeneralTaskCommand = new(async (task) =>
+            EditOneTimeTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
 
                 var parameters = new ShellNavigationQueryParameters()
                 {
-                    [nameof(GeneralTask)] = task
+                    [nameof(OneTimeTask)] = task
                 };
 
                 await PageNavigator.GoToTaskEditPageAsync(parameters);
             });
 
-            ResetGeneralTaskCommand = new(async (task) =>
+            ResetOneTimeTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
 
-                await ResetGeneralTaskAsync(task);
+                await ResetOneTimeTaskAsync(task);
             });
 
-            DeleteGeneralTaskCommand = new(async (task) =>
+            DeleteOneTimeTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
@@ -166,7 +166,7 @@ namespace Daily.ViewModels
 
                 if (shouldDelete)
                 {
-                    await _generalTaskStorage.DeleteTaskAsync(task);
+                    await _oneTimeTaskStorage.DeleteTaskAsync(task);
                     await TaskToastHandler.ShowTaskDeletedToastAsync();
                 }
             });
@@ -234,8 +234,8 @@ namespace Daily.ViewModels
 
         private void LoadTasksIfNotLoaded()
         {
-            if (GeneralTasksLoader.IsNotStarted)
-                GeneralTasksLoader.Load(_ => _generalTaskStorage.LoadTasks());
+            if (OneTimeTasksLoader.IsNotStarted)
+                OneTimeTasksLoader.Load(_ => _oneTimeTaskStorage.LoadTasks());
 
             if (ConditionalTasksLoader.IsNotStarted)
                 ConditionalTasksLoader.Load(_ => _conditionalTaskStorage.LoadTasks());
@@ -257,11 +257,11 @@ namespace Daily.ViewModels
             HasDeadline = _goalStorage.Deadline.HasValue;
         }
 
-        private async Task PerformGeneralTaskAsync(GeneralTask task)
+        private async Task PerformOneTimeTaskAsync(OneTimeTask task)
         {
             if (!CanPerformTask(task)) return;
 
-            await _generalTaskStorage.PerformTaskAsync(task);
+            await _oneTimeTaskStorage.PerformTaskAsync(task);
         }
 
         private async Task PerformСonditionalTaskAsync(ConditionalTask task)
@@ -271,11 +271,11 @@ namespace Daily.ViewModels
             await _conditionalTaskStorage.PerformTaskAsync(task);
         }
 
-        private async Task ResetGeneralTaskAsync(GeneralTask task)
+        private async Task ResetOneTimeTaskAsync(OneTimeTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 
-            await _generalTaskStorage.ResetTaskAsync(task);
+            await _oneTimeTaskStorage.ResetTaskAsync(task);
         }
 
         private async Task ResetConditionalTaskAsync(ConditionalTask task)

@@ -25,7 +25,7 @@ namespace Daily.ViewModels
 
         private TaskBase? _currentTask = null;
 
-        private readonly GeneralTaskStorage _generalTaskStorage;
+        private readonly OneTimeTaskStorage _oneTimeTaskStorage;
         private readonly ConditionalTaskStorage _conditionalTaskStorage;
 
         public Command ChangeViewCommand { get; }
@@ -34,10 +34,10 @@ namespace Daily.ViewModels
 
         private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
 
-        public TaskEditPageViewModel(GeneralTaskStorage generalTaskStorage, 
+        public TaskEditPageViewModel(OneTimeTaskStorage oneTimeTaskStorage, 
             ConditionalTaskStorage conditionalTaskStorage)
         {
-            _generalTaskStorage = generalTaskStorage;
+            _oneTimeTaskStorage = oneTimeTaskStorage;
             _conditionalTaskStorage = conditionalTaskStorage;
 
             ChangeViewCommand = new Command(
@@ -57,13 +57,13 @@ namespace Daily.ViewModels
                 async Task CreateTaskAsync()
                 {
                     if (IsConditionalTaskMode) await CreateConditionalTaskAsync();
-                    else await CreateGeneralTaskAsync();
+                    else await CreateOneTimeTaskAsync();
                 }
 
                 async Task EditTaskAsync()
                 {
                     if (IsConditionalTaskMode) await EditConditionalTaskAsync();
-                    else await EditGeneralTaskAsync();
+                    else await EditOneTimeTaskAsync();
                 }
 
                 if (IsEditMode) await EditTaskAsync();
@@ -88,7 +88,7 @@ namespace Daily.ViewModels
             };
         }
 
-        public void PrepareViewForEdit(GeneralTask task)
+        public void PrepareViewForEdit(OneTimeTask task)
         {
             _currentTask = task;
             
@@ -144,18 +144,18 @@ namespace Daily.ViewModels
             Note = string.Empty;
         }
 
-        private async Task CreateGeneralTaskAsync()
+        private async Task CreateOneTimeTaskAsync()
         {
-            if (_generalTaskStorage.IsTasksFull)
+            if (_oneTimeTaskStorage.IsTasksFull)
             {
-                await TaskToastHandler.ShowGeneralTasksFullToastAsync();
+                await TaskToastHandler.ShowOneTimeTasksFullToastAsync();
                 return;
             }
             
             TaskPriority priority = (TaskPriority)PriorityIndex;
-            GeneralTask task = new GeneralTask(ActionName, 0, TargetRepeatCount, priority, Note);
+            OneTimeTask task = new OneTimeTask(ActionName, 0, TargetRepeatCount, priority, Note);
 
-            bool isCreated = await _generalTaskStorage.TryAddTaskAsync(task);
+            bool isCreated = await _oneTimeTaskStorage.TryAddTaskAsync(task);
 
             if (isCreated) await TaskToastHandler.ShowTaskCreatedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();
@@ -178,14 +178,14 @@ namespace Daily.ViewModels
             else await TaskToastHandler.ShowTaskErrorToastAsync();
         }
 
-        private async Task EditGeneralTaskAsync()
+        private async Task EditOneTimeTaskAsync()
         {
-            GeneralTask oldTask = (GeneralTask)_currentTask!;
+            OneTimeTask oldTask = (OneTimeTask)_currentTask!;
 
             TaskPriority priority = (TaskPriority)PriorityIndex;
-            GeneralTask newTask = new GeneralTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, priority, Note);
+            OneTimeTask newTask = new OneTimeTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, priority, Note);
 
-            bool isEdited = await _generalTaskStorage.TryEditTaskAsync(oldTask, newTask);
+            bool isEdited = await _oneTimeTaskStorage.TryEditTaskAsync(oldTask, newTask);
 
             if (isEdited) await TaskToastHandler.ShowTaskEditedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();

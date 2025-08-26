@@ -3,24 +3,24 @@ using Daily.Data;
 
 namespace Daily.Tasks
 {
-    public class GeneralTaskStorage : TaskStorage<GeneralTask>
+    public class OneTimeTaskStorage : TaskStorage<OneTimeTask>
     {
-        public override ObservableCollection<GeneralTask>? Tasks { get; protected set; }
+        public override ObservableCollection<OneTimeTask>? Tasks { get; protected set; }
 
         public override int MaxTaskCount { get; } = 15;
 
-        public GeneralTaskStorage(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+        public OneTimeTaskStorage(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
-        public override async Task<ObservableCollection<GeneralTask>> LoadTasks()
+        public override async Task<ObservableCollection<OneTimeTask>> LoadTasks()
         {
-            IEnumerable<GeneralTask>? tasks = await _unitOfWork.GeneralTaskRepository.LoadAsync();
+            IEnumerable<OneTimeTask>? tasks = await _unitOfWork.OneTimeTaskRepository.LoadAsync();
 
             Tasks = tasks == null ? new() : new(tasks);
 
             return Tasks;
         }
 
-        public override async Task<bool> TryAddTaskAsync(GeneralTask task)
+        public override async Task<bool> TryAddTaskAsync(OneTimeTask task)
         {
             if (IsTasksFull) return false;
 
@@ -34,12 +34,12 @@ namespace Daily.Tasks
             Tasks.Add(task);
             if (ShouldSort) SortTasks();
 
-            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.OneTimeTaskRepository.SaveAsync(Tasks);
 
             return true;
         }
 
-        public override async Task<bool> TryEditTaskAsync(GeneralTask oldTask, GeneralTask newTask)
+        public override async Task<bool> TryEditTaskAsync(OneTimeTask oldTask, OneTimeTask newTask)
         {
             bool isValid = TaskValidator.ValidateTask(newTask);
 
@@ -54,35 +54,35 @@ namespace Daily.Tasks
             Tasks[index] = newTask;
             if (ShouldSort) SortTasks();
 
-            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.OneTimeTaskRepository.SaveAsync(Tasks);
             return true;
         }
 
-        public override async Task PerformTaskAsync(GeneralTask task)
+        public override async Task PerformTaskAsync(OneTimeTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
             task.Perform();
 
-            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.OneTimeTaskRepository.SaveAsync(Tasks);
         }
 
-        public override async Task ResetTaskAsync(GeneralTask task)
+        public override async Task ResetTaskAsync(OneTimeTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
             task.Reset();
 
-            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.OneTimeTaskRepository.SaveAsync(Tasks);
         }
 
-        public override async Task DeleteTaskAsync(GeneralTask task)
+        public override async Task DeleteTaskAsync(OneTimeTask task)
         {
             if (IsNullOrUnknownTask(task, out int index)) return;
 
             Tasks.RemoveAt(index);
 
-            await _unitOfWork.GeneralTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.OneTimeTaskRepository.SaveAsync(Tasks);
         }
 
         protected override void SortTasks()
@@ -93,7 +93,7 @@ namespace Daily.Tasks
 
             Tasks.Clear();
 
-            foreach (GeneralTask task in sorted)
+            foreach (OneTimeTask task in sorted)
             {
                 Tasks.Add(task);
             }

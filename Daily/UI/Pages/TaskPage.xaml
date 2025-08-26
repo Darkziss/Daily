@@ -554,8 +554,8 @@
 
                         <Label.Text>
                             <MultiBinding Converter="{StaticResource GeneralTaskCountToStringConverter}">
-                                <Binding Path="GeneralTasksLoader.Result.Count"/>
-                                <Binding Path="GeneralTaskMaxCount"/>
+                                <Binding Path="OneTimeTasksLoader.Result.Count"/>
+                                <Binding Path="OneTimeTaskMaxCount"/>
                             </MultiBinding>
                         </Label.Text>
                     </Label>
@@ -573,8 +573,8 @@
 
                         <CollectionView
                             Style="{StaticResource TasksCollectionView}"
-                            IsVisible="{Binding GeneralTasksLoader.IsSuccessfullyCompleted}"
-                            ItemsSource="{Binding GeneralTasksLoader.Result}"
+                            IsVisible="{Binding OneTimeTasksLoader.IsSuccessfullyCompleted}"
+                            ItemsSource="{Binding OneTimeTasksLoader.Result}"
                             Margin="{StaticResource GeneralTaskCollectionViewMargin}"
                             Grid.Column="0"
                             Grid.Row="1">
@@ -590,7 +590,7 @@
                                         <SwipeView.RightItems>
                                             <SwipeItems>
                                                 <SwipeItemView
-                                                    Command="{Binding EditGeneralTaskCommand, Mode=OneTime, 
+                                                    Command="{Binding EditOneTimeTaskCommand, Mode=OneTime, 
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
@@ -601,7 +601,7 @@
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    Command="{Binding ResetGeneralTaskCommand, Mode=OneTime,
+                                                    Command="{Binding ResetOneTimeTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
@@ -612,7 +612,7 @@
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    Command="{Binding DeleteGeneralTaskCommand, Mode=OneTime,
+                                                    Command="{Binding DeleteOneTimeTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
@@ -625,7 +625,7 @@
                                         </SwipeView.RightItems>
 
                                         <Frame
-                                            x:DataType="tasks:GeneralTask"
+                                            x:DataType="tasks:OneTimeTask"
                                             Style="{StaticResource TaskCard}"
                                             Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
                                             BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
@@ -633,7 +633,7 @@
                                             <Frame.GestureRecognizers>
                                                 <TapGestureRecognizer
                                                     NumberOfTapsRequired="1"
-                                                    Command="{Binding PerformGeneralTaskCommand, Mode=OneTime, 
+                                                    Command="{Binding PerformOneTimeTaskCommand, Mode=OneTime, 
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
                                                         Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}"/>
