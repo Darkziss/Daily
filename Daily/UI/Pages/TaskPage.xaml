@@ -50,7 +50,6 @@
             <Color x:Key="Note">#edc2df</Color>
 
             <Color x:Key="ProgressFill">#cfcfcf</Color>
-            <Color x:Key="ProgressBackgroundFill">#a4a4a4</Color>
             <Color x:Key="Completed">#71b866</Color>
 
             <Color x:Key="Reset">#86f7ea</Color>
