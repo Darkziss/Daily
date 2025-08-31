@@ -48,8 +48,8 @@ namespace Daily
         {
             collection
                 .AddSingleton<GoalStorage>()
-                .AddSingleton<GeneralTaskStorage>()
-                .AddSingleton<ConditionalTaskStorage>()
+                .AddSingleton<OneTimeTaskStorage>()
+                .AddSingleton<RecurringTaskStorage>()
                 .AddSingleton<ThoughtStorage>()
                 .AddSingleton<DiaryRecordStorage>();
         }

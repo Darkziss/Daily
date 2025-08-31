@@ -3,24 +3,24 @@ using Daily.Data;
 
 namespace Daily.Tasks
 {
-    public class ConditionalTaskStorage : TaskStorage<ConditionalTask>
+    public class RecurringTaskStorage : TaskStorage<RecurringTask>
     {
-        public override ObservableCollection<ConditionalTask>? Tasks { get; protected set; }
+        public override ObservableCollection<RecurringTask>? Tasks { get; protected set; }
 
         public override int MaxTaskCount { get; } = 10;
 
-        public ConditionalTaskStorage(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+        public RecurringTaskStorage(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
-        public override async Task<ObservableCollection<ConditionalTask>> LoadTasks()
+        public override async Task<ObservableCollection<RecurringTask>> LoadTasks()
         {
-            IEnumerable<ConditionalTask>? tasks = await _unitOfWork.ConditionalTaskRepository.LoadAsync();
+            IEnumerable<RecurringTask>? tasks = await _unitOfWork.RecurringTaskRepository.LoadAsync();
 
             Tasks = tasks == null ? new() : new(tasks);
 
             return Tasks;
         }
 
-        public override async Task<bool> TryAddTaskAsync(ConditionalTask task)
+        public override async Task<bool> TryAddTaskAsync(RecurringTask task)
         {
             if (IsTasksFull) return false;
 
@@ -34,12 +34,12 @@ namespace Daily.Tasks
             Tasks.Add(task);
             if (ShouldSort) SortTasks();
 
-            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
 
             return true;
         }
 
-        public override async Task<bool> TryEditTaskAsync(ConditionalTask oldTask, ConditionalTask newTask)
+        public override async Task<bool> TryEditTaskAsync(RecurringTask oldTask, RecurringTask newTask)
         {
             bool isValid = TaskValidator.ValidateTask(newTask);
 
@@ -54,37 +54,37 @@ namespace Daily.Tasks
             Tasks[index] = newTask;
             if (ShouldSort) SortTasks();
 
-            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
 
             return true;
         }
 
-        public override async Task PerformTaskAsync(ConditionalTask task)
+        public override async Task PerformTaskAsync(RecurringTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
             task.Perform();
 
-            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
 
         }
 
-        public override async Task ResetTaskAsync(ConditionalTask task)
+        public override async Task ResetTaskAsync(RecurringTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
             task.Reset();
 
-            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
         }
 
-        public override async Task DeleteTaskAsync(ConditionalTask task)
+        public override async Task DeleteTaskAsync(RecurringTask task)
         {
             if (IsNullOrUnknownTask(task, out int index)) return;
 
             Tasks.RemoveAt(index);
 
-            await _unitOfWork.ConditionalTaskRepository.SaveAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
         }
 
         protected override void SortTasks()
@@ -95,7 +95,7 @@ namespace Daily.Tasks
 
             Tasks.Clear();
 
-            foreach (ConditionalTask task in sorted)
+            foreach (RecurringTask task in sorted)
             {
                 Tasks.Add(task);
             }

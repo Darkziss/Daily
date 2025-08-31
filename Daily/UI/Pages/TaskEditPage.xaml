@@ -28,8 +28,8 @@
                 <Setter Property="ItemsSource">
                     <Setter.Value>
                         <x:Array Type="{x:Type x:String}">
-                            <x:String>Основная</x:String>
-                            <x:String>Условная</x:String>
+                            <x:String>Разовая</x:String>
+                            <x:String>Цикличная</x:String>
                         </x:Array>
                     </Setter.Value>
                 </Setter>
@@ -127,7 +127,7 @@
 
             <VerticalStackLayout
                 Style="{StaticResource TaskFieldStackLayout}"
-                IsVisible="{Binding IsConditionalTaskMode, Converter={toolkit:InvertedBoolConverter}}">
+                IsVisible="{Binding IsRecurringTaskMode, Converter={toolkit:InvertedBoolConverter}}">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
@@ -155,7 +155,7 @@
 
             <VerticalStackLayout
                 Style="{StaticResource TaskFieldStackLayout}"
-                IsVisible="{Binding IsConditionalTaskMode}">
+                IsVisible="{Binding IsRecurringTaskMode}">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"

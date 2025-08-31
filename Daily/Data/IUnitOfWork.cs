@@ -8,9 +8,9 @@ namespace Daily.Data
     {
         public IFileRepository<Goal> GoalRepository { get; }
 
-        public IFileRepository<ICollection<GeneralTask>> GeneralTaskRepository { get; }
+        public IFileRepository<ICollection<OneTimeTask>> OneTimeTaskRepository { get; }
 
-        public IFileRepository<ICollection<ConditionalTask>> ConditionalTaskRepository { get; }
+        public IFileRepository<ICollection<RecurringTask>> RecurringTaskRepository { get; }
 
         public IRepository<Thought> ThoughtRepository { get; }
 

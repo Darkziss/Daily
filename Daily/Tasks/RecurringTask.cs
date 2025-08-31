@@ -1,7 +1,7 @@
 ﻿
 namespace Daily.Tasks
 {
-    public class ConditionalTask : TaskBase
+    public class RecurringTask : TaskBase
     {
         private TaskRepeatTimePeriod _repeatTimePeriod;
 
@@ -17,7 +17,7 @@ namespace Daily.Tasks
             }
         }
 
-        public ConditionalTask(string actionName, int repeatCount, int targetRepeatCount, 
+        public RecurringTask(string actionName, int repeatCount, int targetRepeatCount, 
             TaskRepeatTimePeriod repeatTimePeriod, string note) 
             : base(actionName, repeatCount, targetRepeatCount, note)
         {

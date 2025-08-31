@@ -11,8 +11,8 @@ namespace Daily.Toasts
 
         private static readonly IToast _taskErrorToast = ToastCreator.Create(taskErrorToastMessage);
 
-        private static readonly IToast _generalTasksFullToast = ToastCreator.Create(generalTasksFullToastMessage);
-        private static readonly IToast _conditionalTasksFullToast = ToastCreator.Create(conditionalTasksFullToastMessage);
+        private static readonly IToast _oneTimeTasksFullToast = ToastCreator.Create(oneTimeTasksFullToastMessage);
+        private static readonly IToast _recurringTasksFullToast = ToastCreator.Create(recurringTasksFullToastMessage);
 
         private const string taskCreatedToastMessage = "Задача была успешно создана";
         private const string taskEditedToastMessage = "Задача была успешно изменена";
@@ -20,8 +20,8 @@ namespace Daily.Toasts
 
         private const string taskErrorToastMessage = "Ошибка\nПопробуйте еще раз";
 
-        private const string generalTasksFullToastMessage = "Ошибка: Уже создано максимум основных задач";
-        private const string conditionalTasksFullToastMessage = "Ошибка: Уже создано максимум условных задач";
+        private const string oneTimeTasksFullToastMessage = "Ошибка: Уже создано максимум разовых задач";
+        private const string recurringTasksFullToastMessage = "Ошибка: Уже создано максимум цикличных задач";
 
         public static async Task ShowTaskCreatedToastAsync() => await _taskCreatedToast.Show();
 
@@ -31,8 +31,8 @@ namespace Daily.Toasts
 
         public static async Task ShowTaskErrorToastAsync() => await _taskErrorToast.Show();
 
-        public static async Task ShowGeneralTasksFullToastAsync() => await _generalTasksFullToast.Show();
+        public static async Task ShowOneTimeTasksFullToastAsync() => await _oneTimeTasksFullToast.Show();
 
-        public static async Task ShowConditionalTasksFullToastAsync() => await _conditionalTasksFullToast.Show();
+        public static async Task ShowRecurringTasksFullToastAsync() => await _recurringTasksFullToast.Show();
     }
 }
