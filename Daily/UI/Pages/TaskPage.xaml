@@ -49,8 +49,7 @@
             <Color x:Key="Time">#c3eced</Color>
             <Color x:Key="Note">#edc2df</Color>
 
-            <Color x:Key="ProgressFill">#cfcfcf</Color>
-            <Color x:Key="ProgressBackgroundFill">#a4a4a4</Color>
+            <Color x:Key="TaskProgress">#cfcfcf</Color>
             <Color x:Key="Completed">#71b866</Color>
 
             <Color x:Key="Reset">#86f7ea</Color>
@@ -226,9 +225,10 @@
             </Style>
 
             <Style TargetType="controls:TaskProgressIndicator">
-                <Setter Property="ProgressFillColor" Value="{StaticResource ProgressFill}"/>
-                <Setter Property="BackgroundFillColor" Value="{StaticResource ProgressBackgroundFill}"/>
+                <Setter Property="ProgressFillColor" Value="{StaticResource TaskProgress}"/>
                 <Setter Property="CompletedFillColor" Value="{StaticResource Completed}"/>
+                <Setter Property="StrokeColor" Value="Black"/>
+                <Setter Property="StrokeSize" Value="1"/>
                 <Setter Property="WidthRequest" Value="{StaticResource RadialProgressBarSize}"/>
                 <Setter Property="HeightRequest" Value="{StaticResource RadialProgressBarSize}"/>
                 <Setter Property="VerticalOptions" Value="Center"/>

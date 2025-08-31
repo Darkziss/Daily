@@ -7,8 +7,10 @@ namespace Daily.Drawables
         public int repeatCount;
         public int targetRepeatCount;
 
+        public Color strokeColor;
+        public float strokeSize;
+
         public Color progressFillColor = Colors.White;
-        public Color backgroundFillColor = Colors.Gray;
 
         public Color completedFillColor = Colors.Green;
 
@@ -17,13 +19,16 @@ namespace Daily.Drawables
         private const bool clockwise = true;
         private const bool closed = false;
 
-        public RadialProgressBarDrawable(int repeatCount, int targetRepeatCount, Color progressFillColor, Color backgroundFillColor, Color completedColor)
+        public RadialProgressBarDrawable(int repeatCount, int targetRepeatCount, Color strokeColor, float strokeSize, 
+            Color progressFillColor, Color completedColor)
         {
             this.repeatCount = repeatCount;
             this.targetRepeatCount = targetRepeatCount;
 
+            this.strokeColor = strokeColor;
+            this.strokeSize = strokeSize;
+
             this.progressFillColor = progressFillColor;
-            this.backgroundFillColor = backgroundFillColor;
 
             this.completedFillColor = completedColor;
         }
@@ -40,21 +45,51 @@ namespace Daily.Drawables
             bool isEmpty = repeatCount == 0;
             bool isFull = repeatCount == targetRepeatCount;
 
-            canvas.FillColor = isFull ? completedFillColor : backgroundFillColor;
-            canvas.FillCircle(center.X, center.Y, radius);
-
             if (!isEmpty && !isFull)
             {
-                Vector2 arcCenter = new Vector2(center.X - width / 2f, center.Y - height / 2f);
-
-                float fillAmount = (float)repeatCount / (float)targetRepeatCount;
-                float endAngle = startAngle - fillAmount * 360f;
-
-                canvas.StrokeColor = progressFillColor;
-                canvas.StrokeSize = radius;
-                canvas.DrawArc(arcCenter.X, arcCenter.Y, width, height, startAngle, endAngle,
-                    clockwise, closed);
+                DrawProgressArc(canvas, width, height, radius, center);
             }
+
+            if (isFull)
+            {
+                DrawCompletedCircle(canvas, radius, center);
+            }
+            else
+            {
+                DrawEllipseStroke(canvas, width, height, center);
+            }
+        }
+
+        private void DrawCompletedCircle(ICanvas canvas, float radius, Vector2 center)
+        {
+            canvas.FillColor = completedFillColor;
+            canvas.StrokeColor = Colors.Transparent;
+            canvas.StrokeSize = 0f;
+            canvas.FillCircle(center.X, center.Y, radius);
+        }
+
+        private void DrawProgressArc(ICanvas canvas, float width, float height, float radius, Vector2 center)
+        {
+            Vector2 drawPoint = new Vector2(center.X - width / 2f, center.Y - height / 2f);
+
+            float fillAmount = (float)repeatCount / (float)targetRepeatCount;
+            float endAngle = startAngle - fillAmount * 360f;
+
+            canvas.FillColor = Colors.Transparent;
+            canvas.StrokeColor = progressFillColor;
+            canvas.StrokeSize = radius;
+            canvas.DrawArc(drawPoint.X, drawPoint.Y, width, height, startAngle, endAngle,
+                clockwise, closed);
+        }
+
+        private void DrawEllipseStroke(ICanvas canvas, float width, float height, Vector2 center)
+        {
+            RectF rectF = new(center.X - width, center.Y - height, width * 2f, height * 2f);
+
+            canvas.FillColor = Colors.Transparent;
+            canvas.StrokeColor = strokeColor;
+            canvas.StrokeSize = strokeSize;
+            canvas.DrawEllipse(rectF);
         }
     }
 }
