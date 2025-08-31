@@ -202,8 +202,7 @@
                     Grid.Row="0">
 
                     <Frame
-                        Style="{StaticResource TaskCounterFrame}"
-                        BackgroundColor="{StaticResource Common}">
+                        Style="{StaticResource TaskCounterFrame}">
 
                         <Label
                             Style="{StaticResource TaskCounterLabel}"
