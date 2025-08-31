@@ -227,8 +227,9 @@
 
             <Style TargetType="controls:TaskProgressIndicator">
                 <Setter Property="ProgressFillColor" Value="{StaticResource ProgressFill}"/>
-                <Setter Property="BackgroundFillColor" Value="{StaticResource ProgressBackgroundFill}"/>
                 <Setter Property="CompletedFillColor" Value="{StaticResource Completed}"/>
+                <Setter Property="StrokeColor" Value="Black"/>
+                <Setter Property="StrokeSize" Value="1"/>
                 <Setter Property="WidthRequest" Value="{StaticResource RadialProgressBarSize}"/>
                 <Setter Property="HeightRequest" Value="{StaticResource RadialProgressBarSize}"/>
                 <Setter Property="VerticalOptions" Value="Center"/>
