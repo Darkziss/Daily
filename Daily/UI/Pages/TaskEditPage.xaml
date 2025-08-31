@@ -145,7 +145,7 @@
                                 <x:String>Ежедневная</x:String>
                                 <x:String>Обязательная</x:String>
                                 <x:String>Важная</x:String>
-                                <x:String>Обычная</x:String>
+                                <x:String>Дополнительная</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
