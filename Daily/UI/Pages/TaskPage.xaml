@@ -113,14 +113,14 @@
                 DailyColor="{StaticResource Daily}"
                 MandatoryColor="{StaticResource Mandatory}"
                 ImportantColor="{StaticResource Important}"
-                CommonColor="{StaticResource Common}"/>
+                AdditionalColor="{StaticResource Additional}"/>
 
             <converters:PriorityToStringConverter
                 x:Key="PriorityToTextConverter"
                 DailyTaskText="Ежедневная"
                 MandatoryTaskText="Обязательная"
                 ImportantTaskText="Важная"
-                CommonTaskText="Обычная"/>
+                AdditionalTaskText="Дополнительная"/>
 
             <Style TargetType="Border" x:Key="GoalCard">
                 <Setter Property="Padding" Value="10, 0, 0, 0"/>

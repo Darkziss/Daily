@@ -29,7 +29,7 @@
     <Color x:Key="Daily">#edd8c3</Color>
     <Color x:Key="Mandatory">#edc3c3</Color>
     <Color x:Key="Important">#edebc3</Color>
-    <Color x:Key="Common">#c3edc4</Color>
+    <Color x:Key="Additional">#c3edc4</Color>
 
     <Color x:Key="DiaryBackground">#f8f0cd</Color>
     <Color x:Key="DiaryFieldBackground">#f0e8c7</Color>

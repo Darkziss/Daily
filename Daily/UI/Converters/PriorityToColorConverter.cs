@@ -8,7 +8,7 @@ namespace Daily.Converters
         public Color DailyColor { get; init; } = Colors.Orange;
         public Color MandatoryColor { get; init; } = Colors.Red;
         public Color ImportantColor { get; init; } = Colors.Yellow;
-        public Color CommonColor { get; init; } = Colors.Green;
+        public Color AdditionalColor { get; init; } = Colors.Green;
  
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
@@ -21,7 +21,7 @@ namespace Daily.Converters
                 TaskPriority.Daily => DailyColor,
                 TaskPriority.Mandatory => MandatoryColor,
                 TaskPriority.Important => ImportantColor,
-                TaskPriority.Common => CommonColor,
+                TaskPriority.Additional => AdditionalColor,
                 _ => null
             };
         }
