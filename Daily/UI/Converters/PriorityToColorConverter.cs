@@ -5,7 +5,6 @@ namespace Daily.Converters
 {
     public class PriorityToColorConverter : IValueConverter
     {
-        public Color DailyColor { get; init; } = Colors.Orange;
         public Color MandatoryColor { get; init; } = Colors.Red;
         public Color ImportantColor { get; init; } = Colors.Yellow;
         public Color AdditionalColor { get; init; } = Colors.Green;
@@ -18,7 +17,6 @@ namespace Daily.Converters
 
             return priority switch
             {
-                TaskPriority.Daily => DailyColor,
                 TaskPriority.Mandatory => MandatoryColor,
                 TaskPriority.Important => ImportantColor,
                 TaskPriority.Additional => AdditionalColor,

@@ -110,14 +110,12 @@
 
             <converters:PriorityToColorConverter
                 x:Key="PriorityToColorConverter"
-                DailyColor="{StaticResource Daily}"
                 MandatoryColor="{StaticResource Mandatory}"
                 ImportantColor="{StaticResource Important}"
                 AdditionalColor="{StaticResource Additional}"/>
 
             <converters:PriorityToStringConverter
                 x:Key="PriorityToTextConverter"
-                DailyTaskText="Ежедневная"
                 MandatoryTaskText="Обязательная"
                 ImportantTaskText="Важная"
                 AdditionalTaskText="Дополнительная"/>

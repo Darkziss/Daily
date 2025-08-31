@@ -142,7 +142,6 @@
 
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
-                                <x:String>Ежедневная</x:String>
                                 <x:String>Обязательная</x:String>
                                 <x:String>Важная</x:String>
                                 <x:String>Дополнительная</x:String>
