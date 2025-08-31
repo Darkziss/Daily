@@ -6,6 +6,6 @@ namespace Daily.Tasks
         Daily,
         Mandatory,
         Important,
-        Common
+        Additional
     }
 }
