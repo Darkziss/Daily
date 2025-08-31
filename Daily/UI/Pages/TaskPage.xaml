@@ -84,11 +84,11 @@
                 Count="2"/>
 
             <converters:TaskCountToStringConverter
-                x:Key="ConditionalTaskCountToStringConverter"
+                x:Key="RecurringTaskCountToStringConverter"
                 TaskName="Цикличные задачи"/>
 
             <converters:TaskCountToStringConverter
-                x:Key="GeneralTaskCountToStringConverter"
+                x:Key="OneTimeTaskCountToStringConverter"
                 TaskName="Разовые задачи"/>
 
             <converters:BoolToOpacityConverter
@@ -389,7 +389,7 @@
                         Grid.Row="0">
 
                         <Label.Text>
-                            <MultiBinding Converter="{StaticResource ConditionalTaskCountToStringConverter}">
+                            <MultiBinding Converter="{StaticResource RecurringTaskCountToStringConverter}">
                                 <Binding Path="RecurringTasksLoader.Result.Count"/>
                                 <Binding Path="RecurringTaskMaxCount"/>
                             </MultiBinding>
@@ -553,7 +553,7 @@
                         Grid.Row="0">
 
                         <Label.Text>
-                            <MultiBinding Converter="{StaticResource GeneralTaskCountToStringConverter}">
+                            <MultiBinding Converter="{StaticResource OneTimeTaskCountToStringConverter}">
                                 <Binding Path="OneTimeTasksLoader.Result.Count"/>
                                 <Binding Path="OneTimeTaskMaxCount"/>
                             </MultiBinding>
