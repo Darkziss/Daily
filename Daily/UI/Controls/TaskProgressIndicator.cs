@@ -16,13 +16,17 @@ namespace Daily.Controls
             BindableProperty.Create(nameof(ProgressFillColor), typeof(Color),
                 typeof(TaskProgressIndicator), Colors.White, propertyChanged: OnProgressFillColorChanged);
 
-        public static readonly BindableProperty BackgroundFillColorProperty =
-            BindableProperty.Create(nameof(BackgroundFillColor), typeof(Color),
-                typeof(TaskProgressIndicator), Colors.Gray, propertyChanged: OnBackgroundFillColorChanged);
-
         public static readonly BindableProperty CompletedFillColorProperty =
             BindableProperty.Create(nameof(CompletedFillColor), typeof(Color),
                 typeof(TaskProgressIndicator), Colors.Green, propertyChanged: OnCompletedColorChanged);
+
+        public static readonly BindableProperty StrokeColorProperty =
+            BindableProperty.Create(nameof(StrokeColor), typeof(Color),
+                typeof(TaskProgressIndicator), Colors.Black, propertyChanged: OnStrokeColorChanged);
+
+        public static readonly BindableProperty StrokeSizeProperty =
+            BindableProperty.Create(nameof(StrokeSize), typeof(float),
+                typeof(TaskProgressIndicator), 1f, propertyChanged: OnStrokeSizeChanged);
 
         private const int defaultRepeatCount = 0;
         private const int defaultTargetRepeatCount = 1;
@@ -45,24 +49,28 @@ namespace Daily.Controls
             set { SetValue(ProgressFillColorProperty, value); }
         }
 
-        public Color BackgroundFillColor
-        {
-            get { return (Color)GetValue(BackgroundFillColorProperty); }
-            set { SetValue(BackgroundFillColorProperty, value); }
-        }
-
         public Color CompletedFillColor
         {
             get { return (Color)GetValue(CompletedFillColorProperty); }
             set { SetValue(CompletedFillColorProperty, value); }
         }
 
+        public Color StrokeColor
+        {
+            get { return (Color)GetValue(StrokeColorProperty); }
+            set { SetValue(StrokeColorProperty, value); }
+        }
+
+        public float StrokeSize
+        {
+            get { return (float)GetValue(StrokeSizeProperty); }
+            set { SetValue(StrokeSizeProperty, value); }
+        }
+
         public TaskProgressIndicator()
         {
-            var drawable = new RadialProgressBarDrawable(RepeatCount, TargetRepeatCount, ProgressFillColor, 
-                BackgroundFillColor, CompletedFillColor);
-
-            Drawable = drawable;
+            Drawable = new RadialProgressBarDrawable(RepeatCount, TargetRepeatCount, StrokeColor, StrokeSize, 
+                ProgressFillColor, CompletedFillColor);
         }
 
         private static void GetGraphicsViewAndDrawable(BindableObject bindable, out GraphicsView graphicsView, out RadialProgressBarDrawable drawable)
@@ -96,19 +104,27 @@ namespace Daily.Controls
             graphicsView.Invalidate();
         }
 
-        private static void OnBackgroundFillColorChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
-
-            drawable.backgroundFillColor = (Color)newValue;
-            graphicsView.Invalidate();
-        }
-
         private static void OnCompletedColorChanged(BindableObject bindable, object oldValue, object newValue)
         {
             GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
 
             drawable.completedFillColor = (Color)newValue;
+            graphicsView.Invalidate();
+        }
+
+        private static void OnStrokeColorChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+
+            drawable.strokeColor = (Color)newValue;
+            graphicsView.Invalidate();
+        }
+
+        private static void OnStrokeSizeChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            GetGraphicsViewAndDrawable(bindable, out GraphicsView graphicsView, out var drawable);
+
+            drawable.strokeSize = (float)newValue;
             graphicsView.Invalidate();
         }
     }
