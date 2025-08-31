@@ -19,7 +19,7 @@ namespace Daily.Pages
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             bool isOneTimeTask = query.ContainsKey(nameof(OneTimeTask));
-            bool isConditionalTask = query.ContainsKey(nameof(ConditionalTask));
+            bool isRecurringTask = query.ContainsKey(nameof(RecurringTask));
 
             if (isOneTimeTask)
             {
@@ -27,9 +27,9 @@ namespace Daily.Pages
 
                 _viewModel.PrepareViewForEdit(task);
             }
-            else if (isConditionalTask)
+            else if (isRecurringTask)
             {
-                ConditionalTask task = (ConditionalTask)query[nameof(ConditionalTask)];
+                RecurringTask task = (RecurringTask)query[nameof(RecurringTask)];
                 _viewModel.PrepareViewForEdit(task);
             }
             else _viewModel.ResetView();

@@ -22,7 +22,7 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private GoalStatus? _goalStatus;
 
-        [ObservableProperty] private ObservableCollection<ConditionalTask> _conditionalTasks;
+        [ObservableProperty] private ObservableCollection<RecurringTask> _recurringTasks;
 
         [ObservableProperty] private bool _isTasksVisible = false;
 
@@ -30,23 +30,23 @@ namespace Daily.ViewModels
 
         private readonly GoalStorage _goalStorage;
         private readonly OneTimeTaskStorage _oneTimeTaskStorage;
-        private readonly ConditionalTaskStorage _conditionalTaskStorage;
+        private readonly RecurringTaskStorage _recurringTaskStorage;
 
         public TaskLoaderNotifier<Goal> GoalLoader { get; }
 
         public TaskLoaderNotifier<ObservableCollection<OneTimeTask>> OneTimeTasksLoader { get; }
-        public TaskLoaderNotifier<ObservableCollection<ConditionalTask>> ConditionalTasksLoader { get; }
+        public TaskLoaderNotifier<ObservableCollection<RecurringTask>> RecurringTasksLoader { get; }
 
         public int OneTimeTaskMaxCount => _oneTimeTaskStorage.MaxTaskCount;
-        public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
+        public int RecurringTaskMaxCount => _recurringTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
         public Command InvertGoalStatusCommand { get; }
 
-        public Command<ConditionalTask> PerformConditionalTaskCommand { get; }
-        public Command<ConditionalTask> EditConditionalTaskCommand { get; }
-        public Command<ConditionalTask> ResetConditionalTaskCommand { get; }
-        public Command<ConditionalTask> DeleteConditionalTaskCommand { get; }
+        public Command<RecurringTask> PerformRecurringTaskCommand { get; }
+        public Command<RecurringTask> EditRecurringTaskCommand { get; }
+        public Command<RecurringTask> ResetRecurringTaskCommand { get; }
+        public Command<RecurringTask> DeleteRecurringTaskCommand { get; }
 
         public Command<OneTimeTask> PerformOneTimeTaskCommand { get; }
         public Command<OneTimeTask> EditOneTimeTaskCommand { get; }
@@ -56,17 +56,17 @@ namespace Daily.ViewModels
         public Command AddTaskCommand { get; }
 
         public TaskPageViewModel(GoalStorage goalStorage, OneTimeTaskStorage oneTimeTaskStorage, 
-            ConditionalTaskStorage conditionalTaskStorage)
+            RecurringTaskStorage recurringTaskStorage)
         {
             _goalStorage = goalStorage;
 
             _oneTimeTaskStorage = oneTimeTaskStorage;
-            _conditionalTaskStorage = conditionalTaskStorage;
+            _recurringTaskStorage = recurringTaskStorage;
 
             GoalLoader = new(true);
 
             OneTimeTasksLoader = new(true);
-            ConditionalTasksLoader = new(true);
+            RecurringTasksLoader = new(true);
 
             EditGoalCommand = new Command(async () =>
             {
@@ -85,36 +85,36 @@ namespace Daily.ViewModels
                 GoalStatus = _goalStorage.Status;
             });
 
-            PerformConditionalTaskCommand = new(async (task) =>
+            PerformRecurringTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
 
-                await PerformСonditionalTaskAsync(task);
+                await PerformRecurringTaskAsync(task);
             });
 
-            EditConditionalTaskCommand = new(async (task) =>
+            EditRecurringTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
 
                 var parameters = new ShellNavigationQueryParameters()
                 {
-                    [nameof(ConditionalTask)] = task
+                    [nameof(RecurringTask)] = task
                 };
 
                 await PageNavigator.GoToTaskEditPageAsync(parameters);
             });
 
-            ResetConditionalTaskCommand = new(async (task) =>
+            ResetRecurringTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
 
-                await ResetConditionalTaskAsync(task);
+                await ResetRecurringTaskAsync(task);
             });
 
-            DeleteConditionalTaskCommand = new(async (task) =>
+            DeleteRecurringTaskCommand = new(async (task) =>
             {
                 if (!CanInteractWithTask)
                     return;
@@ -123,7 +123,7 @@ namespace Daily.ViewModels
 
                 if (shouldDelete)
                 {
-                    await _conditionalTaskStorage.DeleteTaskAsync(task);
+                    await _recurringTaskStorage.DeleteTaskAsync(task);
                     await TaskToastHandler.ShowTaskDeletedToastAsync();
                 }
             });
@@ -237,8 +237,8 @@ namespace Daily.ViewModels
             if (OneTimeTasksLoader.IsNotStarted)
                 OneTimeTasksLoader.Load(_ => _oneTimeTaskStorage.LoadTasks());
 
-            if (ConditionalTasksLoader.IsNotStarted)
-                ConditionalTasksLoader.Load(_ => _conditionalTaskStorage.LoadTasks());
+            if (RecurringTasksLoader.IsNotStarted)
+                RecurringTasksLoader.Load(_ => _recurringTaskStorage.LoadTasks());
         }
 
         private void RefreshOverdueStatusIfGoalNotCompleted()
@@ -264,11 +264,11 @@ namespace Daily.ViewModels
             await _oneTimeTaskStorage.PerformTaskAsync(task);
         }
 
-        private async Task PerformСonditionalTaskAsync(ConditionalTask task)
+        private async Task PerformRecurringTaskAsync(RecurringTask task)
         {
             if (!CanPerformTask(task)) return;
 
-            await _conditionalTaskStorage.PerformTaskAsync(task);
+            await _recurringTaskStorage.PerformTaskAsync(task);
         }
 
         private async Task ResetOneTimeTaskAsync(OneTimeTask task)
@@ -278,11 +278,11 @@ namespace Daily.ViewModels
             await _oneTimeTaskStorage.ResetTaskAsync(task);
         }
 
-        private async Task ResetConditionalTaskAsync(ConditionalTask task)
+        private async Task ResetRecurringTaskAsync(RecurringTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 
-            await _conditionalTaskStorage.ResetTaskAsync(task);
+            await _recurringTaskStorage.ResetTaskAsync(task);
         }
 
         private bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;

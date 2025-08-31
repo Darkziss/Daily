@@ -49,7 +49,7 @@ namespace Daily
             collection
                 .AddSingleton<GoalStorage>()
                 .AddSingleton<OneTimeTaskStorage>()
-                .AddSingleton<ConditionalTaskStorage>()
+                .AddSingleton<RecurringTaskStorage>()
                 .AddSingleton<ThoughtStorage>()
                 .AddSingleton<DiaryRecordStorage>();
         }

@@ -20,13 +20,13 @@ namespace Daily.ViewModels
 
         [ObservableProperty] private bool _isEditMode = false;
 
-        [ObservableProperty] private bool _isConditionalTaskMode = false;
+        [ObservableProperty] private bool _isRecurringTaskMode = false;
         [ObservableProperty] private bool _isCreatingNewTask = false;
 
         private TaskBase? _currentTask = null;
 
         private readonly OneTimeTaskStorage _oneTimeTaskStorage;
-        private readonly ConditionalTaskStorage _conditionalTaskStorage;
+        private readonly RecurringTaskStorage _recurringTaskStorage;
 
         public Command ChangeViewCommand { get; }
 
@@ -34,18 +34,18 @@ namespace Daily.ViewModels
 
         private bool CanCreateTask => !IsCreatingNewTask && !string.IsNullOrWhiteSpace(_actionName);
 
+        private const int RecurringTaskSegmentIndex = 1;
+
         public TaskEditPageViewModel(OneTimeTaskStorage oneTimeTaskStorage, 
-            ConditionalTaskStorage conditionalTaskStorage)
+            RecurringTaskStorage recurringTaskStorage)
         {
             _oneTimeTaskStorage = oneTimeTaskStorage;
-            _conditionalTaskStorage = conditionalTaskStorage;
+            _recurringTaskStorage = recurringTaskStorage;
 
             ChangeViewCommand = new Command(
             execute: () =>
             {
-                const int conditionalTaskSegmentIndex = 1;
-
-                IsConditionalTaskMode = SelectedTaskSegmentIndex == conditionalTaskSegmentIndex;
+                IsRecurringTaskMode = SelectedTaskSegmentIndex == RecurringTaskSegmentIndex;
             },
             canExecute: () => !IsCreatingNewTask);
 
@@ -56,13 +56,13 @@ namespace Daily.ViewModels
 
                 async Task CreateTaskAsync()
                 {
-                    if (IsConditionalTaskMode) await CreateConditionalTaskAsync();
+                    if (IsRecurringTaskMode) await CreateRecurringTaskAsync();
                     else await CreateOneTimeTaskAsync();
                 }
 
                 async Task EditTaskAsync()
                 {
-                    if (IsConditionalTaskMode) await EditConditionalTaskAsync();
+                    if (IsRecurringTaskMode) await EditRecurringTaskAsync();
                     else await EditOneTimeTaskAsync();
                 }
 
@@ -93,7 +93,7 @@ namespace Daily.ViewModels
             _currentTask = task;
             
             IsEditMode = true;
-            IsConditionalTaskMode = false;
+            IsRecurringTaskMode = false;
 
             SelectedTaskSegmentIndex = 0;
 
@@ -107,12 +107,12 @@ namespace Daily.ViewModels
             Note = task.Note;
         }
 
-        public void PrepareViewForEdit(ConditionalTask task)
+        public void PrepareViewForEdit(RecurringTask task)
         {
             _currentTask = task;
             
             IsEditMode = true;
-            IsConditionalTaskMode = true;
+            IsRecurringTaskMode = true;
 
             SelectedTaskSegmentIndex = 1;
 
@@ -161,18 +161,18 @@ namespace Daily.ViewModels
             else await TaskToastHandler.ShowTaskErrorToastAsync();
         }
 
-        private async Task CreateConditionalTaskAsync()
+        private async Task CreateRecurringTaskAsync()
         {
-            if (_conditionalTaskStorage.IsTasksFull)
+            if (_recurringTaskStorage.IsTasksFull)
             {
-                await TaskToastHandler.ShowConditionalTasksFullToastAsync();
+                await TaskToastHandler.ShowRecurringTasksFullToastAsync();
                 return;
             }
             
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            ConditionalTask task = new ConditionalTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod, Note);
+            RecurringTask task = new RecurringTask(ActionName, 0, TargetRepeatCount, repeatTimePeriod, Note);
 
-            bool isCreated = await _conditionalTaskStorage.TryAddTaskAsync(task);
+            bool isCreated = await _recurringTaskStorage.TryAddTaskAsync(task);
 
             if (isCreated) await TaskToastHandler.ShowTaskCreatedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();
@@ -191,14 +191,14 @@ namespace Daily.ViewModels
             else await TaskToastHandler.ShowTaskErrorToastAsync();
         }
 
-        private async Task EditConditionalTaskAsync()
+        private async Task EditRecurringTaskAsync()
         {
-            ConditionalTask oldTask = (ConditionalTask)_currentTask!;
+            RecurringTask oldTask = (RecurringTask)_currentTask!;
 
             TaskRepeatTimePeriod repeatTimePeriod = (TaskRepeatTimePeriod)RepeatTimePeriodIndex;
-            ConditionalTask newTask = new ConditionalTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod, Note);
+            RecurringTask newTask = new RecurringTask(ActionName, oldTask.RepeatCount, TargetRepeatCount, repeatTimePeriod, Note);
 
-            bool isEdited = await _conditionalTaskStorage.TryEditTaskAsync(oldTask, newTask);
+            bool isEdited = await _recurringTaskStorage.TryEditTaskAsync(oldTask, newTask);
 
             if (isEdited) await TaskToastHandler.ShowTaskEditedToastAsync();
             else await TaskToastHandler.ShowTaskErrorToastAsync();

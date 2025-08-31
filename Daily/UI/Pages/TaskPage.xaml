@@ -390,8 +390,8 @@
 
                         <Label.Text>
                             <MultiBinding Converter="{StaticResource ConditionalTaskCountToStringConverter}">
-                                <Binding Path="ConditionalTasksLoader.Result.Count"/>
-                                <Binding Path="ConditionalTaskMaxCount"/>
+                                <Binding Path="RecurringTasksLoader.Result.Count"/>
+                                <Binding Path="RecurringTaskMaxCount"/>
                             </MultiBinding>
                         </Label.Text>
                     </Label>
@@ -409,8 +409,8 @@
 
                         <CollectionView
                             Style="{StaticResource TasksCollectionView}"
-                            IsVisible="{Binding ConditionalTasksLoader.IsSuccessfullyCompleted}"
-                            ItemsSource="{Binding ConditionalTasksLoader.Result}"
+                            IsVisible="{Binding RecurringTasksLoader.IsSuccessfullyCompleted}"
+                            ItemsSource="{Binding RecurringTasksLoader.Result}"
                             Grid.Column="0"
                             Grid.Row="1">
 
@@ -425,7 +425,7 @@
                                         <SwipeView.RightItems>
                                             <SwipeItems>
                                                 <SwipeItemView
-                                                    Command="{Binding EditConditionalTaskCommand, Mode=OneTime, 
+                                                    Command="{Binding EditRecurringTaskCommand, Mode=OneTime, 
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
@@ -436,7 +436,7 @@
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    Command="{Binding ResetConditionalTaskCommand, Mode=OneTime,
+                                                    Command="{Binding ResetRecurringTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
@@ -447,7 +447,7 @@
                                                 </SwipeItemView>
 
                                                 <SwipeItemView
-                                                    Command="{Binding DeleteConditionalTaskCommand, Mode=OneTime,
+                                                    Command="{Binding DeleteRecurringTaskCommand, Mode=OneTime,
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}">
 
@@ -460,7 +460,7 @@
                                         </SwipeView.RightItems>
 
                                         <Frame
-                                            x:DataType="tasks:ConditionalTask"
+                                            x:DataType="tasks:RecurringTask"
                                             Style="{StaticResource TaskCard}"
                                             Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
                                             BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
@@ -468,7 +468,7 @@
                                             <Frame.GestureRecognizers>
                                                 <TapGestureRecognizer
                                                     NumberOfTapsRequired="1"
-                                                    Command="{Binding PerformConditionalTaskCommand, Mode=OneTime, 
+                                                    Command="{Binding PerformRecurringTaskCommand, Mode=OneTime, 
                                                         Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
                                                         Mode=FindAncestorBindingContext}}"
                                                     CommandParameter="{Binding .}"/>

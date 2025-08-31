@@ -16,7 +16,7 @@ namespace Daily.Data
 
         private IFileRepository<ICollection<OneTimeTask>>? _oneTimeTaskRepository;
 
-        private IFileRepository<ICollection<ConditionalTask>>? _conditionalTaskRepository;
+        private IFileRepository<ICollection<RecurringTask>>? _recurringTaskRepository;
 
         public IFileRepository<Goal> GoalRepository
         {
@@ -28,9 +28,9 @@ namespace Daily.Data
             get => _oneTimeTaskRepository ??= new JsonFileRepository<ICollection<OneTimeTask>>(OneTimeTasksFileName);
         }
 
-        public IFileRepository<ICollection<ConditionalTask>> ConditionalTaskRepository
+        public IFileRepository<ICollection<RecurringTask>> RecurringTaskRepository
         {
-            get => _conditionalTaskRepository ??= new JsonFileRepository<ICollection<ConditionalTask>>(ConditionalTasksFileName);
+            get => _recurringTaskRepository ??= new JsonFileRepository<ICollection<RecurringTask>>(RecurringTasksFileName);
         }
 
         public IRepository<Thought> ThoughtRepository
@@ -46,7 +46,7 @@ namespace Daily.Data
         private const string GoalFileName = "goal.json";
 
         private const string OneTimeTasksFileName = "generalTasks.json";
-        private const string ConditionalTasksFileName = "conditionalTasks.json";
+        private const string RecurringTasksFileName = "conditionalTasks.json";
 
         public void Dispose()
         {
