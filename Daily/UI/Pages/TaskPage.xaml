@@ -257,6 +257,7 @@
                 <Setter Property="BackgroundColor" Value="Transparent"/>
                 <Setter Property="Stroke" Value="Black"/>
                 <Setter Property="StrokeThickness" Value="1"/>
+                <Setter Property="MaximumWidthRequest" Value="170"/>
             </Style>
 
             <Style TargetType="ImageButton" x:Key="AddTaskButton">
@@ -523,7 +524,7 @@
                                                     </Border.Triggers>
 
                                                     <Label
-                                                        Style="{StaticResource ModificatorLabel}"
+                                                        Style="{StaticResource NoteModificatorLabel}"
                                                         Text="{Binding Note}"/>
                                                 </Border>
                                             </HorizontalStackLayout>
@@ -682,7 +683,7 @@
                                                     </Border.Triggers>
 
                                                     <Label
-                                                        Style="{StaticResource ModificatorLabel}"
+                                                        Style="{StaticResource NoteModificatorLabel}"
                                                         Text="{Binding Note}"/>
                                                 </Border>
                                             </HorizontalStackLayout>

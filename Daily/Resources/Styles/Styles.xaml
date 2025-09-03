@@ -280,6 +280,10 @@
         <Setter Property="Margin" Value="7, 0, 7, 0"/>
     </Style>
 
+    <Style TargetType="Label" x:Key="NoteModificatorLabel" BasedOn="{StaticResource ModificatorLabel}">
+        <Setter Property="LineBreakMode" Value="TailTruncation"/>
+    </Style>
+
     <Style TargetType="Label" x:Key="ActionButtonLabel">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="VerticalOptions" Value="End"/>

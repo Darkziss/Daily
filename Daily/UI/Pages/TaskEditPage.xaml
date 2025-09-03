@@ -70,7 +70,7 @@
                 <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
                 <Setter Property="Placeholder" Value="Введите примечание"/>
                 <Setter Property="Keyboard" Value="Text"/>
-                <Setter Property="MaxLength" Value="15"/>
+                <Setter Property="MaxLength" Value="30"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
