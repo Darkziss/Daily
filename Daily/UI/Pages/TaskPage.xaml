@@ -400,145 +400,139 @@
                         Grid.Column="0"
                         Grid.Row="1"/>
 
-                    <ContentView
+                    <CollectionView
+                        Style="{StaticResource TasksCollectionView}"
                         IsVisible="{Binding IsTasksVisible}"
+                        ItemsSource="{Binding RecurringTasksLoader.Result}"
                         Grid.Column="0"
                         Grid.Row="1">
 
-                        <CollectionView
-                            Style="{StaticResource TasksCollectionView}"
-                            IsVisible="{Binding RecurringTasksLoader.IsSuccessfullyCompleted}"
-                            ItemsSource="{Binding RecurringTasksLoader.Result}"
-                            Grid.Column="0"
-                            Grid.Row="1">
+                        <CollectionView.EmptyView>
+                            <Label
+                                Style="{StaticResource EmptyViewLabel}"/>
+                        </CollectionView.EmptyView>
 
-                            <CollectionView.EmptyView>
-                                <Label
-                                    Style="{StaticResource EmptyViewLabel}"/>
-                            </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItemView
+                                                Command="{Binding EditRecurringTaskCommand, Mode=OneTime, 
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}">
 
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <SwipeView>
-                                        <SwipeView.RightItems>
-                                            <SwipeItems>
-                                                <SwipeItemView
-                                                    Command="{Binding EditRecurringTaskCommand, Mode=OneTime, 
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}">
+                                                <ImageButton
+                                                    Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                    BackgroundColor="{StaticResource Good}"
+                                                    Source="{StaticResource EditIconName}"/>
+                                            </SwipeItemView>
 
-                                                    <ImageButton
-                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
-                                                        BackgroundColor="{StaticResource Good}"
-                                                        Source="{StaticResource EditIconName}"/>
-                                                </SwipeItemView>
+                                            <SwipeItemView
+                                                Command="{Binding ResetRecurringTaskCommand, Mode=OneTime,
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}">
 
-                                                <SwipeItemView
-                                                    Command="{Binding ResetRecurringTaskCommand, Mode=OneTime,
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}">
+                                                <ImageButton
+                                                    Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                    BackgroundColor="{StaticResource Reset}"
+                                                    Source="{StaticResource ResetIconName}"/>
+                                            </SwipeItemView>
 
-                                                    <ImageButton
-                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
-                                                        BackgroundColor="{StaticResource Reset}"
-                                                        Source="{StaticResource ResetIconName}"/>
-                                                </SwipeItemView>
+                                            <SwipeItemView
+                                                Command="{Binding DeleteRecurringTaskCommand, Mode=OneTime,
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}">
 
-                                                <SwipeItemView
-                                                    Command="{Binding DeleteRecurringTaskCommand, Mode=OneTime,
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}">
+                                                <ImageButton
+                                                    Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                    BackgroundColor="{StaticResource RedSelected}"
+                                                    Source="{StaticResource DeleteIconName}"/>
+                                            </SwipeItemView>
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
 
-                                                    <ImageButton
-                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
-                                                        BackgroundColor="{StaticResource RedSelected}"
-                                                        Source="{StaticResource DeleteIconName}"/>
-                                                </SwipeItemView>
-                                            </SwipeItems>
-                                        </SwipeView.RightItems>
+                                    <Frame
+                                        x:DataType="tasks:RecurringTask"
+                                        Style="{StaticResource TaskCard}"
+                                        Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                        BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
-                                        <Frame
-                                            x:DataType="tasks:RecurringTask"
-                                            Style="{StaticResource TaskCard}"
-                                            Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
-                                            BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                NumberOfTapsRequired="1"
+                                                Command="{Binding PerformRecurringTaskCommand, Mode=OneTime, 
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
+                                                    Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Frame.GestureRecognizers>
 
-                                            <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer
-                                                    NumberOfTapsRequired="1"
-                                                    Command="{Binding PerformRecurringTaskCommand, Mode=OneTime, 
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
-                                                        Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}"/>
-                                            </Frame.GestureRecognizers>
+                                        <Grid
+                                            Style="{StaticResource TaskCardGrid}">
 
-                                            <Grid
-                                                Style="{StaticResource TaskCardGrid}">
+                                            <controls:TaskProgressIndicator
+                                                RepeatCount="{Binding RepeatCount}"
+                                                TargetRepeatCount="{Binding TargetRepeatCount}"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2"/>
 
-                                                <controls:TaskProgressIndicator
-                                                    RepeatCount="{Binding RepeatCount}"
-                                                    TargetRepeatCount="{Binding TargetRepeatCount}"
-                                                    Grid.Column="0"
-                                                    Grid.RowSpan="2"/>
+                                            <Label
+                                                Style="{StaticResource TaskProgressLabel}"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2">
 
-                                                <Label
-                                                    Style="{StaticResource TaskProgressLabel}"
-                                                    Grid.Column="0"
-                                                    Grid.RowSpan="2">
+                                                <Label.Text>
+                                                    <MultiBinding Converter="{StaticResource TaskProgressConverter}">
+                                                        <Binding Path="RepeatCount"/>
+                                                        <Binding Path="TargetRepeatCount"/>
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
 
-                                                    <Label.Text>
-                                                        <MultiBinding Converter="{StaticResource TaskProgressConverter}">
-                                                            <Binding Path="RepeatCount"/>
-                                                            <Binding Path="TargetRepeatCount"/>
-                                                        </MultiBinding>
-                                                    </Label.Text>
-                                                </Label>
+                                            <Label
+                                                Style="{StaticResource TaskLabel}"
+                                                Text="{Binding ActionName}"
+                                                Grid.Column="1"
+                                                Grid.Row="0"/>
 
-                                                <Label
-                                                    Style="{StaticResource TaskLabel}"
-                                                    Text="{Binding ActionName}"
-                                                    Grid.Column="1"
-                                                    Grid.Row="0"/>
+                                            <HorizontalStackLayout
+                                                Style="{StaticResource ModificatorStackLayout}"
+                                                Grid.Column="1"
+                                                Grid.Row="1">
 
-                                                <HorizontalStackLayout
-                                                    Style="{StaticResource ModificatorStackLayout}"
-                                                    Grid.Column="1"
-                                                    Grid.Row="1">
+                                                <Border
+                                                    Style="{StaticResource BorderModificatorCard}"
+                                                    BackgroundColor="{StaticResource Period}">
 
-                                                    <Border
-                                                        Style="{StaticResource BorderModificatorCard}"
-                                                        BackgroundColor="{StaticResource Period}">
+                                                    <Label
+                                                        Style="{StaticResource ModificatorLabel}"
+                                                        Text="{Binding RepeatTimePeriod, Converter={StaticResource RepeatTimePeriodToStringConverter}}"/>
+                                                </Border>
 
-                                                        <Label
-                                                            Style="{StaticResource ModificatorLabel}"
-                                                            Text="{Binding RepeatTimePeriod, Converter={StaticResource RepeatTimePeriodToStringConverter}}"/>
-                                                    </Border>
+                                                <Border
+                                                    Style="{StaticResource NoteModificatorCard}">
 
-                                                    <Border
-                                                        Style="{StaticResource NoteModificatorCard}">
+                                                    <Border.Triggers>
+                                                        <DataTrigger
+                                                            TargetType="Border"
+                                                            Binding="{Binding Note}"
+                                                            Value="">
 
-                                                        <Border.Triggers>
-                                                            <DataTrigger
-                                                                TargetType="Border"
-                                                                Binding="{Binding Note}"
-                                                                Value="">
+                                                            <Setter Property="IsVisible" Value="False"/>
+                                                        </DataTrigger>
+                                                    </Border.Triggers>
 
-                                                                <Setter Property="IsVisible" Value="False"/>
-                                                            </DataTrigger>
-                                                        </Border.Triggers>
-                                                        
-                                                        <Label
-                                                            Style="{StaticResource ModificatorLabel}"
-                                                            Text="{Binding Note}"/>
-                                                    </Border>
-                                                </HorizontalStackLayout>
-                                            </Grid>
-                                        </Frame>
-                                    </SwipeView>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </ContentView>
+                                                    <Label
+                                                        Style="{StaticResource ModificatorLabel}"
+                                                        Text="{Binding Note}"/>
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </Grid>
 
                 <Grid
@@ -564,146 +558,140 @@
                         Grid.Column="0"
                         Grid.Row="1"/>
 
-                    <ContentView
+                    <CollectionView
+                        Style="{StaticResource TasksCollectionView}"
                         IsVisible="{Binding IsTasksVisible}"
+                        ItemsSource="{Binding OneTimeTasksLoader.Result}"
+                        Margin="{StaticResource GeneralTaskCollectionViewMargin}"
                         Grid.Column="0"
                         Grid.Row="1">
 
-                        <CollectionView
-                            Style="{StaticResource TasksCollectionView}"
-                            IsVisible="{Binding OneTimeTasksLoader.IsSuccessfullyCompleted}"
-                            ItemsSource="{Binding OneTimeTasksLoader.Result}"
-                            Margin="{StaticResource GeneralTaskCollectionViewMargin}"
-                            Grid.Column="0"
-                            Grid.Row="1">
+                        <CollectionView.EmptyView>
+                            <Label
+                                Style="{StaticResource EmptyViewLabel}"/>
+                        </CollectionView.EmptyView>
 
-                            <CollectionView.EmptyView>
-                                <Label
-                                    Style="{StaticResource EmptyViewLabel}"/>
-                            </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItemView
+                                                Command="{Binding EditOneTimeTaskCommand, Mode=OneTime, 
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}">
 
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <SwipeView>
-                                        <SwipeView.RightItems>
-                                            <SwipeItems>
-                                                <SwipeItemView
-                                                    Command="{Binding EditOneTimeTaskCommand, Mode=OneTime, 
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}">
+                                                <ImageButton
+                                                    Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                    BackgroundColor="{StaticResource Good}"
+                                                    Source="{StaticResource EditIconName}"/>
+                                            </SwipeItemView>
 
-                                                    <ImageButton
-                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
-                                                        BackgroundColor="{StaticResource Good}"
-                                                        Source="{StaticResource EditIconName}"/>
-                                                </SwipeItemView>
+                                            <SwipeItemView
+                                                Command="{Binding ResetOneTimeTaskCommand, Mode=OneTime,
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}">
 
-                                                <SwipeItemView
-                                                    Command="{Binding ResetOneTimeTaskCommand, Mode=OneTime,
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}">
+                                                <ImageButton
+                                                    Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                    BackgroundColor="{StaticResource Reset}"
+                                                    Source="{StaticResource ResetIconName}"/>
+                                            </SwipeItemView>
 
-                                                    <ImageButton
-                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
-                                                        BackgroundColor="{StaticResource Reset}"
-                                                        Source="{StaticResource ResetIconName}"/>
-                                                </SwipeItemView>
+                                            <SwipeItemView
+                                                Command="{Binding DeleteOneTimeTaskCommand, Mode=OneTime,
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}">
 
-                                                <SwipeItemView
-                                                    Command="{Binding DeleteOneTimeTaskCommand, Mode=OneTime,
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}">
+                                                <ImageButton
+                                                    Style="{StaticResource TaskCardSwipeItemViewButton}"
+                                                    BackgroundColor="{StaticResource RedSelected}"
+                                                    Source="{StaticResource DeleteIconName}"/>
+                                            </SwipeItemView>
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
 
-                                                    <ImageButton
-                                                        Style="{StaticResource TaskCardSwipeItemViewButton}"
-                                                        BackgroundColor="{StaticResource RedSelected}"
-                                                        Source="{StaticResource DeleteIconName}"/>
-                                                </SwipeItemView>
-                                            </SwipeItems>
-                                        </SwipeView.RightItems>
+                                    <Frame
+                                        x:DataType="tasks:OneTimeTask"
+                                        Style="{StaticResource TaskCard}"
+                                        Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
+                                        BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
 
-                                        <Frame
-                                            x:DataType="tasks:OneTimeTask"
-                                            Style="{StaticResource TaskCard}"
-                                            Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
-                                            BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                NumberOfTapsRequired="1"
+                                                Command="{Binding PerformOneTimeTaskCommand, Mode=OneTime, 
+                                                    Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
+                                                    Mode=FindAncestorBindingContext}}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Frame.GestureRecognizers>
 
-                                            <Frame.GestureRecognizers>
-                                                <TapGestureRecognizer
-                                                    NumberOfTapsRequired="1"
-                                                    Command="{Binding PerformOneTimeTaskCommand, Mode=OneTime, 
-                                                        Source={RelativeSource AncestorType={x:Type viewmodels:TaskPageViewModel}, 
-                                                        Mode=FindAncestorBindingContext}}"
-                                                    CommandParameter="{Binding .}"/>
-                                            </Frame.GestureRecognizers>
+                                        <Grid
+                                            Style="{StaticResource TaskCardGrid}">
 
-                                            <Grid
-                                                Style="{StaticResource TaskCardGrid}">
+                                            <controls:TaskProgressIndicator
+                                                RepeatCount="{Binding RepeatCount}"
+                                                TargetRepeatCount="{Binding TargetRepeatCount}"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2"/>
 
-                                                <controls:TaskProgressIndicator
-                                                    RepeatCount="{Binding RepeatCount}"
-                                                    TargetRepeatCount="{Binding TargetRepeatCount}"
-                                                    Grid.Column="0"
-                                                    Grid.RowSpan="2"/>
+                                            <Label
+                                                Style="{StaticResource TaskProgressLabel}"
+                                                Grid.Column="0"
+                                                Grid.RowSpan="2">
 
-                                                <Label
-                                                    Style="{StaticResource TaskProgressLabel}"
-                                                    Grid.Column="0"
-                                                    Grid.RowSpan="2">
+                                                <Label.Text>
+                                                    <MultiBinding Converter="{StaticResource TaskProgressConverter}">
+                                                        <Binding Path="RepeatCount"/>
+                                                        <Binding Path="TargetRepeatCount"/>
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
 
-                                                    <Label.Text>
-                                                        <MultiBinding Converter="{StaticResource TaskProgressConverter}">
-                                                            <Binding Path="RepeatCount"/>
-                                                            <Binding Path="TargetRepeatCount"/>
-                                                        </MultiBinding>
-                                                    </Label.Text>
-                                                </Label>
+                                            <Label
+                                                Style="{StaticResource TaskLabel}"
+                                                Text="{Binding ActionName}"
+                                                Grid.Column="1"
+                                                Grid.Row="0"/>
 
-                                                <Label
-                                                    Style="{StaticResource TaskLabel}"
-                                                    Text="{Binding ActionName}"
-                                                    Grid.Column="1"
-                                                    Grid.Row="0"/>
+                                            <HorizontalStackLayout
+                                                Style="{StaticResource ModificatorStackLayout}"
+                                                Grid.Column="1"
+                                                Grid.Row="1">
 
-                                                <HorizontalStackLayout
-                                                    Style="{StaticResource ModificatorStackLayout}"
-                                                    Grid.Column="1"
-                                                    Grid.Row="1">
+                                                <Border
+                                                    Style="{StaticResource BorderModificatorCard}"
+                                                    BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}">
 
-                                                    <Border
-                                                        Style="{StaticResource BorderModificatorCard}"
-                                                        BackgroundColor="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}">
+                                                    <Label
+                                                        Style="{StaticResource ModificatorLabel}"
+                                                        Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
+                                                </Border>
 
-                                                        <Label
-                                                            Style="{StaticResource ModificatorLabel}"
-                                                            Text="{Binding Priority, Converter={StaticResource PriorityToTextConverter}}"/>
-                                                    </Border>
+                                                <Border
+                                                    Style="{StaticResource NoteModificatorCard}">
 
-                                                    <Border
-                                                        Style="{StaticResource NoteModificatorCard}">
+                                                    <Border.Triggers>
+                                                        <DataTrigger
+                                                            TargetType="Border"
+                                                            Binding="{Binding Note}"
+                                                            Value="">
 
-                                                        <Border.Triggers>
-                                                            <DataTrigger
-                                                                TargetType="Border"
-                                                                Binding="{Binding Note}"
-                                                                Value="">
+                                                            <Setter Property="IsVisible" Value="False"/>
+                                                        </DataTrigger>
+                                                    </Border.Triggers>
 
-                                                                <Setter Property="IsVisible" Value="False"/>
-                                                            </DataTrigger>
-                                                        </Border.Triggers>
-
-                                                        <Label
-                                                            Style="{StaticResource ModificatorLabel}"
-                                                            Text="{Binding Note}"/>
-                                                    </Border>
-                                                </HorizontalStackLayout>
-                                            </Grid>
-                                        </Frame>
-                                    </SwipeView>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </ContentView>
+                                                    <Label
+                                                        Style="{StaticResource ModificatorLabel}"
+                                                        Text="{Binding Note}"/>
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </Grid>
+                                    </Frame>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
