@@ -324,6 +324,13 @@
         <Setter Property="Padding" Value="20, 0, 0, 0"/>
     </Style>
 
+    <Style TargetType="Grid" x:Key="FieldGrid">
+        <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="Padding" Value="20, 0, 0, 10"/>
+    </Style>
+
     <Style TargetType="Grid" x:Key="RecordEditPageRootGrid">
         <Setter Property="Padding" Value="0, 40, 0, 0"/>
         <Setter Property="ColumnDefinitions" Value="*"/>
