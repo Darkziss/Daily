@@ -43,6 +43,7 @@
 
                 <Entry
                     Style="{StaticResource FieldEntry}"
+                    Placeholder="Напишите цель"
                     Text="{Binding Goal, Mode=TwoWay}"/>
             </VerticalStackLayout>
 
