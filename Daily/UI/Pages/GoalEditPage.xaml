@@ -15,6 +15,33 @@
             <converters:DateOnlyToDateTimeConverter
                 x:Key="DateOnlyToDateTimeConverter"/>
 
+            <Style TargetType="Border" x:Key="DeadlineDatePickerBorder">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="Stroke" Value="Black"/>
+                <Setter Property="StrokeThickness" Value="2"/>
+                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style TargetType="DatePicker" x:Key="DeadlineDatePicker">
+                <Setter Property="Format" Value="d"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal"/>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+
         </ResourceDictionary>
         
     </ContentPage.Resources>
@@ -54,28 +81,15 @@
                     Style="{StaticResource TaskFieldHeader}"
                     Text="Дедлайн (необязат.)"/>
 
-                <DatePicker
-                    IsEnabled="{Binding NeedDeadline}"
-                    Format="d"
-                    FontSize="20"
-                    MinimumDate="{Binding MinimumDeadlineDate, Converter={StaticResource DateOnlyToDateTimeConverter}}"
-                    Date="{Binding Deadline, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Start">
+                <Border
+                    Style="{StaticResource DeadlineDatePickerBorder}">
 
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroupList>
-                            <VisualStateGroup x:Name="CommonStates">
-                                <VisualState x:Name="Normal"/>
-                                <VisualState x:Name="Disabled">
-                                    <VisualState.Setters>
-                                        <Setter Property="Opacity" Value="0.5"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateGroupList>
-                    </VisualStateManager.VisualStateGroups>
-                </DatePicker>
+                    <DatePicker
+                        Style="{StaticResource DeadlineDatePicker}"
+                        IsEnabled="{Binding NeedDeadline}"
+                        MinimumDate="{Binding MinimumDeadlineDate, Converter={StaticResource DateOnlyToDateTimeConverter}}"
+                        Date="{Binding Deadline, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
+                </Border>
 
                 <HorizontalStackLayout
                     Spacing="5">
