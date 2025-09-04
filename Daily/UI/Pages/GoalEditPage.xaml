@@ -19,8 +19,7 @@
                 <Setter Property="BackgroundColor" Value="Transparent"/>
                 <Setter Property="Stroke" Value="Black"/>
                 <Setter Property="StrokeThickness" Value="2"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
             <Style TargetType="DatePicker" x:Key="DeadlineDatePicker">
@@ -42,6 +41,11 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="CheckBox">
+                <Setter Property="Scale" Value="1.2"/>
+                <Setter Property="Color" Value="Black"/>
+            </Style>
+            
         </ResourceDictionary>
         
     </ContentPage.Resources>
@@ -74,15 +78,21 @@
                     Text="{Binding Goal, Mode=TwoWay}"/>
             </VerticalStackLayout>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}">
+            <Grid
+                Style="{StaticResource FieldGrid}"
+                ColumnDefinitions="270, 80"
+                RowDefinitions="Auto, Auto">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
-                    Text="Дедлайн (необязат.)"/>
+                    Text="Дедлайн (необязательно)"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"/>
 
                 <Border
-                    Style="{StaticResource DeadlineDatePickerBorder}">
+                    Style="{StaticResource DeadlineDatePickerBorder}"
+                    Grid.Column="0"
+                    Grid.Row="1">
 
                     <DatePicker
                         Style="{StaticResource DeadlineDatePicker}"
@@ -91,22 +101,24 @@
                         Date="{Binding Deadline, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
                 </Border>
 
-                <HorizontalStackLayout
-                    Spacing="5">
-
-                    <Label
-                        FontSize="14"
-                        Text="Дедлайн нужен"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Start"/>
+                <VerticalStackLayout
+                    Spacing="-3"
+                    VerticalOptions="End"
+                    HorizontalOptions="End"
+                    Grid.Column="1"
+                    Grid.RowSpan="2">
 
                     <CheckBox
                         IsChecked="{Binding NeedDeadline, Mode=TwoWay}"
-                        Color="Black"
-                        Scale="1.2"
-                        VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+
+                    <Label
+                        Text="Нужен?"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Grid>
         </VerticalStackLayout>
 
         <Button
