@@ -414,7 +414,9 @@
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate
+                                x:DataType="tasks:RecurringTask">
+                                
                                 <SwipeView>
                                     <SwipeView.RightItems>
                                         <SwipeItems>
@@ -454,7 +456,6 @@
                                     </SwipeView.RightItems>
 
                                     <Frame
-                                        x:DataType="tasks:RecurringTask"
                                         Style="{StaticResource TaskCard}"
                                         Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
                                         BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
@@ -573,7 +574,9 @@
                         </CollectionView.EmptyView>
 
                         <CollectionView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate
+                                x:DataType="tasks:OneTimeTask">
+
                                 <SwipeView>
                                     <SwipeView.RightItems>
                                         <SwipeItems>
@@ -613,7 +616,6 @@
                                     </SwipeView.RightItems>
 
                                     <Frame
-                                        x:DataType="tasks:OneTimeTask"
                                         Style="{StaticResource TaskCard}"
                                         Opacity="{Binding IsCompleted, Converter={StaticResource IsCompletedToOpacityConverter}}"
                                         BorderColor="{Binding IsCompleted, Converter={StaticResource IsCompletedToColorConverter}}">
