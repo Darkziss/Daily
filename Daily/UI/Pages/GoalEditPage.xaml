@@ -81,7 +81,7 @@
             <Grid
                 Style="{StaticResource FieldGrid}"
                 ColumnDefinitions="270, 80"
-                RowDefinitions="Auto, Auto">
+                RowDefinitions="Auto, 50">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
