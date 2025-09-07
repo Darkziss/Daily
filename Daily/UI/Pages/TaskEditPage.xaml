@@ -33,6 +33,10 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="Grid" x:Key="EntryFieldGrid" BasedOn="{StaticResource FieldGrid}">
+                <Setter Property="RowSpacing" Value="-5"/>
+            </Style>
+
             <Style TargetType="Border" x:Key="PickerBorder">
                 <Setter Property="BackgroundColor" Value="{StaticResource Gray}"/>
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
