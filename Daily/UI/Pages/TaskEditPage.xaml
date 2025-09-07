@@ -61,13 +61,9 @@
                 <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
-            <Style TargetType="Entry" x:Key="NoteEntry">
-                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
+            <Style TargetType="Entry" x:Key="NoteEntry" BasedOn="{StaticResource FieldEntry}">
                 <Setter Property="Placeholder" Value="Дополнительное условие"/>
-                <Setter Property="Keyboard" Value="Text"/>
                 <Setter Property="MaxLength" Value="30"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
         </ResourceDictionary>
