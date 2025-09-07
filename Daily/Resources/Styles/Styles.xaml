@@ -146,7 +146,6 @@
 
     <Style TargetType="Entry" x:Key="FieldEntry">
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Placeholder" Value="Введите действие"/>
         <Setter Property="MaxLength" Value="50"/>
         <Setter Property="WidthRequest" Value="350"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
