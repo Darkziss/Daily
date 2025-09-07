@@ -165,6 +165,15 @@
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
+    <Style TargetType="Border" x:Key="PickerContainer">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="WidthRequest" Value="350"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+    </Style>
+
     <Style TargetType="Frame">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BorderColor" Value="Transparent"/>
