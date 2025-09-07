@@ -106,31 +106,43 @@
                 SelectedSegment="{Binding SelectedTaskSegmentIndex, Mode=TwoWay}"
                 SegmentSelectedCommand="{Binding ChangeViewCommand}"/>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}">
+            <Grid
+                Style="{StaticResource EntryFieldGrid}"
+                ColumnDefinitions="*"
+                RowDefinitions="Auto, Auto">
 
                 <Label
                     FontSize="{StaticResource DefaultFontSize}"
                     Text="Действие"
-                    HorizontalOptions="Start"/>
+                    HorizontalOptions="Start"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
 
                 <Entry
                     Style="{StaticResource FieldEntry}"
                     IsReadOnly="{Binding IsCreatingNewTask}"
                     Placeholder="Что нужно сделать?"
-                    Text="{Binding ActionName, Mode=TwoWay}"/>
-            </VerticalStackLayout>
+                    Text="{Binding ActionName, Mode=TwoWay}"
+                    Grid.Column="0"
+                    Grid.Row="1"/>
+            </Grid>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}"
-                IsVisible="{Binding IsRecurringTaskMode, Converter={toolkit:InvertedBoolConverter}}">
+            <Grid
+                Style="{StaticResource FieldGrid}"
+                IsVisible="{Binding IsRecurringTaskMode, Converter={toolkit:InvertedBoolConverter}}"
+                ColumnDefinitions="*"
+                RowDefinitions="Auto, Auto">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
-                    Text="Приоритет"/>
+                    Text="Приоритет"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
 
                 <Border
-                    Style="{StaticResource PickerBorder}">
+                    Style="{StaticResource PickerContainer}"
+                    Grid.Column="0"
+                    Grid.Row="1">
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
@@ -144,20 +156,25 @@
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
-
                 </Border>
-            </VerticalStackLayout>
+            </Grid>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}"
-                IsVisible="{Binding IsRecurringTaskMode}">
+            <Grid
+                Style="{StaticResource FieldGrid}"
+                IsVisible="{Binding IsRecurringTaskMode}"
+                ColumnDefinitions="*"
+                RowDefinitions="Auto, Auto">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
-                    Text="Промежуток времени"/>
+                    Text="Промежуток времени"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
 
                 <Border
-                    Style="{StaticResource PickerBorder}">
+                    Style="{StaticResource PickerContainer}"
+                    Grid.Column="0"
+                    Grid.Row="1">
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
@@ -173,7 +190,7 @@
                     </Picker>
                 </Border>
 
-            </VerticalStackLayout>
+            </Grid>
 
             <Grid
                 Style="{StaticResource FieldGrid}"
@@ -203,14 +220,14 @@
             </Grid>
 
             <Grid
-                Style="{StaticResource FieldGrid}"
-                ColumnDefinitions="100, Auto"
+                Style="{StaticResource EntryFieldGrid}"
+                ColumnDefinitions="*"
                 RowDefinitions="Auto, Auto">
 
                 <Label
                     Style="{StaticResource TaskFieldHeader}"
                     Text="Примечание (необязат.)"
-                    Grid.ColumnSpan="2"
+                    Grid.Column="0"
                     Grid.Row="0"/>
 
                 <Entry
