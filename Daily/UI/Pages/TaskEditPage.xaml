@@ -221,7 +221,7 @@
 
                 <Label
                     Style="{StaticResource FieldHeader}"
-                    Text="Примечание (необязат.)"
+                    Text="Примечание (необязательно)"
                     Grid.Column="0"
                     Grid.Row="0"/>
 
