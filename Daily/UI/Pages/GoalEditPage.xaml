@@ -15,6 +15,10 @@
             <converters:DateOnlyToDateTimeConverter
                 x:Key="DateOnlyToDateTimeConverter"/>
 
+            <Style TargetType="Border" x:Key="DeadlineDatePickerContainer" BasedOn="{StaticResource PickerContainer}">
+                <Setter Property="WidthRequest" Value="270"/>
+            </Style>
+
             <Style TargetType="DatePicker" x:Key="DeadlineDatePicker">
                 <Setter Property="Format" Value="d"/>
                 <Setter Property="FontSize" Value="20"/>
