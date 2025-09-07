@@ -37,6 +37,11 @@ namespace Daily
 #endif
 
 #if ANDROID
+            PickerHandler.Mapper.AppendToMapping(nameof(Picker), (handler, view) =>
+            {
+                handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
+            });
+            
             DatePickerHandler.Mapper.AppendToMapping(nameof(DatePicker), (handler, view) =>
             {
                 handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
