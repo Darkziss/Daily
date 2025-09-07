@@ -15,13 +15,6 @@
             <converters:DateOnlyToDateTimeConverter
                 x:Key="DateOnlyToDateTimeConverter"/>
 
-            <Style TargetType="Border" x:Key="DeadlineDatePickerBorder">
-                <Setter Property="BackgroundColor" Value="Transparent"/>
-                <Setter Property="Stroke" Value="Black"/>
-                <Setter Property="StrokeThickness" Value="2"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-            </Style>
-
             <Style TargetType="DatePicker" x:Key="DeadlineDatePicker">
                 <Setter Property="Format" Value="d"/>
                 <Setter Property="FontSize" Value="20"/>
@@ -91,7 +84,7 @@
                     Grid.Row="0"/>
 
                 <Border
-                    Style="{StaticResource DeadlineDatePickerBorder}"
+                    Style="{StaticResource PickerContainer}"
                     Grid.Column="0"
                     Grid.Row="1">
 
