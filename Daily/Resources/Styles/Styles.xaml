@@ -98,6 +98,8 @@
         <Setter Property="TextColor" Value="Black"/>
         <Setter Property="FontFamily" Value="Nunito"/>
         <Setter Property="FontSize" Value="20"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
     </Style>
 
     <Style TargetType="Editor">
@@ -146,7 +148,6 @@
 
     <Style TargetType="Entry" x:Key="FieldEntry">
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Placeholder" Value="Введите действие"/>
         <Setter Property="MaxLength" Value="50"/>
         <Setter Property="WidthRequest" Value="350"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
@@ -163,6 +164,15 @@
         <Setter Property="StrokeShape" Value="RoundRectangle 10"/>
         <Setter Property="HeightRequest" Value="25"/>
         <Setter Property="VerticalOptions" Value="End"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+    </Style>
+
+    <Style TargetType="Border" x:Key="PickerContainer">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="Stroke" Value="Black"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="WidthRequest" Value="350"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
@@ -202,7 +212,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="Label" x:Key="TaskFieldHeader">
+    <Style TargetType="Label" x:Key="FieldHeader">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="WidthRequest" Value="350"/>
         <Setter Property="VerticalOptions" Value="Center"/>
@@ -315,13 +325,6 @@
                 VerticalItemSpacing="10"
                 HorizontalItemSpacing="10"/>
         </Setter>
-    </Style>
-
-    <Style TargetType="VerticalStackLayout" x:Key="TaskFieldStackLayout">
-        <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
-        <Setter Property="VerticalOptions" Value="Fill"/>
-        <Setter Property="HorizontalOptions" Value="Fill"/>
-        <Setter Property="Padding" Value="20, 0, 0, 0"/>
     </Style>
 
     <Style TargetType="Grid" x:Key="FieldGrid">

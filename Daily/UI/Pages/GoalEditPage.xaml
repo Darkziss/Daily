@@ -15,11 +15,8 @@
             <converters:DateOnlyToDateTimeConverter
                 x:Key="DateOnlyToDateTimeConverter"/>
 
-            <Style TargetType="Border" x:Key="DeadlineDatePickerBorder">
-                <Setter Property="BackgroundColor" Value="Transparent"/>
-                <Setter Property="Stroke" Value="Black"/>
-                <Setter Property="StrokeThickness" Value="2"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
+            <Style TargetType="Border" x:Key="DeadlineDatePickerContainer" BasedOn="{StaticResource PickerContainer}">
+                <Setter Property="WidthRequest" Value="270"/>
             </Style>
 
             <Style TargetType="DatePicker" x:Key="DeadlineDatePicker">
@@ -66,32 +63,38 @@
                 Text="Изменение цели"
                 Margin="{StaticResource HeadlineMargin}"/>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}">
+            <Grid
+                Style="{StaticResource FieldGrid}"
+                ColumnDefinitions="*"
+                RowDefinitions="Auto, Auto">
 
                 <Label
-                    Style="{StaticResource TaskFieldHeader}"
-                    Text="Цель"/>
+                    Style="{StaticResource FieldHeader}"
+                    Text="Цель"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
 
                 <Entry
                     Style="{StaticResource FieldEntry}"
                     Placeholder="Напишите цель"
-                    Text="{Binding Goal, Mode=TwoWay}"/>
-            </VerticalStackLayout>
+                    Text="{Binding Goal, Mode=TwoWay}"
+                    Grid.Column="0"
+                    Grid.Row="1"/>
+            </Grid>
 
             <Grid
                 Style="{StaticResource FieldGrid}"
-                ColumnDefinitions="270, 80"
-                RowDefinitions="Auto, 50">
+                ColumnDefinitions="Auto, *"
+                RowDefinitions="Auto, Auto">
 
                 <Label
-                    Style="{StaticResource TaskFieldHeader}"
+                    Style="{StaticResource FieldHeader}"
                     Text="Дедлайн (необязательно)"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"/>
 
                 <Border
-                    Style="{StaticResource DeadlineDatePickerBorder}"
+                    Style="{StaticResource DeadlineDatePickerContainer}"
                     Grid.Column="0"
                     Grid.Row="1">
 
@@ -104,10 +107,10 @@
 
                 <VerticalStackLayout
                     Spacing="-3"
-                    VerticalOptions="End"
-                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
                     Grid.Column="1"
-                    Grid.RowSpan="2">
+                    Grid.Row="1">
 
                     <CheckBox
                         IsChecked="{Binding NeedDeadline, Mode=TwoWay}"
