@@ -327,13 +327,6 @@
         </Setter>
     </Style>
 
-    <Style TargetType="VerticalStackLayout" x:Key="TaskFieldStackLayout">
-        <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
-        <Setter Property="VerticalOptions" Value="Fill"/>
-        <Setter Property="HorizontalOptions" Value="Fill"/>
-        <Setter Property="Padding" Value="20, 0, 0, 0"/>
-    </Style>
-
     <Style TargetType="Grid" x:Key="FieldGrid">
         <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
         <Setter Property="VerticalOptions" Value="Fill"/>
