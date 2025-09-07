@@ -98,6 +98,8 @@
         <Setter Property="TextColor" Value="Black"/>
         <Setter Property="FontFamily" Value="Nunito"/>
         <Setter Property="FontSize" Value="20"/>
+        <Setter Property="VerticalOptions" Value="Start"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
     </Style>
 
     <Style TargetType="Editor">
