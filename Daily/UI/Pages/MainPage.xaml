@@ -72,8 +72,8 @@
             Grid.Row="0"/>
 
         <Button
-            IsEnabled="{Binding CanNavigate}"
             Style="{StaticResource NavigationCard}"
+            IsEnabled="{Binding CanNavigate}"
             Text="К задачам"
             Command="{Binding GoToTaskPage, Mode=OneTime}"
             Grid.Column="0"
