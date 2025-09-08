@@ -76,39 +76,13 @@
             Grid.Column="0"
             Grid.Row="0"/>
 
-        <VerticalStackLayout
-            Spacing="15"
+        <Button
+            IsEnabled="{Binding CanNavigate}"
+            Style="{StaticResource NavigationCard}"
+            Text="К задачам"
+            Command="{Binding GoToTaskPage, Mode=OneTime}"
             Grid.Column="0"
-            Grid.Row="1">
-
-            <Button
-                IsEnabled="{Binding CanNavigate}"
-                Style="{StaticResource Card}"
-                BackgroundColor="{StaticResource Tasks}"
-                Text="Задачи"
-                Command="{Binding GoToTaskPage}"/>
-
-            <Button
-                IsEnabled="{Binding CanNavigate}"
-                Style="{StaticResource Card}"
-                BackgroundColor="{StaticResource Diary}"
-                Text="Дневник"
-                Command="{Binding GoToDiaryRecordPage}"/>
-
-            <Button
-                IsEnabled="{Binding CanNavigate}"
-                Style="{StaticResource Card}"
-                BackgroundColor="{StaticResource Thoughts}"
-                Text="Мысли"
-                Command="{Binding GoToThoughtPage}"/>
-
-            <Frame
-                Style="{StaticResource EndCard}">
-
-                <Label
-                    Style="{StaticResource EndCardLabel}"/>
-            </Frame>
-        </VerticalStackLayout>
+            Grid.Row="1"/>
 
         <Label
             Style="{StaticResource VersionTextLabel}"
