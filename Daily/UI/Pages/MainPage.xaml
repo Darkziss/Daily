@@ -17,50 +17,6 @@
             <Color x:Key="Diary">#f5d589</Color>
             <Color x:Key="Thoughts">#86a4f7</Color>
 
-            <Style TargetType="Frame" x:Key="TaskProgressStatus">
-                <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                <Setter Property="WidthRequest" Value="330"/>
-                <Setter Property="HeightRequest" Value="90"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <Style TargetType="Grid" x:Key="TaskProgressStatusGrid">
-                <Setter Property="ColumnDefinitions" Value="82.5, 82.5, 82.5, 82.5"/>
-                <Setter Property="RowDefinitions" Value="*"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <Style TargetType="Label" x:Key="TaskProgressStatusDummy">
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <Style TargetType="VerticalStackLayout" x:Key="TaskCounterStackLayout">
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <Style TargetType="Frame" x:Key="TaskCounterFrame">
-                <Setter Property="WidthRequest" Value="45"/>
-                <Setter Property="HeightRequest" Value="45"/>
-                <Setter Property="VerticalOptions" Value="Start"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <Style TargetType="Label" x:Key="TaskCounterLabel">
-                <Setter Property="FontSize" Value="22"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Center"/>
-            </Style>
-
-            <Style TargetType="Label" x:Key="TaskCounterHintLabel">
-                <Setter Property="FontSize" Value="10"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-            </Style>
-            
             <Style TargetType="Button" x:Key="Card">
                 <Setter Property="Padding" Value="0, -90, 0, 0"/>
                 <Setter Property="FontSize" Value="22"/>
@@ -107,7 +63,7 @@
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="Auto, Auto, Auto, *"
+        RowDefinitions="Auto, Auto, *"
         RowSpacing="20"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
@@ -120,105 +76,10 @@
             Grid.Column="0"
             Grid.Row="0"/>
 
-        <Frame
-            Style="{StaticResource TaskProgressStatus}"
-            Grid.Column="0"
-            Grid.Row="1">
-
-            <Grid
-                Style="{StaticResource TaskProgressStatusGrid}">
-
-                <Label
-                    Style="{StaticResource TaskProgressStatusDummy}"
-                    IsVisible="{Binding IsCounterVisible, Converter={toolkit:InvertedBoolConverter}}"
-                    Text="{Binding DummyText}"
-                    Grid.ColumnSpan="4"
-                    Grid.Row="0"/>
-
-                <VerticalStackLayout
-                    Style="{StaticResource TaskCounterStackLayout}"
-                    IsVisible="{Binding IsCounterVisible}"
-                    Grid.Column="0"
-                    Grid.Row="0">
-
-                    <Frame
-                        Style="{StaticResource TaskCounterFrame}">
-
-                        <Label
-                            Style="{StaticResource TaskCounterLabel}"
-                            Text="{Binding DailyCounterText}"/>
-                    </Frame>
-
-                    <Label
-                        Style="{StaticResource TaskCounterHintLabel}"
-                        Text="ежедневн."/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout
-                    Style="{StaticResource TaskCounterStackLayout}"
-                    IsVisible="{Binding IsCounterVisible}"
-                    Grid.Column="1"
-                    Grid.Row="0">
-
-                    <Frame
-                        Style="{StaticResource TaskCounterFrame}"
-                        BackgroundColor="{StaticResource Mandatory}">
-
-                        <Label
-                            Style="{StaticResource TaskCounterLabel}"
-                            Text="{Binding MandatoryCounterText}"/>
-                    </Frame>
-
-                    <Label
-                        Style="{StaticResource TaskCounterHintLabel}"
-                        Text="обязат."/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout
-                    Style="{StaticResource TaskCounterStackLayout}"
-                    IsVisible="{Binding IsCounterVisible}"
-                    Grid.Column="2"
-                    Grid.Row="0">
-
-                    <Frame
-                        Style="{StaticResource TaskCounterFrame}"
-                        BackgroundColor="{StaticResource Important}">
-
-                        <Label
-                            Style="{StaticResource TaskCounterLabel}"
-                            Text="{Binding ImportantCounterText}"/>
-                    </Frame>
-
-                    <Label
-                        Style="{StaticResource TaskCounterHintLabel}"
-                        Text="важная"/>
-                </VerticalStackLayout>
-
-                <VerticalStackLayout
-                    Style="{StaticResource TaskCounterStackLayout}"
-                    IsVisible="{Binding IsCounterVisible}"
-                    Grid.Column="3"
-                    Grid.Row="0">
-
-                    <Frame
-                        Style="{StaticResource TaskCounterFrame}">
-
-                        <Label
-                            Style="{StaticResource TaskCounterLabel}"
-                            Text="{Binding CommonCounterText}"/>
-                    </Frame>
-
-                    <Label
-                        Style="{StaticResource TaskCounterHintLabel}"
-                        Text="обычная"/>
-                </VerticalStackLayout>
-            </Grid>
-        </Frame>
-
         <VerticalStackLayout
             Spacing="15"
             Grid.Column="0"
-            Grid.Row="2">
+            Grid.Row="1">
 
             <Button
                 IsEnabled="{Binding CanNavigate}"
@@ -253,6 +114,6 @@
             Style="{StaticResource VersionTextLabel}"
             Text="{Binding CurrentVersion, Mode=OneTime}"
             Grid.Column="0"
-            Grid.Row="3"/>
+            Grid.Row="2"/>
     </Grid>
 </ContentPage>
