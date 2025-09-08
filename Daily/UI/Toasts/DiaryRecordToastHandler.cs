@@ -4,11 +4,11 @@ namespace Daily.Toasts
 {
     public class DiaryRecordToastHandler
     {
-        private static readonly IToast _diaryRecordCreatedToast = ToastCreator.Create(diaryRecordCreatedMessage);
-        private static readonly IToast _diaryRecordEditedToast = ToastCreator.Create(diaryRecordEditedMessgae);
-        private static readonly IToast _diaryRecordDeletedToast = ToastCreator.Create(diaryRecordDeletedMessage);
+        private static readonly IToast _diaryRecordCreatedToast = ToastCreator.CreateShortByTime(diaryRecordCreatedMessage);
+        private static readonly IToast _diaryRecordEditedToast = ToastCreator.CreateShortByTime(diaryRecordEditedMessgae);
+        private static readonly IToast _diaryRecordDeletedToast = ToastCreator.CreateShortByTime(diaryRecordDeletedMessage);
 
-        private static readonly IToast _diaryRecordErrorToast = ToastCreator.Create(diaryRecordErrorMessage);
+        private static readonly IToast _diaryRecordErrorToast = ToastCreator.CreateLongByTime(diaryRecordErrorMessage);
 
         private const string diaryRecordCreatedMessage = "Запись была успешно создана";
         private const string diaryRecordEditedMessgae = "Запись была успешно изменена";

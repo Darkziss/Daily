@@ -5,12 +5,10 @@ namespace Daily.Toasts
 {
     public static class ToastCreator
     {
-        public const ToastDuration toastDuration = ToastDuration.Long;
-        public const double toastTextSize = 16d;
+        private const double ToastTextSize = 16d;
 
-        public static IToast Create(string message)
-        {
-            return Toast.Make(message, toastDuration, toastTextSize);
-        }
+        public static IToast CreateShortByTime(string message) => Toast.Make(message, ToastDuration.Short, ToastTextSize);
+
+        public static IToast CreateLongByTime(string message) => Toast.Make(message, ToastDuration.Long, ToastTextSize);
     }
 }

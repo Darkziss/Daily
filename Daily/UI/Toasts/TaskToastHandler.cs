@@ -5,20 +5,20 @@ namespace Daily.Toasts
 {
     public static class TaskToastHandler
     {
-        private static readonly IToast _taskCreatedToast = ToastCreator.Create(taskCreatedToastMessage);
-        private static readonly IToast _taskEditedToast = ToastCreator.Create(taskEditedToastMessage);
-        private static readonly IToast _taskDeletedToast = ToastCreator.Create(taskDeletedToastMessage);
+        private static readonly IToast _taskCreatedToast = ToastCreator.CreateShortByTime(taskCreatedToastMessage);
+        private static readonly IToast _taskEditedToast = ToastCreator.CreateShortByTime(taskEditedToastMessage);
+        private static readonly IToast _taskDeletedToast = ToastCreator.CreateShortByTime(taskDeletedToastMessage);
 
-        private static readonly IToast _taskErrorToast = ToastCreator.Create(taskErrorToastMessage);
+        private static readonly IToast _taskErrorToast = ToastCreator.CreateLongByTime(taskErrorToastMessage);
 
-        private static readonly IToast _oneTimeTasksFullToast = ToastCreator.Create(oneTimeTasksFullToastMessage);
-        private static readonly IToast _recurringTasksFullToast = ToastCreator.Create(recurringTasksFullToastMessage);
+        private static readonly IToast _oneTimeTasksFullToast = ToastCreator.CreateLongByTime(oneTimeTasksFullToastMessage);
+        private static readonly IToast _recurringTasksFullToast = ToastCreator.CreateLongByTime(recurringTasksFullToastMessage);
 
-        private const string taskCreatedToastMessage = "Задача была успешно создана";
-        private const string taskEditedToastMessage = "Задача была успешно изменена";
+        private const string taskCreatedToastMessage = "Задача успешно создана";
+        private const string taskEditedToastMessage = "Задача изменена";
         private const string taskDeletedToastMessage = "Задача удалена";
 
-        private const string taskErrorToastMessage = "Ошибка\nПопробуйте еще раз";
+        private const string taskErrorToastMessage = "Ошибка: Попробуйте еще раз";
 
         private const string oneTimeTasksFullToastMessage = "Ошибка: Уже создано максимум разовых задач";
         private const string recurringTasksFullToastMessage = "Ошибка: Уже создано максимум цикличных задач";

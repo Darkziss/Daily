@@ -4,11 +4,11 @@ namespace Daily.Toasts
 {
     public class ThoughtToastHandler
     {
-        private static readonly IToast _thoughtCreatedToast = ToastCreator.Create(thoughtCreatedMessage);
-        private static readonly IToast _thoughtEditedToast = ToastCreator.Create(thoughtEditedMessage);
-        private static readonly IToast _thoughtDeletedToast = ToastCreator.Create(thoughtDeletedMessage);
+        private static readonly IToast _thoughtCreatedToast = ToastCreator.CreateShortByTime(thoughtCreatedMessage);
+        private static readonly IToast _thoughtEditedToast = ToastCreator.CreateShortByTime(thoughtEditedMessage);
+        private static readonly IToast _thoughtDeletedToast = ToastCreator.CreateShortByTime(thoughtDeletedMessage);
 
-        private static readonly IToast _thoughtErrorToast = ToastCreator.Create(thoughtErrorMessage);
+        private static readonly IToast _thoughtErrorToast = ToastCreator.CreateLongByTime(thoughtErrorMessage);
 
         private const string thoughtCreatedMessage = "Мысль была успешно создана";
         private const string thoughtEditedMessage = "Мысль была успешно изменена";
