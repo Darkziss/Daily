@@ -11,11 +11,6 @@
 
         <ResourceDictionary>
 
-            <Color x:Key="Bad">#f78686</Color>
-            
-            <Color x:Key="Tasks">#86f790</Color>
-            <Color x:Key="Diary">#f5d589</Color>
-            <Color x:Key="Thoughts">#86a4f7</Color>
 
             <Style TargetType="Button" x:Key="Card">
                 <Setter Property="Padding" Value="0, -90, 0, 0"/>
