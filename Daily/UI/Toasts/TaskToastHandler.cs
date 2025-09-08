@@ -14,11 +14,11 @@ namespace Daily.Toasts
         private static readonly IToast _oneTimeTasksFullToast = ToastCreator.Create(oneTimeTasksFullToastMessage);
         private static readonly IToast _recurringTasksFullToast = ToastCreator.Create(recurringTasksFullToastMessage);
 
-        private const string taskCreatedToastMessage = "Задача была успешно создана";
-        private const string taskEditedToastMessage = "Задача была успешно изменена";
+        private const string taskCreatedToastMessage = "Задача успешно создана";
+        private const string taskEditedToastMessage = "Задача изменена";
         private const string taskDeletedToastMessage = "Задача удалена";
 
-        private const string taskErrorToastMessage = "Ошибка\nПопробуйте еще раз";
+        private const string taskErrorToastMessage = "Ошибка: Попробуйте еще раз";
 
         private const string oneTimeTasksFullToastMessage = "Ошибка: Уже создано максимум разовых задач";
         private const string recurringTasksFullToastMessage = "Ошибка: Уже создано максимум цикличных задач";
