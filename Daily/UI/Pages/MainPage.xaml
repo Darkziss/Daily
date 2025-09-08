@@ -57,7 +57,7 @@
 
     <Grid
         ColumnDefinitions="*"
-        RowDefinitions="Auto, Auto, *"
+        RowDefinitions="Auto, 5*, *"
         RowSpacing="20"
         VerticalOptions="Fill"
         HorizontalOptions="Fill"
