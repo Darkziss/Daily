@@ -84,15 +84,6 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ImageButton" x:Key="ActionButton">
-        <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-        <Setter Property="Aspect" Value="AspectFill"/>
-        <Setter Property="WidthRequest" Value="50"/>
-        <Setter Property="HeightRequest" Value="50"/>
-        <Setter Property="VerticalOptions" Value="Start"/>
-        <Setter Property="HorizontalOptions" Value="Center"/>
-    </Style>
-
     <Style TargetType="Picker">
         <Setter Property="TitleColor" Value="Black"/>
         <Setter Property="TextColor" Value="Black"/>
@@ -123,16 +114,6 @@
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
-    </Style>
-
-    <Style TargetType="Editor" x:Key="RecordTextEditor">
-        <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Placeholder" Value="Начните печатать.."/>
-        
-        <Setter Property="VerticalOptions" Value="Fill"/>
-        <Setter Property="HorizontalOptions" Value="Fill"/>
-        <Setter Property="Margin" Value="5, 0, 5, 0"/>
     </Style>
 
     <Style TargetType="Entry">
@@ -190,28 +171,6 @@
         <Setter Property="HorizontalOptions" Value="Start"/>
     </Style>
 
-    <Style TargetType="Frame" x:Key="RecordCard">
-        <Setter Property="InputTransparent" Value="True"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-        <Setter Property="WidthRequest" Value="170"/>
-        <Setter Property="HeightRequest" Value="200"/>
-        <Setter Property="VerticalOptions" Value="Start"/>
-        <Setter Property="HorizontalOptions" Value="Start"/>
-
-        <Setter Property="VisualStateManager.VisualStateGroups">
-            <VisualStateGroupList>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
-                    <VisualState x:Name="Selected">
-                        <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{StaticResource Hover}"/>
-                        </VisualState.Setters>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateGroupList>
-        </Setter>
-    </Style>
-
     <Style TargetType="Label" x:Key="FieldHeader">
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="WidthRequest" Value="350"/>
@@ -236,21 +195,6 @@
         <Setter Property="HeightRequest" Value="170"/>
         <Setter Property="LineBreakMode" Value="TailTruncation"/>
         <Setter Property="MaxLines" Value="7"/>
-        <Setter Property="HorizontalOptions" Value="Fill"/>
-    </Style>
-
-    <Style TargetType="Label" x:Key="SymbolCounterLabel">
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="VerticalOptions" Value="Start"/>
-        <Setter Property="HorizontalOptions" Value="Center"/>
-    </Style>
-
-    <Style TargetType="Frame" x:Key="BottomPanel">
-        <Setter Property="BackgroundColor" Value="{StaticResource PanelBackground}"/>
-        <Setter Property="BorderColor" Value="{StaticResource Gray}"/>
-        <Setter Property="CornerRadius" Value="0"/>
-        <Setter Property="HeightRequest" Value="80"/>
-        <Setter Property="VerticalOptions" Value="End"/>
         <Setter Property="HorizontalOptions" Value="Fill"/>
     </Style>
 
@@ -294,12 +238,6 @@
         <Setter Property="LineBreakMode" Value="TailTruncation"/>
     </Style>
 
-    <Style TargetType="Label" x:Key="ActionButtonLabel">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="VerticalOptions" Value="End"/>
-        <Setter Property="HorizontalOptions" Value="Center"/>
-    </Style>
-
     <Style TargetType="Label" x:Key="EmptyViewLabel">
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Text" Value="Пока здесь пусто"/>
@@ -308,23 +246,6 @@
 
     <Style TargetType="CollectionView">
         <Setter Property="BackgroundColor" Value="Transparent"/>
-    </Style>
-
-    <Style TargetType="CollectionView" x:Key="RecordCollectionView">
-        <Setter Property="ItemSizingStrategy" Value="MeasureFirstItem"/>
-        <Setter Property="ItemsUpdatingScrollMode" Value="KeepItemsInView"/>
-        <Setter Property="SelectionMode" Value="Single"/>
-        <Setter Property="HeightRequest" Value="580"/>
-        <Setter Property="VerticalOptions" Value="Start"/>
-        <Setter Property="Margin" Value="20, 20, 20, 0"/>
-
-        <Setter Property="ItemsLayout">
-            <GridItemsLayout
-                Span="2"
-                Orientation="Vertical"
-                VerticalItemSpacing="10"
-                HorizontalItemSpacing="10"/>
-        </Setter>
     </Style>
 
     <Style TargetType="Grid" x:Key="FieldGrid">
@@ -343,10 +264,6 @@
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BackgroundColor" Value="{StaticResource Background}"/>
-    </Style>
-
-    <Style TargetType="Page" x:Key="DiaryPage">
-        <Setter Property="BackgroundColor" Value="{StaticResource DiaryBackground}"/>
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
