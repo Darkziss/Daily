@@ -1,5 +1,4 @@
-﻿using Daily.Thoughts;
-using Daily.Diary;
+﻿using Daily.Diary;
 using Daily.Tasks;
 
 namespace Daily.Data

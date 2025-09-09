@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
 using Daily.Tasks;
-using Daily.Thoughts;
 using Daily.Diary;
 using Daily.Data;
 using Daily.ViewModels;

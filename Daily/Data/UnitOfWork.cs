@@ -1,6 +1,5 @@
 ﻿using Daily.Diary;
 using Daily.Tasks;
-using Daily.Thoughts;
 
 namespace Daily.Data
 {
