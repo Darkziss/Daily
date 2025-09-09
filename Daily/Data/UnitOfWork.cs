@@ -31,10 +31,5 @@ namespace Daily.Data
 
         private const string OneTimeTasksFileName = "generalTasks.json";
         private const string RecurringTasksFileName = "conditionalTasks.json";
-
-        public void Dispose()
-        {
-            _connectionProvider.Dispose();
-        }
     }
 }

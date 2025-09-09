@@ -2,7 +2,7 @@
 
 namespace Daily.Data
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         public IFileRepository<Goal> GoalRepository { get; }
 
