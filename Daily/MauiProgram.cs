@@ -75,7 +75,6 @@ namespace Daily
                 .AddSingleton<TaskPageViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
                 .AddSingleton<GoalEditPageViewModel>()
-                .AddSingleton<ThoughtPageViewModel>()
                 .AddSingleton<ThoughtEditPageViewModel>()
                 .AddSingleton<DiaryRecordPageViewModel>()
                 .AddSingleton<DiaryRecordEditPageViewModel>();
@@ -88,7 +87,6 @@ namespace Daily
                 .AddSingleton<TaskPage>()
                 .AddSingleton<TaskEditPage>()
                 .AddSingleton<GoalEditPage>()
-                .AddSingleton<ThoughtPage>()
                 .AddSingleton<ThoughtEditPage>()
                 .AddSingleton<DiaryRecordPage>()
                 .AddSingleton<DiaryRecordEditPage>();
