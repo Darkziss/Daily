@@ -4,8 +4,6 @@ namespace Daily.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly SQLiteRecordsDatabaseConnectionProvider _connectionProvider = new();
-        
         private IFileRepository<Goal>? _goalRepository;
 
         private IFileRepository<ICollection<OneTimeTask>>? _oneTimeTaskRepository;
