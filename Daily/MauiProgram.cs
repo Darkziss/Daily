@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
 using Daily.Tasks;
-using Daily.Thoughts;
-using Daily.Diary;
 using Daily.Data;
 using Daily.ViewModels;
 using Daily.Pages;
@@ -63,9 +61,7 @@ namespace Daily
             collection
                 .AddSingleton<GoalStorage>()
                 .AddSingleton<OneTimeTaskStorage>()
-                .AddSingleton<RecurringTaskStorage>()
-                .AddSingleton<ThoughtStorage>()
-                .AddSingleton<DiaryRecordStorage>();
+                .AddSingleton<RecurringTaskStorage>();
         }
 
         private static void RegisterViewModels(IServiceCollection collection)
@@ -74,11 +70,7 @@ namespace Daily
                 .AddSingleton<MainPageViewModel>()
                 .AddSingleton<TaskPageViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
-                .AddSingleton<GoalEditPageViewModel>()
-                .AddSingleton<ThoughtPageViewModel>()
-                .AddSingleton<ThoughtEditPageViewModel>()
-                .AddSingleton<DiaryRecordPageViewModel>()
-                .AddSingleton<DiaryRecordEditPageViewModel>();
+                .AddSingleton<GoalEditPageViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection collection)
@@ -87,11 +79,7 @@ namespace Daily
                 .AddSingleton<MainPage>()
                 .AddSingleton<TaskPage>()
                 .AddSingleton<TaskEditPage>()
-                .AddSingleton<GoalEditPage>()
-                .AddSingleton<ThoughtPage>()
-                .AddSingleton<ThoughtEditPage>()
-                .AddSingleton<DiaryRecordPage>()
-                .AddSingleton<DiaryRecordEditPage>();
+                .AddSingleton<GoalEditPage>();
         }
     }
 }

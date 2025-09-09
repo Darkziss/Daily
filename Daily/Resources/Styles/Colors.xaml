@@ -31,10 +31,4 @@
     <Color x:Key="Important">#edebc3</Color>
     <Color x:Key="Additional">#c3edc4</Color>
 
-    <Color x:Key="DiaryBackground">#f8f0cd</Color>
-    <Color x:Key="DiaryFieldBackground">#f0e8c7</Color>
-    <Color x:Key="DiaryHovers">#edd9ab</Color>
-    <Color x:Key="DiaryInputField">#85775d</Color>
-    <Color x:Key="DiaryDisabled">#c29800</Color>
-
 </ResourceDictionary>

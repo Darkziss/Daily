@@ -15,11 +15,6 @@ namespace Daily.Pages
             BindingContext = viewModel;
         }
 
-        protected override void OnAppearing()
-        {
-            _viewModel.ResetView();
-        }
-
         protected override void OnNavigatedTo(NavigatedToEventArgs args)
         {
             _viewModel.MakeViewReady();
