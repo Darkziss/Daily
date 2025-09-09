@@ -1,5 +1,4 @@
-﻿using Daily.Diary;
-using Daily.Tasks;
+﻿using Daily.Tasks;
 
 namespace Daily.Data
 {
@@ -10,7 +9,5 @@ namespace Daily.Data
         public IFileRepository<ICollection<OneTimeTask>> OneTimeTaskRepository { get; }
 
         public IFileRepository<ICollection<RecurringTask>> RecurringTaskRepository { get; }
-
-        public IRepository<DiaryRecord> DiaryRecordRepository { get; }
     }
 }

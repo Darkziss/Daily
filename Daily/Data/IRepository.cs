@@ -1,5 +1,4 @@
-﻿using Daily.Diary;
-
+﻿
 namespace Daily.Data
 {
     public interface IRepository<T> where T : class, new()

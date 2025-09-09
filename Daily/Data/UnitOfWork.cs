@@ -1,5 +1,4 @@
-﻿using Daily.Diary;
-using Daily.Tasks;
+﻿using Daily.Tasks;
 
 namespace Daily.Data
 {
@@ -7,8 +6,6 @@ namespace Daily.Data
     {
         private readonly SQLiteRecordsDatabaseConnectionProvider _connectionProvider = new();
         
-        private IRepository<DiaryRecord>? _diaryRecordRepository;
-
         private IFileRepository<Goal>? _goalRepository;
 
         private IFileRepository<ICollection<OneTimeTask>>? _oneTimeTaskRepository;
@@ -28,11 +25,6 @@ namespace Daily.Data
         public IFileRepository<ICollection<RecurringTask>> RecurringTaskRepository
         {
             get => _recurringTaskRepository ??= new JsonFileRepository<ICollection<RecurringTask>>(RecurringTasksFileName);
-        }
-
-        public IRepository<DiaryRecord> DiaryRecordRepository
-        {
-            get => _diaryRecordRepository ??= new SQLiteRepository<DiaryRecord>(_connectionProvider);
         }
 
         private const string GoalFileName = "goal.json";
