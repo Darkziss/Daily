@@ -2,11 +2,11 @@ using Daily.ViewModels;
 
 namespace Daily.Pages
 {
-    public partial class ThoughtPage : ContentPage
+    public partial class GoalEditPage : ContentPage
     {
-        private readonly ThoughtPageViewModel _viewModel;
-        
-        public ThoughtPage(ThoughtPageViewModel viewModel)
+        private readonly GoalEditPageViewModel _viewModel;
+
+        public GoalEditPage(GoalEditPageViewModel viewModel)
         {
             InitializeComponent();
 
@@ -17,7 +17,7 @@ namespace Daily.Pages
 
         protected override void OnAppearing()
         {
-            _viewModel.ResetView();
+            _viewModel.PrepareView();
         }
     }
 }

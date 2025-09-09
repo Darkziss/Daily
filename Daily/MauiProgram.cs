@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Handlers;
 using Daily.Tasks;
-using Daily.Thoughts;
-using Daily.Diary;
 using Daily.Data;
 using Daily.ViewModels;
 using Daily.Pages;
 using CommunityToolkit.Maui;
 using Plugin.SegmentedControl.Maui;
+using Sharpnado.TaskLoaderView;
+using Android.Content.Res;
+using AndroidColor = Android.Graphics.Color;
 
 namespace Daily
 {
@@ -27,11 +29,25 @@ namespace Daily
 
 #if DEBUG
             builder.Logging.AddDebug();
+            Initializer.Initialize(true);
+#else
+            Initializer.Initialize(false);
 #endif
 
+#if ANDROID
+            PickerHandler.Mapper.AppendToMapping(nameof(Picker), (handler, view) =>
+            {
+                handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
+            });
+            
+            DatePickerHandler.Mapper.AppendToMapping(nameof(DatePicker), (handler, view) =>
+            {
+                handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(AndroidColor.Transparent);
+            });
+#endif
             IServiceCollection collection = builder.Services;
 
-            collection.AddSingleton<DataProvider>();
+            collection.AddSingleton<IUnitOfWork, UnitOfWork>();
 
             RegisterStorages(collection);
             RegisterViewModels(collection);
@@ -44,10 +60,8 @@ namespace Daily
         {
             collection
                 .AddSingleton<GoalStorage>()
-                .AddSingleton<GeneralTaskStorage>()
-                .AddSingleton<ConditionalTaskStorage>()
-                .AddSingleton<ThoughtStorage>()
-                .AddSingleton<DiaryRecordStorage>();
+                .AddSingleton<OneTimeTaskStorage>()
+                .AddSingleton<RecurringTaskStorage>();
         }
 
         private static void RegisterViewModels(IServiceCollection collection)
@@ -56,10 +70,7 @@ namespace Daily
                 .AddSingleton<MainPageViewModel>()
                 .AddSingleton<TaskPageViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
-                .AddSingleton<ThoughtPageViewModel>()
-                .AddSingleton<ThoughtEditPageViewModel>()
-                .AddSingleton<DiaryRecordPageViewModel>()
-                .AddSingleton<DiaryRecordEditPageViewModel>();
+                .AddSingleton<GoalEditPageViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection collection)
@@ -68,10 +79,7 @@ namespace Daily
                 .AddSingleton<MainPage>()
                 .AddSingleton<TaskPage>()
                 .AddSingleton<TaskEditPage>()
-                .AddSingleton<ThoughtPage>()
-                .AddSingleton<ThoughtEditPage>()
-                .AddSingleton<DiaryRecordPage>()
-                .AddSingleton<DiaryRecordEditPage>();
+                .AddSingleton<GoalEditPage>();
         }
     }
 }

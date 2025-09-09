@@ -10,6 +10,8 @@
     
         <ResourceDictionary>
 
+            <x:Double x:Key="DefaultFontSize">20</x:Double>
+
             <Thickness x:Key="RootPadding">0, 40, 0, 0</Thickness>
             
             <Thickness x:Key="HeadlineMargin">20, 0, 0, 0</Thickness>
@@ -18,18 +20,6 @@
 
             <x:Double x:Key="DefaultElementWidth">350</x:Double>
             <x:Double x:Key="ShorterElementWidth">330</x:Double>
-
-            <converters:BoolToColorConverter
-                x:Key="IsEditModeToColorConverter"
-                TrueColor="{StaticResource Save}"
-                FalseColor="{StaticResource Good}"/>
-
-            <converters:BoolToStringConverter
-                x:Key="IsEditModeToTextConverter"
-                TrueString="Сохранить"
-                FalseString="Изменить"/>
-
-            <converters:CharacterCountToStringConverter x:Key="CharacterCountToStringConverter"/>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>

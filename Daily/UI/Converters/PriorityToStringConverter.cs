@@ -5,10 +5,9 @@ namespace Daily.Converters
 {
     public class PriorityToStringConverter : IValueConverter
     {
-        public string DailyTaskText { get; init; } = nameof(TaskPriority.Daily);
         public string MandatoryTaskText { get; init; } = nameof(TaskPriority.Mandatory);
         public string ImportantTaskText { get; init; } = nameof(TaskPriority.Important);
-        public string CommonTaskText { get; init; } = nameof(TaskPriority.Common);
+        public string AdditionalTaskText { get; init; } = nameof(TaskPriority.Additional);
 
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
@@ -18,10 +17,9 @@ namespace Daily.Converters
 
             return priority switch
             {
-                TaskPriority.Daily => DailyTaskText,
                 TaskPriority.Mandatory => MandatoryTaskText,
                 TaskPriority.Important => ImportantTaskText,
-                TaskPriority.Common => CommonTaskText,
+                TaskPriority.Additional => AdditionalTaskText,
                 _ => string.Empty
             };
         }

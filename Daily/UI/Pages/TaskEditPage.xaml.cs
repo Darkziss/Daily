@@ -18,18 +18,18 @@ namespace Daily.Pages
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
-            bool isGeneralTask = query.ContainsKey(nameof(GeneralTask));
-            bool isConditionalTask = query.ContainsKey(nameof(ÑonditionalTask));
+            bool isOneTimeTask = query.ContainsKey(nameof(OneTimeTask));
+            bool isRecurringTask = query.ContainsKey(nameof(RecurringTask));
 
-            if (isGeneralTask)
+            if (isOneTimeTask)
             {
-                GeneralTask task = (GeneralTask)query[nameof(GeneralTask)];
+                OneTimeTask task = (OneTimeTask)query[nameof(OneTimeTask)];
 
                 _viewModel.PrepareViewForEdit(task);
             }
-            else if (isConditionalTask)
+            else if (isRecurringTask)
             {
-                ÑonditionalTask task = (ÑonditionalTask)query[nameof(ÑonditionalTask)];
+                RecurringTask task = (RecurringTask)query[nameof(RecurringTask)];
                 _viewModel.PrepareViewForEdit(task);
             }
             else _viewModel.ResetView();

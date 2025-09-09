@@ -3,19 +3,24 @@ using Daily.Data;
 
 namespace Daily.Tasks
 {
-    public class GeneralTaskStorage : TaskStorage<GeneralTask>
+    public class RecurringTaskStorage : TaskStorage<RecurringTask>
     {
-        public override ObservableCollection<GeneralTask> Tasks { get; protected set; }
+        public override ObservableCollection<RecurringTask>? Tasks { get; protected set; }
 
-        public override int MaxTaskCount { get; } = 15;
+        public override int MaxTaskCount { get; } = 10;
 
-        public GeneralTaskStorage(DataProvider dataProvider) : base(dataProvider)
+        public RecurringTaskStorage(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+
+        public override async Task<ObservableCollection<RecurringTask>> LoadTasks()
         {
-            if (_dataProvider.GeneralTasks == null) Tasks = new ObservableCollection<GeneralTask>();
-            else Tasks = new ObservableCollection<GeneralTask>(_dataProvider.GeneralTasks);
+            IEnumerable<RecurringTask>? tasks = await _unitOfWork.RecurringTaskRepository.LoadAsync();
+
+            Tasks = tasks == null ? new() : new(tasks);
+
+            return Tasks;
         }
 
-        public override async Task<bool> TryAddTaskAsync(GeneralTask task)
+        public override async Task<bool> TryAddTaskAsync(RecurringTask task)
         {
             if (IsTasksFull) return false;
 
@@ -29,12 +34,12 @@ namespace Daily.Tasks
             Tasks.Add(task);
             if (ShouldSort) SortTasks();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
 
             return true;
         }
 
-        public override async Task<bool> TryEditTaskAsync(GeneralTask oldTask, GeneralTask newTask)
+        public override async Task<bool> TryEditTaskAsync(RecurringTask oldTask, RecurringTask newTask)
         {
             bool isValid = TaskValidator.ValidateTask(newTask);
 
@@ -49,46 +54,48 @@ namespace Daily.Tasks
             Tasks[index] = newTask;
             if (ShouldSort) SortTasks();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
+
             return true;
         }
 
-        public override async Task PerformTaskAsync(GeneralTask task)
+        public override async Task PerformTaskAsync(RecurringTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
             task.Perform();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
+
         }
 
-        public override async Task ResetTaskAsync(GeneralTask task)
+        public override async Task ResetTaskAsync(RecurringTask task)
         {
             if (IsNullOrUnknownTask(task)) return;
 
             task.Reset();
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
         }
 
-        public override async Task DeleteTaskAsync(GeneralTask task)
+        public override async Task DeleteTaskAsync(RecurringTask task)
         {
             if (IsNullOrUnknownTask(task, out int index)) return;
 
             Tasks.RemoveAt(index);
 
-            await _dataProvider.SaveGeneralTasksAsync(Tasks);
+            await _unitOfWork.RecurringTaskRepository.SaveAsync(Tasks);
         }
 
         protected override void SortTasks()
         {
-            var sorted = Tasks.OrderBy(task => task.Priority)
+            var sorted = Tasks.OrderBy(task => task.RepeatTimePeriod)
                 .ThenBy(task => task.ActionName.Length)
                 .ToList();
 
             Tasks.Clear();
 
-            foreach (GeneralTask task in sorted)
+            foreach (RecurringTask task in sorted)
             {
                 Tasks.Add(task);
             }

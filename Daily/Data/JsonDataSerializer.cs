@@ -41,5 +41,13 @@ namespace Daily.Data
                 await JsonSerializer.SerializeAsync(stream, value, _options);
             }
         }
+
+        public override async Task<T?> DeserializeAsync<T>(string path) where T : default
+        {
+            using (FileStream stream = new(path, readFileMode))
+            {
+                return await JsonSerializer.DeserializeAsync<T>(stream, _options);
+            }
+        }
     }
 }

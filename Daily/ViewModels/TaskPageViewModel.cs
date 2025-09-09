@@ -1,168 +1,174 @@
-﻿using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel;
+using System.Collections.ObjectModel;
 using Daily.Tasks;
 using Daily.Navigation;
 using Daily.Toasts;
 using Daily.Popups;
+using Daily.Messages;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using Sharpnado.TaskLoaderView;
 using AsyncTimer = System.Timers.Timer;
 
 namespace Daily.ViewModels
 {
     public partial class TaskPageViewModel : ObservableObject, IResetView
     {
-        [ObservableProperty] private bool _isEditingGoal = false;
+        [ObservableProperty] private bool _isGoalEmpty;
+        [ObservableProperty] private bool _hasDeadline;
+        
+        [ObservableProperty] private string? _goalLabelText;
+        [ObservableProperty] private DateOnly? _deadline;
 
-        [ObservableProperty] private string _goalLabelText;
-        [ObservableProperty] private string _goalEntryText;
+        [ObservableProperty] private GoalStatus? _goalStatus;
 
-        [ObservableProperty] private object? _selectedGeneralTask = null;
-        [ObservableProperty] private object? _selectedСonditionalTask = null;
+        [ObservableProperty] private ObservableCollection<RecurringTask> _recurringTasks;
 
-        [ObservableProperty] private bool _isTasksLoaded = false;
+        [ObservableProperty] private bool _isTasksVisible = false;
 
         [ObservableProperty] private bool _canInteractWithTask = true;
 
-        [ObservableProperty] private bool _canEditTask = false;
-        [ObservableProperty] private bool _canDeleteTask = false;
-        [ObservableProperty] private bool _canResetTask = false;
-
         private readonly GoalStorage _goalStorage;
-        private readonly GeneralTaskStorage _generalTaskStorage;
-        private readonly ConditionalTaskStorage _conditionalTaskStorage;
+        private readonly OneTimeTaskStorage _oneTimeTaskStorage;
+        private readonly RecurringTaskStorage _recurringTaskStorage;
 
-        public ObservableCollection<GeneralTask> GeneralTasks => _generalTaskStorage.Tasks;
-        public ObservableCollection<СonditionalTask> СonditionalTasks => _conditionalTaskStorage.Tasks;
+        public TaskLoaderNotifier<Goal> GoalLoader { get; }
 
-        public int GeneralTaskMaxCount => _generalTaskStorage.MaxTaskCount;
-        public int ConditionalTaskMaxCount => _conditionalTaskStorage.MaxTaskCount;
+        public TaskLoaderNotifier<ObservableCollection<OneTimeTask>> OneTimeTasksLoader { get; }
+        public TaskLoaderNotifier<ObservableCollection<RecurringTask>> RecurringTasksLoader { get; }
+
+        public int OneTimeTaskMaxCount => _oneTimeTaskStorage.MaxTaskCount;
+        public int RecurringTaskMaxCount => _recurringTaskStorage.MaxTaskCount;
 
         public Command EditGoalCommand { get; }
-        public Command SaveGoalCommand { get; }
+        public Command InvertGoalStatusCommand { get; }
 
-        public Command<GeneralTask> GeneralTaskInteractCommand { get; }
-        public Command<СonditionalTask> СonditionalTaskInteractCommand { get; }
+        public Command<RecurringTask> PerformRecurringTaskCommand { get; }
+        public Command<RecurringTask> EditRecurringTaskCommand { get; }
+        public Command<RecurringTask> ResetRecurringTaskCommand { get; }
+        public Command<RecurringTask> DeleteRecurringTaskCommand { get; }
+
+        public Command<OneTimeTask> PerformOneTimeTaskCommand { get; }
+        public Command<OneTimeTask> EditOneTimeTaskCommand { get; }
+        public Command<OneTimeTask> ResetOneTimeTaskCommand { get; }
+        public Command<OneTimeTask> DeleteOneTimeTaskCommand { get; }
 
         public Command AddTaskCommand { get; }
 
-        public Command SwitchCanEditTaskCommand { get; }
-        public Command SwitchCanDeleteTaskCommand { get; }
-        public Command SwitchCanResetTaskCommand { get; }
-
-        private bool ShouldLoadTask => GeneralTasks.Count > 0 || СonditionalTasks.Count > 0;
-
-        private const string goalLabelDefaultText = "Зажмите, чтобы добавить цель";
-
-        public TaskPageViewModel(GoalStorage goalStorage, GeneralTaskStorage generalTaskStorage, 
-            ConditionalTaskStorage conditionalTaskStorage)
+        public TaskPageViewModel(GoalStorage goalStorage, OneTimeTaskStorage oneTimeTaskStorage, 
+            RecurringTaskStorage recurringTaskStorage)
         {
             _goalStorage = goalStorage;
 
-            _generalTaskStorage = generalTaskStorage;
-            _conditionalTaskStorage = conditionalTaskStorage;
+            _oneTimeTaskStorage = oneTimeTaskStorage;
+            _recurringTaskStorage = recurringTaskStorage;
 
-            _goalLabelText = GetGoalOrDefaultText();
-            _goalEntryText = goalStorage.Goal;
+            GoalLoader = new(true);
 
-            EditGoalCommand = new Command(
-            execute: () =>
+            OneTimeTasksLoader = new(true);
+            RecurringTasksLoader = new(true);
+
+            EditGoalCommand = new Command(async () =>
             {
-                IsEditingGoal = true;
-            }, 
-            canExecute: () =>
-            {
-                return !IsEditingGoal;
+                if (!PageNavigator.IsRouting)
+                    await PageNavigator.GoToGoalEditPageAsync();
             });
 
-            SaveGoalCommand = new Command(
-            execute: async () =>
+            InvertGoalStatusCommand = new Command(async () =>
             {
-                string newGoal = GoalEntryText;
-                bool isSameGoal = _goalStorage.IsSameGoal(newGoal);
-
-                if (!isSameGoal)
-                {
-                    await _goalStorage.SetGoalAsync(newGoal);
-
-                    GoalLabelText = GetGoalOrDefaultText();
-                }
-
-                IsEditingGoal = false;
-            },
-            canExecute: () =>
-            {
-                return IsEditingGoal;
-            });
-
-            GeneralTaskInteractCommand = new Command<GeneralTask>(
-            execute: async (task) =>
-            {
-                if (SelectedGeneralTask == null || !CanInteractWithTask) return;
-
-                if (CanEditTask)
-                {
-                    CanInteractWithTask = false;
-
-                    var parameters = new ShellNavigationQueryParameters()
-                    {
-                        [nameof(GeneralTask)] = task
-                    };
-
-                    await PageNavigator.GoToTaskEditPageAsync(parameters);
-                }
-                else if (CanDeleteTask)
-                {
-                    CanInteractWithTask = false;
-
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
-
-                    if (shouldDelete)
-                    {
-                        await _generalTaskStorage.DeleteTaskAsync(task);
-                        await TaskToastHandler.ShowTaskDeletedToastAsync();
-                    }
-
-                    CanInteractWithTask = true;
-                }
-                else if (CanResetTask) await ResetGeneralTaskAsync(task);
-                else await PerformGeneralTaskAsync(task);
-
-                SelectedGeneralTask = null;
-            });
-
-            СonditionalTaskInteractCommand = new Command<СonditionalTask>(
-            execute: async (task) =>
-            {
-                if (SelectedСonditionalTask == null || !CanInteractWithTask) return;
+                if (_goalStorage.IsNone)
+                    return;
                 
-                if (CanEditTask)
+                if (_goalStorage.IsCompleted) await _goalStorage.ResetGoalStatusAsync();
+                else await _goalStorage.CompleteGoalAsync();
+
+                GoalStatus = _goalStorage.Status;
+            });
+
+            PerformRecurringTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await PerformRecurringTaskAsync(task);
+            });
+
+            EditRecurringTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                var parameters = new ShellNavigationQueryParameters()
                 {
-                    CanInteractWithTask = false;
+                    [nameof(RecurringTask)] = task
+                };
 
-                    var parameters = new ShellNavigationQueryParameters()
-                    {
-                        [nameof(СonditionalTask)] = task
-                    };
+                await PageNavigator.GoToTaskEditPageAsync(parameters);
+            });
 
-                    await PageNavigator.GoToTaskEditPageAsync(parameters);
-                }
-                else if (CanDeleteTask)
+            ResetRecurringTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await ResetRecurringTaskAsync(task);
+            });
+
+            DeleteRecurringTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
+
+                if (shouldDelete)
                 {
-                    CanInteractWithTask = false;
-
-                    bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
-
-                    if (shouldDelete)
-                    {
-                        await _conditionalTaskStorage.DeleteTaskAsync(task);
-                        await TaskToastHandler.ShowTaskDeletedToastAsync();
-                    }
-                    
-                    CanInteractWithTask = true;
+                    await _recurringTaskStorage.DeleteTaskAsync(task);
+                    await TaskToastHandler.ShowTaskDeletedToastAsync();
                 }
-                else if (CanResetTask) await ResetConditionalTaskAsync(task);
-                else await PerformСonditionalTaskAsync(task);
+            });
 
-                SelectedСonditionalTask = null;
+            PerformOneTimeTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await PerformOneTimeTaskAsync(task);
+            });
+
+            EditOneTimeTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                var parameters = new ShellNavigationQueryParameters()
+                {
+                    [nameof(OneTimeTask)] = task
+                };
+
+                await PageNavigator.GoToTaskEditPageAsync(parameters);
+            });
+
+            ResetOneTimeTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                await ResetOneTimeTaskAsync(task);
+            });
+
+            DeleteOneTimeTaskCommand = new(async (task) =>
+            {
+                if (!CanInteractWithTask)
+                    return;
+
+                bool shouldDelete = await PopupHandler.ShowTaskDeletePopupAsync(task.ActionName);
+
+                if (shouldDelete)
+                {
+                    await _oneTimeTaskStorage.DeleteTaskAsync(task);
+                    await TaskToastHandler.ShowTaskDeletedToastAsync();
+                }
             });
 
             AddTaskCommand = new Command(
@@ -173,90 +179,117 @@ namespace Daily.ViewModels
                 await PageNavigator.GoToTaskEditPageAsync();
             });
 
-            SwitchCanEditTaskCommand = new Command(
-            execute: () =>
+            WeakReferenceMessenger.Default.Register<GoalChangedMessage>(this, (_, _) =>
             {
-                CanEditTask = !CanEditTask;
+                GoalLabelText = _goalStorage.Goal;
+                Deadline = _goalStorage.Deadline;
+                GoalStatus = _goalStorage.Status;
 
-                CanDeleteTask = false;
-                CanResetTask = false;
-            });
-
-            SwitchCanDeleteTaskCommand = new Command(
-            execute: () =>
-            {
-                CanDeleteTask = !CanDeleteTask;
-
-                CanEditTask = false;
-                CanResetTask = false;
-            });
-
-            SwitchCanResetTaskCommand = new Command(
-            execute: () =>
-            {
-                CanResetTask = !CanResetTask;
-
-                CanEditTask = false;
-                CanDeleteTask = false;
+                UpdateGoalAndDeadlineStatus();
             });
         }
 
         public void ResetView()
         {
-            IsEditingGoal = false;
+            LoadGoalIfNotLoaded();
+            LoadTasksIfNotLoaded();
 
-            CanEditTask = false;
-            CanDeleteTask = false;
-            CanResetTask = false;
-
-            if (ShouldLoadTask) ShowDummy();
-            else
+            if (GoalLoader.IsSuccessfullyCompleted)
             {
-                IsTasksLoaded = true;
-                CanInteractWithTask = true;
+                RefreshOverdueStatusIfGoalNotCompleted();
+
+                UpdateGoalAndDeadlineStatus();
+            }
+
+            ShowDummy();
+        }
+
+        private void LoadGoalIfNotLoaded()
+        {
+            if (GoalLoader.IsNotStarted)
+            {
+                GoalLoader.PropertyChanged += GoalLoader_PropertyChanged;
+                GoalLoader.Load(_ => _goalStorage.LoadGoalAsync());
             }
         }
 
-        private string GetGoalOrDefaultText()
+        private void GoalLoader_PropertyChanged(object? sender, PropertyChangedEventArgs args)
         {
-            bool isNullOrWhiteSpace = string.IsNullOrWhiteSpace(_goalStorage.Goal);
+            const string ResultPropertyName = "Result";
 
-            return isNullOrWhiteSpace ? goalLabelDefaultText : _goalStorage.Goal;
+            if (GoalLoader.IsSuccessfullyCompleted && args.PropertyName == ResultPropertyName)
+            {
+                GoalLabelText = _goalStorage.Goal;
+                Deadline = _goalStorage.Deadline;
+
+                GoalStatus = _goalStorage.Status;
+
+                RefreshOverdueStatusIfGoalNotCompleted();
+
+                UpdateGoalAndDeadlineStatus();
+
+                GoalLoader.PropertyChanged -= GoalLoader_PropertyChanged;
+            }
         }
 
-        private async Task PerformGeneralTaskAsync(GeneralTask task)
+        private void LoadTasksIfNotLoaded()
+        {
+            if (OneTimeTasksLoader.IsNotStarted)
+                OneTimeTasksLoader.Load(_ => _oneTimeTaskStorage.LoadTasks());
+
+            if (RecurringTasksLoader.IsNotStarted)
+                RecurringTasksLoader.Load(_ => _recurringTaskStorage.LoadTasks());
+        }
+
+        private void RefreshOverdueStatusIfGoalNotCompleted()
+        {
+            if (!_goalStorage.IsCompleted)
+            {
+                _goalStorage.RefreshOverdueStatus();
+
+                GoalStatus = _goalStorage.Status;
+            }
+        }
+
+        private void UpdateGoalAndDeadlineStatus()
+        {
+            IsGoalEmpty = string.IsNullOrEmpty(_goalStorage.Goal);
+            HasDeadline = _goalStorage.Deadline.HasValue;
+        }
+
+        private async Task PerformOneTimeTaskAsync(OneTimeTask task)
         {
             if (!CanPerformTask(task)) return;
 
-            await _generalTaskStorage.PerformTaskAsync(task);
+            await _oneTimeTaskStorage.PerformTaskAsync(task);
         }
 
-        private async Task PerformСonditionalTaskAsync(СonditionalTask task)
+        private async Task PerformRecurringTaskAsync(RecurringTask task)
         {
             if (!CanPerformTask(task)) return;
 
-            await _conditionalTaskStorage.PerformTaskAsync(task);
+            await _recurringTaskStorage.PerformTaskAsync(task);
         }
 
-        private async Task ResetGeneralTaskAsync(GeneralTask task)
+        private async Task ResetOneTimeTaskAsync(OneTimeTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 
-            await _generalTaskStorage.ResetTaskAsync(task);
+            await _oneTimeTaskStorage.ResetTaskAsync(task);
         }
 
-        private async Task ResetConditionalTaskAsync(СonditionalTask task)
+        private async Task ResetRecurringTaskAsync(RecurringTask task)
         {
             if (task == null || task.RepeatCount == 0) return;
 
-            await _conditionalTaskStorage.ResetTaskAsync(task);
+            await _recurringTaskStorage.ResetTaskAsync(task);
         }
 
         private bool CanPerformTask(TaskBase task) => task == null ? false : !task.IsCompleted;
 
         private void ShowDummy()
         {
-            IsTasksLoaded = false;
+            IsTasksVisible = false;
             CanInteractWithTask = false;
 
             const double delay = 800d;
@@ -265,8 +298,9 @@ namespace Daily.ViewModels
             timer.Elapsed += (_, _) =>
             {
                 timer.Stop();
+                timer.Dispose();
 
-                IsTasksLoaded = true;
+                IsTasksVisible = true;
                 CanInteractWithTask = true;
             };
 

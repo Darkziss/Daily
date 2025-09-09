@@ -12,12 +12,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
 
-            <x:Double x:Key="DefaultFontSize">20</x:Double>
-
-            <Thickness x:Key="TaskFieldPadding">20, 0, 0, 0</Thickness>
-
-            <converters:CompletionTimeToStringConverter x:Key="CompletionTimeToStringConverter"/>
-
             <Style TargetType="controls:SegmentedControl" x:Key="TaskSegmentedControl">
                 <Setter Property="TintColor" Value="{StaticResource Gray}"/>
                 <Setter Property="SelectedTextColor" Value="Black"/>
@@ -32,19 +26,15 @@
                 <Setter Property="ItemsSource">
                     <Setter.Value>
                         <x:Array Type="{x:Type x:String}">
-                            <x:String>Основная</x:String>
-                            <x:String>Условная</x:String>
+                            <x:String>Разовая</x:String>
+                            <x:String>Цикличная</x:String>
                         </x:Array>
                     </Setter.Value>
                 </Setter>
             </Style>
 
-            <Style TargetType="Entry" x:Key="ActionNameEntry">
-                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-                <Setter Property="Placeholder" Value="Введите действие"/>
-                <Setter Property="MaxLength" Value="50"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
+            <Style TargetType="Grid" x:Key="EntryFieldGrid" BasedOn="{StaticResource FieldGrid}">
+                <Setter Property="RowSpacing" Value="-5"/>
             </Style>
 
             <Style TargetType="Border" x:Key="PickerBorder">
@@ -52,27 +42,6 @@
                 <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
                 <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="VerticalOptions" Value="Start"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-            </Style>
-
-            <Style TargetType="VerticalStackLayout" x:Key="TaskFieldStackLayout">
-                <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-                <Setter Property="Padding" Value="{StaticResource TaskFieldPadding}"/>
-            </Style>
-
-            <Style TargetType="Grid" x:Key="TaskFieldGrid">
-                <Setter Property="BackgroundColor" Value="{StaticResource FieldBackground}"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-                <Setter Property="Padding" Value="{StaticResource TaskFieldPadding}"/>
-            </Style>
-
-            <Style TargetType="Label" x:Key="TaskFieldHeader">
-                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
                 <Setter Property="HorizontalOptions" Value="Start"/>
             </Style>
 
@@ -92,36 +61,9 @@
                 <Setter Property="HorizontalOptions" Value="Fill"/>
             </Style>
 
-            <Style TargetType="Entry" x:Key="CompletionTimeEntry">
-                <Setter Property="FontSize" Value="30"/>
-                <Setter Property="Placeholder" Value="0"/>
-                <Setter Property="Keyboard" Value="Numeric"/>
-                <Setter Property="MaxLength" Value="3"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="VerticalOptions" Value="Fill"/>
-                <Setter Property="HorizontalOptions" Value="Fill"/>
-            </Style>
-
-            <Style TargetType="Label" x:Key="CompletionTimeUnitLabel">
-                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-                <Setter Property="Text" Value="минут"/>
-                <Setter Property="VerticalOptions" Value="Center"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-            </Style>
-
-            <Style TargetType="Entry" x:Key="NoteEntry">
-                <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
-                <Setter Property="Placeholder" Value="Введите примечание"/>
-                <Setter Property="Keyboard" Value="Text"/>
-                <Setter Property="MaxLength" Value="15"/>
-                <Setter Property="WidthRequest" Value="{StaticResource DefaultElementWidth}"/>
-                <Setter Property="HorizontalOptions" Value="Start"/>
-            </Style>
-
-            <Style TargetType="Button" x:Key="TaskBottomButton" BasedOn="{StaticResource BottomButton}">
-                <Setter Property="BackgroundColor" Value="{StaticResource Good}"/>
-                <Setter Property="VerticalOptions" Value="End"/>
-                <Setter Property="Margin" Value="0, 0, 0, 20"/>
+            <Style TargetType="Entry" x:Key="NoteEntry" BasedOn="{StaticResource FieldEntry}">
+                <Setter Property="Placeholder" Value="Дополнительное условие"/>
+                <Setter Property="MaxLength" Value="30"/>
             </Style>
 
         </ResourceDictionary>
@@ -160,30 +102,42 @@
                 SelectedSegment="{Binding SelectedTaskSegmentIndex, Mode=TwoWay}"
                 SegmentSelectedCommand="{Binding ChangeViewCommand}"/>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}">
+            <Grid
+                Style="{StaticResource EntryFieldGrid}"
+                ColumnDefinitions="*"
+                RowDefinitions="Auto, Auto">
 
                 <Label
-                    FontSize="{StaticResource DefaultFontSize}"
+                    Style="{StaticResource FieldHeader}"
                     Text="Действие"
-                    HorizontalOptions="Start"/>
+                    Grid.Column="0"
+                    Grid.Row="0"/>
 
                 <Entry
-                    Style="{StaticResource ActionNameEntry}"
+                    Style="{StaticResource FieldEntry}"
                     IsReadOnly="{Binding IsCreatingNewTask}"
-                    Text="{Binding ActionName, Mode=TwoWay}"/>
-            </VerticalStackLayout>
+                    Placeholder="Что нужно сделать?"
+                    Text="{Binding ActionName, Mode=TwoWay}"
+                    Grid.Column="0"
+                    Grid.Row="1"/>
+            </Grid>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}"
-                IsVisible="{Binding IsConditionalTaskMode, Converter={toolkit:InvertedBoolConverter}}">
+            <Grid
+                Style="{StaticResource FieldGrid}"
+                IsVisible="{Binding IsRecurringTaskMode, Converter={toolkit:InvertedBoolConverter}}"
+                ColumnDefinitions="*"
+                RowDefinitions="Auto, Auto">
 
                 <Label
-                    Style="{StaticResource TaskFieldHeader}"
-                    Text="Приоритет"/>
+                    Style="{StaticResource FieldHeader}"
+                    Text="Приоритет"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
 
                 <Border
-                    Style="{StaticResource PickerBorder}">
+                    Style="{StaticResource PickerContainer}"
+                    Grid.Column="0"
+                    Grid.Row="1">
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
@@ -191,27 +145,31 @@
 
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
-                                <x:String>Ежедневная</x:String>
                                 <x:String>Обязательная</x:String>
                                 <x:String>Важная</x:String>
-                                <x:String>Обычная</x:String>
+                                <x:String>Дополнительная</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
-
                 </Border>
-            </VerticalStackLayout>
+            </Grid>
 
-            <VerticalStackLayout
-                Style="{StaticResource TaskFieldStackLayout}"
-                IsVisible="{Binding IsConditionalTaskMode}">
+            <Grid
+                Style="{StaticResource FieldGrid}"
+                IsVisible="{Binding IsRecurringTaskMode}"
+                ColumnDefinitions="*"
+                RowDefinitions="Auto, Auto">
 
                 <Label
-                    Style="{StaticResource TaskFieldHeader}"
-                    Text="Промежуток времени"/>
+                    Style="{StaticResource FieldHeader}"
+                    Text="Промежуток времени"
+                    Grid.Column="0"
+                    Grid.Row="0"/>
 
                 <Border
-                    Style="{StaticResource PickerBorder}">
+                    Style="{StaticResource PickerContainer}"
+                    Grid.Column="0"
+                    Grid.Row="1">
 
                     <Picker
                         IsEnabled="{Binding IsCreatingNewTask, Converter={toolkit:InvertedBoolConverter}}"
@@ -227,16 +185,16 @@
                     </Picker>
                 </Border>
 
-            </VerticalStackLayout>
+            </Grid>
 
             <Grid
-                Style="{StaticResource TaskFieldGrid}"
+                Style="{StaticResource FieldGrid}"
                 BackgroundColor="{StaticResource FieldBackground}"
                 ColumnDefinitions="100, Auto"
                 RowDefinitions="Auto, Auto">
 
                 <Label
-                    Style="{StaticResource TaskFieldHeader}"
+                    Style="{StaticResource FieldHeader}"
                     Text="Количество повторений"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"/>
@@ -257,40 +215,14 @@
             </Grid>
 
             <Grid
-                Style="{StaticResource TaskFieldGrid}"
-                IsVisible="{Binding IsConditionalTaskMode}"
-                ColumnDefinitions="100, Auto"
+                Style="{StaticResource EntryFieldGrid}"
+                ColumnDefinitions="*"
                 RowDefinitions="Auto, Auto">
 
                 <Label
-                    Style="{StaticResource TaskFieldHeader}"
-                    Text="Длительность (необязат.)"
-                    Grid.ColumnSpan="2"
-                    Grid.Row="0"/>
-
-                <Entry
-                    IsReadOnly="{Binding IsCreatingNewTask}"
-                    Style="{StaticResource CompletionTimeEntry}"
-                    Text="{Binding CompletionTime, Mode=TwoWay, Converter={StaticResource CompletionTimeToStringConverter}}"
+                    Style="{StaticResource FieldHeader}"
+                    Text="Примечание (необязательно)"
                     Grid.Column="0"
-                    Grid.Row="1"/>
-
-                <Label
-                    Style="{StaticResource CompletionTimeUnitLabel}"
-                    Grid.Column="1"
-                    Grid.Row="1"/>
-            </Grid>
-
-            <Grid
-                Style="{StaticResource TaskFieldGrid}"
-                IsVisible="{Binding IsConditionalTaskMode}"
-                ColumnDefinitions="100, Auto"
-                RowDefinitions="Auto, Auto">
-
-                <Label
-                    Style="{StaticResource TaskFieldHeader}"
-                    Text="Примечание (необязат.)"
-                    Grid.ColumnSpan="2"
                     Grid.Row="0"/>
 
                 <Entry
