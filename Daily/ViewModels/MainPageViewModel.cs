@@ -9,8 +9,6 @@ namespace Daily.ViewModels
         [ObservableProperty] private bool _canNavigate = true;
 
         public Command GoToTaskPage { get; }
-        public Command GoToThoughtPage { get; }
-        public Command GoToDiaryRecordPage { get; }
 
         public string CurrentVersion => GetCurrentVersion();
 
@@ -22,22 +20,6 @@ namespace Daily.ViewModels
                 CanNavigate = false;
 
                 await PageNavigator.GoToTaskPageAsync();
-            });
-
-            GoToThoughtPage = new Command(
-            execute: async () =>
-            {
-                CanNavigate = false;
-
-                await PageNavigator.GoToThoughtPageAsync();
-            });
-
-            GoToDiaryRecordPage = new Command(
-            execute: async () =>
-            {
-                CanNavigate = false;
-
-                await PageNavigator.GoToDiaryRecordPageAsync();
             });
         }
 
