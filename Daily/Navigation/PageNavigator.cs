@@ -20,20 +20,6 @@ namespace Daily.Navigation
 
         public static async Task GoToGoalEditPageAsync() => await GoToPageAsync(nameof(GoalEditPage));
 
-        public static async Task GoToThoughtPageAsync() => await GoToPageAsync(nameof(ThoughtPage));
-
-        public static async Task GoToThoughtEditPageAsync(ShellNavigationQueryParameters? parameters = null)
-        {
-            await GoToPageAsync(nameof(ThoughtEditPage), parameters);
-        }
-
-        public static async Task GoToDiaryRecordPageAsync() => await GoToPageAsync(nameof(DiaryRecordPage));
-
-        public static async Task GoToDiaryRecordEditPageAsync(ShellNavigationQueryParameters? parameters = null)
-        {
-            await GoToPageAsync(nameof(DiaryRecordEditPage), parameters);
-        }
-
         public static async Task ReturnToPreviousPageAsync() => await GoToPageAsync(backwards);
 
         private static async Task GoToPageAsync(string pageName, ShellNavigationQueryParameters? parameters = null)
