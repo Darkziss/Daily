@@ -72,8 +72,7 @@ namespace Daily
                 .AddSingleton<MainPageViewModel>()
                 .AddSingleton<TaskPageViewModel>()
                 .AddSingleton<TaskEditPageViewModel>()
-                .AddSingleton<GoalEditPageViewModel>()
-                .AddSingleton<DiaryRecordEditPageViewModel>();
+                .AddSingleton<GoalEditPageViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection collection)
@@ -82,8 +81,7 @@ namespace Daily
                 .AddSingleton<MainPage>()
                 .AddSingleton<TaskPage>()
                 .AddSingleton<TaskEditPage>()
-                .AddSingleton<GoalEditPage>()
-                .AddSingleton<DiaryRecordEditPage>();
+                .AddSingleton<GoalEditPage>();
         }
     }
 }
