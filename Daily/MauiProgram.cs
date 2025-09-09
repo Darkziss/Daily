@@ -62,8 +62,7 @@ namespace Daily
             collection
                 .AddSingleton<GoalStorage>()
                 .AddSingleton<OneTimeTaskStorage>()
-                .AddSingleton<RecurringTaskStorage>()
-                .AddSingleton<DiaryRecordStorage>();
+                .AddSingleton<RecurringTaskStorage>();
         }
 
         private static void RegisterViewModels(IServiceCollection collection)
