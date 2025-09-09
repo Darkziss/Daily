@@ -8,8 +8,6 @@ namespace Daily.Data
     {
         private readonly SQLiteRecordsDatabaseConnectionProvider _connectionProvider = new();
         
-        private IRepository<Thought>? _thoughtRepository;
-
         private IRepository<DiaryRecord>? _diaryRecordRepository;
 
         private IFileRepository<Goal>? _goalRepository;
@@ -31,11 +29,6 @@ namespace Daily.Data
         public IFileRepository<ICollection<RecurringTask>> RecurringTaskRepository
         {
             get => _recurringTaskRepository ??= new JsonFileRepository<ICollection<RecurringTask>>(RecurringTasksFileName);
-        }
-
-        public IRepository<Thought> ThoughtRepository
-        {
-            get => _thoughtRepository ??= new SQLiteRepository<Thought>(_connectionProvider);
         }
 
         public IRepository<DiaryRecord> DiaryRecordRepository

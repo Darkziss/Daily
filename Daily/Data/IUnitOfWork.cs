@@ -12,8 +12,6 @@ namespace Daily.Data
 
         public IFileRepository<ICollection<RecurringTask>> RecurringTaskRepository { get; }
 
-        public IRepository<Thought> ThoughtRepository { get; }
-
         public IRepository<DiaryRecord> DiaryRecordRepository { get; }
     }
 }
